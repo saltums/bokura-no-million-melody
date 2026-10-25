@@ -59,6 +59,7 @@ def load_specs(dirpath='/home/claude/arcs_new'):
         _seen.add(_a['nm']); _u.append(_a)
     arcs = _u
     pt = {k: list(dict.fromkeys(t.split('→')[-1].strip() for t in v)) for k, v in pt.items()}
+    import ptover; pt = ptover.apply(arcs, dict(pt))
     return arcs, pt
 
 

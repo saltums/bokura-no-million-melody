@@ -195,7 +195,7 @@ def pr_of(r, th):
 
 def rel(a, seen, pos, y, tier, th, lb, dev):
     r = random.Random(H(a["k"], "rel", pos, dev))
-    pool = PT[a["par"]]; ti = pool[(pos + dev * 2) % len(pool)]
+    import ptover; pool = ptover.PTO.get(a['k']) or PT[a["par"]]; ti = pool[(pos + dev * 2) % len(pool)]
     while ti in seen: ti = pool[(pool.index(ti) + 1) % len(pool)]
     seen.append(ti)
     pr = pr_of(r, th)
