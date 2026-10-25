@@ -54,7 +54,7 @@ P = dict(
              jbs=["普段は闇市で屋台を手伝っていた", "普段は工場で働いていた", "普段は焼け跡の片づけをしていた", "普段は駅で新聞を売っていた"],
              hbs=["歌う前に必ず空を見上げる", "ラジオの前で正座する", "歌の途中でつい笑ってしまう", "子どもの前だと声が少しやさしくなる"],
              fvs=["ふかしいも", "すいとん", "にぎり飯", "お汁粉"], hys=["蓄音機の盤を集めること", "ラジオの修理", "野球", "駅前の散歩"]),
-    sn_g="楽団", sn_s="歌い手", yr=(-1, 2), ystep=(0, 0),
+    sn_g="楽団", sn_s="歌い手", yr=(-1, 2), ystep=(0, 1), ymax=1955,
     bgm=dict(bpm=96, scale=[0, 2, 4, 7, 9], root=55, lead='flute', lv=0.09, len=1, dens=0.6, bass='pluck', drums='soft', pad='sine', prog=[0, 5, 7, 0], echo=0.2),
     dec="Japan 1940s postwar black market era, radio kayo", vgt="warm 1940s Japanese radio kayokyoku vocals", tier=10,
 )

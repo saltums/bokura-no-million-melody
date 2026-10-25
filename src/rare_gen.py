@@ -189,12 +189,13 @@ def tree(P, seed, group):
 
     def release(path, eff):
         st["n"] += 1; st["y"] += r.randint(*P["ystep"]) if P.get("ystep") else r.randint(2, 14) if era == -2 else r.randint(1, 4)
+        if P.get("ymax"): st["y"] = min(st["y"], P["ymax"])
         th, pr = r.choice(P["themes"]); rr = random.Random(H(seed, path, st["n"]))
         tier = cl(base + eff + rr.choice([-1, 0, 0, 0, 1]))
         ti = P["title"](rr, th) if P.get("title") else title2(rr, th) if era == -2 else title3(rr, th) if era == -3 else title6(rr, th)
         reasons = P["hit"] if tier >= 2 else P["flop"]
         rs = rr.choice(reasons)
-        out = {"t": "r", "y": st["y"], "o": P["onames"][min(st["n"] - 1, len(P["onames"]) - 1)], "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
+        out = {"t": "r", "y": st["y"], "o": (P["onames"][st["n"] - 1] if st["n"] <= len(P["onames"]) else "第%d作" % st["n"]), "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
         out["ly"] = P["lyr"](rr, th, vg) if P.get("lyr") else lyr2(rr, vg) if era == -2 else lyr3(rr, th, vg) if era == -3 else lyr6(rr, th, vg)
         out["ti"] = hook_title(out["ly"], rr, era, ti, used_t)
         return out, tier

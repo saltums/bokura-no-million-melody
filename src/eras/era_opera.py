@@ -2,7 +2,7 @@ import random
 
 P = dict(
     era=12, en="明治・大正(浅草オペラと唱歌の時代)", es="明治大正", ge="浅草オペラと唱歌", y0=1895,
-    sn_g="楽団", sn_s="流しの歌い手", yr=(0, 12), ystep=(1, 3),
+    sn_g="楽団", sn_s="流しの歌い手", yr=(0, 12), ystep=(1, 3), ymax=1926,
     bgm=dict(bpm=104, scale=[0, 2, 4, 7, 9], root=57, lead="saw", lv=0.07, len=1, dens=0.6, bass="pluck", drums="soft", pad="tri", prog=[0, 5, 7, 0], echo=0.12),
     dec="Meiji and Taisho era Japan, Asakusa opera, shoka school songs", vgt="early 20th century Japanese operatic vocals, clear and slightly nasal, with light vibrato", tier=10,
     tn=["誰にも聞かれず", "下宿の窓の外まで", "街角の人だかりに", "浅草の小屋の評判に", "全国の学校と街角で", "百年後も歌われた"],

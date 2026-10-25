@@ -3,7 +3,7 @@ import random
 
 P = dict(
     era=11, en="1920年代(ジャズ・エイジ)", es="1920年代", ge="ジャズ・ソング(流行歌)", y0=1923,
-    sn_g="ジャズ・バンド", sn_s="流行歌手", yr=(0, 3), ystep=(0, 1),
+    sn_g="ジャズ・バンド", sn_s="流行歌手", yr=(0, 3), ystep=(0, 1), ymax=1929,
     bgm=dict(bpm=132, scale=[0, 2, 3, 4, 7, 9], root=55, lead='flute', lv=0.1, len=1, dens=0.7, bass='triangle', drums='soft', pad=False, prog=[0, 9, 2, 7], echo=0.12),
     dec="1920s Japan, Taisho to early Showa jazz age", vgt="1920s crooner vocals with vintage gramophone warmth", tier=10,
     tn=["誰にも聞かれず", "針が飛んで終わった", "喫茶店の片隅で", "ダンスホールで評判に", "ラジオで全国に", "SP盤が擦り切れるまで"],
