@@ -906,6 +906,7 @@ function bestSum(n) { if (n._b !== undefined) return n._b; n._b = n.e ? n.e.w.re
 const startRare = (era) => { const L = DATA.filter((d) => d.m.rare && d.m.era === era); const d = L[Math.floor(Math.random() * L.length)]; S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); };
 { const box = $('#dbg-real'); const lab = el('span', 'lab', 'デバッグ: 着想型の人生(' + DATA.filter((x) => x.m.real).length + '組)を選んで遊ぶ'); box.append(lab); DATA.filter((x) => x.m.real).forEach((d) => { const b = el('button', 'btn line', d.m.a + '(' + d.m.sn.replace(/\(.*$/, '') + '・' + d.m.es + ')'); b.type = 'button'; b.onclick = () => { S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); }; box.append(b); }); }
 let DBG_ERA = null;
+const FA = { get: () => { try { return localStorage.getItem('hit30000_first') || ''; } catch (_) { return ''; } }, set: (v) => { try { if (v && !localStorage.getItem('hit30000_first')) localStorage.setItem('hit30000_first', String(v).slice(0, 60)); } catch (_) {} } };
 const PL = (() => { const K = 'hit30000_plays', NEED = 5; const get = () => { try { return parseInt(localStorage.getItem(K), 10) || 0; } catch (_) { return 0; } };
   return { NEED, set: (v) => { try { if (v > get()) localStorage.setItem(K, String(v)); } catch (_) {} }, n: get, ok: () => get() >= NEED || DBG_ERA != null, inc: () => { const v = get() + 1; try { localStorage.setItem(K, String(v)); } catch (_) {} return v; } }; })();
 const RARE_BASE = { '-3': 5, '-2': 5, '6': 5 };
@@ -1857,8 +1858,8 @@ const ZK = (() => {
   };
   const toggle = (ts) => { const d = load(); const x = d.lives.find((l) => l.ts === ts); if (!x) return; x.fav = !x.fav; save(d); };
   const del = (ts) => { const d = load(); d.lives = d.lives.filter((l) => l.ts !== ts); save(d); };
-  const exp = () => { try { return btoa(unescape(encodeURIComponent(JSON.stringify(Object.assign({}, load(), { pl: PL.n() }))))); } catch (_) { return ''; } };
-  const imp = (c) => { try { const d = JSON.parse(decodeURIComponent(escape(atob(c.trim())))); if (!d || d.v !== 1 || !Array.isArray(d.lives)) return false; if (d.pl) PL.set(d.pl); const cur = load(); const have = new Set(cur.lives.map((l) => l.ts)); d.lives.forEach((l) => { if (!have.has(l.ts)) cur.lives.push(l); }); cur.lives.sort((a, b) => b.ts - a.ts); while (cur.lives.length > MAX) { let i = cur.lives.length - 1; while (i >= 0 && cur.lives[i].fav) i--; if (i < 0) break; cur.lives.splice(i, 1); } Object.entries(d.crowns || {}).forEach(([k, v]) => { cur.crowns[k] = Math.max(cur.crowns[k] || 0, v); }); Object.entries(d.ids || {}).forEach(([k, v]) => { cur.ids[k] = Math.max(cur.ids[k] || 0, v); }); return save(cur); } catch (_) { return false; } };
+  const exp = () => { try { return btoa(unescape(encodeURIComponent(JSON.stringify(Object.assign({}, load(), { pl: PL.n(), fa: FA.get() }))))); } catch (_) { return ''; } };
+  const imp = (c) => { try { const d = JSON.parse(decodeURIComponent(escape(atob(c.trim())))); if (!d || d.v !== 1 || !Array.isArray(d.lives)) return false; if (d.pl) PL.set(d.pl); if (d.fa) FA.set(d.fa); const cur = load(); const have = new Set(cur.lives.map((l) => l.ts)); d.lives.forEach((l) => { if (!have.has(l.ts)) cur.lives.push(l); }); cur.lives.sort((a, b) => b.ts - a.ts); while (cur.lives.length > MAX) { let i = cur.lives.length - 1; while (i >= 0 && cur.lives[i].fav) i--; if (i < 0) break; cur.lives.splice(i, 1); } Object.entries(d.crowns || {}).forEach(([k, v]) => { cur.crowns[k] = Math.max(cur.crowns[k] || 0, v); }); Object.entries(d.ids || {}).forEach(([k, v]) => { cur.ids[k] = Math.max(cur.ids[k] || 0, v); }); return save(cur); } catch (_) { return false; } };
   const detail = (l) => {
     openSheetWith(l.cr + ' · ' + l.es + ' · ' + l.sn, l.a, 'var(--accent)', (b) => {
       const dt = l.dt; const sec = (t) => { const h = el('div', 'small', t); h.style.cssText = 'font-weight:900;margin:14px 0 4px'; b.append(h); };
@@ -1973,16 +1974,14 @@ const ENDING = (() => {
         for (const s of st) { box.append(el('p', 'endl on sub', s)); }
         await new Promise((r) => { nextFn = r; T(r, 3000); });
         if (bgm) bgm.stop(); clear();
-        await line('すべての星が冷え切り、最後の歌うたいも息をひきとった。', '', 3200);
-        await line('3万年にわたる「ぼくらのミリオンメロディ」は、ここで完全に潰えた。', 'sub', 3600);
-        clear(); await new Promise((r) => { nextFn = r; T(r, 2600); });
+        await new Promise((r) => { nextFn = r; T(r, 3200); });
+        { const fa = FA.get(); if (fa) { await line('いちばん最初に出会ったのは、' + fa + 'だった。', '', 4200); clear(); await new Promise((r) => { nextFn = r; T(r, 1800); }); } }
         if (bgm) bgm.note();
-        await new Promise((r) => { nextFn = r; T(r, 2400); });
-        await line('――だが。どこかの暗闇で、誰かが弦を一本、弾いた気がした。', '', 3600);
-        await line('チューニングは、もう始まっている。', 'sub', 3200);
+        await line('どこかで、弦が一本、はじかれた。', '', 3400);
+        await line('チューニングは、もう始まっている。', 'sub', 3000);
         if (best) await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', 'sub', 4200);
         clear();
-        const fin = el('p', 'endl on fin', '音楽は、まだ鳴っている。'); box.append(fin); try { if (bgm) bgm.note(76); } catch (_) {}
+        const fin = el('p', 'endl on fin', '音楽がまた鳴り始めた。'); box.append(fin); try { if (bgm) bgm.note(76); } catch (_) {}
         const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
         const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
@@ -2136,6 +2135,7 @@ function showEnding(e) {
   a.append(bimg, bx, b1, b2, b4, b5, b3, note); tail.append(a); tail.append(imgBox); finale(); try { setTimeout(() => SFX.jingle(dr.total), 700); } catch (_) {}
   try { const m = S.entry.m; ZK.record({ ts: Date.now(), id: m.id, a: m.a, es: m.es, sn: m.sn, cr: cr[0], tot: dr.total, w: e.w.length, bt: bestTxt(best), fav: false, dt: { ws: e.w.map((w) => [w.y, w.ti, w.tr, w.rk || '']), tx: e.tx, cs: cr[1], cm: dr.cm, tl: dr.tl, vs: (() => { try { return voicesOf(e, dr).map((v) => [v[0], v[1]]); } catch (_) { return []; } })(), mm: (S.mem || []).map((x) => [x.n || x.name || '', x.r || x.role || '']).filter((x) => x[0]).slice(0, 8) } }); } catch (_) {}
   try { if (S.entry.m.rare && S.entry.m.era === 22 && DBG_ERA == null) setTimeout(() => ENDING.start(), 2800); } catch (_) {}
+  try { FA.set(S.entry.m.a); } catch (_) {}
   try { const pn_ = PL.inc(); if (pn_ === SURVEY_AT && TALLY_URL) setTimeout(() => surveyModal(false), 1800); try { const pu = unlockPanel(); pu.style.marginTop = '8px'; tail.insertBefore(pu, a); } catch (_) {} if (unlockTiers().some(([k]) => k === pn_)) { tail.insertBefore(unlockCard(pn_), a); setTimeout(() => { try { SFX.play('unlock'); } catch (_) {} }, 2600); } } catch (_) {}
   measureHud(); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 }
