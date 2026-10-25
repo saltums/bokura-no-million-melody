@@ -412,6 +412,22 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .zk-grid { display: flex; flex-wrap: wrap; gap: 6px; } .zk-grid span { padding: 6px 10px; border: 1px solid var(--line); font-size: 13px; } .zk-grid .on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); font-weight: 700; } .zk-grid .off { color: var(--muted); border-style: dashed; }
 .zk-bar { height: 10px; background: var(--line); } .zk-bar i { display: block; height: 100%; background: var(--accent); border-right: 2px solid var(--accent-ink); }
 .unl-box:empty { display: none; } .unl-box .card { margin: 0; } #gnav { position: fixed; left: 8px; bottom: 8px; z-index: 20; display: flex; gap: 6px; } #gnav button { min-height: 40px; padding: 0 12px; border: 1.5px solid var(--line); background: var(--bg, #fff); color: inherit; font: 700 13px/1 var(--f-b); }
+
+.dec.in { animation: decIn .45s .35s cubic-bezier(.2,.9,.3,1) both; }
+@keyframes decIn { from { opacity: 0; transform: translateY(26px) scale(.97); } to { opacity: 1; transform: none; } }
+.dec > .lab { animation: decLab .9s .35s ease-out both; }
+@keyframes decLab { 0% { letter-spacing: .5em; opacity: 0; } 40% { opacity: 1; } 100% { letter-spacing: normal; } }
+.dec .opt { animation: optIn .35s both; }
+.dec .opt:nth-of-type(1) { animation-delay: .6s; } .dec .opt:nth-of-type(2) { animation-delay: .72s; } .dec .opt:nth-of-type(3) { animation-delay: .84s; } .dec .opt:nth-of-type(4) { animation-delay: .96s; }
+@keyframes optIn { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+.dec.big { box-shadow: 0 0 0 2px var(--accent), 0 0 26px color-mix(in srgb, var(--accent) 45%, transparent); }
+.dec.big > .lab { background: var(--accent); color: var(--accent-ink); padding: 2px 8px; border-radius: 4px; }
+.dec.picked .opt:not(.chosen) { opacity: .25; transform: scale(.97); transition: all .25s; }
+.dec .opt.chosen { animation: chosenPop .4s both; box-shadow: 0 0 0 3px var(--accent), 0 0 22px color-mix(in srgb, var(--accent) 60%, transparent); }
+@keyframes chosenPop { 0% { transform: scale(1); } 40% { transform: scale(1.04); } 100% { transform: scale(1); } }
+.gcols.shake { animation: shk .35s; }
+@keyframes shk { 0%,100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+@media (prefers-reduced-motion: reduce) { .dec.in, .dec > .lab, .dec .opt, .gcols.shake, .dec .opt.chosen { animation: none !important; } }
 </style>
 
 <div class="wrap" id="app">
@@ -1534,17 +1550,19 @@ function finishNode(node) {
 }
 function showDecision(node) {
   const tail = $('#tail');
-  const d = el('div', 'dec in'); d.append(el('span', 'lab', '分かれ道 ' + (S.dn + 1))); d.append(el('p', 'q', node.q.prompt));
+  const big = /(バンド|解散|脱退|契約|賭|ステージ|フェス|デビュー|売|結婚|やめ|辞め|離|東京|上京|海外|命|戦|旅立)/.test(node.q.prompt) || S.dn >= 2; const d = el('div', 'dec in' + (big ? ' big' : '')); d.append(el('span', 'lab', (big ? '運命の分かれ道 ' : '分かれ道 ') + (S.dn + 1))); d.append(el('p', 'q', node.q.prompt));
   const btns = [];
   node.q.labels.forEach((lab, i) => {
     const b = el('button', 'opt'); b.type = 'button'; b.append(el('span', 'l', 'ABCD'[i]), el('span', null, lab));
-    b.onclick = () => { btns.forEach((x) => { x.disabled = true; }); b.classList.add('chosen'); S.path.push({ node, i }); S.dn += 1;
+    b.onclick = () => { btns.forEach((x) => { x.disabled = true; }); b.classList.add('chosen'); d.classList.add('picked'); try { SFX.play('choose'); } catch (_) {} S.path.push({ node, i }); S.dn += 1;
       const f = $('#feed'); const q = el('div', 'card res in'); q.append(el('span', 'lab', '分かれ道')); q.append(el('p', null, node.q.prompt)); f.prepend(q); collapseOld(q);
       tail.textContent = ''; $('#gcols').classList.remove('deciding'); document.documentElement.style.setProperty('--dockh', '0px'); playNode(node.n[i]); };
     btns.push(b); d.append(b);
   });
   tail.append(d); $('#gcols').classList.add('deciding');
-  if (S.auto) { let bi = 0; node.n.forEach((k, i) => { if (bestSum(k) > bestSum(node.n[bi])) bi = i; }); S.timers.push(setTimeout(() => btns[bi].click(), 1800)); }
+  btns.forEach((x) => { x.disabled = true; }); setTimeout(() => { if (!d.classList.contains('picked')) btns.forEach((x) => { x.disabled = false; }); }, 650);
+  try { SFX.play(big ? 'big' : 'fork'); if (big && !reduce) { const g = $('#gcols'); g.classList.remove('shake'); void g.offsetWidth; g.classList.add('shake'); } } catch (_) {}
+  if (S.auto) { let bi = 0; node.n.forEach((k, i) => { if (bestSum(k) > bestSum(node.n[bi])) bi = i; }); S.timers.push(setTimeout(() => btns[bi].click(), 2000)); }
   requestAnimationFrame(() => { measureHud(); c_scroll(); });
 }
 function wrapT(t, n, mx) { t = String(t); const o = []; for (let i = 0; i < t.length && o.length < mx; i += n) o.push(t.slice(i, i + n)); if (t.length > n * mx) o[mx - 1] = o[mx - 1].slice(0, -1) + '…'; return o; }
@@ -1706,6 +1724,9 @@ const SFX = (() => {
   const kinds = {
     pop: (t) => { tn(t, 620, .09, 'sine', .11, 900); },
     pick: (t) => { tn(t, 880, .07, 'triangle', .11, 1320); tn(t + .06, 1320, .1, 'triangle', .09, 1760); },
+    fork: (t) => { tn(t, 392, .12, 'triangle', .1, 440); tn(t + .1, 587, .18, 'triangle', .1, 659); },
+    big: (t) => { tn(t, 110, .35, 'sine', .16, 70); tn(t + .05, 330, .15, 'triangle', .1, 440); tn(t + .17, 494, .15, 'triangle', .1, 587); tn(t + .3, 740, .3, 'triangle', .11, 880); },
+    choose: (t) => { tn(t, 660, .07, 'square', .06, 990); tn(t + .05, 990, .12, 'triangle', .09, 1320); },
     back: (t) => { tn(t, 520, .1, 'sine', .1, 330); },
     unlock: (t) => { tn(t, mf(48), 1.6, 'sine', .1); [72, 76, 79, 84, 88].forEach((n, i) => { tn(t + i * .075, mf(n), .55, 'triangle', .09); tn(t + i * .075, mf(n + 12), .3, 'sine', .035); }); const e = t + .42; [60, 64, 67, 72, 79].forEach((n) => tn(e, mf(n), 1.9, 'triangle', .07)); for (let i = 0; i < 9; i++) tn(e + .12 + i * .06, mf(91 + (i % 4) * 3), .22, 'sine', .04); }
   };
