@@ -2,6 +2,7 @@
 """着想型の人生 v2。分かれ道の数(3〜5)・追加イベント・時代ちがいの版に対応。
 各アーティストの仕様は arcs_new/*.py の ARCS(リスト)と PT(曲名の辞書)で与える。仕様はagent_brief.mdを参照。"""
 import copy, random, glob, os, re, importlib.util
+import roster as _ro0
 import ongaku_storyline_gen as g
 import lyrics, lyrics_struct, tracks, bio
 from arcs_gen import H, cl, era_of, pr_of, HIT, FLOP, FORM, KIND, ORD, WORDS, THEME, wk
@@ -93,12 +94,14 @@ def build(a, i, pool, era=None, nm=None):
             taken = {x["n"] for x in mm}
             for j, m_ in enumerate(mm):
                 r0 = m_["r"]; isvo = r0.startswith("Vo") or not INSTR.match(r0)
-                if isvo and m_["g"] != G:
+                if isvo and m_["g"] != G and not (a.get('members') or _ro0.ROSTER.get(a['k'])):
                     rr = _rd.Random(H(a["k"], "vgfix", j, era))
                     for _ in range(60):
                         nm2 = rr.choice(tracks.FAM) + " " + rr.choice(tracks.GIV_M if G == "m" else tracks.GIV_F)
                         if nm2 not in taken: break
                     taken.discard(m_["n"]); taken.add(nm2); m_["n"] = nm2; m_["g"] = G
+    import roster as _ro
+    mm = _ro.apply(a, mm, seed)
     top = "グループ" if st in ("band", "duo", "inst") else "ソロ"
     E = g.ERAS[era]
     name = nm or a["nm"]

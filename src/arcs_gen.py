@@ -228,6 +228,8 @@ def build(a, i):
         mm = mm[:len(a["roles"])]
         while len(mm) < len(a["roles"]):
             nw = tracks.newcomer(seed, a["roles"][len(mm)], {x["n"] for x in mm}); nw["r"] = a["roles"][len(mm)]; nw["t"] = a["tr"][len(mm)] if len(mm) < len(a["tr"]) else nw.get("t", ""); mm.append(nw)
+    import roster as _ro
+    mm = _ro.apply(a, mm, seed)
     m = meta(a, mm, i); th = a["th"]; seen = []
     def stage_rels(si, dev_eff, dev):
         out = []; cv = a["cv"][si]
