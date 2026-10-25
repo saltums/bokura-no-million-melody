@@ -196,11 +196,13 @@ def pr_of(r, th):
 def rel(a, seen, pos, y, tier, th, lb, dev):
     r = random.Random(H(a["k"], "rel", pos, dev))
     import ptover; pool = ptover.PTO.get(a['k']) or PT[a["par"]]; ti = pool[(pos + dev * 2) % len(pool)]
-    while ti in seen: ti = pool[(pool.index(ti) + 1) % len(pool)]
+    _n = 0
+    while ti in seen and _n < len(pool): ti = pool[(pool.index(ti) + 1) % len(pool)]; _n += 1
     seen.append(ti)
     pr = pr_of(r, th)
     h = dict(kind=KIND[pos], ord="", title=ti, year=y, tier=tier, theme=th, premise=pr, label=lb)
-    tk = tracks.tracklist(h, a["st"] if a["st"] in ("band", "duo", "rap", "solo", "beat") else "band", era_of(a["y0"]), th, list(seen))
+    tk = tracks.tracklist(h, a["st"] if a["st"] in ("band", "duo", "rap", "solo", "beat") else "band", era_of(a["y0"]), th, list(seen), extra=ptover.deep(a["k"], pool, seen))
+    seen.extend(x['t'] for x in tk if x['t'] not in seen)
     lyrics.VG = a["vg"]
     ly = lyrics_struct.make_struct(th, a["ge"], pr, ti, y, WORDS, era_of(a["y0"]) <= 1, era_of(a["y0"]))
     if ly: ly["vg"] = a["vg"]

@@ -35,7 +35,7 @@ def ser(item, c=None, st=None):
                "pr": h['premise'], "th": h['theme'], "rs": h['reason'], "fm": h['form']}
         if st is not None:
             out["tk"] = tracks.tracklist(h, c['style'], c['era'], h['theme'], list(st['seen']))
-            st['seen'].append(h['title'])
+            st['seen'].append(h['title']); st['seen'].extend(x['t'] for x in out['tk'] if x['t'] not in st['seen'])
         if c is not None:
             vg = gender.vocal(c, st['mem'] if st is not None else tracks.people(c['seed'], c['style']))
             lyrics.VG = vg

@@ -47,6 +47,7 @@ STN = {"band": "バンド", "duo": "2人組ユニット", "solo": "シンガー�
 def load_specs(dirpath='/home/claude/arcs_new'):
     arcs, pt = [], {}
     for f in sorted(glob.glob(os.path.join(dirpath, 'arcs_*.py'))):
+        if os.environ.get('SKIP_B') and os.path.basename(f).startswith('arcs_b'): continue
         spec = importlib.util.spec_from_file_location(os.path.basename(f)[:-3], f); m = importlib.util.module_from_spec(spec)
         try:
             spec.loader.exec_module(m)
@@ -72,7 +73,8 @@ def rel(a, pool, seen, pos, y, tier, th, lb, dev, era):
     pr = pr_of(r, th); k = KIND[min(pos, len(KIND) - 1)]
     h = dict(kind=k, ord="", title=ti, year=y, tier=tier, theme=th, premise=pr, label=lb)
     st = a["st"] if a["st"] in ("band", "duo", "rap", "solo", "beat") else "band"
-    tk = tracks.tracklist(h, st, era, th, list(seen))
+    tk = tracks.tracklist(h, st, era, th, list(seen), extra=__import__('ptover').deep(a['k'], pool, seen))
+    seen.extend(x['t'] for x in tk if x['t'] not in seen)
     lyrics.VG = a["vg"]
     ly = lyrics_struct.make_struct(th, a["ge"], pr, ti, y, WORDS, era <= 1, era)
     if ly: ly["vg"] = a["vg"]
