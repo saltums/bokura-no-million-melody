@@ -121,6 +121,22 @@ def lyr6(r, th, vg):
     return {"st": "王道(1番・2番)", "k": "full", "s": s, "o": o, "n1": 3, "tg": "short, about 45 seconds, ambient synth textures, sci-fi atmosphere", "vg": vg, "hl": "サビ"}
 
 
+AW_DEF = {
+    11: [["喫茶店", 300], ["街じゅう", 100000], ["東京・大阪", 3000000], ["全国", 60000000]],
+    12: [["路地", 200], ["浅草界隈", 50000], ["東京じゅう", 2000000], ["全国", 50000000]],
+    13: [["闇市の一角", 500], ["街じゅう", 200000], ["ラジオの向こう", 10000000], ["全国", 70000000]],
+    14: [["ジャズ喫茶", 500], ["学生街", 200000], ["全国のファン", 10000000], ["日本中", 95000000]],
+    15: [["屋敷", 50], ["都の宴", 3000], ["都じゅう", 100000], ["全国", 5000000]],
+    16: [["陣屋", 100], ["城下", 5000], ["国ごと", 500000], ["全国", 12000000]],
+    17: [["酒場", 100], ["町じゅう", 10000], ["国じゅう", 1000000], ["大陸じゅう", 30000000]],
+    18: [["宮廷", 200], ["都市", 20000], ["国じゅう", 2000000], ["大陸じゅう", 50000000]],
+    19: [["広場", 500], ["都市国家", 30000], ["地中海沿岸", 2000000], ["世界じゅう", 40000000]],
+    20: [["村", 200], ["王国", 50000], ["大陸", 5000000], ["世界じゅう", 100000000]],
+    21: [["焚き火の輪", 20], ["谷", 200], ["氷原の群れ", 2000], ["大陸じゅう", 20000]],
+    22: [["最後の灯り", 1], ["宇宙のこだま", 1000000], ["星々の記憶", 10**12], ["すべて", 10**14]],
+}
+
+
 # ================= 共通の木の組み立て =================
 def tree(P, seed, group):
     r = random.Random(H(seed, "rare"))
@@ -140,21 +156,21 @@ def tree(P, seed, group):
     if group: bio["fd"] = r.choice(b["hms"])
     name = r.choice(P["names_g"] if group else P["names_s"])
     pe = r.choice(P["pes"])
-    meta = {"id": 90000 + seed, "a": name, "pun": None, "top": "グループ" if group else "ソロ", "st": "band" if group else "solo", "sn": ("集落の合唱隊" if (group and era == -2) else "語り部" if era == -2 else "囃子連" if (group and era == -3) else "唄い手" if era == -3 else "宇宙のバンド" if group else "星のシンガー"),
+    meta = {"id": 90000 + seed, "a": name, "pun": None, "top": "グループ" if group else "ソロ", "st": "band" if group else "solo", "sn": (P["sn_g"] if (P.get("sn_g") and group) else P["sn_s"] if P.get("sn_s") else "集落の合唱隊" if (group and era == -2) else "語り部" if era == -2 else "囃子連" if (group and era == -3) else "唄い手" if era == -3 else "宇宙のバンド" if group else "星のシンガー"),
             "pe": pe, "era": era, "en": P["en"], "es": P["es"], "sa": P["sa"], "ge": P["ge"], "tx": r.choice(P["starts"]), "ai": None, "mm": mm, "vg": vg, "bio": bio,
-            "rare": True, "tn": P["tn"], "rk": P["rk"], "stg": P["stg"]}
-    st = {"y": P["y0"] + (r.randint(0, 6000) if era == -2 else r.randint(0, 140) if era == -3 else r.randint(0, 40)), "n": 0}
+            "rare": True, **({"bgm": P["bgm"], "aw": AW_DEF.get(era), "dec": P.get("dec"), "vgt": P.get("vgt"), "tier": P.get("tier")} if P.get("bgm") else {}), "tn": P["tn"], "rk": P["rk"], "stg": P["stg"]}
+    st = {"y": P["y0"] + (r.randint(*P["yr"]) if P.get("yr") else r.randint(0, 6000) if era == -2 else r.randint(0, 140) if era == -3 else r.randint(0, 40)), "n": 0}
     base = r.choice([0, 1, 1, 2])
 
     def release(path, eff):
-        st["n"] += 1; st["y"] += r.randint(2, 14) if era == -2 else r.randint(1, 4)
+        st["n"] += 1; st["y"] += r.randint(*P["ystep"]) if P.get("ystep") else r.randint(2, 14) if era == -2 else r.randint(1, 4)
         th, pr = r.choice(P["themes"]); rr = random.Random(H(seed, path, st["n"]))
         tier = cl(base + eff + rr.choice([-1, 0, 0, 0, 1]))
-        ti = title2(rr, th) if era == -2 else title3(rr, th) if era == -3 else title6(rr, th)
+        ti = P["title"](rr, th) if P.get("title") else title2(rr, th) if era == -2 else title3(rr, th) if era == -3 else title6(rr, th)
         reasons = P["hit"] if tier >= 2 else P["flop"]
         rs = rr.choice(reasons)
         out = {"t": "r", "y": st["y"], "o": P["onames"][min(st["n"] - 1, len(P["onames"]) - 1)], "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
-        out["ly"] = lyr2(rr, vg) if era == -2 else lyr3(rr, th, vg) if era == -3 else lyr6(rr, th, vg)
+        out["ly"] = P["lyr"](rr, th, vg) if P.get("lyr") else lyr2(rr, vg) if era == -2 else lyr3(rr, th, vg) if era == -3 else lyr6(rr, th, vg)
         return out, tier
 
     def run(path, eff, n):
@@ -194,6 +210,12 @@ def trees(n_each=4):
         out.append(tree(P6, 100 + k, group=(k % 2 == 0)))
     for k in range(n_each + 2):
         out.append(tree(P3, 200 + k, group=(k % 2 == 0)))
+    import importlib, glob, os, sys
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "eras"))
+    for f in sorted(glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "eras", "era_*.py"))):
+        mod = importlib.import_module(os.path.basename(f)[:-3]); P = dict(mod.P); P["title"] = mod.title; P["lyr"] = mod.lyr
+        for k in range(n_each):
+            out.append(tree(P, 1000 * (abs(P["era"]) + 1) + k, group=(k % 2 == 0)))
     return out
 
 
