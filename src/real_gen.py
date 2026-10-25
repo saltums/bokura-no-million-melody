@@ -9,7 +9,7 @@ import lyrics, lyrics_struct, tracks, bio
 
 WORDS = (g.TIME, g.PLACE, g.THING)
 SEED = 95001
-NAME = "Ball Park Bear"
+NAME = "BEACH BALL BEAR"
 
 HIT = ["夏の終わりの空気をそのまま閉じ込めた一曲が、フェスの帰り道で口ずさまれた", "教室の窓際の気持ちを言い当てた歌詞が、同世代に深く刺さった", "ギターのカッティングが耳に残り、ラジオで何度も流れた",
        "ライブで客席が一緒に歌える部分があり、そのまま広まった", "青春の痛いところを、少し笑いながら歌ったのが共感を呼んだ"]
@@ -29,7 +29,7 @@ def rel(seen, y, o, kind, ti, lb, tr, theme, pr):
     return {"t": "r", "y": y, "o": o, "ti": ti, "lb": lb, "tr": tr, "pr": pr, "th": theme, "rs": rs, "fm": fm, "tk": tk, "ly": ly}
 
 
-NMS = ["橋本 トモヤ", "松本 マサト", "阿部 ミサキ", "中村 リョウ"]
+NMS = ["小手 祐助", "湯朝 将平", "関谷 史織", "堀ノ内 大輔"]
 
 
 def members():
