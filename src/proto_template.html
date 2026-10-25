@@ -428,6 +428,22 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .gcols.shake { animation: shk .35s; }
 @keyframes shk { 0%,100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
 @media (prefers-reduced-motion: reduce) { .dec.in, .dec > .lab, .dec .opt, .gcols.shake, .dec .opt.chosen { animation: none !important; } }
+
+.endov { position: fixed; inset: 0; z-index: 95; background: #05060c; color: #e8ecf4; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity .6s; padding: max(16px, env(safe-area-inset-left)); }
+.endov.off { opacity: 0; pointer-events: none; }
+.endbox { width: 100%; max-width: 440px; text-align: center; display: flex; flex-direction: column; gap: 14px; }
+.endl { margin: 0; opacity: 0; transform: translateY(8px); transition: opacity 1s, transform 1s; font-size: 18px; line-height: 1.8; }
+.endl.on { opacity: 1; transform: none; }
+.endl.sub { color: #aab3c6; font-size: 15px; } .endl.sub2 { color: #8892a8; font-size: 13px; }
+.endl.era { color: #ffd94a; font-size: 14px; letter-spacing: .3em; } .endl.art { font-size: 24px; font-weight: 900; }
+.endl.fin { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: .08em; margin-top: 8px; }
+.endl.blink { animation: endBlink 1.6s infinite; }
+@keyframes endBlink { 50% { opacity: .25; } }
+.endtag { color: #7ae0ff; font-size: 12px; opacity: 0; transition: opacity .8s; } .endtag.on { opacity: 1; }
+.endskip { position: absolute; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); background: transparent; color: #8892a8; border: 1px solid #343a4c; border-radius: 6px; padding: 8px 12px; font-size: 12px; min-height: 40px; }
+#t-badge { margin: 0; text-align: center; font-weight: 900; color: var(--accent); }
+body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 12% 20%, #fff8 50%, transparent), radial-gradient(1.5px 1.5px at 78% 12%, #ffe9a0aa 50%, transparent), radial-gradient(1px 1px at 55% 60%, #fff8 50%, transparent), radial-gradient(1.5px 1.5px at 90% 70%, #fff7 50%, transparent), radial-gradient(1px 1px at 30% 80%, #ffe9a0aa 50%, transparent); }
+@media (prefers-reduced-motion: reduce) { .endl { transition: none; } .endl.blink { animation: none; } }
 </style>
 
 <div class="wrap" id="app">
@@ -439,6 +455,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
       <p class="subt">Another Life / Another Music</p>
     </div>
     <p class="lead">バンド、シンガー、ラッパー、DJ。いろいろなミュージシャンの人生を、分かれ道ごとの選択で追体験します。売れるか売れないかは、性格と時代と運しだいです。</p>
+    <p class="small" id="t-badge" hidden></p>
     <button class="btn primary" id="b-start" type="button">はじめる</button>
     <button class="btn" id="b-zk" type="button">図鑑・殿堂を見る</button>
     <div class="unl-box" id="unl-title"></div>
@@ -655,6 +672,26 @@ const BGM = (() => {
   return {
     get on() { return on; },
     start(era, seed, ov) { era0 = era; cfg = ov || C[String(era)] || C['3']; if (!on) return; if (!init()) return; build(seed || 1); step = 0; nextT = ctx.currentTime + .1; clearInterval(timer); timer = setInterval(tick, 80); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .4); },
+    ending() {
+      if (!on || !init()) return null; clearInterval(timer); timer = null; cfg = { echo: .4, scale: PEN, root: 60 };
+      const sd = 60 / 72 / 4, PE = PEN, prog = [0, 5, 3, 7]; const L = new Set(); let st = 0, nt = ctx.currentTime + .2, run = true;
+      const TH = [4, null, null, null, 5, null, 6, null, 4, null, null, null, 2, null, null, null, 3, null, null, null, 4, null, 5, null, 3, null, null, null, 0, null, null, null, 2, null, null, null, 3, null, 4, null, 5, null, null, null, 6, null, null, null, 7, null, null, null, 6, null, 5, null, 4, null, null, null, null, null, null, null];
+      const pm = (d) => 60 + 12 * Math.floor(d / 5) + PE[((d % 5) + 5) % 5];
+      const tm = setInterval(() => { if (!run) return;
+        while (nt < ctx.currentTime + .25) { const t = nt, i = st % 64, bar = Math.floor(i / 16), s16 = i % 16, sh = prog[bar] === 0 ? 0 : [0, 5, 3, 7][bar] - 0;
+          const d = TH[i]; if (d != null) { const m = pm(d) + (bar === 1 ? -2 : bar === 2 ? -4 : 0); tone(t, m + 12, 1.1, 'sine', .11, true, .005); tone(t, m + 19, .5, 'sine', .03, true, .005); }
+          if (s16 === 0) tone(t, 36 + [0, -2, -4, -2][bar], sd * 14, 'sine', .1, false, .05);
+          if (L.has(1)) { if ([0, 6, 10].includes(s16)) kick(t, .22, true); if (s16 % 4 === 2) noise(t, .03, .05, 7000); }
+          if (L.has(2) && s16 % 2 === 0) pluck(t, 72 + PE[(s16 / 2 + bar) % 5] - (bar === 1 ? 2 : bar === 2 ? 4 : 0), .5, .05);
+          if (L.has(3) && (s16 === 0 || s16 === 8)) flute(t, 72 + PE[(bar + s16 / 8 * 2) % 5], sd * 7, .05);
+          if (L.has(4) && s16 === 0) { tone(t, 48 + [0, -2, -4, -2][bar], sd * 15, 'triangle', .05, false, .3); tone(t, 55 + [0, -2, -4, -2][bar], sd * 15, 'triangle', .04, false, .3); }
+          if (L.has(5) && (s16 === 0 || s16 === 8)) tone(t, 64 + [0, -2, -4, -2][bar], sd * 3, 'sawtooth', .03, false, .02);
+          if (L.has(6)) { if (s16 % 4 === 0) kick(t, .3); if (s16 % 8 === 4) noise(t, .12, .16, 1200); if (s16 === 0 || s16 === 8) pluck(t, 48 + [0, -2, -4, -2][bar], .5, .09); }
+          if (L.has(7) && s16 % 2 === 1) tone(t, 72 + PE[(s16 * 3) % 5], .1, 'square', .02, true, .005);
+          nt += sd; st++; } }, 80);
+      master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .4);
+      return { layer(k) { L.add(k); }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note() { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, 69, 3.2, 'sine', .16, true, .01); } };
+    },
     stop(fade) { if (!ctx) return; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, fade ? .8 : .15); const t0 = timer; setTimeout(() => { if (timer === t0) { clearInterval(timer); timer = null; } }, fade ? 3200 : 700); },
     end() { if (!ctx || !on || !cfg) return; const t = ctx.currentTime + .05; clearInterval(timer); timer = null; master.gain.cancelScheduledValues(t); master.gain.setTargetAtTime(.55, t, .05); const sc = cfg.scale; [0, 2, 4, 7, 9].forEach((d, k) => { const m = cfg.root + 12 + 12 * Math.floor(d / sc.length) + sc[d % sc.length]; tone(t + k * .16, m, 1.6, cfg.lead === 'pluck' ? 'triangle' : 'sine', .12, true, .01); }); [0, 2, 4].forEach((d) => tone(t + .8, cfg.root - 12 + sc[d % sc.length], 3.2, 'sine', .08, true, .05)); master.gain.setTargetAtTime(0, t + 3.6, .8); },
     toggle() { on = !on; try { localStorage.setItem('bgm', on ? '1' : '0'); } catch (_) {} if (!on) this.stop(); else if (era0 != null && $('#s-game') && !$('#s-game').hidden && !document.querySelector('.gcols.done')) this.start(era0, (S.entry && S.entry.m.id) || 1); return on; }
@@ -671,7 +708,7 @@ function stepBar(id) {
   STEP_NM.forEach((t, i) => { bar.append(el('i', i < cur ? 'done' : i === cur ? 'cur' : '')); nm.append(el('span', i === cur ? 'cur' : '', (i + 1) + ' ' + t)); });
   st.append(bar, nm);
 }
-function show(id) { try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
+function show(id) { try { if (id === 's-title') ENDING.badge(); } catch (_) {} try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
 
 const AWC = {
   p: [['自分の集落', 100], ['谷の集落', 2000], ['山向こうの部族', 12000], ['海の向こうの民', 30000]],
@@ -860,6 +897,7 @@ refreshUnl();
     const row = el('div', 'erow'); [0, 4, 9, 19, 29, 30].forEach((n) => { const c = el('button', 'chip', n + '回にする'); c.type = 'button'; c.onclick = () => { try { localStorage.setItem('hit30000_plays', String(n)); } catch (_) {} refreshUnl(); drawUnl(); }; row.append(c); }); up.append(row);
     up.append(el('span', 'lab', '解放ポップアップを見る'));
     const r2 = el('div', 'erow'); unlockTiers().forEach(([k]) => { const c = el('button', 'chip', k + '回'); c.type = 'button'; c.onclick = () => { const o = el('div', 'mdl'); const bx = el('div', 'box'); const u = unlockCard(k); u.style.border = '2px solid #f2c230'; const ok = el('button', 'btn primary', 'OK'); ok.type = 'button'; ok.onclick = () => o.remove(); bx.append(u, ok); o.append(bx); o.onclick = (e) => { if (e.target === o) o.remove(); }; document.body.append(o); try { SFX.play('unlock'); } catch (_) {} }; r2.append(c); }); up.append(r2);
+    { const ep = $('#dp-unl'); [['エンディング(通常・初回版)', { best: 0, first: 1, debug: 1 }], ['エンディング(最高・初回版)', { best: 1, first: 1, debug: 1 }], ['エンディング(2回目以降・短縮版)', { best: 0, first: 0, debug: 1 }]].forEach(([l, o]) => { const b = el('button', 'btn line', l); b.type = 'button'; b.onclick = () => ENDING.start(o); ep.append(b); }); }
     const sv = el('button', 'btn line', 'アンケートを見る'); sv.type = 'button'; sv.onclick = () => surveyModal(true); up.append(sv); }
   drawUnl(); let t0 = 'route'; try { t0 = sessionStorage.getItem('dbg_tab') || 'route'; } catch (_) {} sel(t0); }
 $('#b-bgm').onclick = () => { const o = BGM.toggle(); $('#b-bgm').textContent = o ? '♪' : '♪×'; };
@@ -1800,7 +1838,7 @@ const ZK = (() => {
     const C = $('#zk-crowns'); C.textContent = ''; const ks = Object.entries(d.crowns).sort((a, b) => b[1] - a[1]);
     if (!ks.length) C.append(el('p', 'small', 'まだ称号はありません。')); else ks.forEach(([k, v]) => { C.append(el('div', null, k + '  ×' + v)); });
   };
-  return { record, render, exp, imp };
+  return { record, render, exp, imp, load };
 })();
 { let tc_ = 0; const dbgOn = () => { const d = $('#dbg'); d.hidden = false; d.style.display = 'flex'; };
   try { if (location.hash === '#debug' || localStorage.getItem('hit30000_dbg') === '1') dbgOn(); } catch (_) {}
@@ -1811,6 +1849,83 @@ $('#zk-back').onclick = () => show('s-title');
 $('#zk-exp').onclick = () => { const c = ZK.exp(); $('#zk-code').value = c; const m = $('#zk-msg'); try { navigator.clipboard.writeText(c).then(() => { m.textContent = 'コードをコピーしました。メモなどに貼って控えてください。'; }, () => { $('#zk-code').select(); m.textContent = '下のコードを選択してコピーしてください。'; }); } catch (_) { $('#zk-code').select(); m.textContent = '下のコードを選択してコピーしてください。'; } };
 $('#zk-imp').onclick = () => { const ok = ZK.imp($('#zk-code').value); $('#zk-msg').textContent = ok ? '読み込みました。' : '読み込めませんでした。コードを確認してください。'; if (ok) ZK.render(); };
 
+const ENDING = (() => {
+  const ORD = [21, -2, 19, 15, 17, 16, -3, 18, 23, 12, 11, 13, 14, -1, 0, 1, 2, 3, 4, 5, 6, 22];
+  const GRP = { 21: 1, '-2': 1, 19: 2, 15: 2, 17: 3, 16: 3, '-3': 3, 18: 4, 23: 4, 12: 5, 11: 5, 13: 5, 14: 5, '-1': 6, 0: 6, 1: 6, 2: 6, 3: 7, 4: 7, 5: 7, 6: 7 };
+  const GNAME = { 1: '太鼓', 2: '竪琴', 3: '笛', 4: '弦', 5: '管', 6: 'バンド', 7: 'シンセ' };
+  const LINE = { 21: '最初の声は、焚き火の揺れに合わせて鳴った。', '-2': '唱え歌は、口から口へ谷を越えた。', 19: '竪琴の音が、劇場の石段を満たした。', 15: '雅な今様が、御簾の向こうまで届いた。', 17: '吟遊詩人の唄は、街道の宿で増えていった。', 16: '乱世の小唄は、陣の夜を少しだけ軽くした。', '-3': '宿場の民謡は、旅人の足を止めた。', 18: '宮廷の楽団は、ろうそくの下で合奏した。', 23: 'サロンの拍手が、ピアノの余韻を包んだ。', 12: '浅草の舞台で、唱歌とオペラが混じり合った。', 11: '夜の街に、ジャズが初めて笑い声を連れてきた。', 13: '焼け跡のラジオから、流行歌が流れ出した。', 14: 'ギターの音が、若者の髪を長くした。', '-1': 'フォークの弾き語りが、四畳半を満たした。', 0: 'シンセの光が、街のネオンと混ざった。', 1: 'ミリオンが、あたりまえに積み上がった。', 2: 'ネットの片隅で、誰かが曲を投げた。', 3: '画面の中の再生数が、歌になった。', 4: '指先ひとつで、世界じゅうが聴き手になった。', 5: '作ったのは誰か。それでも、歌は歌だった。', 6: '星と星のあいだで、歌は遅れて届いた。', 22: '最後の歌うたいが、最後の歌を歌った。' };
+  const KEY = 'hit30000_end';
+  const get = () => { try { return JSON.parse(localStorage.getItem(KEY) || 'null') || { n: 0, best: 0 }; } catch (_) { return { n: 0, best: 0 }; } };
+  const put = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (_) {} };
+  const allEras = () => { const s = new Set(); DATA.forEach((d) => s.add(d.m.era)); return [...s]; };
+  const metEras = () => { const z = ZK.load(); const s = new Set([22]); const byId = new Map(); DATA.forEach((d) => { if (!byId.has(d.m.id)) byId.set(d.m.id, d.m.era); }); Object.keys(z.ids || {}).forEach((k) => { const e = byId.get(Number(k)); if (e != null) s.add(e); }); (z.lives || []).forEach((l) => { const d = DATA.find((x) => x.m.es === l.es); if (d) s.add(d.m.era); }); return s; };
+  const es2e = () => { const m = new Map(); DATA.forEach((d) => { if (!m.has(d.m.es)) m.set(d.m.es, d.m.era); }); return m; };
+  function badge() {
+    const b = $('#t-badge'); if (!b) return; const g = get(); b.textContent = '';
+    if (g.n > 0) { b.textContent = '称号: ' + (g.best ? '全知全能のシンフォニア' : '3万年の調律者'); b.hidden = false; document.body.classList.add('cleared'); } else b.hidden = true;
+  }
+  function start(opt) {
+    opt = opt || {}; const g = get(); const met = metEras(); const all = allEras();
+    const best = opt.best != null ? !!opt.best : all.every((e) => met.has(e));
+    const first = opt.first != null ? !!opt.first : g.n === 0;
+    const z = ZK.load(); const e2 = es2e();
+    let top = (z.lives || []).slice().sort((a, b) => b.tot - a.tot).slice(0, 20).map((l) => ({ l, e: e2.has(l.es) ? e2.get(l.es) : 2 }));
+    if (!top.length) top = [];
+    top.sort((a, b) => ORD.indexOf(a.e) - ORD.indexOf(b.e) || b.l.tot - a.l.tot);
+    const ov = el('div', 'endov'); const box = el('div', 'endbox'); ov.append(box);
+    const skip = el('button', 'endskip', '結果へ'); skip.type = 'button'; ov.append(skip);
+    document.body.append(ov); try { SFX.play('big'); } catch (_) {}
+    const bgm = (() => { try { BGM.stop(); return BGM.ending(); } catch (_) { return null; } })();
+    let alive = true, timers = [], nextFn = null;
+    const T = (f, ms) => { const t = setTimeout(() => { if (alive) f(); }, ms); timers.push(t); return t; };
+    const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); box.append(p); requestAnimationFrame(() => p.classList.add('on')); nextFn = res; T(res, hold || 2200); });
+    const clear = () => { box.textContent = ''; };
+    const finish = (toTitle) => { alive = false; timers.forEach(clearTimeout); try { if (bgm) bgm.stop(); } catch (_) {} ov.classList.add('off'); setTimeout(() => ov.remove(), 700); if (toTitle) { show('s-title'); badge(); } };
+    ov.addEventListener('click', (e) => { if (e.target === skip) return; if (nextFn) { const f = nextFn; nextFn = null; f(); } });
+    skip.onclick = () => { finish(false); };
+    (async () => {
+      try {
+        await line('3万年前、最初の人間が骨を叩いた。', '', 2600); await line('歌は、そこから始まった。', 'sub', 2400); clear();
+        const seen = new Set(); let li = 0;
+        const grpOrder = [1, 2, 3, 4, 5, 6, 7];
+        const showGroup = async (gk) => {
+          const has = ORD.filter((e) => GRP[e] === gk && met.has(e));
+          if (has.length && bgm) { bgm.layer(gk); const t = el('div', 'endtag', '♪ ' + GNAME[gk] + 'の音が重なった'); box.append(t); requestAnimationFrame(() => t.classList.add('on')); }
+          const cards = top.filter((x) => GRP[x.e] === gk);
+          for (const c of cards) { if (!alive) return; const w = (c.l.dt && c.l.dt.ws ? c.l.dt.ws.slice().sort((a, b) => b[2] - a[2])[0] : null); const era = c.l.es; clear();
+            if (has.length && bgm) { const t = el('div', 'endtag on', '♪ ' + GNAME[gk] + 'の音'); box.append(t); }
+            box.append(el('p', 'endl on era', era)); box.append(el('p', 'endl on art', c.l.a)); if (w) box.append(el('p', 'endl on sub', '「' + w[1] + '」')); box.append(el('p', 'endl on sub2', LINE[c.e] || '')); await new Promise((r) => { nextFn = r; T(r, first ? 1700 : 600); }); li++; }
+          if (!cards.length && has.length) { await new Promise((r) => { nextFn = r; T(r, first ? 700 : 250); }); }
+        };
+        if (first || opt.long) { for (const gk of grpOrder) { await showGroup(gk); if (!alive) return; } }
+        else { for (const gk of grpOrder) { if (bgm && ORD.some((e) => GRP[e] === gk && met.has(e))) bgm.layer(gk); } await new Promise((r) => { nextFn = r; T(r, 1500); }); }
+        clear();
+        await line('宇宙の果て。' + LINE[22], 'era', 2800);
+        clear();
+        const st = [`通算 ${PL.n()}回プレイ`, `出会った時代 ${[...met].filter((e) => all.indexOf(e) >= 0).length} / ${all.length}`, `最高評価 ${(z.lives || []).reduce((m, l) => Math.max(m, l.tot), 0)} / 400`];
+        for (const s of st) { box.append(el('p', 'endl on sub', s)); }
+        await new Promise((r) => { nextFn = r; T(r, 3000); });
+        if (bgm) bgm.stop(); clear();
+        await line('すべての星が冷え切り、最後の歌うたいも息をひきとった。', '', 3200);
+        await line('3万年にわたる「ぼくらのミリオンメロディ」は、ここで完全に潰えた。', 'sub', 3600);
+        clear(); await new Promise((r) => { nextFn = r; T(r, 2600); });
+        if (bgm) bgm.note();
+        await new Promise((r) => { nextFn = r; T(r, 2400); });
+        await line('――だが。どこかの暗闇で、誰かが弦を一本、弾いた気がした。', '', 3600);
+        await line('チューニングは、もう始まっている。', 'sub', 3200);
+        if (best) await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', 'sub', 4200);
+        clear();
+        const fin = el('p', 'endl on fin', '音楽は、まだ鳴っている。'); box.append(fin);
+        const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
+        const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
+        if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
+        await new Promise((r) => { nextFn = r; });
+        finish(true);
+      } catch (_) { finish(true); }
+    })();
+  }
+  return { start, badge, get };
+})();
 function finale() {
   const ov = el('div', 'fin'); const ys = (S.log || []).filter((x) => x.t === 'r').map((x) => x.y);
   for (let i = 0; i < 14; i++) { const sp = el('i'); sp.style.cssText = 'left:' + ((i * 37 + 11) % 96) + '%;top:' + ((i * 53 + 7) % 90) + '%;animation-delay:' + ((i % 7) * 0.18).toFixed(2) + 's'; ov.append(sp); }
@@ -1953,9 +2068,11 @@ function showEnding(e) {
   const b5 = el('button', 'btn line', '図鑑・殿堂を見る'); b5.type = 'button'; b5.onclick = () => { clearTimers(); S.auto = false; ZK.render(); show('s-zukan'); };
   a.append(bimg, bx, b1, b2, b4, b5, b3, note); tail.append(a); tail.append(imgBox); finale(); try { setTimeout(() => SFX.jingle(dr.total), 700); } catch (_) {}
   try { const m = S.entry.m; ZK.record({ ts: Date.now(), id: m.id, a: m.a, es: m.es, sn: m.sn, cr: cr[0], tot: dr.total, w: e.w.length, bt: bestTxt(best), fav: false, dt: { ws: e.w.map((w) => [w.y, w.ti, w.tr, w.rk || '']), tx: e.tx, cs: cr[1], cm: dr.cm, tl: dr.tl, vs: (() => { try { return voicesOf(e, dr).map((v) => [v[0], v[1]]); } catch (_) { return []; } })(), mm: (S.mem || []).map((x) => [x.n || x.name || '', x.r || x.role || '']).filter((x) => x[0]).slice(0, 8) } }); } catch (_) {}
+  try { if (S.entry.m.rare && S.entry.m.era === 22 && DBG_ERA == null) setTimeout(() => ENDING.start(), 2800); } catch (_) {}
   try { const pn_ = PL.inc(); if (pn_ === SURVEY_AT && TALLY_URL) setTimeout(() => surveyModal(false), 1800); try { const pu = unlockPanel(); pu.style.marginTop = '8px'; tail.insertBefore(pu, a); } catch (_) {} if (unlockTiers().some(([k]) => k === pn_)) { tail.insertBefore(unlockCard(pn_), a); setTimeout(() => { try { SFX.play('unlock'); } catch (_) {} }, 2600); } } catch (_) {}
   measureHud(); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 }
 try { const b = document.getElementById('boot'); if (b) b.remove(); } catch (_) {}
+try { ENDING.badge(); } catch (_) {}
 try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); } catch (_) { const n = document.createElement('div'); n.textContent = 'このブラウザでは記録を保存できません(プライベートモード等)。遊べますが、人生の記録・時代解放は残りません。'; n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:12px'; n.onclick = () => n.remove(); document.body.append(n); }
 </script>
