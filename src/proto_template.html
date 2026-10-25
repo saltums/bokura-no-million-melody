@@ -409,7 +409,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 :root[data-theme="dark"] { --muted: #A9B1BD; }
 .zk-grid { display: flex; flex-wrap: wrap; gap: 6px; } .zk-grid span { padding: 6px 10px; border: 1px solid var(--line); font-size: 13px; } .zk-grid .on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); font-weight: 700; } .zk-grid .off { color: var(--muted); border-style: dashed; }
 .zk-bar { height: 10px; background: var(--line); } .zk-bar i { display: block; height: 100%; background: var(--accent); border-right: 2px solid var(--accent-ink); }
-#gnav { position: fixed; left: 8px; bottom: 8px; z-index: 20; display: flex; gap: 6px; } #gnav button { min-height: 40px; padding: 0 12px; border: 1.5px solid var(--line); background: var(--bg, #fff); color: inherit; font: 700 13px/1 var(--f-b); }
+.unl-box:empty { display: none; } .unl-box .card { margin: 0; } #gnav { position: fixed; left: 8px; bottom: 8px; z-index: 20; display: flex; gap: 6px; } #gnav button { min-height: 40px; padding: 0 12px; border: 1.5px solid var(--line); background: var(--bg, #fff); color: inherit; font: 700 13px/1 var(--f-b); }
 </style>
 
 <div class="wrap" id="app">
@@ -423,6 +423,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
     <p class="lead">バンド、シンガー、ラッパー、DJ。いろいろなミュージシャンの人生を、分かれ道ごとの選択で追体験します。売れるか売れないかは、性格と時代と運しだいです。</p>
     <button class="btn primary" id="b-start" type="button">はじめる</button>
     <button class="btn" id="b-zk" type="button">図鑑・殿堂を見る</button>
+    <div class="unl-box" id="unl-title"></div>
     <div id="dbg" hidden style="display:none;flex-direction:column;gap:8px">
     <button class="btn line" id="b-debug" type="button">デバッグ: 大成功ルートを見る</button>
     <button class="btn line" id="b-dbg2" type="button">デバッグ: 原始の人生を見る</button>
@@ -451,6 +452,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
   <section class="scr" id="s-zukan" hidden>
     <div class="mast"><span class="kick">図鑑・殿堂</span><h2 style="margin:0;font:900 26px/1.3 var(--f-b)">たどった人生の記録</h2></div>
     <p class="small">記録は、いま使っているこのブラウザの中だけに保存されます。ブラウザのデータを消すと消えるので、大事な記録は「引き継ぎコード」で控えてください。</p>
+    <div class="unl-box" id="unl-zk"></div>
     <div id="zk-sum" class="card"></div>
     <span class="lab">殿堂入りと最近の人生(★で残す・最大100件)</span>
     <div id="zk-list" class="scr"></div>
@@ -653,7 +655,7 @@ function stepBar(id) {
   STEP_NM.forEach((t, i) => { bar.append(el('i', i < cur ? 'done' : i === cur ? 'cur' : '')); nm.append(el('span', i === cur ? 'cur' : '', (i + 1) + ' ' + t)); });
   st.append(bar, nm);
 }
-function show(id) { try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
+function show(id) { try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
 
 const AWC = {
   p: [['自分の集落', 100], ['谷の集落', 2000], ['山向こうの部族', 12000], ['海の向こうの民', 30000]],
@@ -805,10 +807,25 @@ const startRare = (era) => { const L = DATA.filter((d) => d.m.rare && d.m.era ==
 let DBG_ERA = null;
 const PL = (() => { const K = 'hit30000_plays', NEED = 5; const get = () => { try { return parseInt(localStorage.getItem(K), 10) || 0; } catch (_) { return 0; } };
   return { NEED, n: get, ok: () => get() >= NEED || DBG_ERA != null, inc: () => { const v = get() + 1; try { localStorage.setItem(K, String(v)); } catch (_) {} return v; } }; })();
+const UNL_TIERS = [[5, '江戸・原始・3000年のレア時代'], [10, '???'], [20, '???'], [30, '???']];
+function unlockPanel() {
+  const n = PL.n(), c = el('div', 'card'); c.style.cssText = 'border:1.5px solid var(--line)';
+  const nx = UNL_TIERS.find(([k]) => n < k), pv = UNL_TIERS.filter(([k]) => n >= k).slice(-1)[0], from = pv ? pv[0] : 0;
+  const h = el('div', null, 'プレイ ' + n + '回'); h.style.cssText = 'font-weight:900;font-size:15px';
+  c.append(h);
+  if (nx) { const left = nx[0] - n, bar = el('div'); bar.style.cssText = 'display:flex;gap:3px;margin:8px 0 4px'; const span = nx[0] - from;
+    for (let i = 0; i < span; i++) { const d = el('span'); d.style.cssText = 'flex:1;height:8px;border:1px solid var(--line);background:' + (i < n - from ? '#f2c230' : 'transparent'); bar.append(d); }
+    c.append(bar, el('div', 'small', '次の解放まで あと' + left + '回')); } else c.append(el('div', 'small', 'すべての時代を解放しました!'));
+  const ul = el('div'); ul.style.cssText = 'margin-top:8px;display:flex;flex-direction:column;gap:3px;font-size:13px';
+  UNL_TIERS.forEach(([k, l]) => { const ok = n >= k; const r = el('div', null, (ok ? '✓ ' : '🔒 ') + k + '回: ' + (ok || l !== '???' ? l : '???(おたのしみ)')); r.style.opacity = ok ? '1' : '.65'; ul.append(r); });
+  c.append(ul); return c;
+}
+function refreshUnl() { try { ['#unl-title', '#unl-zk'].forEach((q) => { const b = $(q); if (b) { b.textContent = ''; b.append(unlockPanel()); } }); } catch (_) {} }
 const ERA_OPT = [[null, 'おまかせ'], [-1, '70年代'], [0, '80年代'], [1, '90年代'], [2, '00年代'], [3, '10年代'], [4, '20年代'], [5, '近未来']];
 { const eb = $('#dbg-era'); eb.append(el('span', 'lab', 'デバッグ: 時代を固定(人選びに反映)')); const cs = []; ERA_OPT.forEach(([v, l]) => { const c = el('button', 'chip' + (v === null ? ' on' : ''), v === null ? '固定しない' : l); c.type = 'button'; c.onclick = () => { DBG_ERA = v; cs.forEach((x) => x.classList.remove('on')); c.classList.add('on'); }; cs.push(c); eb.append(c); }); }
 $('#b-dbg-un').onclick = () => { const o = el('div', 'mdl'); const bx = el('div', 'box'); const u = unlockCard(); u.style.border = '2px solid #f2c230'; const ok = el('button', 'btn primary', 'OK'); ok.type = 'button'; ok.onclick = () => o.remove(); bx.append(u, ok); o.append(bx); o.onclick = (e) => { if (e.target === o) o.remove(); }; document.body.append(o); try { SFX.play('unlock'); } catch (_) {} };
 $('#b-dbg-sv').onclick = () => surveyModal(true);
+refreshUnl();
 $('#b-dbg-rs').onclick = () => { try { localStorage.setItem('hit30000_plays', '0'); } catch (_) {} $('#b-dbg-rs').textContent = 'リセットしました(0回)'; };
 $('#b-dbg2').onclick = () => startRare(-2); $('#b-dbg6').onclick = () => startRare(6); $('#b-dbg3').onclick = () => startRare(-3);
 $('#b-bgm').onclick = () => { const o = BGM.toggle(); $('#b-bgm').textContent = o ? '♪' : '♪×'; };
@@ -924,8 +941,8 @@ function surveyModal(force) {
 function unlockCard() { const u = el('div', 'card'); u.style.cssText = 'border:2px solid #f2c230;text-align:center'; u.append(el('div', null, '★ 解放:レア時代へジャンプ!'), el('div', 'small', PL.NEED + '回たどったごほうびに、カスタムから江戸・原始・3000年のレア時代へジャンプできるようになりました!人選びの画面でも時代を選べます。')); u.firstChild.style.cssText = 'font-weight:900;margin-bottom:4px'; return u; }
 const ERA_PK = [[null, 'おまかせ'], [-3, '★江戸'], [-2, '★原始'], [6, '★3000年'], [-1, '70年代'], [0, '80年代'], [1, '90年代'], [2, '00年代'], [3, '10年代'], [4, '20年代'], [5, '近未来']];
 function renderCands() {
-  { const eb = $('#era-pick'); eb.textContent = ''; eb.hidden = !PL.ok(); eb.style.cssText = 'flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:2px';
-    if (PL.ok()) ERA_PK.forEach(([v, l]) => { if (v !== null && !DATA.some((d) => d.m.era === v && (d.m.rare || d.m.st === S.style))) return; const c = el('button', 'chip' + ((S.eraPick == null ? null : S.eraPick) === v ? ' on' : ''), l); c.type = 'button'; c.style.cssText = 'flex:none;padding:5px 10px;font-size:12px'; c.onclick = () => { S.eraPick = v; renderCands(); }; eb.append(c); }); }
+  { const eb = $('#era-pick'); eb.textContent = ''; eb.hidden = false; eb.style.cssText = 'flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:2px';
+    if (!PL.ok()) { const lk = el('span', 'small', '🔒 レア時代の選択は あと' + (PL.NEED - PL.n()) + '回で解放'); lk.style.cssText = 'flex:none;padding:5px 2px'; eb.append(lk); } if (PL.ok()) ERA_PK.forEach(([v, l]) => { if (v !== null && !DATA.some((d) => d.m.era === v && (d.m.rare || d.m.st === S.style))) return; const c = el('button', 'chip' + ((S.eraPick == null ? null : S.eraPick) === v ? ' on' : ''), l); c.type = 'button'; c.style.cssText = 'flex:none;padding:5px 10px;font-size:12px'; c.onclick = () => { S.eraPick = v; renderCands(); }; eb.append(c); }); }
   { const E = DBG_ERA != null ? DBG_ERA : S.eraPick;
     if (E === -3 || E === -2 || E === 6) { let L = DATA.filter((d) => d.m.rare && d.m.era === E && d.m.st === S.style); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === E); const pk = shuffle(L).slice(0, 3); $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style]; Promise.all(pk.map(hydrate)).then(() => renderCands2(pk)).catch(() => {}); return; } }
   $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style];
@@ -1891,7 +1908,7 @@ function showEnding(e) {
   const b5 = el('button', 'btn line', '図鑑・殿堂を見る'); b5.type = 'button'; b5.onclick = () => { clearTimers(); S.auto = false; ZK.render(); show('s-zukan'); };
   a.append(bimg, bx, b1, b2, b4, b5, b3, note); tail.append(a); tail.append(imgBox); finale(); try { setTimeout(() => SFX.jingle(dr.total), 700); } catch (_) {}
   try { const m = S.entry.m; ZK.record({ ts: Date.now(), id: m.id, a: m.a, es: m.es, sn: m.sn, cr: cr[0], tot: dr.total, w: e.w.length, bt: bestTxt(best), fav: false, dt: { ws: e.w.map((w) => [w.y, w.ti, w.tr, w.rk || '']), tx: e.tx, cs: cr[1], cm: dr.cm, tl: dr.tl, vs: (() => { try { return voicesOf(e, dr).map((v) => [v[0], v[1]]); } catch (_) { return []; } })(), mm: (S.mem || []).map((x) => [x.n || x.name || '', x.r || x.role || '']).filter((x) => x[0]).slice(0, 8) } }); } catch (_) {}
-  try { const pn_ = PL.inc(); if (pn_ === SURVEY_AT && TALLY_URL) setTimeout(() => surveyModal(false), 1800); if (pn_ === PL.NEED) { tail.insertBefore(unlockCard(), a); setTimeout(() => { try { SFX.play('unlock'); } catch (_) {} }, 2600); } } catch (_) {}
+  try { const pn_ = PL.inc(); if (pn_ === SURVEY_AT && TALLY_URL) setTimeout(() => surveyModal(false), 1800); try { const pu = unlockPanel(); pu.style.marginTop = '8px'; tail.insertBefore(pu, a); } catch (_) {} if (pn_ === PL.NEED) { tail.insertBefore(unlockCard(), a); setTimeout(() => { try { SFX.play('unlock'); } catch (_) {} }, 2600); } } catch (_) {}
   measureHud(); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 }
 </script>
