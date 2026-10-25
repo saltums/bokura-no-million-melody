@@ -725,7 +725,7 @@ const BGM = (() => {
           if (L.has(7) && s16 % 2 === 1) tone(t, 72 + PE[(s16 * 3) % 5], .1, 'square', .02, true, .005);
           nt += sd; st++; } }, 80);
       master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .4);
-      return { layer(k) { L.add(k); }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note() { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, 69, 3.2, 'sine', .16, true, .01); } };
+      return { layer(k) { L.add(k); }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note(m) { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, m || 69, 3.2, 'sine', .16, true, .01); if (m) tone(ctx.currentTime + .05, m + 12, 2.2, 'sine', .05, true, .01); } };
     },
     stop(fade) { if (!ctx) return; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, fade ? .8 : .15); const t0 = timer; setTimeout(() => { if (timer === t0) { clearInterval(timer); timer = null; } }, fade ? 3200 : 700); },
     end() { if (!ctx || !on || !cfg) return; const t = ctx.currentTime + .05; clearInterval(timer); timer = null; master.gain.cancelScheduledValues(t); master.gain.setTargetAtTime(.55, t, .05); const sc = cfg.scale; [0, 2, 4, 7, 9].forEach((d, k) => { const m = cfg.root + 12 + 12 * Math.floor(d / sc.length) + sc[d % sc.length]; tone(t + k * .16, m, 1.6, cfg.lead === 'pluck' ? 'triangle' : 'sine', .12, true, .01); }); [0, 2, 4].forEach((d) => tone(t + .8, cfg.root - 12 + sc[d % sc.length], 3.2, 'sine', .08, true, .05)); master.gain.setTargetAtTime(0, t + 3.6, .8); },
@@ -1969,7 +1969,7 @@ const ENDING = (() => {
         await line('チューニングは、もう始まっている。', 'sub', 3200);
         if (best) await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', 'sub', 4200);
         clear();
-        const fin = el('p', 'endl on fin', '音楽は、まだ鳴っている。'); box.append(fin);
+        const fin = el('p', 'endl on fin', '音楽は、まだ鳴っている。'); box.append(fin); try { if (bgm) bgm.note(76); } catch (_) {}
         const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
         const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
