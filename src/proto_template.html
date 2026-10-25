@@ -439,6 +439,14 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .endl.fin { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: .08em; margin-top: 8px; }
 .endl.blink { animation: endBlink 1.6s infinite; }
 @keyframes endBlink { 50% { opacity: .25; } }
+#opn { position: fixed; inset: 0; z-index: 90; background: linear-gradient(180deg, #05071a 0%, #0b1030 45%, #1a2050 78%, #2a2f66 100%); overflow: hidden; -webkit-mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); -webkit-mask-size: 100% 300%; -webkit-mask-position: 0 0; mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); mask-size: 100% 300%; mask-position: 0 0; transition: -webkit-mask-position 1.5s ease-in, mask-position 1.5s ease-in; }
+#opn.melt { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+#opn.gone { display: none; }
+#opn i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: ostw 3s ease-in-out infinite; }
+@keyframes ostw { 50% { opacity: .25; } }
+#opn canvas { position: absolute; left: 50%; bottom: 0; width: min(100%, 560px); transform: translateX(-50%); image-rendering: pixelated; image-rendering: crisp-edges; opacity: 0; transition: opacity .6s; }
+#opn canvas.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { #opn { display: none; } }
 .pstage { position: relative; height: 230px; overflow: hidden; margin-top: 10px; }
 .proad { position: absolute; left: 0; right: 0; bottom: 56px; height: 2px; background: #2a3350; }
 .pwk { position: absolute; bottom: 40px; left: 0; width: 120px; transform: translateX(-130px); animation: pwalk linear forwards; margin-bottom: var(--y); }
@@ -2139,7 +2147,35 @@ function showEnding(e) {
   try { const pn_ = PL.inc(); if (pn_ === SURVEY_AT && TALLY_URL) setTimeout(() => surveyModal(false), 1800); try { const pu = unlockPanel(); pu.style.marginTop = '8px'; tail.insertBefore(pu, a); } catch (_) {} if (unlockTiers().some(([k]) => k === pn_)) { tail.insertBefore(unlockCard(pn_), a); setTimeout(() => { try { SFX.play('unlock'); } catch (_) {} }, 2600); } } catch (_) {}
   measureHud(); window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 }
+const OPEN = (() => {
+  function start() {
+    try { if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (_) {}
+    if (navigator.webdriver && location.hash.indexOf('open') < 0) return;
+    if (location.hash.indexOf('debug') >= 0 && location.hash.indexOf('open') < 0) return;
+    const ov = el('div'); ov.id = 'opn';
+    for (let i = 0; i < 46; i++) { const st = el('i'); st.style.cssText = 'left:' + ((i * 53 + 7) % 100) + '%;top:' + ((i * 29 + 3) % 62) + '%;animation-delay:-' + ((i % 9) * 0.33).toFixed(2) + 's;width:' + (i % 7 === 0 ? 3 : 2) + 'px;height:' + (i % 7 === 0 ? 3 : 2) + 'px'; ov.append(st); }
+    const cv = document.createElement('canvas'); cv.width = 160; cv.height = 80; ov.append(cv); document.body.append(ov);
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    const mOf = (e) => { try { return (DATA.find((d) => d.m.era === e) || DATA[0]).m; } catch (_) { return null; } };
+    const SC = [
+      { e: -2, n: 48, bg(g, f) { P_(g, 0, 62, 160, 18, '#1b1722'); P_(g, 0, 62, 160, 1, '#2a2230'); for (let r = 0; r < 34; r++) { const w = Math.round(Math.sqrt(34 * 34 - r * r) * 1.5); P_(g, 8 - 4, 62 - 34 + r, w, 1, r < 3 ? '#2a2432' : '#171320'); } PO(g, 10, 48, 18, 14, '#0a0810'); const fl = f % 2; P_(g, 74, 56 - fl, 8, 6 + fl, '#ff9a3a'); P_(g, 76, 52 - fl, 4, 6 + fl, '#ffd94a'); P_(g, 70, 61, 16, 2, '#5a3a22'); g.fillStyle = 'rgba(255,170,70,.12)'; g.beginPath(); g.arc(78, 56, 26, 0, 7); g.fill(); }, x: 92 },
+      { e: -3, n: 62, bg(g, f) { P_(g, 0, 62, 160, 18, '#161a24'); P_(g, 0, 62, 160, 1, '#262c3c'); P_(g, 16, 36, 3, 26, '#2a1c14'); for (let k = 0; k < 4; k++) { const w = 26 - k * 5; P_(g, 17 - w / 2, 28 + k * 5, w, 4, k % 2 ? '#1a3a2a' : '#14301f'); } P_(g, 96, 38, 54, 24, '#2a2230'); P_(g, 90, 32, 66, 8, '#1a1a2a'); P_(g, 94, 28, 58, 6, '#14141f'); P_(g, 108, 44, 12, 12, '#ffcf6a'); P_(g, 126, 44, 12, 12, '#ffcf6a'); P_(g, 108, 49, 12, 1, '#7a5a2a'); P_(g, 126, 49, 12, 1, '#7a5a2a'); }, x: 58 },
+      { e: 2, n: 67, bg(g, f) { P_(g, 0, 62, 160, 18, '#1a1a26'); P_(g, 0, 62, 160, 1, '#2c2c40'); P_(g, 70, 26, 80, 36, '#262636'); P_(g, 70, 26, 80, 2, '#3a3a52'); P_(g, 84, 34, 52, 12, '#0e0e18'); g.fillStyle = f % 4 < 2 ? '#ff7ab0' : '#7ae0ff'; g.font = '9px DotGothic16, monospace'; g.fillText('LIVE', 94, 44); P_(g, 118, 50, 14, 12, '#3a2a22'); P_(g, 24, 20, 3, 42, '#2a2a38'); P_(g, 8, 24, 36, 1, '#2a2a38'); P_(g, 12, 30, 28, 1, '#2a2a38'); }, x: 40 },
+      { e: 4, n: 74, bg(g, f) { P_(g, 0, 62, 160, 18, '#14161f'); P_(g, 0, 62, 160, 1, '#2a2e40'); const bl = [[6, 30, 30], [40, 18, 38], [86, 26, 34], [122, 14, 44]]; bl.forEach(([x, y, w], bi) => { P_(g, x, y, w, 62 - y, bi % 2 ? '#1c2030' : '#222638'); for (let wy = y + 5; wy < 58; wy += 7) for (let wx = x + 4; wx < x + w - 4; wx += 6) if (((wx * 7 + wy * 3 + bi) % 5) < 2) P_(g, wx, wy, 3, 3, '#ffe28a'); }); }, x: 70 }
+    ];
+    let alive = true, fr = 0, cur = -1; const bgm = (() => { try { return BGM.ending(); } catch (_) { return null; } })();
+    const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, fr % 2 ? 'cheer' : 'idle', fr)); g.restore(); } } catch (_) {} };
+    const tm = setInterval(draw, 230);
+    let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.transitionDuration = '.7s'; ov.classList.add('melt'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
+    ov.addEventListener('click', () => melt(true));
+    const T = 1900;
+    SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
+    setTimeout(() => melt(false), 300 + SC.length * T - 200);
+  }
+  return { start };
+})();
 try { const b = document.getElementById('boot'); if (b) b.remove(); } catch (_) {}
+try { OPEN.start(); } catch (_) {}
 try { ENDING.badge(); } catch (_) {}
 try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); } catch (_) { const n = document.createElement('div'); n.textContent = 'このブラウザでは記録を保存できません(プライベートモード等)。遊べますが、人生の記録・時代解放は残りません。'; n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:12px'; n.onclick = () => n.remove(); document.body.append(n); }
 </script>
