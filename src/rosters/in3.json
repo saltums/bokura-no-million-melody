@@ -1,0 +1,522 @@
+[
+{
+"k": "a14_street",
+"nm": "ゆずらず",
+"st": "duo",
+"cur_roles": [
+"Vo/Gt",
+"Vo/Gt"
+]
+},
+{
+"k": "a14_fes",
+"nm": "04 リミテッド・サザビー",
+"st": "band",
+"cur_roles": [
+"Vo/Ba",
+"Gt",
+"Gt",
+"Dr"
+]
+},
+{
+"k": "a14_after",
+"nm": "ザ・ブルー・ハーツ・アゲイン",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a15_pinkrei",
+"nm": "ピンク・レイディー",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a15_candiz",
+"nm": "キャンディ・ズー",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a15_snapp",
+"nm": "SNAPP",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Vo",
+"Vo",
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a15_eveningmusume",
+"nm": "イブニング娘。",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Vo",
+"Vo",
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a16_shazuna",
+"nm": "SHAZUNA",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a16_malicemixer",
+"nm": "MALICE MIXER",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_direngrape",
+"nm": "Dir en grape",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_gazpacho",
+"nm": "the GazpachE",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_mucchi",
+"nm": "MUCCHI",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_seikimaIII",
+"nm": "聖飢魔Ⅲ",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_ningenzaisu",
+"nm": "人間座椅子",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_guitarookami",
+"nm": "ギターオオカミ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a16_goldenbonbon",
+"nm": "ゴールデンボンボン",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt(弾かない)",
+"Ba(弾かない)",
+"Dr(叩かない)",
+"Key"
+]
+},
+{
+"k": "a17_misuchiru",
+"nm": "Mr.Childhood",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a17_supitz",
+"nm": "スピッツァー",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a17_kururi",
+"nm": "くるみ餅",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a17_ajikan",
+"nm": "ASIAN KUNG-FU DEGENERATION",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a17_porno",
+"nm": "ポルノグラフィティ・ジャパン",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Gt"
+]
+},
+{
+"k": "a17_andy",
+"nm": "andymorry",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a17_sumika",
+"nm": "すみかーる",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt/Cho",
+"Ba/Cho",
+"Dr/Cho"
+]
+},
+{
+"k": "a17_radwimps",
+"nm": "RADWIMPSY",
+"st": "band",
+"cur_roles": [
+"Vo/Gt/Pf",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a18_pfm",
+"nm": "パフェューム",
+"st": "band",
+"cur_roles": [
+"Vo/Dance",
+"Vo/Dance",
+"Vo/Dance"
+]
+},
+{
+"k": "a18_dgl",
+"nm": "電気グルテン",
+"st": "duo",
+"cur_roles": [
+"Vo/言葉担当",
+"Prog/DJ"
+]
+},
+{
+"k": "a18_mfl",
+"nm": "m-floss",
+"st": "band",
+"cur_roles": [
+"Rap",
+"DJ/Prog",
+"Vo"
+]
+},
+{
+"k": "a18_tsq",
+"nm": "T-SQUASH",
+"st": "band",
+"cur_roles": [
+"Gt",
+"Key",
+"Sax",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a18_cpl",
+"nm": "コピー・ラブ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_queen",
+"nm": "QUEEN BEEF",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_zep",
+"nm": "LED ZEPPERIN",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba/Key",
+"Dr"
+]
+},
+{
+"k": "a19_floyd",
+"nm": "PINK FLOUR",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Key",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_nirb",
+"nm": "NIRBANANA",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_blur",
+"nm": "BLURB",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_meta",
+"nm": "METALLIKA",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_acdec",
+"nm": "AC/DEC",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_v2",
+"nm": "V2",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_wheez",
+"nm": "WHEEZER",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a19_strike",
+"nm": "THE STRIKES",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a20_bts",
+"nm": "防寒少年団",
+"st": "band",
+"cur_roles": [
+"Rap",
+"Rap",
+"Rap",
+"Vo",
+"Vo",
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a21_sdm",
+"nm": "さだまさる",
+"st": "duo",
+"cur_roles": [
+"Vo/Gt",
+"Gt"
+]
+},
+{
+"k": "a21_odz",
+"nm": "オフカース",
+"st": "band",
+"cur_roles": [
+"Vo/Key",
+"Vo/Gt",
+"Ba",
+"Dr",
+"Gt"
+]
+},
+{
+"k": "a21_bgm",
+"nm": "BEGUM",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Key"
+]
+},
+{
+"k": "a21_knz",
+"nm": "喜納笑吉&チャンプルース",
+"st": "band",
+"cur_roles": [
+"Vo/三線",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a22_fripslide",
+"nm": "fripSlide",
+"st": "duo",
+"cur_roles": [
+"作曲",
+"Vo"
+]
+},
+{
+"k": "a22_claris",
+"nm": "ClariZ",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Vo"
+]
+},
+{
+"k": "a22_momoiro",
+"nm": "ももいろキャベツZ",
+"st": "band",
+"cur_roles": [
+"センター",
+"リーダー",
+"元気担当",
+"クール担当",
+"不思議担当"
+]
+},
+{
+"k": "a22_babymetro",
+"nm": "BABYMETRO",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Vo/Dance",
+"Dance",
+"Band"
+]
+}
+]

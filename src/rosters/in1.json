@@ -1,0 +1,533 @@
+[
+{
+"k": "akg",
+"nm": "ASIAN KUNG-PAO GENERATION",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "elle",
+"nm": "ELLE GARDENIA",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "bump",
+"nm": "JUMP OF CHICKEN",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "rad",
+"nm": "SAD WIMPS",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "saka",
+"nm": "サカナフィクション",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Key",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "kuru",
+"nm": "ぐるり",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "spitz",
+"nm": "スピッツァー",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "tokyo",
+"nm": "京都事変",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Key",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "mr",
+"nm": "Mrs.Children",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "rhyme",
+"nm": "RHYMESTAR",
+"st": "rap",
+"cur_roles": []
+},
+{
+"k": "kick",
+"nm": "KICK THE CAT CREW",
+"st": "rap",
+"cur_roles": []
+},
+{
+"k": "yuzu",
+"nm": "ゆず湯",
+"st": "duo",
+"cur_roles": [
+"Vo/Gt",
+"Vo/Gt"
+]
+},
+{
+"k": "kobu",
+"nm": "コブゾウ",
+"st": "duo",
+"cur_roles": [
+"Vo/Gt",
+"Vo/Gt"
+]
+},
+{
+"k": "a01_hpe",
+"nm": "はっぴいえんどう",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a01_kgy",
+"nm": "かぐや殿",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Vo/Gt"
+]
+},
+{
+"k": "a01_cro",
+"nm": "キャロット矢澤",
+"st": "band",
+"cur_roles": [
+"Vo/Ba",
+"Gt",
+"Gt",
+"Dr"
+]
+},
+{
+"k": "a01_rcs",
+"nm": "RCサクセスフル",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a02_bowhy",
+"nm": "BOØWHY",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a02_bluehearth",
+"nm": "THE BLUE HEARTH",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a02_erb",
+"nm": "ERB",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a02_mode",
+"nm": "THE MODE",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a02_southern",
+"nm": "サウザン・オールスターズ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"Key",
+"Perc"
+]
+},
+{
+"k": "a02_anshin",
+"nm": "安心地帯",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a02_checkers",
+"nm": "チェッカーボーズ",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr",
+"Sax",
+"Key",
+"Perc"
+]
+},
+{
+"k": "a02_mugi",
+"nm": "麦麦CLUB",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr",
+"Sax",
+"Key",
+"Dance",
+"Perc"
+]
+},
+{
+"k": "a03_ymo",
+"nm": "イエロー・マジック・オーケストレーション",
+"st": "band",
+"cur_roles": [
+"Syn",
+"Ba/Vo",
+"Dr/Vo"
+]
+},
+{
+"k": "a03_plas",
+"nm": "プラスチ・クス",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Syn",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a03_pmod",
+"nm": "Q-MODEL",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Syn",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a03_tama",
+"nm": "たまご",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Vo/Gt",
+"Ba/Vo",
+"Per"
+]
+},
+{
+"k": "a03_bogan",
+"nm": "ボ・ガンボー",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Key",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a03_loud",
+"nm": "LAUDNESS",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a03_x",
+"nm": "Y JAPAN",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr/Pf"
+]
+},
+{
+"k": "a03_buck",
+"nm": "BUCK-TICKET",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a03_stal",
+"nm": "THE STALEIN",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_luna",
+"nm": "LUNA SKY",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_glay",
+"nm": "CLAY",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_larc",
+"nm": "L'Arc~en~Soup",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_ym",
+"nm": "THE YELLOW MONKEYS",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_tmge",
+"nm": "THEE MICHELLE GUN ELEPHANTS",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_bjc",
+"nm": "BLANKY JET CITY",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_wolf",
+"nm": "ウルフルーズ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a04_hist",
+"nm": "Hi-STANDARD OF DOGS",
+"st": "band",
+"cur_roles": [
+"Vo/Ba",
+"Gt",
+"Dr"
+]
+},
+{
+"k": "a04_dragon",
+"nm": "Dragon Dash",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"DJ"
+]
+},
+{
+"k": "a04_ng",
+"nm": "ナンバーガール子",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a05_pzf",
+"nm": "ピザカート・ファイヴ",
+"st": "band",
+"cur_roles": [
+"Key/Ba",
+"Gt/Prog",
+"Vo"
+]
+},
+{
+"k": "a05_hpg",
+"nm": "ホッパーズ・ギター",
+"st": "duo",
+"cur_roles": [
+"Vo/Gt",
+"Gt/Prog"
+]
+},
+{
+"k": "a05_tmn",
+"nm": "TM NETWORKING",
+"st": "band",
+"cur_roles": [
+"Key/Prog",
+"Vo",
+"Gt"
+]
+},
+{
+"k": "a05_glv",
+"nm": "glove",
+"st": "band",
+"cur_roles": [
+"Prod/Key",
+"Rap",
+"Vo"
+]
+},
+{
+"k": "a05_bzz",
+"nm": "B'zz",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Gt"
+]
+}
+]

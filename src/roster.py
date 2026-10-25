@@ -11,7 +11,7 @@ for _f in sorted(glob.glob('/home/claude/rosters/out*.json')):
 
 
 def apply(a, mm, seed):
-    R = a.get('members') or ROSTER.get(a.get('k'))
+    R = ROSTER.get(a.get('k')) or a.get('members')
     if not R:
         return mm
     out = []

@@ -1,0 +1,534 @@
+[
+{
+"k": "a05_tob",
+"nm": "TOBE",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a07_fuji",
+"nm": "フジファブリッコ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a07_stray",
+"nm": "ストレイデナー",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a07_zzz",
+"nm": "ZAZEN BOYZ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a07_rin",
+"nm": "凜として霧雨",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba/Vo",
+"Dr"
+]
+},
+{
+"k": "a07_9mm",
+"nm": "9ミリ・パラベラム・ブレット",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a07_ook",
+"nm": "ONE OK ROLL",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a07_uvr",
+"nm": "UVER・ワールド",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr",
+"Sax"
+]
+},
+{
+"k": "a07_okd",
+"nm": "民生ユニコーン",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a07_hor",
+"nm": "マキシマム ザ ホルムン",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba/Vo",
+"Dr/Vo",
+"Vo/Gt"
+]
+},
+{
+"k": "a07_gin",
+"nm": "銀杏BOYS・GOING UNSTEADY",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_owari",
+"nm": "SEKAI NO OWARARI",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Pf",
+"DJ"
+]
+},
+{
+"k": "a08_kanab",
+"nm": "KANA-BOWN",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_gesu",
+"nm": "ゲスの極み乙女。ちゃん",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Pf",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_higedan",
+"nm": "Official髭ダンディズム",
+"st": "band",
+"cur_roles": [
+"Vo/Pf",
+"Gt",
+"Ba",
+"Dr/Sax"
+]
+},
+{
+"k": "a08_backn",
+"nm": "back numbar",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_creep",
+"nm": "クリープハイブリッド",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_indigo",
+"nm": "indigo la Bend",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_alex",
+"nm": "[Alexandora]",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_kankaku",
+"nm": "感覚ペロリ",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a08_uchikubi",
+"nm": "打首獄門同好会議",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a09_kinggnu",
+"nm": "KING GNUDLE",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt/Vo",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a09_mrsgreen",
+"nm": "Ms. GREEN PEACH",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a09_yoasobi",
+"nm": "YOAKOBI",
+"st": "duo",
+"cur_roles": [
+"Cp",
+"Vo"
+]
+},
+{
+"k": "a09_zutomayo",
+"nm": "ずっと夜更かししていたい。",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr",
+"Key"
+]
+},
+{
+"k": "a09_yorushika",
+"nm": "ヨルシカバネ",
+"st": "duo",
+"cur_roles": [
+"Cp/Gt",
+"Vo"
+]
+},
+{
+"k": "a10_kreva",
+"nm": "KRAVA",
+"st": "rap",
+"cur_roles": [
+"MC",
+"MC",
+"DJ"
+]
+},
+{
+"k": "a10_suiyo",
+"nm": "火曜日のカンパニュラ",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Track"
+]
+},
+{
+"k": "a10_creepy",
+"nm": "Crispy Nuts",
+"st": "duo",
+"cur_roles": [
+"MC",
+"DJ"
+]
+},
+{
+"k": "a10_badhop",
+"nm": "BAD HOPS",
+"st": "rap",
+"cur_roles": [
+"MC",
+"MC",
+"MC",
+"MC"
+]
+},
+{
+"k": "a10_umeda",
+"nm": "梅田サイフォン",
+"st": "rap",
+"cur_roles": [
+"MC",
+"MC",
+"MC",
+"MC",
+"MC"
+]
+},
+{
+"k": "a10_sucha",
+"nm": "スチャダラパーマ",
+"st": "rap",
+"cur_roles": [
+"MC",
+"MC",
+"DJ"
+]
+},
+{
+"k": "a10_tha",
+"nm": "ZA BLUE HERB",
+"st": "rap",
+"cur_roles": [
+"MC",
+"Track"
+]
+},
+{
+"k": "a11_wowaka",
+"nm": "ワワカ",
+"st": "beat",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a11_supercell",
+"nm": "スーパーセール",
+"st": "beat",
+"cur_roles": [
+"Prog",
+"Vo",
+"Illust"
+]
+},
+{
+"k": "a11_daft",
+"nm": "ダフト・パンツ",
+"st": "duo",
+"cur_roles": [
+"Prog",
+"Prog"
+]
+},
+{
+"k": "a12_beet",
+"nm": "THE BEET-ROLLS",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Vo/Ba",
+"Gt",
+"Dr"
+]
+},
+{
+"k": "a12_oats",
+"nm": "OATSIS",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a12_radf",
+"nm": "RADIO FEED",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Gt/Key",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a12_cold",
+"nm": "COLDPLATE",
+"st": "band",
+"cur_roles": [
+"Vo/Pf",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a12_artm",
+"nm": "ANTARCTIC MONKFISH",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a12_fleet",
+"nm": "FLEETWOOD MAC & CHEESE",
+"st": "band",
+"cur_roles": [
+"Gt",
+"Ba",
+"Dr",
+"Key/Vo",
+"Vo",
+"Gt/Vo"
+]
+},
+{
+"k": "a12_abba",
+"nm": "ABBACUS",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Vo",
+"Key/Gt",
+"Gt/Ba"
+]
+},
+{
+"k": "a13_gorillaz",
+"nm": "Gorilloz",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a13_rhcp",
+"nm": "Red Hot Chili Poppers",
+"st": "band",
+"cur_roles": [
+"Vo",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a13_greenday",
+"nm": "Green Daze",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a13_linkin",
+"nm": "Linkin Perk",
+"st": "band",
+"cur_roles": [
+"Vo",
+"MC",
+"Gt",
+"Ba",
+"Dr",
+"DJ"
+]
+},
+{
+"k": "a13_foo",
+"nm": "Foo Fryers",
+"st": "band",
+"cur_roles": [
+"Vo/Gt",
+"Gt",
+"Ba",
+"Dr"
+]
+},
+{
+"k": "a14_ippatsu",
+"nm": "ダンシング・ヒーター",
+"st": "duo",
+"cur_roles": [
+"Vo",
+"Key"
+]
+}
+]
