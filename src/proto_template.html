@@ -444,6 +444,21 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 #t-badge { margin: 0; text-align: center; font-weight: 900; color: var(--accent); }
 body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 12% 20%, #fff8 50%, transparent), radial-gradient(1.5px 1.5px at 78% 12%, #ffe9a0aa 50%, transparent), radial-gradient(1px 1px at 55% 60%, #fff8 50%, transparent), radial-gradient(1.5px 1.5px at 90% 70%, #fff7 50%, transparent), radial-gradient(1px 1px at 30% 80%, #ffe9a0aa 50%, transparent); }
 @media (prefers-reduced-motion: reduce) { .endl { transition: none; } .endl.blink { animation: none; } }
+
+.cand.moji { position: relative; border-color: #ffd94a; box-shadow: 0 0 0 1px #ffd94a, 0 0 16px rgba(255,217,74,.35); overflow: hidden; }
+.cand.moji::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform: skewX(-18deg); animation: mojiSh 2.8s 1s infinite; pointer-events: none; }
+@keyframes mojiSh { 0% { left: -60%; } 40%, 100% { left: 130%; } }
+.moji-mark { display: inline-block; font-size: 12px; font-weight: 900; color: #6b4a00; background: #ffd94a; border-radius: 4px; padding: 2px 8px; margin-bottom: 6px; }
+.mojif { position: fixed; inset: 0; z-index: 96; display: grid; place-items: center; background: rgba(5,6,12,.88); opacity: 1; transition: opacity .3s; animation: mojiIn .25s both; }
+.mojif.off { opacity: 0; pointer-events: none; }
+@keyframes mojiIn { from { opacity: 0; } to { opacity: 1; } }
+.mojit { text-align: center; color: #fff; padding: 16px; }
+.mojis { font-size: 14px; color: #aab3c6; opacity: 0; animation: mojiUp .5s .1s both; }
+.mojin { font-size: 30px; font-weight: 900; margin: 10px 0; color: #ffd94a; text-shadow: 0 0 18px rgba(255,217,74,.6); opacity: 0; animation: mojiPop .55s .45s both; overflow-wrap: anywhere; }
+.mojis2 { font-size: 15px; color: #7ae0ff; opacity: 0; animation: mojiUp .5s 1s both; }
+@keyframes mojiUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes mojiPop { 0% { opacity: 0; transform: scale(.6); } 70% { opacity: 1; transform: scale(1.12); } 100% { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cand.moji::after, .mojis, .mojin, .mojis2, .mojif { animation: none; opacity: 1; } }
 </style>
 
 <div class="wrap" id="app">
@@ -1014,6 +1029,13 @@ function unlockCard(tier) { const u = el('div', 'card'); u.style.cssText = 'bord
   u.append(el('div', null, '★ 解放:新しい時代!'), el('div', 'small', t + '回たどったごほうびに、' + nm + 'の時代が解放されました!' + (t === PL.NEED ? 'カスタムからも、人選びの画面でも、時代を選べます。' : '人選びの画面で時代を選ぶと出会えます。'))); u.firstChild.style.cssText = 'font-weight:900;margin-bottom:4px'; return u; }
 const ERA_PK0 = [[-1, '70年代'], [0, '80年代'], [1, '90年代'], [2, '00年代'], [3, '10年代'], [4, '20年代'], [5, '近未来']];
 const eraPK = () => [[null, 'おまかせ'], ...rareEras().filter((x) => eraOk(x.e)).map((x) => [x.e, '★' + x.es]), ...ERA_PK0];
+function mojiFlash(name, cb) {
+  const o = el('div', 'mojif'); const t = el('div', 'mojit'); t.append(el('div', 'mojis', 'この名前、どこかで…'), el('div', 'mojin', name), el('div', 'mojis2', 'ニヤリ。'));
+  o.append(t); document.body.append(o); try { SFX.play('big'); } catch (_) {}
+  const done = () => { o.classList.add('off'); setTimeout(() => o.remove(), 300); cb(); };
+  let fired = false; const once = () => { if (fired) return; fired = true; done(); };
+  o.addEventListener('click', once); setTimeout(once, 1500);
+}
 function renderCands() {
   { const eb = $('#era-pick'); eb.textContent = ''; eb.hidden = false; eb.style.cssText = 'flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:2px';
     { const nt = unlockTiers().find(([k]) => PL.n() < k); if (nt) { const lk = el('span', 'small', '🔒 新しい時代の解放まで あと' + (nt[0] - PL.n()) + '回'); lk.style.cssText = 'flex:none;padding:5px 2px'; eb.append(lk); } } eraPK().forEach(([v, l]) => { if (v !== null && !DATA.some((d) => d.m.era === v && (d.m.rare || d.m.st === S.style))) return; const c = el('button', 'chip' + ((S.eraPick == null ? null : S.eraPick) === v ? ' on' : ''), l); c.type = 'button'; c.style.cssText = 'flex:none;padding:5px 10px;font-size:12px'; c.onclick = () => { S.eraPick = v; renderCands(); }; eb.append(c); }); }
@@ -1038,9 +1060,11 @@ function confirmStart(d) {
 }
 function renderCands2(pick) {
   const box = $('#cand-list'); box.textContent = '';
+  let mojiSeen = false;
   pick.forEach((d, i) => {
-    const m = d.m; const c = el('div', 'cand tap shuf' + (m.rare ? ' rare' : '')); c.style.animationDelay = (i * 110) + 'ms'; if (i % 2) c.style.setProperty('--sx', '-1');
-    if (m.rare) c.append(el('span', 'rare-mark', '★ レア時代')); c.setAttribute('role', 'button'); c.tabIndex = 0;
+    const m = d.m; const c = el('div', 'cand tap shuf' + (m.rare ? ' rare' : '') + (m.real ? ' moji' : '')); c.style.animationDelay = (i * 110) + 'ms'; if (i % 2) c.style.setProperty('--sx', '-1');
+    if (m.rare) c.append(el('span', 'rare-mark', '★ レア時代'));
+    if (m.real) { c.append(el('span', 'moji-mark', '✦ どこかで聞いたような名前…')); mojiSeen = true; } c.setAttribute('role', 'button'); c.tabIndex = 0;
     c.append(el('div', 'nm', m.a));
     const tg = el('div', 'tags');
     tg.append(el('span', 'tag p', m.pe));
@@ -1051,9 +1075,11 @@ function renderCands2(pick) {
     if (m.ai) tg.append(el('span', 'tag', 'AI: ' + m.ai));
     c.append(tg);
     c.append(el('p', 'small', m.tx + '。'));
-    c.onclick = () => confirmStart(d); c.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); confirmStart(d); } };
+    const go = () => { if (!m.real) { confirmStart(d); return; } mojiFlash(m.a, () => confirmStart(d)); };
+    c.onclick = go; c.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
     box.append(c);
   });
+  if (mojiSeen) { try { setTimeout(() => SFX.play('fork'), 300); } catch (_) {} }
   const mine = el('div', 'cand mine'); mine.setAttribute('role', 'button'); mine.tabIndex = 0; mine.append(el('div', 'nm', '＋ 自分で作る'), el('span', 'small', '名前・人数・年代を自分で決める。あとは運しだい'));
   const go = () => { S.eraF = null; S.sz = null; $('#nm-in').value = ''; nameExamples(); renderCustom(); show('s-custom'); }; mine.onclick = go; mine.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
   box.append(mine);
