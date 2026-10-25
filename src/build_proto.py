@@ -152,6 +152,16 @@ def main():
             _c = [x for x in _c if x]
             if _c and _b["fd"] not in _c:
                 _b["fd"] = _r.Random(str(_e["m"]["id"])).choice(_c)
+    def _shq(n, rng):
+        ks = n.get('n') or []
+        if len(ks) > 1 and n.get('q') and len(n['q'].get('labels', [])) == len(ks):
+            idx = list(range(len(ks))); rng.shuffle(idx)
+            n['n'] = [ks[i] for i in idx]; n['q']['labels'] = [n['q']['labels'][i] for i in idx]
+            for k2 in ('ok',):
+                if isinstance(n['q'].get(k2), list) and len(n['q'][k2]) == len(idx): n['q'][k2] = [n['q'][k2][i] for i in idx]
+        for c in n.get('n') or []: _shq(c, rng)
+    for _e in pool:
+        if _e.get('t') and not _e['m'].get('rare'): _shq(_e['t'], _r.Random('shq%s' % _e['m']['id']))
     import os
     os.makedirs('/home/claude/dshards', exist_ok=True)
     for _f in os.listdir('/home/claude/dshards'): os.remove('/home/claude/dshards/' + _f)

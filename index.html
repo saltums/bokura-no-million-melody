@@ -1,6 +1,3 @@
-<!doctype html>
-<html lang="ja"><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ぼくらのミリオンメロディ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Dela+Gothic+One&family=DM+Mono:wght@400;500&family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
@@ -740,7 +737,7 @@ function fesMake() {
   const pr = ek === 'p' ? '山向こうの部族が、唸り声を聞きに来た。「' + nxt + '」へ声を届けるか。' : ek === 'e' ? '旅の者が噂を持ち帰った。「' + nxt + '」まで唄を広げられるか。' : ek === 'f' ? '星間通信の枠が空いた。「' + nxt + '」へ曲を送れる。' : '「' + cur + '」では名が知られてきた。次は「' + nxt + '」へ広げられそうだ。';
   return { kind, lab: '広がるチャンス', prompt: pr, opts: [
     { l: act, p: .7, g: .01, ok: '「' + nxt + '」まで声が届いた。', ng: '準備が足りず、ほとんど届かないまま終わった。', up: true },
-    { l: 'まず小さく試す', p: .85, g: .003, ok: '小さな試みが、静かに「' + nxt + '」へ届いた。', ng: 'ほとんど反応がなかった。', up: true },
+    { l: 'まず小さく試す', p: .85, g: .02, ok: '小さな試みが、静かに「' + nxt + '」の人にも届き始めた。', ng: 'ほとんど反応がなかった。', up: false },
     { l: '今の場所を固める', p: 1, g: .08, ok: '「' + cur + '」での足場が、しっかりした。', ng: '', up: false, fix: true }] };
 }
 function sideMake() {
@@ -968,7 +965,7 @@ function renderCands() {
   $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style];
   const box = $('#cand-list'); box.textContent = '';
   const E_ = DBG_ERA != null ? DBG_ERA : S.eraPick; const ef = (d) => E_ == null || d.m.era === E_; let base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real && ef(d)); if (!base.length) { base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real); } const pick = shuffle(base).slice(0, 3);
-  { const reals = DATA.filter((d) => d.m.st === S.style && d.m.real && d.m.era !== undefined && ef(d)); if (reals.length && Math.random() < 0.45) pick[Math.floor(Math.random() * pick.length)] = reals[Math.floor(Math.random() * reals.length)]; }
+  { const reals = DATA.filter((d) => d.m.st === S.style && d.m.real && d.m.era !== undefined && ef(d)); if (reals.length && Math.random() < 0.3) pick[Math.floor(Math.random() * pick.length)] = reals[Math.floor(Math.random() * reals.length)]; }
   { const rares = DATA.filter((d) => d.m.st === S.style && d.m.rare && eraSeen(d)); if (rares.length && Math.random() < 0.08) pick[Math.floor(Math.random() * pick.length)] = rares[Math.floor(Math.random() * rares.length)]; }
   { const fx = (d) => d.m.pun || d.m.real || d.m.rare; const spare = shuffle(base.filter((d) => !pick.includes(d))); const seenN = new Set();
     for (let i = 0; i < pick.length; i++) { let g = 0; while (fx(pick[i]) && seenN.has(pick[i].m.a) && spare.length && g++ < 40) pick[i] = spare.shift(); if (fx(pick[i])) seenN.add(pick[i].m.a); } }
@@ -2944,7 +2941,7 @@ function dramaOf(e) {
   const A = [['レア', rare], ['ドラマチック', sc], ['愛され', love], ['売れ度', ure]]; const hi = A.slice().sort((x, y) => y[1] - x[1])[0][0];
   const hh = ((e.tx.length * 7 + S.entry.m.a.length * 13) % 2);
   let cm;
-  if (total >= 330) cm = ['めったに出会えない、語り草になる人生。', '歌が時代を動かした。文句なしの一生。'][hh];
+  if (total >= 290) cm = ['めったに出会えない、語り草になる人生。', '歌が時代を動かした。文句なしの一生。'][hh];
   else if (love >= 60 && ure < 45) cm = ['売れはしなかったが、確かに愛された。', 'ヒットはなくても、聴く人の心に居場所があった。'][hh];
   else if (ure >= 66 && love < 45) cm = ['名は売れたが、心の距離は遠いままだった。', '栄光の影に、静かな孤独が残った。'][hh];
   else if (sc >= 60 && ure < 50) cm = ['数字は地味でも、物語は一級品だった。', '売れなくても、話のおもしろさでは負けない。'][hh];
@@ -2953,7 +2950,7 @@ function dramaOf(e) {
   else if (hi === '愛され') cm = ['長く、静かに、愛された人生だった。', 'まわりに支えられ、歌が続いていった。'][hh];
   else cm = ['時代に名を刻んだ人生だった。', '曲が先に歩き出し、名前があとを追った。'][hh];
   if (total < 150) cm = ['ひっそりと、でも確かに歌っていた。', '誰にも気づかれなくても、歌は歌だった。'][hh];
-  const tl = total >= 330 ? '伝説' : total >= 260 ? '名人生' : total >= 190 ? '味わい深い' : total >= 120 ? 'ふつう' : 'ひっそり';
+  const tl = total >= 290 ? '伝説' : total >= 260 ? '名人生' : total >= 190 ? '味わい深い' : total >= 120 ? 'ふつう' : 'ひっそり';
   cm = ij(cm); return { sc, lab, why: why.slice(0, 4), ure, love, rare, rl, total, cm, tl };
 }
 const SFX = (() => {
@@ -3089,7 +3086,7 @@ function voicesOf(e, dr) {
   const bw = w.reduce((x, y) => (y.tr > x.tr ? y : x), w[0] || { ti: '', tr: 0 }); const best = bw.ti, first = (w[0] || {}).ti || '';
   const grp = S.top === 'グループ'; const who = grp ? 'このバンド' : 'この人'; const hs = ((a.length * 31 + n * 17 + dr.total) % 3);
   const pick = (arr) => arr[(hs + a.length) % arr.length];
-  const tier = dr.total >= 330 ? 'L' : dr.love >= 60 && dr.ure < 45 ? 'C' : dr.ure >= 66 && dr.love < 45 ? 'H' : dr.total < 150 ? 'S' : 'N';
+  const tier = dr.total >= 290 ? 'L' : dr.love >= 60 && dr.ure < 45 ? 'C' : dr.ure >= 66 && dr.love < 45 ? 'H' : dr.total < 150 ? 'S' : 'N';
   const old = m.era <= 1, net = m.era >= 3 && !m.rare && m.era <= 5; const rare = !!m.rare;
   const V = [];
   const fan = { L: ['人生のどこかで必ず' + a + 'が流れていた。' + best + 'は、今でも聴くと背筋が伸びる。', best + 'を初めて聴いた日のことを、ぜんぶ覚えている。'], C: [a + 'は大ヒットしなかったけれど、' + best + 'を聴いた夜のことは忘れない。', '売れてほしかった。でも、自分だけの宝物にしておきたい気持ちもあった。'], H: ['どこへ行っても' + a + 'が流れていた。' + best + 'は正直、もう聴き飽きた(でも歌える)。', '人気はすごかった。けど、初期のころの方が好きだった。'], S: ['誰も知らなくていい。' + first + 'は、わたしだけの一曲だった。', 'ライブに行くたびに、観客が少ないのが少し嬉しくて、少し悔しかった。'], N: [best + 'のサビを、気づいたら口ずさんでいた。', a + 'の新譜が出ると、つい聴いてしまう。'] }[tier];
