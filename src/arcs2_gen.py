@@ -53,6 +53,11 @@ def load_specs(dirpath='/home/claude/arcs_new'):
         except Exception as e:
             print('SKIP', f, e); continue
         arcs += getattr(m, 'ARCS', []); pt.update(getattr(m, 'PT', {}))
+    _seen = set(); _u = []
+    for _a in arcs:
+        if _a['nm'] in _seen: print('DUP-NM skip', _a['k'], _a['nm']); continue
+        _seen.add(_a['nm']); _u.append(_a)
+    arcs = _u
     pt = {k: list(dict.fromkeys(t.split('→')[-1].strip() for t in v)) for k, v in pt.items()}
     return arcs, pt
 
