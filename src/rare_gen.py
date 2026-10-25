@@ -138,6 +138,29 @@ AW_DEF = {
 
 
 # ================= 共通の木の組み立て =================
+import re as _re
+def hook_title(ly, rr, era, fb, used):
+    """曲名は、その曲のサビの一節から取る(曲名と歌詞を必ず一致させる)。"""
+    if ly.get("k") == "inst": return fb
+    try:
+        keys = [o[0] for o in ly["o"] if len(o) > 3 and o[3]]; lines = ly["s"].get(keys[0], []) if keys else []
+    except Exception:
+        return fb
+    cand = []
+    for ln in lines:
+        segs = [x.strip(" 、,!!?? ・「」『』()()。…") for x in _re.split(r"[、,!?!?]", ln)]
+        for sg in segs + ([ln.strip(" 。…")] if len(ln) <= 14 else []):
+            n = len(sg)
+            if n < (2 if era == -2 else 3) or n > 14: continue
+            if _re.fullmatch(r"[ァ-ヶー・]+", sg) and n <= 5: continue
+            if len(set(sg)) <= 2: continue
+            if sg in used: continue
+            cand.append(sg)
+    if not cand: return fb
+    c4 = [x for x in cand if len(x) >= 5] or cand
+    t = rr.choice(c4); used.add(t); return t
+
+
 def tree(P, seed, group):
     r = random.Random(H(seed, "rare"))
     era = P["era"]; r6 = era == 6
@@ -151,7 +174,9 @@ def tree(P, seed, group):
         mm.append({"g": r.choice("mf"), "n": nm, "r": ro, "k": "", "t": r.choice(P.get("traits") or ["遅刻しない", "いちばん声が通る", "寝言で歌う", "火の番が上手い", "道具を作るのが得意", "笑い声が大きい"]) if not r6 else r.choice(["酸素残量に厳しい", "古い楽器の収集家", "無重力酔いしない", "朝が早い", "よく迷子になる", "生身の最後の世代"]), "h": r.choice(P["bio"]["hms"]), "o": r.choice([-2, -1, 0, 0, 1, 2])})
     vg = (mm[0]["g"] if group else r.choice("mf"))
     if r6 and not group and r.random() < 0.5: vg = "a" + vg
+    if P.get("inst"): vg = "inst"
     b = P["bio"]
+    used_t = set()
     bio = {"hm": r.choice(b["hms"]), "ag": r.choice([17, 19, 21, 24, 28, 33]), "fm": r.choice(b["fms"]), "st": r.choice(b["sts"]), "gr": r.choice(b["grs"]), "jb": r.choice(b["jbs"]), "hb": r.choice(b["hbs"]), "fv": r.choice(b["fvs"]), "hy": r.choice(b["hys"])}
     if group: bio["fd"] = r.choice(b["hms"])
     name = r.choice(P["names_g"] if group else P["names_s"])
@@ -171,6 +196,7 @@ def tree(P, seed, group):
         rs = rr.choice(reasons)
         out = {"t": "r", "y": st["y"], "o": P["onames"][min(st["n"] - 1, len(P["onames"]) - 1)], "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
         out["ly"] = P["lyr"](rr, th, vg) if P.get("lyr") else lyr2(rr, vg) if era == -2 else lyr3(rr, th, vg) if era == -3 else lyr6(rr, th, vg)
+        out["ti"] = hook_title(out["ly"], rr, era, ti, used_t)
         return out, tier
 
     def run(path, eff, n):

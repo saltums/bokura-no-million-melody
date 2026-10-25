@@ -1130,9 +1130,9 @@ function mkLook(mb, m, key, k, pose, fr) {
   const grp = !!mb; const fem = mb ? mb.g === 'f' : ((m.vg || '')[(m.vg || '').length - 1] === 'f');
   const idn = mb ? hsh(mb.n) : (m.id | 0) + k * 7; const ai = key === 'ai_pure' || key === 'ai_collab';
   const rl = mb ? mb.r : ''; const byRole = /^Vo/.test(rl) ? 'mic' : /Dr/.test(rl) ? 'drum' : /Key|Cho/.test(rl) ? 'pc' : /Gt|Ba/.test(rl) ? 'gtr' : null;
-  const rareProp = (m.era === -3 || m.era === -2) && rl ? (/三味線|琵琶|琴|弦/.test(rl) ? 'gtr' : /太鼓|鼓|手打ち|足踏み|ドラム/.test(rl) ? 'drum' : /笛|尺八|骨/.test(rl) ? 'bone' : /唄|語り|声|歌/.test(rl) ? 'none' : null) : null;
+  const rareProp = (m.era === -3 || m.era === -2 || m.bgm) && rl ? (/三味線|琵琶|琴|弦|リュート|ヴィエル|ヴァイオリン|ギター|ベース|チェンバロ|ハープ|竪琴|リラ|オルガン|ピアノ|ウクレレ|バンジョー|サクソ|サックス/.test(rl) ? 'gtr' : /太鼓|鼓|手打ち|足踏み|ドラム|ティンパニ|タンバリン|石|打/.test(rl) ? 'drum' : /笛|尺八|骨|フルート|アウロス|ラッパ|トランペット|クラリネット|笙|篳篥|牙/.test(rl) ? 'bone' : /唄|語り|声|歌|詩|ボーカル|Vo|合唱|口/.test(rl) ? 'none' : null) : null;
   const prop = rareProp ? rareProp : m.era === -3 ? (k % 2 ? 'drum' : 'gtr') : m.era === -2 ? (k % 2 ? 'bone' : 'drum') : key === 'rap' ? 'mic' : key === 'dj' ? 'dj' : key === 'beat' ? 'pc' : ai ? 'mic' : (byRole || (grp ? ['mic', 'gtr', 'gtr', 'drum'][k % 4] : 'gtr'));
-  return { skin: SKINS[idn % 4], hair: HAIRS[(idn >>> 1) % 6], cloth: CLOTHS[(idn + 3) % 6], pants: PANTS[idn % 3], fem, style: fem ? ['long', 'pony', 'short'][idn % 3] : ['short', 'spiky', 'short'][idn % 3], pose: pose || 'idle', fr: (fr | 0) + k, prop, robot: ai && m.era !== 6 ? true : false, fur: m.era === -2, suit: m.era === 6 && !ai, tie: '#ff7ab0' };
+  return { skin: SKINS[idn % 4], hair: HAIRS[(idn >>> 1) % 6], cloth: (SCENES[m.era] && SCENES[m.era].cl && SCENES[m.era].cl.length) ? SCENES[m.era].cl[(idn + 3) % SCENES[m.era].cl.length] : CLOTHS[(idn + 3) % 6], pants: PANTS[idn % 3], fem, style: fem ? ['long', 'pony', 'short'][idn % 3] : ['short', 'spiky', 'short'][idn % 3], pose: pose || 'idle', fr: (fr | 0) + k, prop, robot: ai && m.era !== 6 ? true : false, fur: m.era === -2, suit: m.era === 6 && !ai, tie: '#ff7ab0' };
 }
 function mkPerformer(S_, k, grp, st, mood, fr, key) {
   const m = S_.entry.m, mem = S_.mem || []; const mb = grp ? mem[k] : null;
@@ -1154,7 +1154,7 @@ function crowdHead(g, x, y, i, up, fr, st, cs) {
 function drawScene(fr) {
   const cv = $('#scn'); if (!cv || !S.entry) return; const g = cv.getContext('2d'); const { st, mood } = sceneState(); g.setTransform(1, 0, 0, 1, 0, 0); g.imageSmoothingEnabled = false;
   const m = S.entry.m, key = m.st, grp = m.top === 'グループ', era = m.era; const W = 256, Hh = 112; const floorY = 78;
-  if (era === -3) sceneEdo(g, st, mood, fr); else if (era === -2) sceneCave(g, st, mood, fr); else if (era === 6) sceneSpace(g, st, mood, fr); else sceneStage(g, st, mood, fr);
+  if (era === -3) sceneEdo(g, st, mood, fr); else if (era === -2) sceneCave(g, st, mood, fr); else if (era === 6) sceneSpace(g, st, mood, fr); else if (SCENES[era]) SCENES[era].fn(g, st, mood, fr); else sceneStage(g, st, mood, fr);
   // 演者(2倍の大きさで描く)
   const n = key === 'duo' ? 2 : (grp ? Math.min(7, Math.max(1, (S.mem || []).length || 3)) : 1);
   const feet = era === -2 ? 94 : (st >= 1 ? 76 : 82); const topY = feet - 48;
@@ -1178,9 +1178,10 @@ const CAPS_R = {
   '-2': { 0: ['焚き火のそばで、ひとり唸っている', '集落の若者が耳をかたむけている', '谷じゅうから人が集まってきた', '部族みんなが声をそろえている', '洞窟の壁に歌が描かれている'], 1: ['焚き火のそばで、ひとり唸っている', '集落の若者が耳をかたむけている', '谷じゅうから人が集まってきた', '部族みんなが声をそろえている', '洞窟の壁に歌が描かれている'], 2: ['声が火の粉と一緒に夜空へ昇っていく', '集落じゅうが手拍子を打っている', '足踏みで地面が揺れている', '谷の向こうからも歌声が返ってくる', '千年先まで残る夜になった'] },
   '6': { 0: ['居住区の隅で、ひとり弾いている', '小さなラウンジで演奏している', '星間放送のスタジオで歌っている', '星系じゅうに放送されている', '宇宙の記憶に刻まれるステージ'], 1: ['居住区の隅で、ひとり弾いている', '小さなラウンジで演奏している', '星間放送のスタジオで歌っている', '星系じゅうに放送されている', '宇宙の記憶に刻まれるステージ'], 2: ['無重力に歌声が浮かんでいる', 'ラウンジが歓声で満たされた', '星々の間に歌が響いている', '観客のドローンが一斉に光った', '宇宙の記憶に刻まれるステージ'] }
 };
-const IJ = [['歌い継がれ', '聴き継がれ'], ['歌い続け', '鳴らし続け'], ['歌っていた', '鳴らしていた'], ['歌は歌だった', '音は音だった'], ['歌っている', '演奏している'], ['歌が', '曲が'], ['歌は', '曲は'], ['歌を', '曲を'], ['歌で', '音で'], ['歌', '曲']];
-function ij(t) { try { if (S.entry && S.entry.m.st === 'inst' && typeof t === 'string') IJ.forEach(([a, b]) => { t = t.split(a).join(b); }); } catch (_) {} return t; }
-function capText(st, mood, era) { if (CAPS_R[era]) return ij(CAPS_R[era][mood][st]); return ij(CAPS[mood][st]); }
+const IJ = [['歌い継がれ', '聴き継がれ'], ['歌い続け', '鳴らし続け'], ['歌っていた', '鳴らしていた'], ['歌は歌だった', '音は音だった'], ['唄', '曲'], ['歌声', '音色'], ['歌っている', '演奏している'], ['歌が', '曲が'], ['歌は', '曲は'], ['歌を', '曲を'], ['歌で', '音で'], ['歌', '曲']];
+function ij(t) { try { if (S.entry && (S.entry.m.st === 'inst' || S.entry.m.vg === 'inst') && typeof t === 'string') IJ.forEach(([a, b]) => { t = t.split(a).join(b); }); } catch (_) {} return t; }
+function capText(st, mood, era) { if (CAPS_R[era]) return ij(CAPS_R[era][mood][st]); if (SCENES[era] && SCENES[era].caps) return ij(SCENES[era].caps[mood][st]); return ij(CAPS[mood][st]); }
+/*__ERA_SCENES__*/
 function sceneStage(g, st, mood, fr) {
   const dim = mood === 0 ? 0.55 : 1;
   if (st === 0) {
