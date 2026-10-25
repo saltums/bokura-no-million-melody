@@ -1075,7 +1075,7 @@ function renderCands2(pick) {
     if (m.ai) tg.append(el('span', 'tag', 'AI: ' + m.ai));
     c.append(tg);
     c.append(el('p', 'small', m.tx + '。'));
-    const go = () => { if (!m.real) { confirmStart(d); return; } mojiFlash(m.a, () => confirmStart(d)); };
+    const go = () => { confirmStart(d); };
     c.onclick = go; c.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } };
     box.append(c);
   });
