@@ -160,6 +160,15 @@ def main():
             for k2 in ('ok',):
                 if isinstance(n['q'].get(k2), list) and len(n['q'][k2]) == len(idx): n['q'][k2] = [n['q'][k2][i] for i in idx]
         for c in n.get('n') or []: _shq(c, rng)
+    import json as _j
+    _EV = _j.load(open('/home/claude/endvars.json'))
+    def _vend(n, rng):
+        for c in n.get('n') or []: _vend(c, rng)
+        e = n.get('e')
+        if isinstance(e, dict) and e.get('tx') in _EV and not n.get('n'):
+            e['tx'] = rng.choice([e['tx']] + _EV[e['tx']])
+    for _e in pool:
+        if _e.get('t'): _vend(_e['t'], _r.Random('vend%s' % _e['m']['id']))
     for _e in pool:
         if _e.get('t') and not _e['m'].get('rare'): _shq(_e['t'], _r.Random('shq%s' % _e['m']['id']))
     import os
