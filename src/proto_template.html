@@ -568,7 +568,7 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
   <section class="scr" id="s-top" hidden>
     <span class="kick">最初の選択</span>
     <h2>グループで? ひとりで?</h2>
-    <button class="btn" type="button" data-top="グループ">グループ<span class="d">バンド・轟音インスト・2人組ユニット</span></button>
+    <button class="btn" type="button" data-top="グループ">グループ<span class="d">バンド・インスト・2人組ユニット</span></button>
     <button class="btn" type="button" data-top="ソロ">ソロ<span class="d">シンガーソングライター・ラッパー・トラックメイカー・DJ・AI</span></button>
   </section>
 
@@ -643,7 +643,7 @@ const $ = (s) => document.querySelector(s);
 const TIER_D = ['不発', '通好みの評価', '小ヒット', 'ヒット', '大ヒット', '社会現象'];
 let TIER = TIER_D;
 function fmtY(y) { return y < 0 ? '紀元前' + (-y) + '年' : y + '年'; }
-const STYLE_LABEL = { band: 'バンド', inst: '轟音インストバンド', duo: '2人組ユニット', solo: 'シンガーソングライター', rap: 'ラッパー',
+const STYLE_LABEL = { band: 'バンド', inst: 'インストバンド', duo: '2人組ユニット', solo: 'シンガーソングライター', rap: 'ラッパー',
   beat: 'トラックメイカー', dj: 'DJ・ダンスミュージック', ai_pure: 'AIミュージシャン(完全生成)', ai_collab: '人間+AIの共作' };
 const STYLE_DESC = { band: 'ライブハウスから始まる王道', inst: '歌のない、音の大きなバンド', duo: 'ふたりで作る、ふたりの音',
   solo: '弾き語りから始まる', rap: '言葉で勝負する', beat: '一人で曲を作り込む', dj: 'フロアを動かす',
