@@ -439,8 +439,10 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .endl.fin { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: .08em; margin-top: 8px; }
 .endl.blink { animation: endBlink 1.6s infinite; }
 @keyframes endBlink { 50% { opacity: .25; } }
-#opn { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 90; background: linear-gradient(180deg, #05071a 0%, #0b1030 45%, #1a2050 78%, #2a2f66 100%); overflow: hidden; -webkit-mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); -webkit-mask-size: 100% 300%; -webkit-mask-position: 0 0; mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); mask-size: 100% 300%; mask-position: 0 0; transition: -webkit-mask-position 1.5s ease-in, mask-position 1.5s ease-in; }
-#opn.melt { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+#opn { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 90; background: linear-gradient(180deg, #05071a 0%, #0b1030 45%, #1a2050 78%, #2a2f66 100%); overflow: hidden; }
+#opn.melt { -webkit-mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-position: 0 0; mask-position: 0 0; animation: opmelt 1.5s ease-in forwards; }
+@keyframes opmelt { from { -webkit-mask-position: 0 0; mask-position: 0 0; } to { -webkit-mask-position: 0 100%; mask-position: 0 100%; } }
+body.opening #s-title, body.opening #gnav { visibility: hidden; }
 #opn.gone { display: none; }
 #opn i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: ostw 3s ease-in-out infinite; }
 @keyframes ostw { 50% { opacity: .25; } }
@@ -478,6 +480,7 @@ body.cleared #s-title .disc::before { content: ""; position: absolute; left: 50%
 body.cleared #s-title .disc::after { content: ""; position: absolute; left: 50%; top: 50%; width: 21%; height: 21%; margin: -10.5% 0 0 -10.5%; border-radius: 50%; background: radial-gradient(circle, #fff6c0 0 35%, #ffc83a 60%, rgba(255,160,40,0) 100%); box-shadow: 0 0 14px 5px rgba(255,190,60,.7); animation: sunp 3.2s ease-in-out infinite; }
 @keyframes sunp { 50% { box-shadow: 0 0 22px 9px rgba(255,190,60,.85); } }
 body.cleared #s-title .trow .disc { margin-right: 22px; }
+body.cleared #s-title { overflow-x: clip; } html, body { overflow-x: clip; }
 body.cleared #s-title .mast, body.cleared #s-title .trow { overflow: visible; }
 .disc .belt { position: absolute; border-radius: 50%; border: 2px dotted rgba(200,190,170,.55); animation: orbit 40s linear infinite reverse; pointer-events: none; }
 .disc .orb i .mn { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #e8e8f0; left: 140%; top: -40%; }
@@ -2153,7 +2156,7 @@ const OPEN = (() => {
     try { if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (_) {}
     if (navigator.webdriver && location.hash.indexOf('open') < 0) return;
     if (location.hash.indexOf('debug') >= 0 && location.hash.indexOf('open') < 0) return;
-    const ov = el('div'); ov.id = 'opn';
+    const ov = el('div'); ov.id = 'opn'; document.body.classList.add('opening');
     for (let i = 0; i < 46; i++) { const st = el('i'); st.style.cssText = 'left:' + ((i * 53 + 7) % 100) + '%;top:' + ((i * 29 + 3) % 62) + '%;animation-delay:-' + ((i % 9) * 0.33).toFixed(2) + 's;width:' + (i % 7 === 0 ? 3 : 2) + 'px;height:' + (i % 7 === 0 ? 3 : 2) + 'px'; ov.append(st); }
     const cv = document.createElement('canvas'); cv.width = 160; cv.height = 80; ov.append(cv); document.body.append(ov);
     const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
@@ -2167,7 +2170,7 @@ const OPEN = (() => {
     let alive = true, fr = 0, cur = -1; const bgm = (() => { try { return BGM.ending(); } catch (_) { return null; } })();
     const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, fr % 2 ? 'cheer' : 'idle', fr)); g.restore(); } } catch (_) {} };
     const tm = setInterval(draw, 230);
-    let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.transitionDuration = '.7s'; ov.classList.add('melt'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
+    let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.animationDuration = '.7s'; ov.classList.add('melt'); document.body.classList.remove('opening'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
     ov.addEventListener('click', () => melt(true));
     const T = 1900;
     SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
