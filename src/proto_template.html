@@ -446,8 +446,9 @@ body.opening #s-title, body.opening #gnav { visibility: hidden; }
 #opn.gone { display: none; }
 #opn i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: ostw 3s ease-in-out infinite; }
 @keyframes ostw { 50% { opacity: .25; } }
-#opn canvas { position: absolute; left: 50%; bottom: max(16%, calc(env(safe-area-inset-bottom, 0px) + 72px)); width: min(92%, 360px); transform: translateX(-50%); image-rendering: pixelated; image-rendering: crisp-edges; opacity: 0; transition: opacity .6s; }
+#opn canvas { position: absolute; left: 50%; bottom: 0; width: min(92%, 360px); transform: translateX(-50%); image-rendering: pixelated; image-rendering: crisp-edges; opacity: 0; transition: opacity .6s; }
 #opn canvas.on { opacity: 1; }
+#opn .og { position: absolute; left: 0; right: 0; bottom: 0; height: calc(min(92vw, 360px) * .1125); background: #1b1722; transition: background .6s; }
 #opn canvas { -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
 @media (prefers-reduced-motion: reduce) { #opn { display: none; } }
 .pstage { position: relative; height: 230px; overflow: hidden; margin-top: 10px; }
@@ -2158,7 +2159,7 @@ const OPEN = (() => {
     if (location.hash.indexOf('debug') >= 0 && location.hash.indexOf('open') < 0) return;
     const ov = el('div'); ov.id = 'opn'; document.body.classList.add('opening');
     for (let i = 0; i < 46; i++) { const st = el('i'); st.style.cssText = 'left:' + ((i * 53 + 7) % 100) + '%;top:' + ((i * 29 + 3) % 62) + '%;animation-delay:-' + ((i % 9) * 0.33).toFixed(2) + 's;width:' + (i % 7 === 0 ? 3 : 2) + 'px;height:' + (i % 7 === 0 ? 3 : 2) + 'px'; ov.append(st); }
-    const cv = document.createElement('canvas'); cv.width = 160; cv.height = 80; ov.append(cv); document.body.append(ov);
+    const og = el('div', 'og'); ov.append(og); const cv = document.createElement('canvas'); cv.width = 160; cv.height = 80; ov.append(cv); document.body.append(ov); const GC = { '-2': '#1b1722', '-3': '#161a24', 2: '#1a1a26', 4: '#14161f' };
     const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
     const mOf = (e) => { try { return (DATA.find((d) => d.m.era === e) || DATA[0]).m; } catch (_) { return null; } };
     const SC = [
@@ -2173,7 +2174,7 @@ const OPEN = (() => {
     let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.animationDuration = '.7s'; ov.classList.add('melt'); document.body.classList.remove('opening'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
     ov.addEventListener('click', () => melt(true));
     const T = 1900;
-    SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
+    SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; og.style.background = GC[sc.e] || '#1b1722'; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
     setTimeout(() => melt(false), 300 + SC.length * T - 200);
   }
   return { start };
