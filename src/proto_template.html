@@ -523,7 +523,8 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
     </div>
     <p class="lead">バンド、シンガー、ラッパー、DJ。いろいろなミュージシャンの人生を、分かれ道ごとの選択で追体験します。売れるか売れないかは、性格と時代と運しだいです。</p>
     <p class="small" id="t-badge" hidden></p>
-    <button class="btn primary" id="b-start" type="button">はじめる</button>
+    <button class="btn primary" id="b-quick" type="button">▶ いますぐ遊ぶ</button>
+    <button class="btn line" id="b-start" type="button">自分で選んで始める</button>
     <p class="small fic">※実在の人物・団体とは関係のないフィクションです。</p>
     <button class="btn" id="b-zk" type="button">図鑑・殿堂を見る</button>
     <div class="unl-box" id="unl-title"></div>
@@ -935,7 +936,13 @@ function crownOf(w) {
 let S = { top: null, style: null, entry: null, node: null, works: 0, best: 999, skip: false, timers: [] };
 
 /* ---- 選択画面 ---- */
-$('#b-start').onclick = () => { S.auto = false; show('s-top'); };
+$('#b-start').onclick = () => { S.auto = false; S.quick = false; show('s-top'); };
+function quickNow() {
+  S.quick = true; S.auto = false; S.eraPick = null; S.eraF = null; S.sz = null;
+  let L = DATA.filter((d) => !d.m.rare && d.m.st); const R = L.filter((d) => d.m.real); if (R.length && Math.random() < 0.55) L = R;
+  const d = L[Math.floor(Math.random() * L.length)]; S.top = d.m.top; S.style = d.m.st; startTree(d);
+}
+$('#b-quick').onclick = quickNow;
 function bestSum(n) { if (n._b !== undefined) return n._b; n._b = n.e ? n.e.w.reduce((m, w) => m + w.tr * w.tr, 0) : Math.max(...n.n.map(bestSum)); return n._b; }
 const startRare = (era) => { const L = DATA.filter((d) => d.m.rare && d.m.era === era); const d = L[Math.floor(Math.random() * L.length)]; S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); };
 { const box = $('#dbg-real'); const lab = el('span', 'lab', 'デバッグ: 着想型の人生(' + DATA.filter((x) => x.m.real).length + '組)を選んで遊ぶ'); box.append(lab); DATA.filter((x) => x.m.real).forEach((d) => { const b = el('button', 'btn line', d.m.a + '(' + d.m.sn.replace(/\(.*$/, '') + '・' + d.m.es + ')'); b.type = 'button'; b.onclick = () => { S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); }; box.append(b); }); }
@@ -1179,7 +1186,7 @@ function showIntro(entry, go) {
   const bb = $('#in-bio'); bb.textContent = ''; try { const l0 = S.log; S.log = []; const rows = bioRows(); S.log = l0; rows.slice(0, 3).forEach((o) => bb.append(el('p', null, o[0] + ': ' + o[1]))); } catch (_) {}
   const grp = m.top === 'グループ' || (m.mm && m.mm.length > 1); const mem = $('#in-mem'); mem.textContent = '';
   if (!grp) mem.append(selfRow(m)); if (m.mm && m.mm.length) { $('#in-ml').textContent = grp ? 'メンバー' : '支える人'; m.mm.forEach((x) => mem.append(memRow(x))); } else $('#in-ml').textContent = '';
-  S.entry = prev; $('#in-go').onclick = () => { S.entry = entry; go(); }; $('#in-bk').onclick = () => { show('s-cand'); }; $('#in-back').onclick = () => { show('s-cand'); };
+  S.entry = prev; $('#in-go').onclick = () => { S.entry = entry; go(); }; $('#in-bk').textContent = S.quick ? 'べつの人生にする' : 'べつの人にする'; $('#in-bk').onclick = () => { if (S.quick) quickNow(); else show('s-cand'); }; $('#in-back').onclick = () => { show(S.quick ? 's-title' : 's-cand'); };
   show('s-intro');
 }
 function startTree0(entry) { if (!S.skipNote) noteTitles(entry);
