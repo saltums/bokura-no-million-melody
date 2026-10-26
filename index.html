@@ -524,6 +524,7 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
     <p class="lead">バンド、シンガー、ラッパー、DJ。いろいろなミュージシャンの人生を、分かれ道ごとの選択で追体験します。売れるか売れないかは、性格と時代と運しだいです。</p>
     <p class="small" id="t-badge" hidden></p>
     <button class="btn primary" id="b-start" type="button">はじめる</button>
+    <p class="small fic">※実在の人物・団体とは関係のないフィクションです。</p>
     <button class="btn" id="b-zk" type="button">図鑑・殿堂を見る</button>
     <div class="unl-box" id="unl-title"></div>
     <div id="dbg" hidden style="display:none;flex-direction:column;gap:8px">
@@ -3139,7 +3140,7 @@ function makeCards(dr, m, e, topW) {
   const base = (sub, idx) => { const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d'); g.textBaseline = 'alphabetic';
     g.fillStyle = '#14181F'; g.fillRect(0, 0, W, H); g.fillStyle = '#FFD21F'; g.fillRect(0, 0, W, 14); g.fillRect(0, H - 14, W, 14);
     g.fillStyle = '#9aa4b2'; g.font = F(700, 24); g.fillText('ぼくらのミリオンメロディ', 48, 64); g.textAlign = 'right'; g.fillText(sub + '  ' + idx + '/4', W - 48, 64); g.textAlign = 'left';
-    g.fillStyle = '#aab3c2'; g.font = F(700, 27); g.fillText('※この人生はフィクションです', 48, H - 62); g.fillStyle = '#7d8696'; g.font = F(500, 22); g.fillText('#ぼくらのミリオンメロディ', 48, H - 32); return [cv, g]; };
+    g.fillStyle = '#aab3c2'; g.font = F(700, 27); g.fillText('※実在の人物・団体とは関係のないフィクションです', 48, H - 62); g.fillStyle = '#7d8696'; g.font = F(500, 22); g.fillText('#ぼくらのミリオンメロディ', 48, H - 32); return [cv, g]; };
   const fit = (g, t, w) => { let x = t; while (g.measureText(x).width > w && x.length > 2) x = x.slice(0, -1); return x + (x !== t ? '…' : ''); };
   const wrap = (g, t, x, y, w, lh, max) => { let line = '', n = 0; for (const ch of t) { if (g.measureText(line + ch).width > w) { g.fillText(line, x, y); y += lh; line = ''; n++; if (n >= max) return y; } line += ch; } g.fillText(line, x, y); return y + lh; };
   const out = [];
@@ -3531,7 +3532,7 @@ function showEnding(e) {
     imgBox.append(nt); try { navigator.clipboard.writeText(text).catch(() => {}); } catch (_) {} };
   const b4 = el('button', 'btn primary', 'ホームに戻る'); b4.type = 'button'; b4.onclick = () => { clearTimers(); S.auto = false; show('s-title'); window.scrollTo(0, 0); };
   const b5 = el('button', 'btn line', '図鑑・殿堂を見る'); b5.type = 'button'; b5.onclick = () => { clearTimers(); S.auto = false; ZK.render(); show('s-zukan'); };
-  a.append(bimg, bx, b1, b2, b4, b5, b3, note); tail.append(a); tail.append(imgBox); finale(); try { setTimeout(() => SFX.jingle(dr.total), 700); } catch (_) {}
+  const fic = el('p', 'small fic', '※実在の人物・団体とは関係のないフィクションです。'); a.append(bimg, bx, b1, b2, b4, b5, b3, note, fic); tail.append(a); tail.append(imgBox); finale(); try { setTimeout(() => SFX.jingle(dr.total), 700); } catch (_) {}
   try { const m = S.entry.m; ZK.record({ ts: Date.now(), id: m.id, a: m.a, es: m.es, sn: m.sn, cr: cr[0], tot: dr.total, w: e.w.length, bt: bestTxt(best), fav: false, dt: { ws: e.w.map((w) => [w.y, w.ti, w.tr, w.rk || '']), tx: e.tx, cs: cr[1], cm: dr.cm, tl: dr.tl, vs: (() => { try { return voicesOf(e, dr).map((v) => [v[0], v[1]]); } catch (_) { return []; } })(), mm: (S.mem || []).map((x) => [x.n || x.name || '', x.r || x.role || '']).filter((x) => x[0]).slice(0, 8) } }); } catch (_) {}
   try { if (S.entry.m.rare && S.entry.m.era === 22 && DBG_ERA == null) setTimeout(() => ENDING.start(), 2800); } catch (_) {}
   try { FA.set(S.entry.m.a); } catch (_) {}
