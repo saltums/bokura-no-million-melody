@@ -1205,7 +1205,7 @@ function glow(g, cx, cy, r, col, a) { for (let k = r; k > 0; k -= 3) { g.fillSty
 function P_(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
 function PO(g, x, y, w, h, c) { P_(g, x - 1, y - 1, w + 2, h + 2, OL); P_(g, x, y, w, h, c); }
 function drawChar(g, x, y, o) {
-  const sk = o.skin, hr = o.hair, cl = o.cloth, fr = o.fr | 0, pose = o.pose || 'idle'; const bob = (pose === 'cheer' && fr % 2) ? -1 : 0; y += bob;
+  const sk = o.skin, hr = o.hair, cl = o.cloth, fr = o.fr | 0, pose = o.pose || 'idle'; const bob = ((pose === 'cheer' || pose === 'sing') && fr % 2) ? -1 : 0; y += bob;
   P_(g, x + 1, y + 23, 14, 2, 'rgba(0,0,0,.38)');
   // 髪(後ろ)
   if (o.style === 'long') { PO(g, x + 2, y + 5, 12, 11, hr[2]); }
@@ -1236,7 +1236,7 @@ function drawChar(g, x, y, o) {
     if (!bl) { P_(g, x + 6, y + hy + 5, 1, 3, OL); P_(g, x + 10, y + hy + 5, 1, 3, OL); P_(g, x + 5, y + hy + 5, 1, 1, '#6a8ad8'); P_(g, x + 9, y + hy + 5, 1, 1, '#6a8ad8'); } else { P_(g, x + 5, y + hy + 5, 2, 1, OL); P_(g, x + 9, y + hy + 5, 2, 1, OL); }
     if (o.fem) { P_(g, x + 5, y + hy + 4, 2, 1, OL); P_(g, x + 9, y + hy + 4, 2, 1, OL); }
     P_(g, x + 4, y + hy + 7, 2, 1, 'rgba(240,110,110,.55)'); P_(g, x + 10, y + hy + 7, 2, 1, 'rgba(240,110,110,.55)');
-    if (pose === 'cheer') { P_(g, x + 7, y + hy + 8, 3, 2, '#7a1a2a'); P_(g, x + 8, y + hy + 9, 1, 1, '#ff8a9a'); }
+    if (pose === 'cheer' || (pose === 'sing' && fr % 2)) { P_(g, x + 7, y + hy + 8, 3, 2, '#7a1a2a'); P_(g, x + 8, y + hy + 9, 1, 1, '#ff8a9a'); }
     else if (pose === 'slump') { P_(g, x + 7, y + hy + 9, 3, 1, '#7a4a4a'); P_(g, x + 7, y + hy + 8, 1, 1, '#7a4a4a'); P_(g, x + 10, y + hy + 8, 1, 1, '#7a4a4a'); P_(g, x + 13, y + hy + 6, 1, 3, '#7ac0ff'); P_(g, x + 13, y + hy + 9, 1, 1, '#c8e8ff'); }
     else { P_(g, x + 7, y + hy + 8, 2, 1, '#8a3a3a'); }
     // 髪(前)
@@ -3535,7 +3535,7 @@ const OPEN = (() => {
       { e: 4, n: 74, bg(g, f) { P_(g, 0, 62, 160, 18, '#14161f'); P_(g, 0, 62, 160, 1, '#2a2e40'); const bl = [[6, 30, 30], [40, 18, 38], [86, 26, 34], [122, 14, 44]]; bl.forEach(([x, y, w], bi) => { P_(g, x, y, w, 62 - y, bi % 2 ? '#1c2030' : '#222638'); for (let wy = y + 5; wy < 58; wy += 7) for (let wx = x + 4; wx < x + w - 4; wx += 6) if (((wx * 7 + wy * 3 + bi) % 5) < 2) P_(g, wx, wy, 3, 3, '#ffe28a'); }); }, x: 70 }
     ];
     let alive = true, fr = 0, cur = -1; const bgm = (() => { try { return BGM.ending(); } catch (_) { return null; } })();
-    const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, fr % 2 ? 'cheer' : 'idle', fr)); g.restore(); } } catch (_) {} };
+    const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, 'sing', fr >> 1)); g.restore(); } } catch (_) {} };
     const tm = setInterval(draw, 230);
     let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.animationDuration = '.7s'; ov.classList.add('melt'); document.body.classList.remove('opening'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
     ov.addEventListener('click', () => melt(true));
