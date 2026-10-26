@@ -443,6 +443,11 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 #opn.melt { -webkit-mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-position: 0 0; mask-position: 0 0; animation: opmelt 1.5s ease-in forwards; }
 @keyframes opmelt { from { -webkit-mask-position: 0 0; mask-position: 0 0; } to { -webkit-mask-position: 0 100%; mask-position: 0 100%; } }
 body.opening #s-title, body.opening #gnav { visibility: hidden; }
+#tsky { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100dvh; z-index: -1; display: none; pointer-events: none; background: linear-gradient(180deg, #05071a 0%, #0b1030 45%, #1a2050 78%, #2a2f66 100%); }
+#tsky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: ostw 3s ease-in-out infinite; }
+body.ontitle { background: #05071a; --bg: #0b1030; --surface: #181c3a; --fg: #ECEEF1; --muted: #a9b3d6; --line: #3a4170; color-scheme: dark; }
+body.ontitle #tsky { display: block; }
+body.ontitle::before { background: transparent; }
 #opn.gone { display: none; }
 #opn i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: ostw 3s ease-in-out infinite; }
 @keyframes ostw { 50% { opacity: .25; } }
@@ -772,7 +777,7 @@ function stepBar(id) {
   STEP_NM.forEach((t, i) => { bar.append(el('i', i < cur ? 'done' : i === cur ? 'cur' : '')); nm.append(el('span', i === cur ? 'cur' : '', (i + 1) + ' ' + t)); });
   st.append(bar, nm);
 }
-function show(id) { try { if (id === 's-title') ENDING.badge(); } catch (_) {} try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
+function show(id) { try { document.body.classList.toggle('ontitle', id === 's-title'); } catch (_) {} try { if (id === 's-title') ENDING.badge(); } catch (_) {} try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
 
 const AWC = {
   p: [['自分の集落', 100], ['谷の集落', 2000], ['山向こうの部族', 12000], ['海の向こうの民', 30000]],
@@ -2185,6 +2190,7 @@ const OPEN = (() => {
   return { start };
 })();
 try { const b = document.getElementById('boot'); if (b) b.remove(); } catch (_) {}
+try { const ts = document.createElement('div'); ts.id = 'tsky'; ts.setAttribute('aria-hidden', 'true'); for (let i = 0; i < 46; i++) { const st = document.createElement('i'); st.style.cssText = 'left:' + ((i * 53 + 7) % 100) + '%;top:' + ((i * 29 + 3) % 62) + '%;animation-delay:-' + ((i % 9) * 0.33).toFixed(2) + 's;width:' + (i % 7 === 0 ? 3 : 2) + 'px;height:' + (i % 7 === 0 ? 3 : 2) + 'px'; ts.append(st); } document.body.prepend(ts); const t0 = document.getElementById('s-title'); if (t0 && !t0.hidden) document.body.classList.add('ontitle'); } catch (_) {}
 try { OPEN.start(); } catch (_) {}
 try { ENDING.badge(); } catch (_) {}
 try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); } catch (_) { const n = document.createElement('div'); n.textContent = 'このブラウザでは記録を保存できません(プライベートモード等)。遊べますが、人生の記録・時代解放は残りません。'; n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:12px'; n.onclick = () => n.remove(); document.body.append(n); }
