@@ -453,7 +453,7 @@ body.ontitle::before { background: transparent; }
 @keyframes ostw { 50% { opacity: .25; } }
 #opn canvas { position: absolute; left: 50%; bottom: 0; width: min(92%, 360px); transform: translateX(-50%); image-rendering: pixelated; image-rendering: crisp-edges; opacity: 0; transition: opacity .6s; }
 #opn canvas.on { opacity: 1; }
-#opn .ohint { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top,0px) + 18px); text-align: center; color: #9fb0ff; font-size: 12px; letter-spacing: .15em; opacity: .8; animation: ohp 1.6s ease-in-out infinite; pointer-events: none; }
+#opn .ohint { position: absolute; left: 0; right: 0; top: 42%; text-align: center; color: #9fb0ff; font-size: 15px; letter-spacing: .2em; opacity: .8; animation: ohp 1.6s ease-in-out infinite; pointer-events: none; }
 @keyframes ohp { 50% { opacity: .3; } }
 #opn .og { position: absolute; left: 0; right: 0; bottom: 0; height: calc(min(92vw, 360px) * .1125); background: #1b1722; transition: background .6s; }
 #opn canvas { -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
@@ -3543,15 +3543,20 @@ const OPEN = (() => {
       { e: 2, n: 67, bg(g, f) { P_(g, 0, 62, 160, 18, '#1a1a26'); P_(g, 0, 62, 160, 1, '#2c2c40'); P_(g, 70, 26, 80, 36, '#262636'); P_(g, 70, 26, 80, 2, '#3a3a52'); P_(g, 84, 34, 52, 12, '#0e0e18'); g.fillStyle = f % 4 < 2 ? '#ff7ab0' : '#7ae0ff'; g.font = '9px DotGothic16, monospace'; g.fillText('LIVE', 94, 44); P_(g, 118, 50, 14, 12, '#3a2a22'); P_(g, 24, 20, 3, 42, '#2a2a38'); P_(g, 8, 24, 36, 1, '#2a2a38'); P_(g, 12, 30, 28, 1, '#2a2a38'); }, x: 40 },
       { e: 4, n: 74, bg(g, f) { P_(g, 0, 62, 160, 18, '#14161f'); P_(g, 0, 62, 160, 1, '#2a2e40'); const bl = [[6, 30, 30], [40, 18, 38], [86, 26, 34], [122, 14, 44]]; bl.forEach(([x, y, w], bi) => { P_(g, x, y, w, 62 - y, bi % 2 ? '#1c2030' : '#222638'); for (let wy = y + 5; wy < 58; wy += 7) for (let wx = x + 4; wx < x + w - 4; wx += 6) if (((wx * 7 + wy * 3 + bi) % 5) < 2) P_(g, wx, wy, 3, 3, '#ffe28a'); }); }, x: 70 }
     ];
-    let alive = true, fr = 0, cur = -1; const bgm = (() => { try { return BGM.ending(); } catch (_) { return null; } })();
+    let alive = true, fr = 0, cur = -1; let bgm = null;
     const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, 'sing', fr >> 1)); g.restore(); } } catch (_) {} };
     const tm = setInterval(draw, 230);
     let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.animationDuration = '.7s'; ov.classList.add('melt'); document.body.classList.remove('opening'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
-    const hint = el('div', 'ohint', '♪ タップで音を出す'); let lk = false; try { lk = BGM.locked(); } catch (_) {} if (lk) ov.append(hint);
-    ov.addEventListener('click', () => { let l = false; try { l = BGM.locked(); } catch (_) {} if (l) { BGM.unlock(); hint.remove(); return; } melt(true); });
-    const T = 1900;
-    SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; og.style.background = GC[sc.e] || '#1b1722'; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
-    setTimeout(() => melt(false), 300 + SC.length * T - 200);
+    let bgmOn = true; try { bgmOn = BGM.on !== false; } catch (_) {}
+    const T = 1900; let started = false;
+    const go = () => {
+      if (started) return; started = true; hint.remove(); try { bgm = BGM.ending(); } catch (_) {}
+      SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; og.style.background = GC[sc.e] || '#1b1722'; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
+      setTimeout(() => melt(false), 300 + SC.length * T - 200);
+    };
+    const hint = el('div', 'ohint', '♪ タップではじめる'); ov.append(hint);
+    ov.addEventListener('click', () => { if (!started) go(); else melt(true); });
+    if (!bgmOn) go();
   }
   return { start };
 })();
