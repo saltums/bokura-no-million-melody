@@ -3508,7 +3508,7 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, dur); });
         clearInterval(ptm); if (bgm) for (let g = 1; g <= 7; g++) bgm.layer(g);
         clear();
-        await line('宇宙の果て。' + LINE[22], 'era', 2800);
+        await line('宇宙の果て\n最後の歌うたいが、\n最後の歌を歌った', 'era', 3600);
         clear();
         const st = [`通算 ${PL.n()}回プレイ`, `出会った時代 ${[...met].filter((e) => all.indexOf(e) >= 0).length} / ${all.length}`, `最高評価 ${(z.lives || []).reduce((m, l) => Math.max(m, l.tot), 0)} / 400`];
         for (const s of st) { box.append(el('p', 'endl on sub', s)); }
