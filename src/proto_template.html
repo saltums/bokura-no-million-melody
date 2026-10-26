@@ -2109,7 +2109,7 @@ const ENDING = (() => {
     const ov = el('div', 'endov'); const box = el('div', 'endbox'); ov.append(box);
     const skip = el('button', 'endskip', '結果へ'); skip.type = 'button'; ov.append(skip);
     document.body.append(ov); try { SFX.play('big'); } catch (_) {}
-    const bgm = (() => { try { BGM.stop(); return BGM.ending(); } catch (_) { return null; } })();
+    const bgm = (() => { try { THEME.stop(true); BGM.stop(); return BGM.ending(); } catch (_) { return null; } })();
     let alive = true, timers = [], nextFn = null;
     const T = (f, ms) => { const t = setTimeout(() => { if (alive) f(); }, ms); timers.push(t); return t; };
     const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); box.append(p); requestAnimationFrame(() => p.classList.add('on')); nextFn = res; T(res, hold || 2200); });
@@ -2228,7 +2228,7 @@ function voicesOf(e, dr) {
   const pre = m.rare && [15, 16, 17, 18, 19, 20, 21, 22, 23, -2, -3].indexOf(m.era) >= 0;
   return V.map(([k, t, ic]) => { if (m.rare && k === '音楽ライター' && RWL[m.era]) k = RWL[m.era]; if (pre) RWP.forEach(([x, y]) => { t = t.split(x).join(y); }); return [k, ij(t), ic]; });
 }
-function showEnding(e) {
+function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   document.documentElement.style.setProperty('--dockh', '0px');
   const tail = $('#tail'); $('#gcols').classList.add('done');
   const end = el('div', 'end in'); end.append(el('span', 'lab', '結末')); e.tx = coherentEnding(e.tx.replace(/。$/, ''), e.w, S.entry.m.a); end.append(el('p', 'tx', e.tx + '。'));
