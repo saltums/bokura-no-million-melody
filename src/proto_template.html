@@ -763,11 +763,22 @@ const BGM = (() => {
     unlock() { try { if (ctx) ctx.resume(); } catch (_) {} },
     stop(fade) { if (!ctx) return; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, fade ? .8 : .15); const t0 = timer; setTimeout(() => { if (timer === t0) { clearInterval(timer); timer = null; } }, fade ? 3200 : 700); },
     end() { if (!ctx || !on || !cfg) return; const t = ctx.currentTime + .05; clearInterval(timer); timer = null; master.gain.cancelScheduledValues(t); master.gain.setTargetAtTime(.55, t, .05); const sc = cfg.scale; [0, 2, 4, 7, 9].forEach((d, k) => { const m = cfg.root + 12 + 12 * Math.floor(d / sc.length) + sc[d % sc.length]; tone(t + k * .16, m, 1.6, cfg.lead === 'pluck' ? 'triangle' : 'sine', .12, true, .01); }); [0, 2, 4].forEach((d) => tone(t + .8, cfg.root - 12 + sc[d % sc.length], 3.2, 'sine', .08, true, .05)); master.gain.setTargetAtTime(0, t + 3.6, .8); },
-    toggle() { on = !on; try { localStorage.setItem('bgm', on ? '1' : '0'); } catch (_) {} if (!on) this.stop(); else if (era0 != null && $('#s-game') && !$('#s-game').hidden && !document.querySelector('.gcols.done')) this.start(era0, (S.entry && S.entry.m.id) || 1); return on; }
+    toggle() { on = !on; try { localStorage.setItem('bgm', on ? '1' : '0'); } catch (_) {} if (!on) { this.stop(); try { THEME.stop(true); } catch (_) {} } else if (era0 != null && $('#s-game') && !$('#s-game').hidden && !document.querySelector('.gcols.done')) this.start(era0, (S.entry && S.entry.m.id) || 1); return on; }
   };
 })();
 document.addEventListener('visibilitychange', () => { try { if (document.hidden) BGM.stop(); else if (BGM.on && S.entry && !document.querySelector('.gcols.done') && !$('#s-game').hidden) BGM.start(S.entry.m.era, S.entry.m.id, S.entry.m.bgm); } catch (_) {} });
 
+const THEME = (() => {
+  let a = null, want = false;
+  const ok = () => { try { return BGM.on !== false; } catch (_) { return true; } };
+  return {
+    play() { if (!ok()) return false; try { if (!a) { a = new Audio('theme.mp3'); a.loop = true; a.preload = 'auto'; } a.volume = 0.8; want = true; const p = a.play(); if (p && p.catch) p.catch(() => {}); return true; } catch (_) { return false; } },
+    stop(fade) { want = false; if (!a) return; const x = a; if (!fade) { try { x.pause(); } catch (_) {} return; } let v = x.volume; const t = setInterval(() => { v -= 0.08; if (v <= 0) { clearInterval(t); try { x.pause(); x.currentTime = 0; } catch (_) {} } else { try { x.volume = v; } catch (_) {} } }, 60); },
+    vis(h) { if (!a || !want) return; try { if (h) a.pause(); else a.play().catch(() => {}); } catch (_) {} },
+    get on() { return want; }
+  };
+})();
+document.addEventListener('visibilitychange', () => { try { THEME.vis(document.hidden); } catch (_) {} });
 const STEP_OF = { 's-top': 0, 's-style': 1, 's-cand': 2, 's-custom': 2, 's-intro': 3 }; const STEP_NM = ['種類', '形', '人選び', '紹介'];
 function stepBar(id) {
   const sec = $('#' + id); if (!sec || !(id in STEP_OF)) return; let st = sec.querySelector('.steps'); const cur = STEP_OF[id];
@@ -1171,7 +1182,7 @@ function showIntro(entry, go) {
   show('s-intro');
 }
 function startTree0(entry) { if (!S.skipNote) noteTitles(entry);
-  clearTimers(); try { BGM.start(entry.m.era, entry.m.id, entry.m.bgm); } catch (_) {}
+  clearTimers(); try { THEME.stop(true); } catch (_) {} try { BGM.start(entry.m.era, entry.m.id, entry.m.bgm); } catch (_) {}
   S.entry = entry; S.awP = 0; S.stg = 0; S.rtN = 0; S.rtW = -1; S.fesN = 0; S.fesOk = 0; S.evN = 0; S.relN = 0; S.fuq = []; S.selfDone = false; S.selfAt = Math.random() < 0.5 ? 3 + Math.floor(Math.random() * 3) : 0; S.sdN = 0; S.sdUsed = new Set(); S.evUsed = new Set(); S.evFam = new Set(); TIER = entry.m.tn || TIER_D; S.works = 0; S.best = 999; S.skip = false; S.heat = 0; S.tiers = []; S.ms = {}; S.dn = 0; S.path = []; S.log = []; S.lastY = null; S.mem = JSON.parse(JSON.stringify(entry.m.mm || [])); S.exMem = []; S.inMem = []; S.curEl = null; $('#gcols').classList.remove('done'); $('#gcols').classList.remove('deciding');
   $('#feed').textContent = ''; $('#tail').textContent = '';
   const m = entry.m;
@@ -2184,7 +2195,7 @@ const OPEN = (() => {
     let bgmOn = true; try { bgmOn = BGM.on !== false; } catch (_) {}
     const T = 1900; let started = false;
     const go = () => {
-      if (started) return; started = true; hint.remove(); try { bgm = BGM.ending(); } catch (_) {}
+      if (started) return; started = true; hint.remove(); let th = false; try { th = THEME.play(); } catch (_) {} if (!th) { try { bgm = BGM.ending(); } catch (_) {} }
       SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; og.style.background = GC[sc.e] || '#1b1722'; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
       setTimeout(() => melt(false), 300 + SC.length * T - 200);
     };
