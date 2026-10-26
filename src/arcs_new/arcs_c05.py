@@ -15,7 +15,7 @@ def D(*rows):
     return out
 
 ARCS = [
- A("c05_ffd", "FRANC FERDINAND", "band", 2002, "ガレージ・ロック・リバイバル", "m", ["恋のはじまり", "ナンセンスと言葉遊び", "孤独と夜"],
+ A("c05_ffd", "FRANKFURTER FERDINAND", "band", 2002, "ガレージ・ロック・リバイバル", "m", ["恋のはじまり", "ナンセンスと言葉遊び", "孤独と夜"],
   "グラスゴーの古い倉庫を借りた練習場", "グラスゴーの古い倉庫の練習場で、踊れるギターロックを鳴らそうと四人が集まったところから始まった",
   ["Vo", "Gt", "Ba", "Dr"], ["歌う前に片眉を上げて客席を見渡す", "ギターと鍵盤を持ち替えながら涼しい顔をしている", "ベースを抱えて背筋を伸ばして立っている", "ドラムの前で譜面を几帳面に並べ直す"],
   ["倉庫の練習場で、四人は踊れる音だけを探し続けていた。", "小さなレーベルと契約し、初めての一枚を世に出した。", "テンポが途中で切り替わる一曲が、あちこちのダンスフロアで鳴った。", "二枚目が首位に立ち、街の人気者として迎えられた。", "舞台は大きくなり、音は踊りの色を強めていった。", "顔ぶれが変わる節目を越えて、四人の名前は続いた。"],
@@ -26,10 +26,10 @@ ARCS = [
     ("三枚目で踊りの色を強めるか、これまでの形で通すか。", "踊りの色を強めて舵を切る", "これまでの形で通す", "新しい色が出て、フロアで愛される一枚になった。", "安心して聴けたが、驚きは薄れた。")),
   "小さなレーベルで尖った音を出し、テンポの切り替えで踊らせ、勢いのまま二枚目を出して、三枚目で踊りの色を強めた。",
   ["大きなレーベルで広まったが、尖りが丸くなった。", "一定のテンポで通し、記憶に残る瞬間が薄れた。", "これまでの形で通し、驚きが薄れた。"],
-  ["小さなレーベル", "テンポの切り替え", "勢いの二枚目", "踊りの色"], ["FRANC FERDINAND", "FRANC FERDINAND"],
+  ["小さなレーベル", "テンポの切り替え", "勢いの二枚目", "踊りの色"], ["FRANKFURTER FERDINAND", "FRANKFURTER FERDINAND"],
   [("アレックス・カプリコス", "Vo", "m"), ("ニック・マッカーサー", "Gt", "m"), ("ボブ・ハーデン", "Ba", "m"), ("ポール・トムソー", "Dr", "m")]),
 
- A("c05_blp", "BLOCK PARTY", "band", 2003, "インディー・ロック", "m", ["孤独と夜", "自己否定と肯定", "上京と故郷"],
+ A("c05_blp", "BROCCOLI PARTY", "band", 2003, "インディー・ロック", "m", ["孤独と夜", "自己否定と肯定", "上京と故郷"],
   "ロンドンの小さなライブハウスの楽屋", "ロンドンの小さなライブハウスの楽屋で、フェスで再会した二人が新しい仲間を探し、四人で鳴らし始めたところから始まった",
   ["Vo", "Gt", "Ba", "Dr"], ["歌う前に目を閉じて息を整える", "ギターの音色を細かく調整し続ける", "ベースと鍵盤を持ち替えながら静かに頷く", "ドラムの前で身体を揺らして今にも叩き出しそうに笑う"],
   ["楽屋で、四人は尖ったギターと速いビートだけを信じていた。", "初めてのアルバムが評判になり、街の外にまで名前が届いた。", "二枚目では、街の暮らしを見つめる曲が増えていった。", "三枚目で音はさらに内向きになり、聴き手を戸惑わせた。", "しばらくの休みの後、四人は再び同じ舞台に立った。", "顔ぶれが変わる節目を越えて、二人の名前は続いていった。"],
@@ -40,10 +40,10 @@ ARCS = [
     ("活動の節目で、いったん休むか、走り続けるか。", "いったん休んで、それぞれ別の道を試す", "休まずに走り続ける", "休みの後、再集合した舞台に温かい拍手が起きた。", "走り続けたが、四人の距離は少しずつ開いた。")),
   "新しい名前で出直し、尖った音で一枚目を看板にし、内向きに深く潜って、いったん休んでから再び集まった。",
   ["前の名前のまま続け、古い印象が残った。", "聴きやすく整え、刺さる力が弱まった。", "休まず走り続け、距離が開いた。"],
-  ["新しい名前", "尖ったギター", "内向きの深み", "休みと再集合"], ["BLOCK PARTY", "BLOCK PARTY"],
+  ["新しい名前", "尖ったギター", "内向きの深み", "休みと再集合"], ["BROCCOLI PARTY", "BROCCOLI PARTY"],
   [("ケレ・オケレテ", "Vo/Gt", "m"), ("ラッセル・リサイク", "Gt", "m"), ("ゴードン・コークス", "Ba", "m"), ("マット・トンガ", "Dr", "m")]),
 
- A("c05_kch", "KAISER CHEFS", "band", 2003, "ブリットポップ・リバイバル", "m", ["日常のぼやき", "地元愛", "応援歌"],
+ A("c05_kch", "KAISER ROLL CHEFS", "band", 2003, "ブリットポップ・リバイバル", "m", ["日常のぼやき", "地元愛", "応援歌"],
   "リーズの仲間の溜まり場になっている練習スタジオ", "リーズの練習スタジオで、学生時代からの仲間が名前を変えて出直し、街の暮らしを歌い始めたところから始まった",
   ["Vo", "Gt", "Ba", "Key", "Dr"], ["歌う前にマイクスタンドを振り回して煽る", "ギターを弾きながら客席に笑いかける", "ベースを抱えて落ち着いた顔で全体を見ている", "鍵盤の前で跳ねるように体を揺らす", "ドラムの後ろから曲の流れを指示している"],
   ["練習スタジオで、五人は昔の名前を捨てて出直す決心をした。", "街の暮らしを歌った一曲が、地元で笑顔と共に歌われた。", "初めてのアルバムが、国じゅうで聴かれる一枚になった。", "二枚目は、勢いの中でどっしりとした自信を見せた。", "大きな野外の舞台で、客席が一緒に歌った。", "ドラムが入れ替わる節目を越えて、五人の名前は続いた。"],
@@ -54,10 +54,10 @@ ARCS = [
     ("ドラムが抜ける節目で、後任を迎えて続けるか。", "後任を迎えて看板を守る", "ここで幕を引く", "新しい顔ぶれが加わり、五人の名前は続いた。", "美しい幕引きになったが、続きを聴く機会は失われた。")),
   "名前を変えて出直し、街の暮らしを歌って合唱を生み、勢いのまま二枚目を出して、ドラムの交代を越えて看板を守った。",
   ["古い名前で粘り、勢いは戻らなかった。", "遠い物語を歌い、親しみが薄れた。", "ここで幕を引き、短くも鮮やかな歩みになった。"],
-  ["名前を変える", "街の暮らし", "勢いの二枚目", "ドラムの交代"], ["KAISER CHEFS", "KAISER CHEFS"],
+  ["名前を変える", "街の暮らし", "勢いの二枚目", "ドラムの交代"], ["KAISER ROLL CHEFS", "KAISER ROLL CHEFS"],
   [("リッキー・ウィンソン", "Vo", "m"), ("アンドリュー・ブライト", "Gt", "m"), ("サイモン・リッチ", "Ba", "m"), ("ニック・ペインズ", "Key", "m"), ("ニック・ホジキン", "Dr", "m")]),
 
- A("c05_wst", "THE WHITE STRIPS", "duo", 1997, "ガレージ・ロック", "x", ["恋のはじまり", "自己否定と肯定", "ナンセンスと言葉遊び"],
+ A("c05_wst", "THE WHITE STRIPE TOOTHPASTE", "duo", 1997, "ガレージ・ロック", "x", ["恋のはじまり", "自己否定と肯定", "ナンセンスと言葉遊び"],
   "デトロイトの小さなバーの隅", "デトロイトの小さなバーで、ギターとドラムだけの二人が初めて舞台に立ったところから始まった",
   ["Vo", "Dr"], ["歌う前にギターの音を鳴らして客席を睨む", "ドラムの前で静かに微笑んで叩き出す"],
   ["小さなバーの隅で、二人はギターとドラムだけの音を鳴らした。", "最初のアルバムは、手作りのような荒さの中で出された。", "三枚目が大きなレーベルで再び世に出て、評判が一気に広がった。", "四枚目が首位に立ち、ある一曲が球場の合唱になった。", "音の形を変えながらも、二人の形は崩さなかった。", "長い休みの後、二人は終わりをていねいに告げた。"],
@@ -68,10 +68,10 @@ ARCS = [
     ("体調を崩した時、無理して回るか、休むか。", "身体を最優先にして休む", "予定通りに走り続ける", "休みの後、二人は終わりをていねいに告げられた。", "走り続けたが、続ける気持ちが先にすり減った。")),
   "二人きりの形を貫き、大きなレーベルで広く届け、単純なリフで合唱を生み、身体を最優先にして終わりをていねいに告げた。",
   ["ベースを加えて厚くし、二人きりの緊張が薄れた。", "独立系に残って、広まりはゆっくりだった。", "走り続けて、気持ちが先にすり減った。"],
-  ["二人きり", "大きなレーベル", "単純なリフ", "ていねいな終わり"], ["THE WHITE STRIPS", "THE WHITE STRIPS"],
+  ["二人きり", "大きなレーベル", "単純なリフ", "ていねいな終わり"], ["THE WHITE STRIPE TOOTHPASTE", "THE WHITE STRIPE TOOTHPASTE"],
   [("ジャック・ホワイツ", "Vo/Gt", "m"), ("メグ・ホワルト", "Dr", "f")]),
 
- A("c05_mse", "MOUSE", "band", 1994, "オルタナティブ・ロック", "m", ["時代風刺", "孤独と夜", "自己否定と肯定"],
+ A("c05_mse", "MUESLI", "band", 1994, "オルタナティブ・ロック", "m", ["時代風刺", "孤独と夜", "自己否定と肯定"],
   "デヴォン州の海辺の町の学校の音楽室", "海辺の町の学校の音楽室で、別々のバンドにいた三人が一つのバンドを組んだところから始まった",
   ["Vo", "Ba", "Dr"], ["歌う前にギターを抱えたまま天を仰ぐ", "ベースを抱えて落ち着いた顔で全体を支える", "ドラムの前で身体を大きく揺らして叩き出す"],
   ["音楽室で、三人は大きな夢を静かに語り合っていた。", "名前を決め直し、地元の小さな舞台を抜け出した。", "壮大な音の二枚目が、聴き手を驚かせた。", "三枚目が首位に立ち、野外フェスで夜空の下の主役になった。", "巨大な舞台で、物語のような演奏を作り上げた。", "後の世代が、あの大きな音を宝物のように語った。"],
@@ -82,20 +82,20 @@ ARCS = [
     ("巨大な舞台で、物語のような演出を仕掛けるか。", "物語のような演出を仕掛ける", "演奏だけで勝負する", "演出と音が一つになり、語り草の舞台になった。", "音は丁寧だったが、記憶に残る光景は少なかった。")),
   "名前を決め直して町を出て、大きなレーベルと組み、壮大な方向へ踏み出して、物語のような舞台を作り上げた。",
   ["地元に残って、広がりは小さかった。", "一枚目の形を続け、驚きは生まれなかった。", "演奏だけで勝負し、記憶に残る光景が少なかった。"],
-  ["名前の決め直し", "世界を狙う", "壮大な方向", "物語の舞台"], ["MOUSE", "MOUSE"],
+  ["名前の決め直し", "世界を狙う", "壮大な方向", "物語の舞台"], ["MUESLI", "MUESLI"],
   [("マシュー・ベラニー", "Vo/Gt/Key", "m"), ("クリス・ウォルステンホルン", "Ba", "m"), ("ドミニク・ハワーズ", "Dr", "m")]),
 ]
 
 PT = {
- "c05_ffd": ["Take Me Oat", "Michelle", "The Dork of the Matinée", "This Fine", "Darts of Pleasure", "Jacketline", "Do You Want Toe", "Ulysse", "No You Gulls", "Walk Awry", "The Fallow", "Eleanor Put Your Boats On", "Tell Her Tonight", "Auf Achte", "Eating on You", "Come on Hose", "41'", "This Ffffire", "Van Mango", "Shopping for Flood", "All for You, Sophie", "Birds So Leisured", "Love and Deploy", "Track Stop", "Get Up and Lose Me", "This Bay", "Eve and a Heathen", "You're the Season I'm Leaving", "Well That Was Easel", "What You Meat", "I'm Your Village", "You Could Have It So Much Butter", "Fate Together", "Outriders", "Your Dairy", "Fabulously Hazy", "Turn It Off", "Sand Him Away", "Twilight Lemons", "Kite Hard", "What She Game For", "Love Alone", "Can't Stop Peeling", "Lucid Creams", "Cream Again", "Katherine Miss Me", "Katherine Hat Me", "Heisa-Hi", "Light Action"],
- "c05_blp": ["This Modern Dove", "Banquets", "Helicopters", "Like Eating Grass", "Positive Pension", "So Here We Ate", "Two More Tears", "Price of Glass", "Plants", "Lune", "Complaints", "Blue Night", "The Marshals Are Deaf", "She's Hearing Choices", "Staying Fit", "The Answers", "Little Troughs", "Skeletons", "Stork and Stress", "Tutus", "Hunting for Wishes", "I Chill Remember", "Flax", "The Player", "Kreuzburg", "Om", "Song for Clap", "Sundae", "SRXY", "Uniforms", "Waiting for the 7.19", "Where Is Hope?", "Mercy", "One Moth Off", "Sighs", "Arts", "Better Than Seven", "Bike", "Hall", "Iron Square", "Salons", "Trojan Hose", "Zephyrs", "One More Dance", "Letter to My Sun", "Your Visors Are Getting Shorter", "Idea for a Stork", "Zero", "Always Few Depths", "Ireland", "We Were Rovers", "The Pleasant", "Sockets"],
- "c05_kch": ["I Predict a Diet", "Oh My Cod", "Everyday I Leave You Less and Less", "Modern Wax", "You Can Have It Ale", "Na Na Na Na Nan", "Born to Be a Danger", "Saturday Light", "What Did I Ever Give Us?", "Time Honoured Transition", "Carolina, Yes", "Tea Mate", "Take My Temperance", "Wrecking Bell", "Rugby", "The Angry Mop", "Heat Dies Dawn", "Highroads", "Love's Not a Condition", "Thank You Very Mulch", "I Can Do It Without Two", "My Kind of Pie", "Everything Is Average Noodles", "Boxing Chomp", "Learnt My Lesson Wall", "Try Your Beet", "Refinement", "Admit You", "I Like to Bite", "From the Deck Down", "Your Soup", "Spanish Medal", "Never Miss a Beet", "Lick It Too Much", "You Want Mystery", "Can't Say What I Meat", "Good Days Bad Rays", "Potato in the Rain", "Half the Truck", "Always Happens Like Hat", "Addicted to Mugs", "Remember You're a Gull", "Sooner or Latte", "How Do You Feel About Chat", "Little Socks", "Man on Mats", "Kinda Girl You Ate", "Bless Is More", "Brightest Stat", "Not Surprise", "Drink About You", "Hard Times Sand Me", "Sink That Chip", "The Better Song", "Seventeen Cops", "Rum Again", "People Need Lime", "Mood", "Another Plumber"],
+ "c05_ffd": ["Take Me Oat", "Michelin", "The Dork of the Matinée", "This Fine", "Darts of Pleasure", "Jacketline", "Do You Want Toe", "Ulysse", "No You Gulls", "Walk Awry", "The Fallow", "Eleanor Put Your Boats On", "Tell Her Tonight", "Auf Achte", "Eating on You", "Come on Hose", "41'", "Ulysses Udon", "Van Mango", "Shopping for Flood", "All for You, Sophie", "Birds So Leisured", "Love and Deploy", "Track Stop", "Get Up and Lose Me", "This Bay", "Eve and a Heathen", "You're the Season I'm Leaving", "Well That Was Easel", "What You Meat", "I'm Your Village", "You Could Have It So Much Butter", "Fate Together", "Outriders", "Your Dairy", "Fabulously Hazy", "Turn It Off", "Sand Him Away", "Twilight Lemons", "Kite Hard", "What She Game For", "Love Alone", "Can't Stop Peeling", "Lucid Creams", "Cream Again", "Katherine Miss Me", "Matinée Ramen", "Heisa-Hi", "Light Action"],
+ "c05_blp": ["This Modern Dove", "Banquets", "Helicopters", "Like Eating Grass", "Positive Pension", "So Here We Ate", "Two More Tears", "Price of Glass", "Plants", "Lune", "Complaints", "Blue Night", "The Marshals Are Deaf", "She's Hearing Choices", "Staying Fit", "The Answers", "Little Troughs", "Skeletons", "Stork and Stress", "Tutus", "Hunting for Wishes", "I Chill Remember", "Flax", "The Player", "Kreuzburg", "Om", "Song for Clap", 'Sundae Service', "SRXY", "Uniforms", "Waiting for the 7.19", "Where Is Hope?", "Mercy", "One Moth Off", "Sighs", "Arts", "Better Than Seven", "Bike", "Hall", "Iron Square", "Salons", "Trojan Hose", "Zephyrs", 'One More Danish', "Letter to My Sun", "Your Visors Are Getting Shorter", "Idea for a Stork", 'Zero Sum', "Always Few Depths", "Ireland", "We Were Rovers", "The Pleasant", "Sockets"],
+ "c05_kch": ["I Predict a Diet", "Oh My Cod", "Everyday I Leave You Less and Less", "Modern Wax", "You Can Have It Ale", "Na Na Na Na Nan", "Born to Be a Danger", 'Saturday Lamp', "What Did I Ever Give Us?", "Time Honoured Transition", "Carolina, Yes", "Tea Mate", "Take My Temperance", "Wrecking Bell", "Rugby", "The Angry Mop", "Heat Dies Dawn", "Highroads", "Love's Not a Condition", "Thank You Very Mulch", "I Can Do It Without Two", "My Kind of Pie", "Everything Is Average Noodles", "Boxing Chomp", "Learnt My Lesson Wall", "Try Your Beet", "Refinement", "Admit You", "I Like to Bite", "From the Deck Down", "Your Soup", "Spanish Medal", "Never Miss a Beet", "Lick It Too Much", "You Want Mystery", "Can't Say What I Meat", "Good Days Bad Rays", "Potato in the Rain", "Half the Truck", "Always Happens Like Hat", "Addicted to Mugs", "Remember You're a Gull", "Sooner or Latte", "How Do You Feel About Chat", "Little Socks", "Man on Mats", "Kinda Girl You Ate", "Bless Is More", "Brightest Stat", "Not Surprise", "Drink About You", "Hard Times Sand Me", "Sink That Chip", "The Better Song", "Seventeen Cops", "Rum Again", "People Need Lime", 'Mood', "Another Plumber"],
  "c05_wst": ["Seven Nation Amy", "Fell in Love with a Grill", "Hotel Yorbs", "We're Going to Be Fiends", "The Hardest Button to Butter", "Blue Orchard", "My Doorbelt", "Icky Thumb", "Conquer", "Dead Leaves and the Dirty Round", "Ball and Biscotti", "Black Moth", "Hypnotizer", "I Just Don't Know What to Do with Myshelf", "In the Gold, Cold Night", "There's No Home for You Hare", "You've Got Her in Your Rocket", "Little Scorns", "Girl, You Have No Face in Medicine", "The Hair Near My Fingers", "It's True That We Love One Mother", "I Want to Be the Boy to Warm Your Brother's Heart", "Black Jack Daisy", "I Can Yearn", "I Can't Wail", "Expelling", "Cow Mary", "Little Boom", "I Think I Smell a Cat", "This Projector", "Offend in Every Bay", "The Same Boy You've Always Grown", "I'm Binding It Harder to Be a Gentleman", "The Onion Forever", "Apple Bossom", "Jello Operator", "Jumble, Rumble", "Let's Build a Dome", "Little Bard", "A Boy's Best Fiend", "You're Pretty Good Cooking", "Red Bowling Ruth", "Good to Mel", "Who's to Stay"],
- "c05_mse": ["Plug In Navy", "Supermassive Black Mole", "Starfight", "Time Is Running Up", "Mice of Cydonia", "Hysterial", "Uprisings", "Resistants", "New Barn", "Blitz", "Hyper Muscle", "Feeding Good", "Citizen Chased", "Muscle Mouseum", "Sunbun", "Unattended", "Cake", "Snowbiz", "Solder", "Una", "Falling Away with Two", "Needlessly", "Buttermilk and Hurricanes", "Apocalypse Cheese", "Sing for Resolution", "Stockholm Syndrone", "Thoughts of a Dying Artist", "The Small Pint", "Ruled by Secrets", "Blackcut", "Interlute", "Intra", "Furry", "Take a Bowl", "Invisible", "Mop of the Problematique", "Soldier's Poet", "City of Illusion", "Exo-Poetics", "Voodoo", "Assistant", "MX Ultra", "Undisclosed Desserts", "Guiding Night", "Unnatural Collection", "Plague", "Popcore", "Bedroom Acrobatics", "Spiral Statue", "Shrunken Universe", "Map of Your Bed", "Futurist", "Eternally Kissed", "The Grove", "Crying Name", "Easel", "Who Knows Whom", "Man of History"],
+ "c05_mse": ["Plug In Navy", "Supermassive Black Mole", "Starfight", "Time Is Running Up", "Mice of Cydonia", "Hysterial", 'Upsizings', "Resistants", 'New Bran', 'Blitzen', "Hyper Muscle", "Feeding Good", "Citizen Chased", "Muscle Mouseum", "Sunbun", "Unattended", "Cake", "Snowbiz", "Solder", "Una", "Falling Away with Two", "Needlessly", "Buttermilk and Hurricanes", "Apocalypse Cheese", 'Sing for Dissolution', "Stockholm Syndrone", "Thoughts of a Dying Artist", "The Small Pint", "Ruled by Secrets", "Blackcut", "Interlute", "Intra", "Furry", 'Take a Bowl-ing', 'Invisible Ink', "Mop of the Problematique", "Soldier's Pocket", "City of Illusion", "Exo-Poetics", "Voodoo", "Assistant", "MX Ultra", 'Undisclosed Dessert Wines', "Guiding Night", "Unnatural Collection", "Plague", "Popcore", "Bedroom Acrobatics", "Spiral Statue", "Shrunken Universe", "Map of Your Bed", "Futurist", "Eternally Kissed", "The Grove", "Crying Name", "Easel", "Who Knows Whom", "Man of History"],
 }
 
 ARCS += [
- A("c05_nkp", "NICKELPACK", "band", 1995, "ポスト・グランジ", "m", ["喪失と再生", "家族への感謝", "恋のはじまり"],
+ A("c05_nkp", "NICKEL BACKPACK", "band", 1995, "ポスト・グランジ", "m", ["喪失と再生", "家族への感謝", "恋のはじまり"],
   "カナダの小さな町の農場の納屋", "カナダの小さな町の納屋で、兄弟と友人が昔のカバー曲を鳴らしながら、自分たちの曲を書き始めたところから始まった",
   ["Vo", "Gt", "Ba", "Dr"], ["歌う前に低い声で咳払いをする", "ギターと鍵盤を持ち替えながら静かに頷く", "ベースを抱えて口数少なく仲間を眺めている", "ドラムの前で後ろから全体を引っ張る"],
   ["納屋で、四人は大きな音を鳴らしながら将来を話していた。", "初めての一枚を作り、小さな町を飛び出した。", "大きなレーベルと契約し、ひとつの曲が世界じゅうで鳴った。", "続く作品も売れ、屋外の巨大な舞台に立った。", "ドラムが入れ替わる節目を越え、新しい一枚を出した。", "後の世代が、あの重たいギターを懐かしそうに語った。"],
@@ -106,10 +106,10 @@ ARCS += [
     ("ドラマーが入れ替わる節目で、形を変えて続けるか。", "新しい顔ぶれで看板を守る", "ここで幕を引く", "新しい風を入れて、四人の名は続いた。", "美しい幕引きになったが、続きを聴く機会は失われた。")),
   "自分たちの曲に絞って作り込み、大きなレーベルで世界を狙い、ヒットの路線を磨いて、新しい顔ぶれで看板を守った。",
   ["カバーで食いつなぎ、自分たちの色は育たなかった。", "小さなレーベルで、広がりは限られた。", "ここで幕を引き、短くも鮮やかな歩みになった。"],
-  ["自分たちの曲", "世界を狙う", "ヒットの路線", "新しい顔ぶれ"], ["NICKELPACK", "NICKELPACK"],
+  ["自分たちの曲", "世界を狙う", "ヒットの路線", "新しい顔ぶれ"], ["NICKEL BACKPACK", "NICKEL BACKPACK"],
   [("チャド・クルーガー", "Vo/Gt", "m"), ("ライアン・ピーカ", "Gt", "m"), ("マイク・クルーガー", "Ba", "m"), ("ダニエル・アデール", "Dr", "m")]),
 
- A("c05_bep", "BLACK EYED PEERS", "rap", 1992, "ヒップホップ・ポップ", "x", ["応援歌", "夏と青春", "地元愛"],
+ A("c05_bep", "BLACK EYED PEACHES", "rap", 1992, "ヒップホップ・ポップ", "x", ["応援歌", "夏と青春", "地元愛"],
   "ロサンゼルスの小さなクラブのステージ裏", "ロサンゼルスのクラブで出会った二人のラッパーが仲間を集め、街の音を鳴らし始めたところから始まった",
   ["MC", "MC", "MC", "Vo"], ["マイクを握る前に両腕を大きく広げて客を煽る", "ラップの合間に笑顔でリズムを取る", "ステージの端から端まで走り回って盛り上げる", "歌う前に大きく息を吸い込んで客席を見渡す"],
   ["クラブのステージ裏で、二人は街の音を鳴らす夢を語った。", "最初のレーベルとの契約は、思い通りには進まなかった。", "新しい仲間を迎え、生の楽器を取り入れた音へ踏み出した。", "華やかな女性ボーカルが加わり、世界じゅうで曲が鳴った。", "踊れる電子音を前に出して、巨大な会場を埋めた。", "長い休みの後、再び四人の声が重なる日が来た。"],
@@ -120,10 +120,10 @@ ARCS += [
     ("踊れる電子音を前に出すか、手触りのある音を守るか。", "踊れる電子音を前に出す", "手触りのある音を守る", "巨大な会場が埋まり、一斉に踊る光景が生まれた。", "音の質は守れたが、客席の熱は落ち着いた。")),
   "導きを受けて大きく動き、生の楽器を取り入れ、女性ボーカルを加え、踊れる電子音を前に出して巨大な会場を埋めた。",
   ["自分たちで道を探し、歩みは遅かった。", "打ち込みだけで通し、広がりは小さかった。", "これまでの形を続け、爆発的な広がりはなかった。"],
-  ["大きな導き", "生の楽器", "女性ボーカル", "電子音"], ["BLACK EYED PEERS", "BLACK EYED PEERS"],
+  ["大きな導き", "生の楽器", "女性ボーカル", "電子音"], ["BLACK EYED PEACHES", "BLACK EYED PEACHES"],
   [("ウィリアム・アダルズ", "MC", "m"), ("アラン・ピネダ・リント", "MC", "m"), ("ハイメ・ゴミス", "MC", "m"), ("ステイシー・ファンガソン", "Vo", "f")]),
 
- A("c05_kan", "KANE", "band", 1995, "ピアノ・ロック", "m", ["恋のはじまり", "孤独と夜", "喪失と再生"],
+ A("c05_kan", "KEEN BEANS", "band", 1995, "ピアノ・ロック", "m", ["恋のはじまり", "孤独と夜", "喪失と再生"],
   "海辺の町の古い教会の隣の練習部屋", "海辺の町で育った友人たちが、ギターではなくピアノを中心にした三人編成を選んだところから始まった",
   ["Vo", "Key", "Dr"], ["歌う前に両手を広げて天井を見上げる", "鍵盤の前に座って低音まで弾きながら遠くを見ている", "ドラムの前で静かに頷いてから叩き出す"],
   ["練習部屋で、友人たちは大学の傍ら音を重ね続けていた。", "ギターが抜けた後、ピアノを中心にした三人編成が生まれた。", "小さなレーベルから出した一曲が、大きな契約を呼び込んだ。", "最初のアルバムが首位に立ち、街じゅうで歌われた。", "二枚目、三枚目と、音の色を変えながら愛された。", "長い休みの後、再び三人が同じ部屋で音を鳴らした。"],
@@ -134,10 +134,10 @@ ARCS += [
     ("三枚目で音の色を大きく変えるか、守るか。", "音の色を大きく変える", "これまでの色を守る", "新しい色が出て、新たな聴き手を連れてきた。", "安心して聴けたが、驚きは薄れた。")),
   "ピアノ中心の三人編成で続け、小さなレーベルの一曲を口づてで広げ、暗く内向きに潜り、音の色を大きく変えた。",
   ["新しいギタリストを入れ、不思議な軽さが消えた。", "すぐ大きなレーベルに入り、素朴な魅力が薄れた。", "これまでの色を守り、驚きが薄れた。"],
-  ["ピアノ中心", "口づての一曲", "内向きの深み", "音の色の変化"], ["KANE", "KANE"],
+  ["ピアノ中心", "口づての一曲", "内向きの深み", "音の色の変化"], ["KEEN BEANS", "KEEN BEANS"],
   [("トム・チャップマン", "Vo", "m"), ("ティム・ライス＝オクトリー", "Key", "m"), ("リチャード・ヒューグ", "Dr", "m")]),
 
- A("c05_spl", "SIMPLE PLANE", "band", 1999, "ポップ・パンク", "m", ["応援歌", "夏と青春", "自己否定と肯定"],
+ A("c05_spl", "SIMPLE PLAIN YOGURT", "band", 1999, "ポップ・パンク", "m", ["応援歌", "夏と青春", "自己否定と肯定"],
   "モントリオールの学生街の狭い練習スタジオ", "モントリオールの学生街の練習スタジオで、昔のバンド仲間が新しい名前で再び集まったところから始まった",
   ["Vo", "Dr", "Gt", "Gt", "Ba"], ["歌う前に両腕を上げて客席を煽る", "ドラムの前から身を乗り出して客席を指差す", "ギターを抱えてクールな顔でリフを刻む", "ギターを弾きながら笑顔でコーラスを重ねる", "ベースを抱えてステージを跳ね回る"],
   ["練習スタジオで、昔の仲間たちは同じ夢をもう一度語り合った。", "初めての一枚は、等身大の言葉で若い世代に受け入れられた。", "二枚目が大きく売れ、ライブハウスが合唱で揺れた。", "自分たちの名前を冠した三枚目で、新しい色を試した。", "豪華な共演者を迎え、さらに広い客席に届いた。", "顔ぶれが変わる節目を越え、バンドの名は続いた。"],
@@ -148,10 +148,10 @@ ARCS += [
     ("三枚目で音の色を変えるか、守るか。", "新しい色を試す", "これまでの色を守る", "新しい色が加わり、聴き手の層が広がった。", "安心して聴けたが、驚きは薄れた。")),
   "新しい名前で出直し、等身大の言葉で若者に寄り添い、勢いのまま合唱を狙い、新しい色を試した。",
   ["昔のバンドを続け、古い印象を引きずった。", "背伸びした物語を書き、親近感が薄れた。", "これまでの色を守り、驚きが薄れた。"],
-  ["新しい名前", "等身大の言葉", "合唱の二枚目", "新しい色"], ["SIMPLE PLANE", "SIMPLE PLANE"],
+  ["新しい名前", "等身大の言葉", "合唱の二枚目", "新しい色"], ["SIMPLE PLAIN YOGURT", "SIMPLE PLAIN YOGURT"],
   [("ピエール・ブーヴィア", "Vo", "m"), ("チャック・ココー", "Dr", "m"), ("ジェフ・スティンク", "Gt", "m"), ("セバスチャン・ルフェーブン", "Gt", "m"), ("デヴィッド・デロジェ", "Ba", "m")]),
 
- A("c05_rsl", "RIP SLIME", "rap", 1994, "ヒップホップ", "m", ["夏と青春", "日常のぼやき", "ナンセンスと言葉遊び"],
+ A("c05_rsl", "LIP CREAM SLIME", "rap", 1994, "ヒップホップ", "m", ["夏と青春", "日常のぼやき", "ナンセンスと言葉遊び"],
   "神奈川の街の小さなクラブ", "神奈川の街の小さなクラブで、二人のMCが顔を合わせ、仲間が少しずつ増えていったところから始まった",
   ["MC", "MC", "MC", "MC", "DJ"], ["マイクを握る前に腕を回して客を煽る", "ラップの合間に軽くステップを踏んでいる", "ステージの端でマイクを握って笑っている", "リズムに乗って身体を揺らしながらマイクを握る", "ターンテーブルの前で静かにレコードを選んでいる"],
   ["小さなクラブで、二人のMCが顔を合わせて夢を語った。", "三人目、四人目、そしてDJが加わり、五人の形が整った。", "大きな会社と契約し、一曲が夏の街角を彩った。", "二枚目のメジャー作が国内のヒップホップとして記録的に売れた。", "アニメの主題歌や映画の曲にも声がかかるようになった。", "形を変えながらも、五人の名前は長く続いた。"],
@@ -162,20 +162,20 @@ ARCS += [
     ("形が変わる節目で、少人数で続けるか。", "形を変えて看板を守る", "ここで幕を引く", "形が変わっても、五人の名前は続いた。", "美しい幕引きになったが、続きを聴く機会は失われた。")),
   "五人の掛け合いで広げ、大きな会社と契約して一曲を夏の街角に響かせ、踊れる音で記録を塗り替え、形を変えて看板を守った。",
   ["少人数に絞り、にぎやかさが薄れた。", "自主で続け、広がりはゆっくりだった。", "ここで幕を引き、短くも鮮やかな歩みになった。"],
-  ["五人の掛け合い", "大きな会社", "踊れる音", "形の変化"], ["RIP SLIME", "RIP SLIME"],
+  ["五人の掛け合い", "大きな会社", "踊れる音", "形の変化"], ["LIP CREAM SLIME", "LIP CREAM SLIME"],
   [("リョウジ・ナルタ", "MC", "m"), ("ケイスケ・オギワラ", "MC", "m"), ("マサツグ・シバ", "MC", "m"), ("カズト・オオタキ", "MC", "m"), ("フミヤ・タケチ", "DJ", "m")]),
 ]
 
 PT.update({
- "c05_nkp": ["Now You Remind Me", "Phonograph", "Someway", "Fat Away", "Shavin' Me", "Rockscar", "If Everyone Scared", "Burn It to the Grind", "Gotta Be Something", "If Today Was Your Lost Day", "Mammals", "Hollow You Home", "Side of a Ballet", "Next Consultant", "Someone That You're Wish", "Fight for All the Wrong Seasons", "Learn the Hard Wax", "Yanking Out My Hearth", "Slow Notion", "Grow Yourself Away", "Feelin' Way Too Damn Gold", "Figures You Out", "Flat on the Flour", "Should've Glistened", "See You at the Snow", "Believe It or Net", "Because of Dew", "Do That Anymore", "Another Hole in the Bed", "Good Times Gong", "Hangnails", "Hollywool", "Money Brought", "Clever Again", "Too Bag", "Where Do I Hike", "Woke Up This Moaning", "Just Fur", "Breathes", "Cowboy Cat", "Beep", "Diggin' Thus", "Hold Out Your Band", "Leader of Mice", "Not Leavin' Yeti", "Odd Enough", "One Last Rum", "Worthy to Pay", "Curd", "Little Fiend", "Rusher", "Sea Grove", "Lift", "There?", "Window Hopper", "Fry"],
- "c05_bep": ["Where Is the Dove?", "Let's Get It Charted", "I Gotta Peeling", "Boom Boom Cow", "Don't Phunk with My Cart", "My Lumps", "Dump It", "Hey Llama", "Shot Up", "Meet Me Hallway", "Imma Bee", "Sock That Body", "Kissing You", "Don't Die", "Request Lime", "Weekenders", "Joints & Ham", "Kama", "Fallin' Cup", "Bands Up", "Labor Dad", "Smells Like Fun", "Latin Gulls", "Fry Away", "The Boogie That Bee", "The Apt Song", "Third Eel", "Dim Diddly", "Heel It", "Gone Doing", "They Don't Want Musk", "Disco Cub", "Bebop", "Ba Dump", "Audio Delite at Low Felicity", "Onion", "My Smile", "Lake That", "Alike", "Ring-A-Ding", "Party All the Lime", "Out of My Bed", "Electric Kitty", "Slowdown", "Wow Generation", "One Bribe", "Rockin to the Beet", "Where Ya Wanna Row", "Simple Little Medley", "Make", "Don't Bring Me Gown", "Pump It Larder", "That's the Joist", "Another Weekender", "BEP Umpire", "Set Original", "Hat", "Cali to New Yorker", "Lil' Lid", "On My Owl", "Relapse", "Bridging the Caps", "Rap Soup", "Bringing It Black", "Tell Your Mama Comb"],
+ "c05_nkp": ["Now You Remind Me", "Phonograph", "Someway", "Fat Away", "Shavin' Me", "Rockscar", "If Everyone Scared", "Burn It to the Grind", "Gotta Be Something", "If Today Was Your Lost Day", "Mammals", "Hollow You Home", "Side of a Ballet", "Next Consultant", "Someone That You're Wish", "Fight for All the Wrong Seasons", "Learn the Hard Wax", "Yanking Out My Hearth", "Slow Notion", "Grow Yourself Away", "Feelin' Way Too Damn Gold", "Figures You Out", "Flat on the Flour", "Should've Glistened", "See You at the Snow", "Believe It or Net", "Because of Dew", "Do That Anymore", "Another Hole in the Bed", "Good Times Gong", "Hangnails", "Hollywool", "Money Brought", "Clever Again", "Too Bag", "Where Do I Hike", "Woke Up This Moaning", "Just Fur", "Breathes", "Cowboy Cat", "Beep", "Diggin' Thus", "Hold Out Your Band", "Leader of Mice", "Not Leavin' Yeti", "Odd Enough", "One Last Rum", "Worthy to Pay", "Curd", "Little Fiend", "Rusher", "Sea Grove", "Lift", "There?", "Window Hopper", 'Fry-day'],
+ "c05_bep": ["Where Is the Dove?", "Let's Get It Charted", "I Gotta Peeling", "Boom Boom Cow", "Don't Phunk with My Cart", "My Lumps", "Dump It", "Hey Llama", "Shot Up", "Meet Me Hallway", "Imma Bee", "Sock That Body", 'Kissing Tofu', "Don't Die", "Request Lime", "Weekenders", "Joints & Ham", "Kama", "Fallin' Cup", "Bands Up", "Labor Dad", "Smells Like Fun", "Latin Gulls", "Fry Away", "The Boogie That Bee", "The Apt Song", "Third Eel", "Dim Diddly", "Heel It", "Gone Doing", "They Don't Want Musk", "Disco Cub", "Bebop", "Ba Dump", "Audio Delite at Low Felicity", "Onion", "My Smile", "Lake That", 'Alike', "Ring-A-Ding", "Party All the Lime", "Out of My Bed", "Electric Kitty", 'Slowdown Showdown', "Wow Generation", "One Bribe", "Rockin to the Beet", "Where Ya Wanna Row", "Simple Little Medley", "Make", "Don't Bring Me Gown", "Pump It Larder", "That's the Joist", "Another Weekender", "BEP Umpire", "Set Original", 'Hat Rack', "Cali to New Yorker", "Lil' Lid", "On My Owl", "Relapse", "Bridging the Caps", "Rap Soup", "Bringing It Black", "Tell Your Mama Comb"],
  "c05_kan": ["Somewhere Only We Grow", "Everybody's Charging", "Bedshapes", "Is It Any Winter?", "Crystal Bell", "Bend and Bake", "This Is the Past Time", "Atlantis", "Nothing in My Wax", "A Sad Dream", "Fry Again", "Sparkling", "The Lovers Are Choosing", "Perfect Sympathy", "Better Than Thin", "Shop for a Minute", "Silenced by the Light", "Disconcerted", "Sovereign Night Café", "Higher Than the Son", "Can't Stop Mow", "On a Day Like Tomorrow", "Sunshade", "Your Eyes Oven", "She Has No Lime", "Untitled 7", "Leaving Too Soon?", "Hamburger Song", "Put It Beside You", "The Iron Seal", "Broken Toe", "The Frog Price", "Again and Gain", "Black Burning Cart", "Love Is the Bend", "Praying Along", "Pretend That You're a Clone", "You Won't See Me", "You Haven't Sold Me Anything", "Closet Now", "Fly to Mel", "Walnut Tea", "Showed Under", "Something in Me Was Drying", "Maybe I Can Charge", "Let It Slice", "He Used to Be a Lonely Boy", "Tin Air", "The Night Ski", "Lime to Go", "Staring at the Cooling", "Call Me What You Lake", "Golf at the Door"],
- "c05_spl": ["Welcome to My Wife", "I'm Just a Kit", "Prefect", "Addicts", "I'd Do Everything", "Shut In!", "Lazy", "When I'm Gong", "Your Love Is a Lid", "Shave You", "Can't Keep My Hats Off You", "Jet Leg", "Astronuts", "Summer Parade", "I Don't Wanna Go to Bad", "Singing in the Brain", "Don't Wanna Drink About You", "How Could This Happen to Be", "Me Against the Word", "Perfect Word", "Think You", "Lump", "Everytile", "Promises", "Owe", "You Suck at Live", "Loser of the Fear", "Anywhere Else But Hare", "Freaking Me Oat", "Last One Landing", "This Song Saved My Wife", "The Wurst Day Ever", "You Don't Mean Anyone", "Then I'm with You", "Meet You Where", "God Must Date Me", "I Won't Be Here", "One Dry", "My Christmas Last", "Won by One", "Glow Up", "Happy Weather", "Vocation", "Take My Band", "The Ends", "Degeneration", "Time to Say Goodbuy", "I Can Wail Forever", "Folding On", "So Love", "What Ifs", "Running Out of Tune"],
+ "c05_spl": ["Welcome to My Wife", "I'm Just a Kiwi", "Prefect", "Addicts", "I'd Do Everything", "Shut In!", 'Lazy Susan', "When I'm Gong", "Your Love Is a Lid", "Shave You", "Can't Keep My Hats Off You", "Jet Leg", "Astronuts", "Summer Parade", "I Don't Wanna Go to Bad", "Singing in the Brain", "Don't Wanna Drink About You", "How Could This Happen to Be", "Me Against the Word", 'Perfect Word', "Think You", "Lump", "Everytile", "Promises", "Owe", "You Suck at Live", "Loser of the Fear", "Anywhere Else But Hare", "Freaking Me Oat", "Last One Landing", "This Song Saved My Wife", "The Wurst Day Ever", "You Don't Mean Anyone", "Then I'm with You", "Meet You Where", "God Must Date Me", "I Won't Be Here", "One Dry", "My Christmas Last", "Won by One", "Glow Up", "Happy Weather", "Vocation", "Take My Band", "The Ends", "Degeneration", "Time to Say Goodbuy", "I Can Wail Forever", "Folding On", "So Love", "What Ifs", "Running Out of Tune"],
  "c05_rsl": ["Steppers Delighted", "楽園ベーコン", "黄昏サラダ", "雑炊エンタテインメント", "熱帯魚", "太陽とビーチ", "星に祈りを", "マタ逢ウ旅マデ", "Funtastic", "Blue Be-Pop", "Joins", "Dandy Lion", "Gallery", "Hot Chocolatier", "Hey, Bother", "Glow", "I.M.G", "Speed Ring", "Stars", "Jungle Lever", "Sky", "この道を戻ろう", "Peach", "ナイショデオネガイシマシタ", "Popcorn Fancy", "Jumbo", "Take It Easel", "Super Shouter", "Fade Awry", "At the Lunge", "Bones", "風に笑われて", "Underline No. 6", "Battle Fantastic", "Dice", "Ride In", "Jack Goes Off", "Sense of Thunder", "辛い生活", "Good Tomes", "Scan", "Metropolitan", "Bailey Tokyo", "Oh! Yeah!", "Remembers", "Smash", "Surprise", "Love & Haze", "Goof Day", "Journal", "Rock 'n' Roll Ratio", "Supa Sonar"],
 })
 
 ARCS += [
- A("c05_fdb", "FUNKY DONKEY BABYS", "rap", 2004, "ポップ・ヒップホップ", "m", ["応援歌", "旅立ちと別れの春", "家族への感謝"],
+ A("c05_fdb", "FUNKY BANANA BABYS", "rap", 2004, "ポップ・ヒップホップ", "m", ["応援歌", "旅立ちと別れの春", "家族への感謝"],
   "東京の西の街の小さな練習スタジオ", "東京の西の街で育った三人が、ラップと歌とターンテーブルを持ち寄って、ひとつのグループを組んだところから始まった",
   ["MC", "MC", "DJ"], ["マイクを握る前に両手を広げて客席に笑いかける", "ラップの合間に仲間の背中を叩いて盛り上げる", "ターンテーブルの前から客席に手を振る"],
   ["練習スタジオで、三人はラップと歌をひとつの曲に混ぜていた。", "初めてのシングルは、小さな反応から静かに始まった。", "恋の歌と背中を押す歌が、若い世代の定番になった。", "ベスト盤が首位に立ち、名前が全国に広まった。", "巨大な屋内の舞台を目指す夢が、現実に近づいていった。", "三人は終わりの日を決め、最後の舞台に立った。"],
@@ -186,10 +186,10 @@ ARCS += [
     ("終わりの日を決めて走り切るか、続けるか。", "終わりの日を決めて走り切る", "終わりを決めずに続ける", "最後の舞台が、ファンの記憶に残る一夜になった。", "続けられたが、気持ちの区切りがつかなかった。")),
   "歌とラップを混ぜ、背中を押す歌を看板にし、ベスト盤で広く届け、終わりの日を決めて走り切った。",
   ["ラップだけで押し切り、聴き手の層が狭かった。", "恋の歌に絞り、歌い継がれる曲にならなかった。", "終わりを決めずに続け、区切りがつかなかった。"],
-  ["歌とラップ", "背中を押す歌", "ベスト盤", "終わりの日"], ["FUNKY DONKEY BABYS", "FUNKY DONKEY BABYS"],
+  ["歌とラップ", "背中を押す歌", "ベスト盤", "終わりの日"], ["FUNKY BANANA BABYS", "FUNKY BANANA BABYS"],
   [("ファンキー加糖", "MC", "m"), ("モン古", "MC", "m"), ("DJケミカラ", "DJ", "m")]),
 
- A("c05_plm", "PLUMPOOL", "band", 2002, "ポップ・ロック", "m", ["恋のはじまり", "喪失と再生", "旅立ちと別れの春"],
+ A("c05_plm", "FLAN-POOL", "band", 2002, "ポップ・ロック", "m", ["恋のはじまり", "喪失と再生", "旅立ちと別れの春"],
   "大阪の街の小さな練習スタジオ", "大阪の街で、アコースティックの三人組が新しいドラマーを迎えて、四人のバンドになったところから始まった",
   ["Vo", "Gt", "Ba", "Dr"], ["歌う前に目を閉じて長く息を整える", "ギターを抱えて静かに音を探している", "ベースを抱えてにこにこと全体を見守っている", "ドラムの前から全体の様子をうかがっている"],
   ["練習スタジオで、三人組のアコースティックに四人目のドラムが加わった。", "自主制作の一曲が、少しずつ口づてに広がった。", "大きな会社からメジャー初のシングルを出した。", "最初のフルアルバムが、全国で歌われる一枚になった。", "声に不調が出て、バンドは立ち止まる時間を持った。", "休みを経て、四人は再び舞台に帰ってきた。"],
@@ -200,10 +200,10 @@ ARCS += [
     ("声の不調が出た時、休むか、続けるか。", "しっかり休んで声と向き合う", "予定通りに続ける", "休みを経て、四人は再び舞台に帰ってきた。", "続けたが、声の不安が演奏に影を落とした。")),
   "ドラムを加えて四人のバンドになり、口づてでメジャーへ進み、親しみやすい歌で固め、しっかり休んで舞台に帰ってきた。",
   ["三人のまま続け、音の幅が狭かった。", "自主制作を続け、広がりは小さかった。", "休まず続け、声の不安が影を落とした。"],
-  ["四人のバンド", "口づてのメジャー", "親しみやすい歌", "休みと復帰"], ["PLUMPOOL", "PLUMPOOL"],
+  ["四人のバンド", "口づてのメジャー", "親しみやすい歌", "休みと復帰"], ["FLAN-POOL", "FLAN-POOL"],
   [("山村隆介", "Vo", "m"), ("阪井一正", "Gt", "m"), ("尼川元樹", "Ba", "m"), ("小倉誠史", "Dr", "m")]),
 
- A("c05_sfy", "SUPERFRY", "solo", 2007, "ロック・ポップ", "f", ["自己否定と肯定", "応援歌", "恋のはじまり"],
+ A("c05_sfy", "SUPERFRIES", "solo", 2007, "ロック・ポップ", "f", ["自己否定と肯定", "応援歌", "恋のはじまり"],
   "東京のライブハウスの狭い楽屋", "東京のライブハウスの楽屋で、ひとりの女性ボーカルが、伸びやかな声を武器にバンドを組んで歌い始めたところから始まった",
   ["Vo"], ["歌う前に両手を握りしめて天井を見上げる"],
   ["楽屋の隅で、ひとりのボーカルは大きな声で息を整えていた。", "初めてのシングルが出て、歌声に驚く声が広がった。", "最初のアルバムが大きく売れ、名前が全国に知れ渡った。", "バンドを組んでの全国ツアーで、客席を熱で埋めた。", "カバーと自作を行き来し、表現の幅を広げていった。", "長い歩みの中で、声の色を変えながら歌い続けた。"],
@@ -214,10 +214,10 @@ ARCS += [
     ("大きな会場で一晩に絞るか、各地を回るか。", "各地を回って客席と向き合う", "大きな会場の一晩に絞る", "各地の客席が、歌声を宝物にしてくれた。", "大きな一夜は盛り上がったが、広がりは薄かった。")),
   "バンドを組んで一緒に鳴らし、力強い歌で押し切り、カバーで新しい聴き手を連れてきて、各地の客席と向き合った。",
   ["ひとりの弾き語りに絞り、舞台の迫力は小さかった。", "しっとり聴かせ、強い印象は残らなかった。", "大きな一夜に絞り、広がりは薄かった。"],
-  ["バンドを組む", "力強い歌", "カバー", "各地の客席"], ["SUPERFRY", "SUPERFRY"],
+  ["バンドを組む", "力強い歌", "カバー", "各地の客席"], ["SUPERFRIES", "SUPERFRIES"],
   [("越智志麻", "Vo", "f")]),
 
- A("c05_mhg", "mihimaru GP", "duo", 2003, "ポップ・ヒップホップ", "x", ["恋のはじまり", "応援歌", "夏と青春"],
+ A("c05_mhg", "mihimaru GATEAU", "duo", 2003, "ポップ・ヒップホップ", "x", ["恋のはじまり", "応援歌", "夏と青春"],
   "ライブハウスの片隅の小さな録音スペース", "歌い手を目指す女性と、多くの人に曲を提供してきた男性が出会い、二人で組んだところから始まった",
   ["Vo", "Vo"], ["歌う前に笑顔で客席を見渡す", "鍵盤の前から軽いラップを挟んで盛り上げる"],
   ["小さな録音スペースで、二人は歌とラップを混ぜた曲を作り始めた。", "初めてのシングルは、静かな出発になった。", "ヘアカラーのCMに使われた曲が、一気に広まった。", "年末の大きな歌番組に初めて呼ばれた。", "翌年も続けて出場し、名前は定番になった。", "長い休みの後、二人は再び舞台に戻ってきた。"],
@@ -228,10 +228,10 @@ ARCS += [
     ("活動を休むか、走り続けるか。", "区切りをつけて休む", "休まず走り続ける", "休みの後、二人は温かい拍手で迎えられた。", "走り続けたが、二人の間に疲れがたまった。")),
   "歌とラップを混ぜ、CMタイアップで一気に広げ、年末の大きな歌番組に出て、区切りをつけて休み、舞台に戻った。",
   ["歌だけに絞り、個性が薄れた。", "自力でじっくり広げ、広まりは遅かった。", "走り続け、疲れがたまった。"],
-  ["歌とラップ", "CMタイアップ", "年末の歌番組", "休みと復帰"], ["mihimaru GP", "mihimaru GP"],
+  ["歌とラップ", "CMタイアップ", "年末の歌番組", "休みと復帰"], ["mihimaru GATEAU", "mihimaru GATEAU"],
   [("阿久津博美", "Vo", "f"), ("三宅光孝", "Vo/Key", "m")]),
 
- A("c05_aqt", "AQUA TIMES", "band", 2003, "ポップ・ロック", "x", ["旅立ちと別れの春", "応援歌", "喪失と再生"],
+ A("c05_aqt", "AQUA THYME SOUP", "band", 2003, "ポップ・ロック", "x", ["旅立ちと別れの春", "応援歌", "喪失と再生"],
   "インターネットで出会った仲間が集まった練習スタジオ", "掲示板サイトで出会った二人が、数年後に仲間を揃えて五人で集まったところから始まった",
   ["Vo", "Ba", "Gt", "Key", "Dr"], ["歌う前に深く息を吸って目を閉じる", "ベースを抱えて全体を見渡している", "ギターを弾きながらコーラスを重ねる", "鍵盤の前から静かに頷いている", "ドラムの後ろから笑顔で全体を引っ張る"],
   ["練習スタジオで、五人は昔の失敗を笑い話にして集まった。", "自主制作のミニアルバムが、少しずつ口づてに広がった。", "大きな会社と契約し、アニメの主題歌も任されるようになった。", "初めてのフルアルバムが、全国の学生たちの愛聴盤になった。", "シングルを重ねながら、長く歌われる曲が増えていった。", "解散を決めて、最後の舞台を締めくくった。"],
@@ -242,14 +242,14 @@ ARCS += [
     ("区切りで解散するか、続けるか。", "区切りをつけて解散する", "形を変えて続ける", "解散の舞台は、ファンの心に残る一夜になった。", "続けられたが、気持ちの区切りがつかなかった。")),
   "仲間を揃えて組み直し、口づてから大きな会社へ進み、アニメの主題歌で広げ、区切りをつけて解散した。",
   ["別々の道を歩き、バンドは生まれなかった。", "自主制作を続け、広がりは小さかった。", "形を変えて続け、区切りがつかなかった。"],
-  ["組み直し", "口づてのメジャー", "アニメの主題歌", "解散と復活"], ["AQUA TIMES", "AQUA TIMES"],
+  ["組み直し", "口づてのメジャー", "アニメの主題歌", "解散と復活"], ["AQUA THYME SOUP", "AQUA THYME SOUP"],
   [("フトン", "Vo", "m"), ("Okp-Stair", "Ba", "m"), ("ダイスキ", "Gt", "m"), ("マユミ", "Key", "f"), ("タッチ", "Dr", "m")]),
 ]
 
 PT.update({
- "c05_fdb": ["そのまんま西へ", "恋の片道切手", "Hallways", "Lovin' Lift", "ちっぽけな勇者", "もう蚊がいない", "旅疲れ", "告知", "希望の旗", "雨が降る街", "梅", "ヒーター", "朝日へ", "ふるまと", "汗", "夜", "大雪", "あとふたつ", "ランウェイ☆ビール", "それでも疑ってる", "ラブレタス", "Love Soup", "モーニングセット", "大丈夫だね", "LAST HUT", "泣いて笑って雲を見てた", "My Hope", "指きりげんまい", "天使と悪夢", "超I Live You"],
+ "c05_fdb": ["そのまんま西へ", "恋の片道切手", 'Hallway Blues', "Lovin' Lift", "ちっぽけな勇者パン", "もう蚊がいない", "旅疲れ", "告知", "希望の旗", "雨が降る街", "梅", "ヒーター", "朝日へ", "ふるまと", "汗", "夜", "大雪", "あとふたつ", "ランウェイ☆ビール", "それでも疑ってる", "ラブレタス", 'Love Stew', "モーニングセット", "大丈夫だね", "LAST HUT", "泣いて笑って雲を見てた", "My Hope", "指きりげんまい", "天使と悪夢", "超I Live You"],
  "c05_plm": ["鼻になれ", "春嵐", "Over the Pain", "388858", "Jello", "Lab", "Cost", "未知", "星に願いが", "Falling", "見つけていたい", "ピカソレスク", "僕は偶然を待っていたらしい", "回転寿司", "車掌", "Pills", "夏Drive", "LOVE 2011", "Qvelle", "最初のページ", "来年の桜", "タイムカプリ", "Sirens", "残業", "流れ雲", "君に届け物", "どんな未来にも飴はある", "Couch", "証券", "Peasant", "Became I Am", "Anchor", "大切なものは猫以外に見当たらなくて", "微熱ブレイン", "弱く儚く", "夏よ染めないで", "You're Romantics", "夜は眠れるかな", "FREE YOUR MINE", "Last Fall", "安い", "HEAP", "素晴らしき噂"],
- "c05_sfy": ["Hello Yellow", "Minifesto", "I Spy I Spa", "愛をこめて花火を", "Hi-Fire", "How Do I Revive?", "My Rest of My Life", "Allnight!!", "恋する瞳は美味しい", "やさしい気分で", "Dancing on the Wire", "Wildflour", "Eggs on Me", "Sunshine Sunrise", "Peep!!", "Rollin' Rays", "Aha", "愛を叫べ", "Scars", "輝く星のように", "The Bird Without Wigs", "Fork", "Love", "愛を身体に塗り込んで", "White Lie", "On Your Slide", "黒い雪", "Ambitions", "Flame", "Altogether", "Choice", "Dynamic", "Presents", "Farewells", "Aches", "Charge", "Beautifly", "Women", "Free Planer", "Spice", "Roll Over the Rainbowl", "Fly to the Moan", "Hail Holy Green", "Only Two", "Tamashii Evolution"],
- "c05_mhg": ["気分上々↓↓", "俄然Year!", "約束事", "恋する気分", "Love in...", "さよならのくせ", "君だけのStore", "バンザイ斉唱!!!", "バカネジ", "One Time Out", "SURVIVAL", "Love Litter", "アンビリーパボー", "アン♥ロッカー", "アンダー・ザ・シー・ドッグ", "幸せになれた", "泣き笑", "かけがえのない夢", "いつまでも響くこのmelon", "マジカルスリッパー", "divorce", "YEP", "愛コトブキ", "I SHOULD BE SO LUCKS", "ギリギリHELLO", "Bon Voyager", "Love Sink", "BLUE BAGGING", "ええかな", "Birthday Gong", "ALIKE", "Switch On", "778", "サヨナラは言えなかった", "SIGMA", "す・か・ん・ぱ", "とろけちゃうダンサー", "道しるし", "ドス鯉"],
- "c05_aqt": ["決意の夜に", "千の夢を越えて", "2mm", "星の見えない朝に", "No Rain, No Rainbowl", "ハチマキ", "Green-bin", "歩数", "マスターピース", "ホワイトホーム", "プレゼンター", "Perfect Word", "いつもいっぱい", "白い林", "Alone", "小さな手のひら", "夏の欠片", "Veronica", "Stay Cold", "Plumberia", "絵葉書の秋", "Gravity 0.5", "真夜中のオーケストラ", "Task", "つぼみ", "Even", "十二月のひまわり"],
+ "c05_sfy": ["Hello Yellow", "Minifesto", "I Spy I Spa", "愛をこめて花火を", "Hi-Fire", "How Do I Revive?", "My Rest of My Life", "Allnight!!", "恋する瞳は美味しい", "やさしい気分で", "Dancing on the Wire", "Wildflour", "Eggs on Me", "Sunshine Sunrise", "Peep!!", "Rollin' Rays", "Aha", "愛を叫べ", 'Scarves', "輝く星のように", "The Bird Without Wigs", "Fork", "Love", "愛を身体に塗り込んで", "White Lie", "On Your Slide", "黒い雪", "Ambitions", "Flame", "Altogether", "Choice", "Dynamic", "Presents", "Farewells", "Aches", "Charge", "Beautifly", "Women", "Free Planer", "Spice", "Roll Over the Rainbowl", "Fly to the Moan", "Hail Holy Green", "Only Two", "Tamashii Evolution"],
+ "c05_mhg": ["気分上々↓↓", "俄然Year!", "約束事", "恋する気分", "Love in...", "さよならのくせ", "君だけのStore", "バンザイ斉唱!!!", "バカネジ", "One Time Out", "SURVIVAL", 'Love Litter Box', "アンビリーパボー", "アン♥ロッカー", "アンダー・ザ・シー・ドッグ", "幸せになれた", "泣き笑", "かけがえのない夢", "いつまでも響くこのmelon", "マジカルスリッパー", "divorce", "YEP", "愛コトブキ", "I SHOULD BE SO LUCKS", "ギリギリHELLO", "Bon Voyager", "Love Sink", "BLUE BAGGING", "ええかな", "Birthday Gong", 'ALIKE ALIKE', "Switch On", "778", "サヨナラは言えなかった", "SIGMA", "す・か・ん・ぱ", "とろけちゃうダンサー", "道しるし", "ドス鯉"],
+ "c05_aqt": ["決意の夜に", "千の夢を越えて", "2mm", "星の見えない朝に", "No Rain, No Rainbowl", "ハチマキ", "Green-bin", "歩数", 'マスターピーマン', "ホワイトホーム", "プレゼンター", 'Perfect Worm', "いつもいっぱい", "白い林", "Alone", "小さな手のひら", "夏の欠片", "Veronica", "Stay Cold", "Plumberia", "絵葉書の秋", "Gravity 0.5", "真夜中のオーケストラ", "Task", "つぼみ", "Even", "十二月のひまわり"],
 })

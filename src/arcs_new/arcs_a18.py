@@ -64,7 +64,7 @@ dict(k='a18_mfl', nm='m-floss', st='band', y0=1998, ge='ヒップホップ・R&B
  ea=['客演の企画だけが一人歩きして、自分たちの顔が見えなくなった。','二人だけの音は洗練されたが、勢いは年々細くなった。','それぞれの活動が増え、三人で並ぶ日は思い出になった。'],
  cp=['メンバー脱退','客演企画','再結成','ヒップホップ','英語と日本語'], eras=[1,3,4], alt=['m-flossy','n-flow']),
 
-dict(k='a18_sry', nm='坂元隆二', st='solo', y0=1976, ge='電子音楽・映画音楽', vg='m',
+dict(k='a18_sry', nm='坂本准教授', st='solo', y0=1976, ge='電子音楽・映画音楽', vg='m',
  th=['孤独と夜','喪失と再生','人工物への違和感'], sa='芸術大学の電子音楽スタジオ',
  tx='芸術大学の電子音楽スタジオで、機械と鍵盤に囲まれて曲を書きはじめたところから始まった',
  roles=[], tr=[], par='a18_sry', yr=list(range(30)),
@@ -123,7 +123,7 @@ dict(k='a18_kyk', nm='菅野ようかん', st='beat', y0=1989, ge='ゲーム・�
  ea=['依頼を受けすぎて、音の幅を使い果たした時期もあった。','得意な色に絞った作曲家として、誰にも似ていない名を残した。','会社に残り、大きな看板の裏方として長く仕事を続けた。'],
  cp=['ゲーム音楽','アニメ音楽','ジャンル横断','バンド結成','裏方の人'], eras=[1,2,4], alt=['菅野ようかん堂','菅野ようじ']),
 
-dict(k='a18_mry', nm='竹内まりも', st='solo', y0=1978, ge='ポップス・シティポップ', vg='f',
+dict(k='a18_mry', nm='竹内まり野菜', st='solo', y0=1978, ge='ポップス・シティポップ', vg='f',
  th=['恋のはじまり','旅立ちと別れの春','日常のぼやき'], sa='大学の音楽サークル',
  tx='大学の音楽サークルでの歌が、レコード会社の人の目に留まったことから始まった',
  roles=[], tr=[], par='a18_mry', yr=list(range(28)),
@@ -140,9 +140,9 @@ dict(k='a18_mry', nm='竹内まりも', st='solo', y0=1978, ge='ポップス・�
     ('昔の一曲が、国を越えて新しい聴き手に見つけられた。表に出て応えるか、変わらず静かに過ごすか。','騒がず、静かな場所で新しい曲を作り続ける','表に出て、新しい聴き手に会いに行く','過去の一曲に引きずられず、新しい曲が静かに積み上がった。','国を越えた聴き手と、直接顔を合わせる場が生まれた。',1,2)],
  eh='学生の歌声から始まって、ステージから距離を置き、曲を書く人になり、国を越えた昔の一曲に静かに微笑んだ。',
  ea=['表に出て新しい聴き手と出会い、昔の曲が現在の歌になった。','学業と就職を選び、歌は部屋の中の楽しみになった。','出続けた結果、顔の知名度は残ったが、曲の深みは薄れた。'],
- cp=['時間を置いて再評価','提供曲','ステージから距離','国を越えた再発見','静かな人'], eras=[0,1,3], alt=['竹内まりあ','竹内まりもっと']),
+ cp=['時間を置いて再評価','提供曲','ステージから距離','国を越えた再発見','静かな人'], eras=[0,1,3], alt=['竹内まりも','竹内まり野菜っと']),
 
-dict(k='a18_wsd', nm='渡辺貞太', st='solo', y0=1953, ge='ジャズ・フュージョン', vg='m',
+dict(k='a18_wsd', nm='渡辺ジャズ夫', st='solo', y0=1953, ge='ジャズ・フュージョン', vg='m',
  th=['旅立ちと別れの春','上京と故郷','応援歌'], sa='進駐軍向けの小さなクラブ',
  tx='進駐軍向けのクラブで鳴るジャズに憧れ、楽器を持ったところから始まった',
  roles=[], tr=[], par='a18_wsd', yr=list(range(30)),
@@ -203,14 +203,14 @@ dict(k='a18_cpl', nm='コピー・ラブ', st='band', y0=1991, ge='ソウル・�
 ]
 
 PT = {
-'a18_pfm': ['ポリポリズム','チョコレイト・ディスカウント','ワンルーム・ディスク','love the word','Perfect Stair Perfect Style','にぎ','Cream Fighter','微かなカビ','Spring of Rice','FAKE IT TILL TEA','Sling Sling','未来のミュージカル','Magic of Lunch','Relax In The Kitchen','TOKYO GRILL','Sweet Refrigerator','P.T.A.(保護者会)','575 (お茶漬け)','コンピューターシティ・バス','ジェニーはご機嫌斜め庭','レーザービームの宅配便','三人でワンタン','ふるさとのフォーメーション','踊れば機械の気分'],
-'a18_dgl': ['Shangri-Lunch','Flashback Disco(再放送)','Flash Mama','虹をつかもうとして転ぶ','N.O.(ノー)','少年ヘッド','Mononoke Dance (振付つき)','富士山麓の宴会','ガリガリ君のテーマ','Nothing は食べない','エビ反りジャンプ','VITAMIN K','人間ドック','Drunk Plug','コンビニで朝まで','ナイトクラブで昼寝','Takeout Shangri-La','虹のあとのうどん','深夜のラジオは止まらない','SEX抜きの電気ショック','すべての言葉が空耳','笑いながら踊れ','アンテナの先の祭り','電気とグルテンの宴'],
-'a18_mfl': ['Come Agar','Been So Lone','Planet Shaper-lets','Prism (パン粉付き)','Hay!','Let Go (Pineapple)','Mrs. You','Love Soup','Loop Tie','Tripod Babysitter','Cosmicolorful','Orbit 3 (with extra)','Beat Space Nine (分の八)','Lotta Lunch','ten (Miss Rice)','Sunset on the Rooftop','The Way We Were (昼休み)','マイク一本でゲスト','ゲストの席は空いている','三人分のリリック','母国語を半分ください','クラブの片隅の合言葉'],
-'a18_sry': ['戦場のメリー・クルミ','Merry Christmas Mr. Laurel','energy slow','The Last Emperor Penguin','美貌の晴天','Forbidden Coleslaw','Thousand Knitters','音楽図書館','Beauty & Beast (ビューティー)','Sheltering Sky (Umbrella)','Little Buddha (小仏)','asink','Rain (傘)','Happy End (Not Yet)','Ballet Mécanique 弁当','Behind the Mask (マスクの内側)','Seven Samurai を探して','Tong Poo (団子)','Bibo の青空','静かな鍵盤の戦場','映画館の暗闇の中で','一音だけを長く','画面の外の旋律','ピアノはまだ鳴っている'],
-'a18_hsi': ['風の谷のナウシコ','天空の城ラピタ','君をのせて(荷台に)','となりのトロロ','風のとおり雨','魔女の宅配便','海の見える町内会','人生のメリーゴーランド(中古)','あの夏の部屋へ','Summers','アシタカとサンバ','もののけ弁当','崖の下のポニョ','Hana-bi の線香','Sonatine の小片','ミニマリズム弁当','Information (案内係)','Oriental Wind (ほうじ茶)','同じ四小節','旋律は絵の中の風','指揮台の上の春','オーケストラと冷たい麦茶'],
-'a18_kyk': ['Thank!','The Real Folk Booze','Rein','Inner Universal Studio','Diamond Crevasse (挟み込み)','Lie On','Pink Monsoon Sale','Space Lion 丼','Blue (青果)','Call Me Call Me Call Me','Spokey Smokey','Mushroom Hunting (冬季限定)','Elm の下で','合戦のBGM','Gotta Knock a Little Louder','Green Bird (緑の鳥籠)','宇宙のカウボーイ','ジャズで始まる朝','バンドでぎゅうぎゅう','録音は一発勝負','一晩で三十曲','世界の隅っこの旋律'],
-'a18_mry': ['SEPTEMBER (残暑)','Plastic Lunch','人生のドア・ストップ','元気を出汁','駅員','不思議なピーナツパイ','家に帰ろう(マイ・スイート・ポテト)','純米ラプソディ','シングル・サゲイン','本気でオンリーワン','Forever Friend Request','毎日がスペシャルティ','天使のウィンク(片目)','リンダ(リンゴ)','告白(仮)','静かな台所の曲','ステージは年に一度','提供曲のうた','昔のレコードの値段','九月の終わりの電車','ひさしぶりのスタジオ','あなたの声で聴きたい'],
-'a18_wsd': ['California Shawarma','Morning Iceland','Orange Espresso','My Dear Lime','Mbali Aprica','Pastoral Lunch','Round Midnight Lunch','Take Five Minutes','マウスピースは変えない','朝の台所のサックス','留学帰りの夜行列車','Bossa Nova の宅配','大陸の夕暮れ','リズムは足の裏から','息の長いソロ','小さなクラブの夜明け','Autumn Blow (ほうじ茶)','Nice Shot! (ホームラン)','Africa の屋台','楽器ケースが閉まらない','進駐軍クラブの早朝','コマーシャルの旋律'],
-'a18_tsq': ['Truck','Omens of Lunch','It\'s Magic (お手軽)','Adventurers','Take Me Out to the Race','Midnight Lover (昼版)','Sunrise Express (各駅停車)','Shake It Up (炭酸)','歌のない朝','サックスは遠くまで','速弾きの心得','茶の間のフュージョン','毎週日曜の疾走','メンバー募集中','楽器の会話','Royal Guard (王室御用)','Cairo Express の弁当','サークルの発表会','サンバ・ウォーカー','夏の終わりのインスト','ホットな休日','ギター三本とキーボード'],
-'a18_cpl': ['接吻(ひそやかに)','月の裏で会いませんか','朝日のあたる道路','世界の果てまでイッテ','Primal の缶詰','Desire (予約)','ソウルの襟を立てて','夜行性のレコード','色気の保存状態','洒落た街の試聴機','バンド名だけ残して','ギター一本の行脚','古いレコードの手触り','真面目な顔の色気','夜明けまでのコピー','店先で聴こえた曲','三文字しか話さない夜','弦の張り替えは長い','弾き語りの夏','襟を立てた朝'],
+    'a18_pfm': ['Magic of Lunch', 'Relax In The Kitchen', 'TOKYO GRILL', 'Sweet Refrigerator', 'FAKE IT TILL TEA', 'Sling Sling', '未来のミュージカル', 'ジェニーはご機嫌斜め庭', 'レーザービームの宅配便', 'P.T.A.(保護者会)', 'ねえ(ねぎ)', 'NIGHT FLIGHT(夜食便)', 'Spending all my lunch time', 'Hold Your Ham', 'Flash Fry', 'STAR TRAIN(各停)', 'Party Baker', 'ナナナナナイロン', "タイムワープ(寝坊)", '三人でワンタン', 'ふるさとのフォーメーション'],
+    'a18_dgl': ['Shangri-Lunch', 'Flashback Disco(再放送)', 'Flash Mama', '虹をつかもうとして転ぶ', "N.O.(ノー残業)", '少年ヘッド', 'Mononoke Dance (振付つき)', '富士山麓の宴会', 'ガリガリ君のテーマ(当たり)', 'Nothing は食べない', 'VITAMIN K', '人間ドック', 'Drunk Plug', 'エビ反りジャンプ', '深夜のラジオは止まらない', '笑いながら踊れ', 'アンテナの先の祭り'],
+    'a18_mfl': ['Come Agar', 'Been So Lone', 'Planet Shaper-lets', 'Prism (パン粉付き)', 'Hay!', 'Let Go (Pineapple)', 'Mrs. You', 'Love Soup(具だくさん)', 'Loop Tie', 'Tripod Babysitter', 'Cosmicolorful', 'Orbit 3 (with extra)', 'Beat Space Nine (分の八)', 'Lotta Lunch', 'ten (Miss Rice)', 'The Way We Were (昼休み)', 'クラブの片隅の合言葉'],
+    'a18_sry': ['戦場のメリー・クルミ', 'Merry Christmas Mr. Laurel', 'energy slow', 'The Last Emperor Penguin', '美貌の晴天', 'Forbidden Coleslaw', 'Thousand Knitters', '音楽図書館', 'Beauty & Beast (ビューティー)', 'Sheltering Sky (Umbrella)', "Little Pudding", 'asink', 'Rain (傘)', 'Happy End (Not Yet)', 'Ballet Mécanique 弁当', "Behind the Mascot", 'Tong Poo (団子)', 'Bibo の青空', '静かな鍵盤の戦場', '一音だけを長く'],
+    'a18_hsi': ['風の谷のナウシコ', '天空の城ラピタ', '君をのせて(荷台に)', 'となりのトロロ', '風のとおり雨', '魔女の宅配便', '海の見える町内会', '人生のメリーゴーランド(中古)', 'あの夏の部屋へ', 'Summers', 'アシタカとサンバ', 'もののけ弁当', '崖の下のポニョ', 'Hana-bi の線香', 'Sonatine の小片', 'ミニマリズム弁当', 'Information (案内係)', 'Oriental Wind (ほうじ茶)', '同じ四小節', '指揮台の上の春'],
+    'a18_kyk': ['Thank!', 'The Real Folk Booze', 'Rein', 'Inner Universal Studio', 'Diamond Crevasse (挟み込み)', 'Lie On', 'Pink Monsoon Sale', 'Space Lion 丼', 'Blue (青果)', 'Call Me Call Me Call Me', 'Spokey Smokey', 'Mushroom Hunting (冬季限定)', 'Elm の下で', '合戦のBGM', 'Gotta Knock a Little Louder', 'Green Bird (緑の鳥籠)', '宇宙のカウボーイ', '録音は一発勝負'],
+    'a18_mry': ['SEPTEMBER (残暑)', 'Plastic Lunch', '人生のドア・ストップ', '元気を出汁', '駅員', '不思議なピーナツパイ', '家に帰ろう(マイ・スイート・ポテト)', '純米ラプソディ', 'シングル・サゲイン', '本気でオンリーワン', 'Forever Friend Request', '毎日がスペシャルティ', '天使のウィンク(片目)', 'リンダ(リンゴ)', '告白(仮)', '静かな台所の曲', 'ステージは年に一度'],
+    'a18_wsd': ['California Shawarma', 'Morning Iceland', 'Orange Espresso', 'My Dear Lime', 'Mbali Aprica', 'Pastoral Lunch', 'Round Midnight Lunch', 'Take Five Minutes', 'Autumn Blow (ほうじ茶)', 'Nice Shot! (ホームラン)', 'Bossa Nova の宅配', 'Africa の屋台', 'マウスピースは変えない', '朝の台所のサックス', '息の長いソロ', '小さなクラブの夜明け'],
+    'a18_tsq': ['Truck(軽)', 'Omens of Lunch', 'Japanese Soup Brothers', '宝島ロール', 'Moon Over the Cattle', 'Sister Marinade', 'Bird of Wonton', 'Rooms with a Brew', 'Little League Stir-fry', 'Traffic Jam & Butter', 'Bad Moon Cake', 'Sunny-side Up Cruise', 'Pioggia Di Capri-Sun', 'Scrambled Eggs-ing', 'Ms. Braising', 'As You Fish', 'Stingray Sashimi', 'Cape Lite Beer', 'Euro-Star Anise', 'Midnight Lover (昼版)', 'Adventurers', "It's Magic (お手軽)"],
+    'a18_cpl': ['接吻 〜キッシュ〜', '砂の花〜Desert Rice〜', "夜をぶっとばせ -LET'S SPEND THE BREAKFAST-", 'ハッピーバースデイ・ソーセージ', 'Music, Dance & Lunch', 'フェイバリット・フライ', 'The Best Dish Of My Life', '空気-清浄機', 'サンシャイン・ロマンスカー', 'プライマル缶詰', "月の表で会いませんか", '朝日のあたる道路', '世界の果てまでイッテ', 'Desire (予約)', 'ソウルの襟を立てて', '夜行性のレコード'],
 }

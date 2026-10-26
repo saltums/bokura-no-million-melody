@@ -178,7 +178,7 @@ def main():
     _pk = {}; _n = 0
     for _e in pool:
         _e['m'].pop('_lz', None)
-        if not _e['m'].get('rare'):
+        if _e.get('t') is not None:
             _g = _n // 3; _n += 1; _pk.setdefault(_g, {})[str(_n - 1)] = _e['t']; _e['m']['lk'] = str(_n - 1)
             _e['m']['lz'] = 'd/p' + str(_g) + '.json'; _e['t'] = None
     for _g, _o in _pk.items():

@@ -9,6 +9,7 @@ for _f in sorted(glob.glob('/home/claude/ptfix/out*.json')):
     except Exception as e:
         print('PTO SKIP', _f, e)
 def apply(arcs, pt):
+    return pt  # 2026-10: arcs_new の PT(精査済み)を正とする。旧 ptfix の上書きは無効化
     for a in arcs:
         if a['k'] in PTO: pt[a.get('par') or a['k']] = PTO[a['k']]
     return pt
@@ -22,5 +23,5 @@ for _f in sorted(glob.glob('/home/claude/ptfix/x_*.json')):
         print('PTX SKIP', _f, e)
 def deep(k, main, seen):
     """アルバム曲用: 深い曲 + 表題に使われなかった代表曲"""
-    ex = list(PTX.get(k, [])) + list((main or [])[12:])
+    ex = list((main or [])[12:])  # 旧 PTX は実曲名が混ざるため不使用
     return [t for t in dict.fromkeys(ex) if t not in seen]

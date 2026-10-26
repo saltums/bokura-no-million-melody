@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ARCS = [
-dict(k='a11_nakata', nm='中畑ヤスタカ', st='beat', y0=1997, ge='エレクトロポップ', vg='f',
+dict(k='a11_nakata', nm='中トロヤスタカ', st='beat', y0=1997, ge='エレクトロポップ', vg='f',
  th=['人工物への違和感','恋のはじまり','ナンセンスと言葉遊び'], sa='地元の友達と、自宅の機材部屋',
  tx='地元の同級生と機材を持ち寄り、手作りのダンスミュージックを作ったところから始まった',
  roles=[], tr=[], par='a11_nakata', yr=[0,2,4,5,6,8,9,11,13,15,17,19,21],
@@ -25,7 +25,7 @@ dict(k='a11_nakata', nm='中畑ヤスタカ', st='beat', y0=1997, ge='エレク�
  ea=['自分のユニットの中で、少数の熱心な聴き手に囲まれて静かに作り続けた。','提供と自作を行き来しながら、気づけば複数の世代に聴かれていた。','海外で認められたが、国内では少し遠い存在になった。'],
  cp=['人工的な音の美学','プロデュース業','提供で名が広がる','声の加工'], eras=[2,3,4], alt=['中畑ヤスターカ(電子)','ナカタ・シンセ工房']),
 
-dict(k='a11_hachi', nm='ハッチ(匿名の作り手)', st='beat', y0=2009, ge='ボカロポップ', vg='m',
+dict(k='a11_hachi', nm='米津玄米茶', st='beat', y0=2009, ge='ボカロポップ', vg='m',
  th=['孤独と夜','自己否定と肯定','喪失と再生','日常のぼやき'], sa='自宅の部屋と、動画の投稿場所',
  tx='自宅の部屋で作った合成音声の曲を、匿名で投稿したところから始まった',
  roles=[], tr=[], par='a11_hachi', yr=[0,1,2,3,3,4,5,6,8,9,10,12,14],
@@ -48,9 +48,9 @@ dict(k='a11_hachi', nm='ハッチ(匿名の作り手)', st='beat', y0=2009, ge='
     ('成功の後、ライブの舞台を増やすか、制作に籠もるか。','大きな舞台に立つ','制作に籠もる','客席と曲が直接つながり、曲の寿命がさらに延びた。','深く作り込んだ作品が生まれたが、顔が見えない存在に戻った。',1,1)],
  eh='匿名の部屋から出て、時代を代表する歌い手兼作り手になった。',
  ea=['匿名の作り手として、少数の熱心な聴き手にだけ届き続けた。','メジャーで成功したが、昔のような素朴な曲は減った。','作家性を守りつつ、静かに息の長い活動を続けた。'],
- cp=['ネット発','匿名から顔出しへ','作り手が歌い手になる','絵も音も自分で'], eras=[2,3,4], alt=['ハッチ(匿名の作り手)','ハチミツ工房']),
+ cp=['ネット発','匿名から顔出しへ','作り手が歌い手になる','絵も音も自分で'], eras=[2,3,4], alt=['米津玄米茶','ハチミツ工房']),
 
-dict(k='a11_deco', nm='DECO*28', st='beat', y0=2008, ge='ボカロロック', vg='f',
+dict(k='a11_deco', nm='デコポン*28', st='beat', y0=2008, ge='ボカロロック', vg='f',
  th=['恋のはじまり','失恋','自己否定と肯定','孤独と夜'], sa='自宅の部屋と、動画の投稿場所',
  tx='自宅の部屋で、合成音声に歌わせる曲をこつこつ投稿するところから始まった',
  roles=[], tr=[], par='a11_deco', yr=[0,1,2,3,4,5,6,8,10,12,14,16],
@@ -73,9 +73,9 @@ dict(k='a11_deco', nm='DECO*28', st='beat', y0=2008, ge='ボカロロック', vg
     ('海外のイベントに招かれた。国を越えて出ていくか、国内に留まるか。','海外へ曲を届けにいく','国内に留まる','言葉の違う客席が同じ曲で盛り上がり、活動の地図が広がった。','国内の足場が固まり、安定した活動を長く続けられた。',2,1)],
  eh='合成音声と共に十年以上走り続け、国を越えて歌われる作り手になった。',
  ea=['自分の看板の声と共に、息の長い活動を静かに続けた。','提供の仕事が増え、表舞台より裏方の人になった。','大きなレーベルの中で、少し不自由を感じながらも作り続けた。'],
- cp=['ネット発','長く続ける','合成音声の看板','メジャー移籍'], eras=[2,3,4], alt=['DECO*28(古参)','デコボコ工房']),
+ cp=['ネット発','長く続ける','合成音声の看板','メジャー移籍'], eras=[2,3,4], alt=['デコポン*28(古参)','デコボコ工房']),
 
-dict(k='a11_wowaka', nm='ワワカ', st='beat', y0=2009, ge='ボカロロック', vg='m',
+dict(k='a11_wowaka', nm='ワワカメ', st='beat', y0=2009, ge='ボカロロック', vg='m',
  th=['自己否定と肯定','孤独と夜','社会への怒り','人工物への違和感'], sa='自宅の部屋と、動画の投稿場所',
  tx='自宅の部屋で、速くて鋭い曲を作って投稿したところから始まった',
  roles=['Vo/Gt','Gt','Ba','Dr'], tr=['歌詞はいつも速すぎて追えない','機材のセットが毎回違う','ライブ前だけ静か','MCで曲名を言い忘れる'],
@@ -99,9 +99,9 @@ dict(k='a11_wowaka', nm='ワワカ', st='beat', y0=2009, ge='ボカロロック'
     ('合成音声の仕事を残すか、バンド一本に絞るか。','バンド一本に絞る','合成音声の仕事も続ける','バンドの音が一つにまとまり、活動の軸が固まった。','二つの顔を行き来し、どちらの客席も手放さなかった。',1,1)],
  eh='合成音声の鋭さをバンドに持ち込み、新しい形のロックを鳴らした。',
  ea=['合成音声の作り手として、息の長い評価を受け続けた。','バンドは続いたが、昔の曲の影から抜け出せなかった。','二足のわらじで走り続け、どちらも手放さなかった。'],
- cp=['ネット発','作り手からバンドへ','路線変更','メジャー移籍'], eras=[2,3,4], alt=['ワワカ(初期)','ワサビ・ロック']),
+ cp=['ネット発','作り手からバンドへ','路線変更','メジャー移籍'], eras=[2,3,4], alt=['ワワカメ(初期)','ワサビ・ロック']),
 
-dict(k='a11_livetune', nm='リブチューン', st='beat', y0=2006, ge='エレクトロポップ', vg='f',
+dict(k='a11_livetune', nm='リブロースチューン', st='beat', y0=2006, ge='エレクトロポップ', vg='f',
  th=['人工物への違和感','恋のはじまり','旅立ちと別れの春','推しとファンへの手紙'], sa='自宅の部屋と、動画の投稿場所',
  tx='自宅の部屋で、既存の曲を混ぜ直すリミックスを作ったところから始まった',
  roles=[], tr=[], par='a11_livetune', yr=[0,1,2,3,4,5,6,7,8,10,12,14],
@@ -152,7 +152,7 @@ dict(k='a11_supercell', nm='スーパーセール', st='beat', y0=2007, ge='ポ�
  ea=['合成音声の世界観を守り、熱心なファンの間で息長く愛された。','メジャーでの大きな成功のあと、静かに表舞台を離れた。','主題歌の波に乗れず、一発の印象だけが残った。'],
  cp=['ネット発','同人集団','合成音声から人間の声へ','活動休止と再始動'], eras=[2,3,4], alt=['スーパーセール(同人)','パラレル・セル']),
 
-dict(k='a11_tofu', nm='とうふびーつ', st='beat', y0=2004, ge='ハウス・ポップス', vg='x',
+dict(k='a11_tofu', nm='おからびーつ', st='beat', y0=2004, ge='ハウス・ポップス', vg='x',
  th=['地元愛','日常のぼやき','ナンセンスと言葉遊び','夏と青春'], sa='地元の自宅の部屋と、ネットの掲示板',
  tx='地元の自宅の部屋で作ったダンス曲を、ネットで無料公開したところから始まった',
  roles=[], tr=[], par='a11_tofu', yr=[0,2,4,6,8,9,10,11,12,14,16,18],
@@ -177,7 +177,7 @@ dict(k='a11_tofu', nm='とうふびーつ', st='beat', y0=2004, ge='ハウス・
  ea=['ネットの無料公開で人気を得たが、メジャーの波には乗り切れなかった。','東京で忙しく働くうち、地元の空気が曲から薄れていった。','自分名義にこだわり、熱心な聴き手の間で静かに愛された。'],
  cp=['ネット発','地元愛','無料公開','ゲスト歌手'], eras=[2,3,4], alt=['豆腐ビート(旧)','おぼろビーツ']),
 
-dict(k='a11_daft', nm='ダフト・パンツ', st='duo', y0=1993, ge='ハウス', vg='x',
+dict(k='a11_daft', nm='ダフト・パンケーキ', st='duo', y0=1993, ge='ハウス', vg='x',
  th=['人工物への違和感','ナンセンスと言葉遊び','夏と青春','孤独と夜'], sa='学生時代の友人同士の、自宅の部屋',
  tx='学生時代に出会った二人が、ギターバンドを始めたところから始まった',
  roles=['Prog','Prog'], tr=['人前では、顔を決して見せない','いつも同じ四小節を熱心に聴いている'],
@@ -205,7 +205,7 @@ dict(k='a11_daft', nm='ダフト・パンツ', st='duo', y0=1993, ge='ハウス'
  ea=['ギターバンドのまま、通好みの評価で静かに続いた。','顔を出して親しまれたが、神話にはならなかった。','活動を続けるうち、世代交代の波に飲まれていった。'],
  cp=['匿名性','機械と人間','映像と音楽','自ら終わりを告げる'], eras=[0,1,2], alt=['ダフ・トパンク(旧)','ダフト・ショーツ']),
 
-dict(k='a11_avicii', nm='アビシー二', st='beat', y0=2008, ge='ダンス・ポップ', vg='x',
+dict(k='a11_avicii', nm='アビシイタケ', st='beat', y0=2008, ge='ダンス・ポップ', vg='x',
  th=['旅立ちと別れの春','孤独と夜','夏と青春','応援歌'], sa='北の国の自宅の部屋',
  tx='北の国の自宅の部屋で、少年が作ったダンス曲を投稿したところから始まった',
  roles=[], tr=[], par='a11_avicii', yr=[0,1,2,3,4,5,6,7,8,9,10],
@@ -228,9 +228,9 @@ dict(k='a11_avicii', nm='アビシー二', st='beat', y0=2008, ge='ダンス・�
     ('ステージ活動をやめて制作に専念するか、続けるか。','ステージをやめて制作に専念する','ステージを続ける','曲作りに専念し、新しい作品を静かに積み重ねた。','舞台の熱を守りつつ、ツアーを続けた。',1,0)],
  eh='部屋から世界の大舞台へ、ダンス音楽を広げた作り手として、曲が長く鳴り続けた。',
  ea=['定石を守った曲で、フロアの常連として長く活動した。','レーベルの力を借りて、堅実に成功を重ねた。','公演を絞り、静かな活動の中で熱心な聴き手に愛された。'],
- cp=['部屋から世界へ','ジャンルの越境','フェス','ステージをやめる'], eras=[2,3,4], alt=['アビシー二(古参)','アヒル・シー']),
+ cp=['部屋から世界へ','ジャンルの越境','フェス','ステージをやめる'], eras=[2,3,4], alt=['アビシイタケ(古参)','アヒル・シー']),
 
-dict(k='a11_skrillex', nm='スクランブル・ラックス', st='beat', y0=2004, ge='ダブステップ', vg='x',
+dict(k='a11_skrillex', nm='スクランブル・エッグレックス', st='beat', y0=2004, ge='ダブステップ', vg='x',
  th=['社会への怒り','ナンセンスと言葉遊び','自己否定と肯定','応援歌'], sa='ライブハウスと、自宅の部屋',
  tx='ロックバンドの歌い手として、ライブハウスの小さな舞台に立つところから始まった',
  roles=[], tr=[], par='a11_skrillex', yr=[0,3,6,7,8,9,10,12,14,16,18],
@@ -254,18 +254,18 @@ dict(k='a11_skrillex', nm='スクランブル・ラックス', st='beat', y0=200
     ('他のジャンルのアーティストと積極的に組むか、自分の枠に留まるか。','他のジャンルとも組む','自分の枠に留まる','ジャンルをまたぐ共演が増え、若い世代に影響を与えた。','自分の色は純粋に保たれたが、新しい風は入りにくかった。',1,0)],
  eh='バンドの絶叫から電子音へ。低音で世界の客席を揺らす存在になった。',
  ea=['ロックのバンドのまま、通好みの客席に愛され続けた。','ポップ寄りにまとまり、無難な成功にとどまった。','独自の低音を守りながら、静かな活動を続けた。'],
- cp=['バンドから転向','低音の美学','大物との共演','ジャンルを超える'], eras=[2,3,4], alt=['スクランブル・ラックス(古)','スクラップ・ドラム']),
+ cp=['バンドから転向','低音の美学','大物との共演','ジャンルを超える'], eras=[2,3,4], alt=['スクランブル・エッグレックス(古)','スクラップ・ドラム']),
 ]
 
 PT = {
-'a11_nakata': ['ポリリズム煮込み','チョコレイト・ディスク','Perfect Star Perfect Stair','エレクトロ・ワールド(充電中)','ワンルーム・ディスコ(家賃別)','コンピューターシティ(渋滞)','love the world(の隅っこ)','不自然なガール→不自然なガーナ','ファッションモンスター2号','PONPONPON→ポンポン菓子','つけまつける→つけまつげる','にんじゃりばんばん→にんじんばんばん','インベーダー・インベーダー・インベーダー','Dream Fighter(寝起き)','微かなカオリ→微かなカオル','Spring of Life→Spring of Rice','Fan Service(自炊)','575(ごなな)','GAME→GAIME','Twinkle Snow Powdery Snow(粉雪を除く)','もったいないとらんど→もったいないバランス','声を加工する夜','ボコーダー・ダイアリー','フロアに沈む四小節'],
-'a11_hachi': ['マトリョシカ→マトリョーシカ','結んで開いて→結んで閉じて','ドーナツホール→ドーナツホールド','パンダヒーロー→パンダヒーロー(笹付)','リバーシブル・キャンペーン→リバーシブル・キャンプ','ゴーゴー幽霊船→ゴーゴー幽霊鍋','Lemon→Melon','ゴーゴー・シャーク→ゴーゴー・シャワー','打上花火→打上花見','ピースサイン→ピーズサイン','パプリカ→パプリコ','感電→感電(家電)','Flamingo→Flamingo(ピンク)','TEENAGE RIOT→TEENAGE RICE','馬と鹿→馬と鰻','Pale Blue→Pale Blue(チューブ)','灰色と青→灰色と緑','ナンバーナイン→ナンバーナイン(半)','乾杯→乾杯(お茶)','サンタマリア→サンタマリア(地下)','匿名の君に宛てて','部屋の窓から見える雲','ふたつのハンドル','夜のスケッチブック'],
-'a11_deco': ['ヴァンパイア→ヴァンパイヤ','ゴーストルール→ゴーストルーム','モンスター→モンスーン','乙女解剖→乙女解剖(図鑑)','ラビットホール→ラビットホール(穴場)','弱虫モンブラン→弱虫モンブラン(栗抜き)','二息歩行→二息歩行(階段)','妄想感傷代償連盟→妄想感傷代償連盟(会議)','モザイクロール→モザイクロール(寿司)','ボーカロイドと鏡','愛言葉→愛言葉(しりとり)','シンデレラ・タイムリミット','ヒバナ→ヒバナ(花火)','深夜テレビの置き手紙','ミュージック・ミクスチャー','あしたの窓辺のラビット','週末シンクロニシティ','青い錠剤のピアノ','テレパシー・ナイトメア','かくれんぼの最終回','おしゃべり時計の告白','ひとりかくれんぼアワー','ぼくの声を探して'],
-'a11_wowaka': ['ローリンガール→ローリングガール','ワールズエンド・ダンスホール→ワールズエンド・ダンスフロア','裏表ラバーズ→裏表ラーメン','アンハッピーリフレイン→アンハッピーリフレッシュ','ワンダーラスト→ワンダーラスト(逆)','ミラクルペイント→ミラクルペンキ','ステレオジャック→ステレオジャム','リアル・ライブラリ','早口の遺書','走り抜ける階段','秒速百八十のため息','観客席の逆回転','暗闇でも踊れるタイプ','言葉が追いつかない','ギターが先に走り出す','部屋の外に出る方法','回路が壊れたあとの歌','再生ボタンの憂鬱','真夜中のフルスロットル','合成音声の解散式'],
-'a11_livetune': ['Packaged→Packaged(段ボール)','Tell Your World→Tell Your Word','Redial→Redial(黒電話)','Take Your Way→Take Your Day','Last Night, Good Night→Last Night, Good Lunch','Sketch→Sketch(落書き)','Our Music→Our Music(試聴)','Love Sick→Love Stick','Re:package→Re:package(再包装)','Decade→Decade(十年選手)','Surfacing→Sunfacing','Transfer→Transfer(乗り換え)','Dance Dance→Dance Dance Dance','Hello→Hello(留守電)','Love Letter→Love Letter(圧縮)','リミックスの夜','混ぜ直した恋','電波に乗った春','午前零時のプレイリスト','手紙を貼り付ける','はじめまして、の周波数','消せない通話履歴'],
-'a11_supercell': ['メルト→メルト(アイス)','君の知らない物語→君の知らない物件','ワールドイズマイン→ワールドイズマイン(地図)','Today Is A Beautiful Day→Today Is A Beautiful Dai','Black Rock Shooter→Black Rock Shooter(ロック)','sprinter→spinter','終わりの世界から→終わりの世界から(店内放送)','星が瞬くこんな夜に→星が瞬くこんな昼に','Perfect Day→Perfect Dai','Kiss me?→Kiss me!','Departure→Departure(出発ロビー)','Utakata Hanabi→うたかた花見','Love & Roll→Love & Rice','Ghost→Ghost(座敷)','Hearts→Hearts(トランプ)','Cloud→Cloud(わた)','きみのこえ、そらのいろ','集団の名前の由来','絵が先にできた夜','作り手と歌い手と絵描き','季節外れの主題歌','同人誌の最終ページ'],
-'a11_tofu': ['水星→水素','朝が来るまで終わる事のないダンスを→朝が来るまで終わる事のないダンスを(閉店まで)','ディスコの神様→ディスコの仏様','Don\'t Stop the Music→Don\'t Stop the Muse','SHOPPING MALL→SHOPPING MALT','Lonely Nights→Lonely Knights','BABY→BABY(ベビーカステラ)','Positive→Positivo','LOST DECADE→LOST DECAF','Fantasy Club→Fantasy Cub','Poolside→Poolside(流れる)','LOVE→LOVE(うどん)','Stay Away→Stay Away(帰宅)','ふめつのこころ→ふめつのこころ(焼き)','中学生の部屋のDJ','ネット掲示板の恋','港町ハウス','三宮のレコード屋','ゲストが来る日','無料の置き土産','商店街ミュージック','夜行バスの四つ打ち'],
-'a11_daft': ['One More Time→One More Time(も一回)','Around the World→Around the Word','Harder, Better, Faster, Stronger→Harder, Better, Fatter, Stronger','Da Funk→Da Fun','Get Lucky→Get Ducky','Digital Love→Digital Lava','Technologic→Techno-Logic(論理)','Aerodynamic→Aero-Dynamite','Robot Rock→Robot Roll','Face to Face→Face to Fish','Give Life Back to Music→Give Lunch Back to Music','Instant Crush→Instant Crunch','Lose Yourself to Dance→Lose Yourself to Rice','Something About Us→Something About Bus','Veridis Quo→Veridis Quiz','Voyager→Voyager(航海)','Touch→Touch(とっち)','Revolution 909→Revolution 910','Derezzed→Deresized','Human After All→Human After Mall','Rollin\' & Scratchin\'→Rolling & Scratching(痒い)','Burnin\'→Burning(焼き)','仮面の下のため息','四小節だけの夜明け','三角形の舞台'],
-'a11_avicii': ['Levels→Bevels','Wake Me Up→Wake Me Cup','Hey Brother→Hey Mother','Waiting for Love→Waiting for Lunch','The Nights→The Knights','Addicted to You→Addicted to Tea','Without You→Without Zoo','You Make Me→You Bake Me','Fade into Darkness→Fade into Dark Mess','I Could Be the One→I Could Be the Bun','Lonely Together→Lonely Tether','SOS→ESS','Heaven→Heaven(干し)','Silhouettes→Silhouettes(影絵)','Dear Boy→Dear Boy(坊や)','Broken Arrows→Broken Arrows(折れ矢)','Divine Sorrow→Divine Sparrow','Pure Grinding→Pure Grilling','Hope There\'s Someone→Hope There\'s Somewhere','部屋から世界へ','朝方の飛行機の歌','フェスの最前列の声','北の国の夏の夜'],
-'a11_skrillex': ['Scary Monsters and Nice Sprites→Scary Monsters and Nice Spirits','Bangarang→Bangarong','First of the Year→First of the Pear','Kill Everybody→Kill Every Buddy','Cinema→Cinema(席番)','Make It Bun Dem→Make It Bun Ham','Ragga Bomb→Raga Bomb','Rock n Roll→Rock n Roll(ごはん)','Breakn\' a Sweat→Breakin\' a Sweet','Right In→Right Inn','Where Are U Now→Where Are U Noodle','Purple Lamborghini→Purple Lamb Burger','Recess→Recess(休み時間)','Rumble→Rumble(轟き)','Summit→Summit(山頂)','Ease My Mind→Ease My Mine','With You, Friends→With You, Fries','Don\'t Get Too Close→Don\'t Get Too Clothes','Try It Out→Try It Oat','Weekends→Weak Ends','絶叫から低音へ','床をしゃがむ客席','バンドの亡霊と踊る夜'],
+    'a11_nakata': ['ポリリズム煮込み', "チョコレイト・ディスカウント", 'Perfect Star Perfect Stair', 'エレクトロ・ワールド(充電中)', 'ワンルーム・ディスコ(家賃別)', 'コンピューターシティ(渋滞)', 'love the world(の隅っこ)', '不自然なガーナ', 'ファッションモンスター2号', 'ポンポン菓子', "つけまつけ麺", 'にんじんばんばん', 'インベーダー・インベーダー・インベーダー', 'Dream Fighter(寝起き)', '微かなカオル', 'Spring of Rice', 'Fan Service(自炊)', '575(ごなな)', 'GAME(ひるね)', 'Twinkle Snow Powdery Snow(粉雪を除く)', 'もったいないバランス', 'きみに100パーセント(果汁)', '原宿いやほいほい', 'Candy Candy Cane'],
+    'a11_hachi': ["マトリョーシカ・カレー", '結んで閉じて', 'ドーナツホールド', 'パンダヒーロー(笹付)', 'リバーシブル・キャンプ', 'ゴーゴー幽霊鍋', 'Melon Pan', '打上花見', 'ピースサイダー', 'パプリカ(赤黄緑)', '感電(家電)', 'Flamingo(ピンク)', 'TEENAGE RICE', '馬と鰻', 'Pale Blue(チューブ)', "灰色と緑茶", 'ナンバーナイン(半)', 'サンタマリア(地下)', '海の幽霊屋敷', 'LOOSE SEAT', '匿名の君に宛てて', '夜のスケッチブック'],
+    'a11_deco': ['ヴァンパイナップル', 'ゴーストルーム', 'モンスーン(梅雨)', '乙女解剖(図鑑)', 'ラビットホール(穴場)', '弱虫モンブラン(栗抜き)', '二息歩行(階段)', '妄想感傷代償連盟(会議)', 'モザイクロール(寿司)', '愛言葉(しりとり)', 'ヒバナ(花火)', 'Dreamin Chuchu(中華)', 'サラマンダー(焼き)', 'シンデレラ・タイムリミット', 'ボーカロイドと鏡', 'ミュージック・ミクスチャー', '深夜テレビの置き手紙', 'ぼくの声を探して'],
+    'a11_wowaka': ['ローリンサラダ', "ワールズエンド・ダンスフロアマット", '裏表ラーメン', 'アンハッピーリフレッシュ', 'ワンダーラスト(逆)', 'ミラクルペンキ', 'アンノウン・マザーグース(卵)', 'センスレス・ワンダー麺', '3分29秒(カップ麺)', '早口の遺書', '走り抜ける階段', '秒速百八十のため息', '暗闇でも踊れるタイプ', 'ギターが先に走り出す', '回路が壊れたあとの歌', '合成音声の解散式'],
+    'a11_livetune': ['Packaged Lunch', 'Tell Your Word', 'Redial(黒電話)', 'Take Your Day', 'Last Night, Good Lunch', 'Sketch(落書き)', 'Our Music(試聴)', 'Love Stick(棒付き)', 'Re:package(再包装)', 'Decade(十年選手)', 'Sunfacing Up', 'Transfer(乗り換え)', 'Dance Dance Dancing', 'Hello(留守電)', 'Love Letter(圧縮)', 'リミックスの夜', '混ぜ直した恋'],
+    'a11_supercell': ['メルト(アイス)', '君の知らない物件', 'ワールドイズマイン(地図)', 'Today Is A Beautiful Daikon', 'Black Rock Shooter(ロック)', 'sprinkler(散水)', '終わりの世界から(店内放送)', '星が瞬くこんな昼に', 'Perfect Daifuku', 'Kissmint?', 'Departure(出発ロビー)', 'うたかた花見酒', 'Love & Rice', 'Ghost(座敷)', 'Hearts(トランプ)', 'Cloud(わた)', '同人誌の最終ページ', '作り手と歌い手と絵描き'],
+    'a11_tofu': ['水素', '朝が来るまで終わる事のないダンスを(閉店まで)', 'ディスコの仏様', "Don't Stop the Muse", 'SHOPPING MALT', 'Lonely Knights', 'BABY(ベビーカステラ)', 'Positivo', 'LOST DECAF', 'Fantasy Cub', 'Poolside(流れる)', 'LOVE(うどん)', 'Stay Away(帰宅)', 'ふめつのこころ(焼き)', '港町ハウス', 'ゲストが来る日'],
+    'a11_daft': ['One More Time(も一回)', 'Around the Word Count', 'Harder, Better, Fatter, Stronger', 'Da Fun', 'Get Ducky', 'Digital Lava', "Techno-Lunch", 'Aero-Dynamite', 'Robot Roll', 'Face to Fish', 'Give Lunch Back to Music', 'Instant Crunch', 'Lose Yourself to Rice', 'Something About Bus', 'Veridis Quiz', 'Voyager Pass', 'Touch Up', 'Revolution 910', 'Deresized', 'Human After Mall', 'Rolling & Scratching(痒い)', "Burnin' Toast", 'Fragments of Thyme', 'Contact Lens', "Doin' It Rice"],
+    'a11_avicii': ['Bevels', 'Wake Me Cup', 'Hey Mother', 'Waiting for Lunch', 'The Knights', 'Addicted to Tea', 'Without Zoo', 'You Bake Me', 'Fade into Dark Mess', 'I Could Be the Bun', 'Lonely Tether', 'ESS', 'Heaven Beef', 'Silhouettes(影絵)', 'Dear Boy(坊や)', 'Broken Arrows(折れ矢)', 'Divine Sparrow', 'Pure Grilling', "Hope There's Somewhere", '朝方の飛行機の歌', '北の国の夏の夜'],
+    'a11_skrillex': ['Scary Monsters and Nice Spirits', 'Bangarong', 'First of the Pear', 'Kill Every Buddy', 'Cinema(席番)', 'Make It Bun Ham', 'Raga Bomb', 'Rock n Roll(ごはん)', "Breakin' a Sweet", 'Right Inn', 'Where Are U Noodle', 'Purple Lamb Burger', 'Recess(休み時間)', 'Rumble(轟き)', 'Summit(山頂)', 'Ease My Mine', 'With You, Fries', "Don't Get Too Clothes", 'Try It Oat', 'Weak Ends', 'Kyoto Tofu', 'Ruffneck Roll', 'Scatta Bagel', '床をしゃがむ客席'],
 }

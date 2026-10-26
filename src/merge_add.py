@@ -56,4 +56,5 @@ for f in sorted(_g.glob('/home/claude/add_sd/sd_*.json')):
             x['pr'] = x['pr'].replace('さて、どうする。', '').strip(); seen2.add(x['pr']); sd.append({'k': x['k'], 'e': x['e'], 'lab': x.get('lab', '寄り道')[:8], 'pr': x['pr'], 'o': [dict({'l': o['l'], 'p': float(o['p']), 'g': float(o['g']), 'ok': o['ok'], 'ng': o.get('ng', '')}, **({'gs': 1, 'fu_ok': o.get('fu_ok', ''), 'fu_ng': o.get('fu_ng', '')} if o.get('gs') else {})) for o in os_]})
         except Exception: continue
 b['sd'] = sd; print('sd', len(sd))
+import nb_sanitize; nb_sanitize.sanitize(b)  # 実名に近すぎるもじり・「a:」ラベル・グループ文の人数語
 json.dump(b, open(p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

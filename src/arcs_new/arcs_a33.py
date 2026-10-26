@@ -35,7 +35,7 @@ ARCS = [
   cp=["海辺の町", "壮大な音の層", "巨大な舞台装置", "不安の合唱"],
   members=M(("マット・ベルアミ", "Vo/Gt/Key", "m"), ("クリス・ウルステンホルン", "Ba", "m"), ("ドミニク・ハワーズ", "Dr", "m"))),
 
- dict(k="a33_klt", nm="THE KILTERS", st="band", y0=2001, ge="ニューウェーブ・ロック", vg="m",
+ dict(k="a33_klt", nm="THE KITTENS", st="band", y0=2001, ge="ニューウェーブ・ロック", vg="m",
   th=["上京と故郷", "夏と青春", "恋のはじまり", "応援歌"], sa="ネバダ州の砂漠の街の小さな楽器店",
   tx="楽器店の掲示板に貼られた募集の紙を見て、二人が同じ部屋に集まった",
   roles=["Vo/Key", "Gt", "Ba", "Dr"], tr=["鍵盤の前で急に背筋を伸ばして歌い出す", "ギターを抱えると、口数が減って音が増える", "低音を支えながら、衣装の襟を気にしている", "ドラムを叩く前に、必ず首を鳴らす"],
@@ -67,7 +67,7 @@ ARCS = [
   cp=["酒場の拍手", "ふたりのギター", "ラップとの共演", "映画の主題歌"],
   members=M(("スティーヴン・タイル", "Vo", "m"), ("ジョー・ベリー", "Gt", "m"), ("ブラッド・ウィットフォン", "Gt", "m"), ("トム・ハミルトル", "Ba", "m"), ("ジョーイ・クリーマー", "Dr", "m"))),
 
- dict(k="a33_gmr", nm="GUMS N' ROSES", st="band", y0=1985, ge="ハードロック", vg="m",
+ dict(k="a33_gmr", nm="GUAVAS N' ROSES", st="band", y0=1985, ge="ハードロック", vg="m",
   th=["社会への怒り", "上京と故郷", "恋のはじまり", "孤独と夜"], sa="ロサンゼルスの狭いライブハウスの楽屋",
   tx="それぞれ別の街から来た五人が、ロサンゼルスの狭い楽屋で一緒に鳴らし始めた",
   roles=["Vo", "Gt", "Ba", "Gt", "Dr"], tr=["甲高い声で、客席の端から端まで聴かせる", "シルクハットの下から表情を見せない", "ベースの音が思ったより大きい", "リズム・ギターで静かに骨組みを作る", "ドラムの後ろで、足を止めずに揺れている"],
@@ -83,7 +83,7 @@ ARCS = [
   cp=["狭い楽屋", "国じゅうの通学カバン", "長い待ち時間", "再会の舞台"],
   members=M(("アクセル・ロース", "Vo", "m"), ("スラッシー", "Gt", "m"), ("ダフ・マッケイゲン", "Ba", "m"), ("イジー・ストラドレン", "Gt", "m"), ("スティーヴン・アドレー", "Dr", "m"))),
 
- dict(k="a33_pjr", nm="PEARL JAR", st="band", y0=1990, ge="グランジ・ロック", vg="m",
+ dict(k="a33_pjr", nm="PEARL JELLY", st="band", y0=1990, ge="グランジ・ロック", vg="m",
   th=["社会への怒り", "自己否定と肯定", "地元愛", "応援歌"], sa="シアトルの雨の多い町の貸しスタジオ",
   tx="雨の多い町で、解散したバンドの二人が、新しい歌い手を探していた",
   roles=["Vo", "Gt", "Gt", "Ba", "Dr"], tr=["低い声から叫び声まで一気に振り幅を見せる", "ギターソロの前に必ず目を閉じる", "リズム・ギターで曲の骨組みを守る", "ベースを抱えて、ステージを歩き回る", "ドラムの後ろで、静かにテンポを守る"],
@@ -99,7 +99,7 @@ ARCS = [
   cp=["雨の町", "新しい歌い手", "ライブで勝負", "客席の側に立つ"],
   members=M(("エディ・ヴェッダ", "Vo", "m"), ("マイク・マクレイディ", "Gt", "m"), ("ストーン・ゴッサール", "Gt", "m"), ("ジェフ・アモント", "Ba", "m"), ("マット・キャメリン", "Dr", "m"))),
 
- dict(k="a33_mpk", nm="MASHING PUMPKINS", st="band", y0=1988, ge="オルタナティブ・ロック", vg="m",
+ dict(k="a33_mpk", nm="ROASTING PUMPKINS", st="band", y0=1988, ge="オルタナティブ・ロック", vg="m",
   th=["孤独と夜", "自己否定と肯定", "旅立ちと別れの春", "喪失と再生"], sa="シカゴの郊外の古いレコード店の裏",
   tx="レコード店の裏で、四人が重たい音と甘い声を混ぜて鳴らしていた",
   roles=["Vo/Gt", "Gt", "Ba", "Dr"], tr=["静かな声から急に叫びに変わる", "ギターの横で、無言のまま音を重ねる", "ベースを抱えて、にこりともせずに立つ", "ドラムの連打で、舞台全体を引っ張る"],
@@ -115,7 +115,7 @@ ARCS = [
   cp=["音の壁", "二枚組の大作", "孤独な部屋", "名前を取り戻す"],
   members=M(("ビリー・コーギー", "Vo/Gt", "m"), ("ジェームス・イバ", "Gt", "m"), ("ダーシー・ルツキー", "Ba", "f"), ("ジミー・チャンバリン", "Dr", "m"))),
 
- dict(k="a33_mrn", nm="MARRON 5", st="band", y0=2001, ge="ポップ・ロック", vg="m",
+ dict(k="a33_mrn", nm="MACARON 5", st="band", y0=2001, ge="ポップ・ロック", vg="m",
   th=["恋のはじまり", "夏と青春", "お金と仕事", "自己否定と肯定"], sa="ロサンゼルスの高校の音楽室",
   tx="音楽室の友達どうしで始めたバンドが、一度解散し、名前を変えてやり直した",
   roles=["Vo/Gt", "Key/Gt", "Gt", "Ba", "Dr"], tr=["高い声で歌いながら、よく客席に手を振る", "鍵盤を弾きながら、ギターにも手を伸ばす", "ギターソロの時だけ急に表情が引き締まる", "ベースを抱えると、いつも少し猫背になる", "ドラムを叩きながら、よく笑ってしまう"],
@@ -147,7 +147,7 @@ ARCS = [
   cp=["砂漠の会場", "太鼓の音", "画面の中の歌", "スタジアムの叫び"],
   members=M(("ダン・レノルズ", "Vo", "m"), ("ウェイン・サーマン", "Gt", "m"), ("ベン・マッキ", "Ba", "m"), ("ダニエル・プラッツメン", "Dr", "m"))),
 
- dict(k="a33_fob", nm="FALL OUT BAY", st="band", y0=2001, ge="ポップ・パンク", vg="m",
+ dict(k="a33_fob", nm="FALL IN GIRL", st="band", y0=2001, ge="ポップ・パンク", vg="m",
   th=["自己否定と肯定", "夏と青春", "ナンセンスと言葉遊び", "恋のはじまり"], sa="シカゴの郊外のハードコアの小さな会場",
   tx="ハードコアの会場に通う仲間が、いつの間にか自分たちの歌を作り始めた",
   roles=["Vo/Gt", "Ba", "Gt", "Dr"], tr=["高い声と低い声を急に切り替える", "ベースを抱えて、言葉の端々に長い題名をつける", "ギターを弾きながら、よく客席に向かって冗談を言う", "ドラムの連打で、舞台の熱を引っ張る"],
@@ -163,7 +163,7 @@ ARCS = [
   cp=["長い曲名", "言葉の分業", "ポップな歌", "休みのあとの再開"],
   members=M(("パトリック・スタップ", "Vo/Gt", "m"), ("ピート・ウェンズ", "Ba", "m"), ("ジョー・トロマン", "Gt", "m"), ("アンディ・ハーモン", "Dr", "m"))),
 
- dict(k="a33_pml", nm="PARAMOLE", st="band", y0=2004, ge="ポップ・パンク", vg="f",
+ dict(k="a33_pml", nm="PARALESS", st="band", y0=2004, ge="ポップ・パンク", vg="f",
   th=["自己否定と肯定", "応援歌", "旅立ちと別れの春", "恋のはじまり"], sa="テネシー州の郊外の高校の教室",
   tx="教室の友達が、放課後に集まって、同じ歌を鳴らし始めた",
   roles=["Vo", "Gt", "Gt", "Ba", "Dr"], tr=["鮮やかな髪の色で舞台に立つ", "ギターを抱えて、いつも静かに曲を整える", "もう一人のギターと息を合わせて骨組みを作る", "ベースを抱えて、よく舞台の端で踊る", "ドラムの連打で、舞台全体を引っ張る"],
@@ -197,16 +197,16 @@ ARCS = [
 ]
 
 PT = {
- "a33_bbb": ["Good Vitamins", "Surfin' USB", "California Gulls", "Wouldn't It Be Rice", "Cod Only Knows", "I Get Aground", "Help Me Ronpa", "Barbara Ham", "Kokoro", "Surf's Cup", "Bun Bun Bun", "Don't Worry Gravy", "Soup John B", "In My Broom", "Carolina No", "Heroes and Villagers", "Pet Sound(ペット可)", "兄弟の寝室のハモリ", "夕方の海と車の窓"],
- "a33_mse": ["Supermassive Black Hall", "Upsizing", "Stairlight", "Time Is Running Oat", "Knights of Cyclonia", "Plug In Gravy", "Hysteriyaki", "Mudness", "Resist-ants", "New Barn", "Stockholm Syrup", "Butterflies and Hamburgers", "Undisclosed Dessert", "Panic Stationery", "Bread Star", "Unintended Lunch", "海辺の町の練習スタジオ", "壊れそうな鍵盤", "巨大な舞台装置"],
+ "a33_bbb": ["Good Vitamins", "Surfin' USB", "California Gulls", "Wouldn't It Be Rice", "Cod Only Knows", "I Get Aground", "Help Me Ronpa", "Barbara Ham", "Kokoro", "Surf's Cup", "Bun Bun Bun", "Don't Worry Gravy", "Soup John B", "In My Broom", "Carolina Nori", "Heroes and Villagers", "Pet Sound(ペット可)", "兄弟の寝室のハモリ", "夕方の海と車の窓"],
+ "a33_mse": ["Supermassive Black Hall(広間)", "Upsizing", "Stairlight", "Time Is Running Oats", "Knights of Cyclonia", "Plug In Gravy", "Hysteriyaki", "Mudnest", "Resist-ants", "New Barns", "Stockholm Syrup", "Butterflies and Hamburgers", "Undisclosed Dessert", "Panic Stationery", "Bread Star", "Unintended Lunch", "海辺の町の練習スタジオ", "壊れそうな鍵盤", "巨大な舞台装置"],
  "a33_klt": ["Mr. Brightsize", "Somebody Sold Me", "When You Were Yogurt", "Hunan", "All These Things That I've Dun", "Smile Like You Mean Ice", "Read My Mint", "Spaceman(宇宙飯)", "Shot at the Nut", "Rune-aways", "The Mat", "Bones(骨付き)", "Cushion", "Dustland Fairytail", "Miss Atomic Balm", "Sam's Towel", "For Raisins Unknown", "楽器店の掲示板", "ネオンの街の夜"],
- "a33_asl": ["Cream On", "Walk This Whey", "Sweet Emotion(甘味)", "Back in the Paddle", "I Don't Want to Miss a Wing", "Janie's Got a Gum", "Lazy", "Fryin'", "Amusing", "Love in an Escalator", "Dude (Looks Like a Latte)", "Rag Roll", "Livin' on the Hedge", "Pink(桃色)", "Eat the Rice", "Toys in the Antic", "Same Old Song and Dunce", "酒場の隅の五人", "スカーフと拍手"],
- "a33_gmr": ["Sweet Child o' Mint", "Welcome to the Jungle Gym", "Paradise Pity", "November Grain", "Impatience", "Don't Fry", "Live and Let Dye", "Knockin' on Heaven's Floor", "You Could Be Mine(鉱山)", "Civil Wok", "Night Rainbow", "Mr. Brownstew", "It's So Cheesy", "Appetite for Deduction", "Rocket Queue", "Locomotive(通勤)", "Yesterdaze", "狭い楽屋のソファ", "シルクハットの影"],
- "a33_pjr": ["Olive", "Even Flour", "Black(黒豆)", "Laughter", "Bitter Man", "Given to Fry", "Cordyroy", "Do the Devolution", "Last Miss", "Rearviewmirrow", "Elderly Woman Behind the Counter in a Small Tomato", "State of Love and Toast", "Yellow Ledbutter", "Spin the Black Circus", "Not for Yew", "Why Go(なぜ行く)", "雨の町の貸しスタジオ", "ギターペダルの朝", "雨粒の窓"],
- "a33_mpk": ["Toady", "Disarm(腕組み)", "Butter with Butterfly Wings", "1979(昭和54)", "Tonight, Tonic", "Cherry Rock", "Mayo Naise", "Hero", "Ava Adobe", "Perfect(納期)", "Pocket", "Nuzzle", "Silva", "Hammer", "Sofa", "Down", "Thirty-Tree", "Stand Inside Your Loaf", "Melon Collie", "レコード店の裏の四人"],
- "a33_mrn": ["This Glove", "She Will Be Lobed", "Moves Like Jaggy", "Sugary", "Paycone", "Mops", "Harder to Breakfast", "Makes Me Wander", "Mystery", "Dayflight", "One More Knight", "Wake Up Cat", "Won't Go Home Without Stew", "What Lovers Dew", "Girls Like Zoo", "Don't Wanna Snow", "Cord", "Beautiful Pancakes", "音楽室のピアノ", "名前を変えた日"],
- "a33_iwg": ["Radio Captive", "Beaver", "Blunder", "Lemons", "Whatever It Bakes", "Naturalist", "It's Thyme", "On Top of the Word", "Bad Lyre", "Anemone", "Buns", "Bards", "Worriers", "Follow Yew", "Shirts", "Walking the Wine", "Next to Meat", "砂漠の夕焼けの会場", "太鼓の皮が破れた夜"],
+ "a33_asl": ["Cream On", "Walk This Whey", "Sweet Emotion(甘味)", "Back in the Paddle", "I Don't Want to Miss a Wing", "Janie's Got a Gum", "Lazy(寝坊)", "Fryin'", "Amusing", "Love in an Escalator", "Dude (Looks Like a Latte)", "Rag Roll", "Livin' on the Hedge", "Pinkie", "Eat the Rice", "Toys in the Antic", "Same Old Song and Dunce", "酒場の隅の五人", "スカーフと拍手"],
+ "a33_gmr": ["Sweet Child o' Mint", "Welcome to the Jungle Gym", "Paradise Pity", "November Grain", "Impatience(待合室)", "Don't Fry(揚げない)", "Live and Let Dye", "Knockin' on Heaven's Floor", "You Could Be Mine(鉱山)", "Civil Wok", "Night Rainbow", "Mr. Brownstew", "It's So Cheesy", "Appetite for Deduction", "Rocket Queue", "Locomotive(通勤)", "Yesterdaze", "狭い楽屋のソファ", "シルクハットの影"],
+ "a33_pjr": ["Olive", "Even Flour", "Black(黒豆)", "Laughter", "Bitter Man", "Given to Fry", "Corn-duroy", "Do the Devolution", "Last Miss", "Rearview Marrow", "Elderly Woman Behind the Counter in a Small Tomato", "State of Love and Toast", "Yellow Ledbutter", "Spin the Black Circus", "Not for Yew", "Why Gouda", "雨の町の貸しスタジオ", "ギターペダルの朝", "雨粒の窓"],
+ "a33_mpk": ["Toady", "Disarm(腕組み)", "Butter with Butterfly Wings", "1980(昭和55)", "Tonight, Tonic", "Cherry Rock", "Mayo Nice", "Hero(出前)", "Ava Adobe", "Perfect(納期)", "Pocket", "Nuzzle", "Silva", "Hammer", "Sofa", "Down", "Thirty-Tree", "Stand Inside Your Loaf", "Melon Collie", "レコード店の裏の四人"],
+ "a33_mrn": ["This Glove", "She Will Be Lobed", "Moves Like Jaggy", "Sugar Free", "Paycone", "Mops", "Harder to Breakfast", "Makes Me Wander", "Mystery", "Dayflight", "One More Knight", "Wake Up Cat", "Won't Go Home Without Stew", "What Lovers Dew", "Girls Like Zoo", "Don't Wanna Snow", "Cord", "Beautiful Pancakes", "音楽室のピアノ", "名前を変えた日(改名届)"],
+ "a33_iwg": ["Radio Captive", "Beaver", "Blunder", "Lemons(レモン水)", "Whatever It Bakes", "Naturalist", "It's Thyme", "On Top of the Word", "Bad Lyre", "Anemone", "Buns", "Bards", "Worriers(心配性)", "Follow Yew", "Shirts", "Walking the Wine", "Next to Meat", "砂漠の夕焼けの会場", "太鼓の皮が破れた夜"],
  "a33_fob": ["Sugar, We're Going Dawn", "Dance, Dunce", "Thnks fr th Mngs", "This Ain't a Scene, It's an Arms Rice", "Centuries(百円玉)", "Uma Thurmin", "My Songs Know What You Did in the Dock (Light Em Cup)", "Young Vol-Cakes", "The Phoenice", "Save Rock and Rolls", "Grand Theft Audi", "I Don't Chair", "Hum Hallway-lujah", "A Little Less Sixteen Candies", "Alone Together(一人二役)", "長すぎる曲名の垂れ幕", "ハードコアの会場の仲間", "ノートを抱えた移動"],
  "a33_pml": ["Misery Busyness", "Ain't It Bun", "Still into Yew", "Decoke", "That's What You Pet", "Crushcrushcrunch", "The Only Reception", "Hard Limes", "Rose-Colored Toy", "Brick by Boring Trick", "Fake Hoppy", "Sold You So", "Playing Cod", "Pressure Cooker", "Last Hop", "Carrot-ful", "All I Vaulted", "放課後の教室の声", "鮮やかな髪の色"],
- "a33_mcm": ["Welcome to the Black Parasol", "Helena Sew Long & Goodnight", "Treenagers", "I'm Not Okra (I Promise)", "Famous Lost Words", "Na Na Nan", "Sink", "The Toast of You", "Mamma", "Bread!", "I Don't Love Yew", "Thank You for the Lemon", "Planetarium (GO!)", "Sleepy", "Disenchilada", "地下室の壁の絵", "黒い服の洗濯", "スケッチブックのバス"],
+ "a33_mcm": ["Welcome to the Black Parasol", "Helena Sew Long & Goodnight", "Treenagers", "I'm Not Okra (I Promise)", "Famous Lost Words", "Na Na Nan", "Sink(流し台)", "The Toast of You", "Mammoth", "Bread!", "I Don't Love Yew", "Thank You for the Lemon", "Planetarium (GO!)", "Sleepy", "Disenchilada", "地下室の壁の絵", "黒い服の洗濯", "スケッチブックのバス"],
 }

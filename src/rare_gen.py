@@ -155,6 +155,7 @@ def hook_title(ly, rr, era, fb, used):
             if n < (2 if era == -2 else 3) or n > 14: continue
             if _re.fullmatch(r"[ァ-ヶー・]+", sg) and n <= 5: continue
             if len(set(sg)) <= 2: continue
+            if sg.count("(") != sg.count(")") or sg.count("(") != sg.count(")") or sg.count("「") != sg.count("」"): continue
             if sg in used: continue
             cand.append(sg)
     if not cand: return fb
@@ -162,75 +163,118 @@ def hook_title(ly, rr, era, fb, used):
     t = rr.choice(c4); used.add(t); return t
 
 
+N_RARE = 8  # 1時代あたりの人数(build_proto が小さい値を渡しても、これ以上にする)
+
+
+def _pool(P, g):
+    """性別に合った名前の候補。nm_m / nm_f があればそれを使う。"""
+    return P.get("nm_" + g) or P["mem_names"]
+
+
+def _ystep(P, era):
+    lo, hi = P.get("ystep") or ((1, 5) if era == -2 else (1, 4))
+    hi = max(2, min(hi, 6)); lo = max(0, min(lo, hi))  # 人の一生として自然な歩幅(数年おき)。同じ年に全作が並ばないよう最大は2年以上
+    return lo, hi
+
+
 def tree(P, seed, group):
     r = random.Random(H(seed, "rare"))
     era = P["era"]; r6 = era == 6
+    import json as _j, os as _o
+    _fp = _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "era_ev", "ev_%s.json" % era)
+    _ex = _j.load(open(_fp, encoding="utf-8")) if _o.path.exists(_fp) else []
+    EVP = list(dict.fromkeys(list(P["events"]) + [x for x in _ex if isinstance(x, str)]))
     mm = []
     roles = P["roles_g"] if group else P["roles_s"]
     used = set()
     for i, ro in enumerate(roles):
-        while True:
-            nm = r.choice(P["mem_names"])
-            if nm not in used: used.add(nm); break
-        mm.append({"g": r.choice("mf"), "n": nm, "r": ro, "k": "", "t": r.choice(P.get("traits") or ["遅刻しない", "いちばん声が通る", "寝言で歌う", "火の番が上手い", "道具を作るのが得意", "笑い声が大きい"]) if not r6 else r.choice(["酸素残量に厳しい", "古い楽器の収集家", "無重力酔いしない", "朝が早い", "よく迷子になる", "生身の最後の世代"]), "h": r.choice(P["bio"]["hms"]), "o": r.choice([-2, -1, 0, 0, 1, 2])})
+        g = r.choice("mf")
+        cand = [x for x in _pool(P, g) if x not in used] or [x for x in P["mem_names"] if x not in used]
+        nm = r.choice(cand); used.add(nm)
+        mm.append({"g": g, "n": nm, "r": ro, "k": "", "t": r.choice(P.get("traits") or ["遅刻しない", "いちばん声が通る", "寝言で歌う", "火の番が上手い", "道具を作るのが得意", "笑い声が大きい"]) if not r6 else r.choice(["酸素残量に厳しい", "古い楽器の収集家", "無重力酔いしない", "朝が早い", "よく迷子になる", "生身の最後の世代"]), "h": r.choice(P["bio"]["hms"]), "o": r.choice([-2, -1, 0, 0, 1, 2])})
     vg = (mm[0]["g"] if group else r.choice("mf"))
+    g0 = vg
     if r6 and not group and r.random() < 0.5: vg = "a" + vg
     if P.get("inst"): vg = "inst"
     b = P["bio"]
     used_t = set()
     bio = {"hm": r.choice(b["hms"]), "ag": r.choice([17, 19, 21, 24, 28, 33]), "fm": r.choice(b["fms"]), "st": r.choice(b["sts"]), "gr": r.choice(b["grs"]), "jb": r.choice(b["jbs"]), "hb": r.choice(b["hbs"]), "fv": r.choice(b["fvs"]), "hy": r.choice(b["hys"])}
     if group: bio["fd"] = r.choice(b["hms"])
-    name = r.choice(P["names_g"] if group else P["names_s"])
+    if group: name = r.choice(P["names_g"])
+    else:
+        ns = P.get("ns_" + g0) or [x for x in P["names_s"] if x in (P.get("nm_" + g0) or P["names_s"])] or P["names_s"]
+        name = r.choice([x for x in ns if x not in used] or ns)
     pe = r.choice(P["pes"])
     meta = {"id": 90000 + seed, "a": name, "pun": None, "top": "グループ" if group else "ソロ", "st": "band" if group else "solo", "sn": (P["sn_g"] if (P.get("sn_g") and group) else P["sn_s"] if P.get("sn_s") else "集落の合唱隊" if (group and era == -2) else "語り部" if era == -2 else "囃子連" if (group and era == -3) else "唄い手" if era == -3 else "宇宙のバンド" if group else "星のシンガー"),
             "pe": pe, "era": era, "en": P["en"], "es": P["es"], "sa": P["sa"], "ge": P["ge"], "tx": r.choice(P["starts"]), "ai": None, "mm": mm, "vg": vg, "bio": bio,
             "rare": True, **({"bgm": P["bgm"], "aw": AW_DEF.get(era), "dec": P.get("dec"), "vgt": P.get("vgt"), "tier": P.get("tier")} if P.get("bgm") else {}), "tn": P["tn"], "rk": P["rk"], "stg": P["stg"]}
-    st = {"y": P["y0"] + (r.randint(*P["yr"]) if P.get("yr") else r.randint(0, 6000) if era == -2 else r.randint(0, 140) if era == -3 else r.randint(0, 40)), "n": 0}
+    for k in ("cw", "vc", "ms"):
+        if P.get(k): meta[k] = P[k]
+    lo, hi = _ystep(P, era)
+    D = 4 if r.random() < 0.5 else 3  # 分かれ道は一生に3〜4回
+    CNT = [2, 1, 1, 1] if D == 4 else [2, 2, 1]  # 各分かれ道のあとの作品数(どの道でも一生で8作)
+    y1 = P["y0"] + (r.randint(*P["yr"]) if P.get("yr") else r.randint(0, 6000) if era == -2 else r.randint(0, 140) if era == -3 else r.randint(0, 40))
+    if P.get("ymax"): y1 = min(y1, P["ymax"] - (7 * (lo + hi)) // 2)
     base = r.choice([0, 1, 1, 2])
 
-    def release(path, eff):
-        st["n"] += 1; st["y"] += r.randint(*P["ystep"]) if P.get("ystep") else r.randint(2, 14) if era == -2 else r.randint(1, 4)
+    def release(path, eff, st):
+        st["n"] += 1
+        rr = random.Random(H(seed, path, st["n"]))
+        if st["n"] > 1: st["y"] += rr.randint(lo, hi)
         if P.get("ymax"): st["y"] = min(st["y"], P["ymax"])
-        th, pr = r.choice(P["themes"]); rr = random.Random(H(seed, path, st["n"]))
+        th, pr = rr.choice(P["themes"])
         tier = cl(base + eff + rr.choice([-1, 0, 0, 0, 1]))
         ti = P["title"](rr, th) if P.get("title") else title2(rr, th) if era == -2 else title3(rr, th) if era == -3 else title6(rr, th)
-        reasons = P["hit"] if tier >= 2 else P["flop"]
-        rs = rr.choice(reasons)
-        out = {"t": "r", "y": st["y"], "o": (P["onames"][st["n"] - 1] if st["n"] <= len(P["onames"]) else "第%d作" % st["n"]), "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
+        rs = rr.choice(P["hit"] if tier >= 2 else P["flop"])
+        on = P["onames"][st["n"] - 1] if st["n"] <= len(P["onames"]) else (P.get("ofb") or "第%d作") % st["n"]
+        out = {"t": "r", "y": st["y"], "o": on, "ti": ti, "lb": rr.choice(P["labels"]), "tr": tier, "pr": pr, "th": th, "rs": rs, "fm": rr.choice(P["forms"])}
         out["ly"] = P["lyr"](rr, th, vg) if P.get("lyr") else lyr2(rr, vg) if era == -2 else lyr3(rr, th, vg) if era == -3 else lyr6(rr, th, vg)
         out["ti"] = hook_title(out["ly"], rr, era, ti, used_t)
-        return out, tier
+        return out
 
-    def run(path, eff, n):
-        its = []; ts = []
-        for _ in range(n):
-            x, t = release(path, eff); its.append(x); ts.append(t)
-        return its, ts
+    def run(path, eff, n, st):
+        return [release(path, eff, st) for _ in range(n)]
 
-    decs = r.sample(P["decs"], 2)
+    DECS = P["decs"]
 
-    def end(path, eff, ts_all):
-        avg = sum(ts_all) / max(1, len(ts_all)); bk = "low" if avg < 1.4 else ("mid" if avg < 2.6 else "high")
-        return r.choice(P["ends"][bk])
-    out0, t0 = run("p0", 0, 3); s0 = out0
-    kids = []
-    for i, (lab, e1, tx1) in enumerate(decs[0][1]):
-        seg = [{"t": "x", "c": lab, "ok": e1 >= 1, "tx": tx1}]
-        if r.random() < 0.6: seg.append({"t": "e", "tx": r.choice(P["events"])})
-        a, ta = run(f"a{i}", e1, 2); seg += a
-        kids2 = []
-        for j, (lab2, e2, tx2) in enumerate(decs[1][1]):
-            seg2 = [{"t": "x", "c": lab2, "ok": e2 >= 1, "tx": tx2}]
-            b_, tb = run(f"b{i}{j}", e1 + e2, 2); seg2 += b_
-            allw = [x for x in s0 + seg + seg2 if x["t"] == "r"]
-            tx = end("e", 0, [w["tr"] for w in allw])
-            works = [{"y": w["y"], "ti": w["ti"], "tr": w["tr"], "th": w["th"], "pr": w["pr"], "o": w["o"]} for w in allw]
-            kids2.append({"s": seg2, "e": {"tx": tx, "w": works, "mm": mm}})
-        kids.append({"s": seg, "q": {"prompt": decs[1][0], "labels": [x[0] for x in decs[1][1]]}, "n": kids2})
-    return {"m": meta, "t": {"s": s0, "q": {"prompt": decs[0][0], "labels": [x[0] for x in decs[0][1]]}, "n": kids}}
+    def node(path, depth, eff, st, hist, used_d, used_e):
+        rq = random.Random(H(seed, "q", path))
+        k = rq.choice([i for i in range(len(DECS)) if i not in used_d])
+        prompt, opts = DECS[k]
+        idx = sorted(rq.sample(range(len(opts)), 2))  # 選択肢は2つ
+        if max(opts[i][1] for i in idx) < 1:
+            good = [i for i in range(len(opts)) if opts[i][1] >= 1]
+            if good: idx = sorted([idx[0], rq.choice(good)]) if idx[0] not in good else idx
+        kids = []
+        for j, oi in enumerate(idx):
+            lab, e1, tx1 = opts[oi]; p2 = path + str(j)
+            seg = [{"t": "x", "c": lab, "ok": e1 >= 1, "tx": tx1}]
+            ue = set(used_e)
+            evs = [x for x in EVP if x not in ue]
+            if evs and rq.random() < 0.8:
+                ev = rq.choice(evs); ue.add(ev); seg.append({"t": "e", "tx": ev})
+            st2 = dict(st); ef2 = max(-2, min(3, eff + e1))
+            seg += run(p2, ef2, CNT[depth], st2)
+            h2 = hist + [x for x in seg if x["t"] == "r"]
+            if depth + 1 < D:
+                ch = node(p2, depth + 1, ef2, st2, h2, used_d | {k}, ue)
+                kids.append({"s": seg, "q": ch["q"], "n": ch["n"]})
+            else:
+                ts = [w["tr"] for w in h2]; avg = sum(ts) / max(1, len(ts))
+                bk = "low" if avg < 1.4 else ("mid" if avg < 2.6 else "high")
+                tx = random.Random(H(seed, "end", p2)).choice(P["ends"][bk])
+                works = [{"y": w["y"], "ti": w["ti"], "tr": w["tr"], "th": w["th"], "pr": w["pr"], "o": w["o"]} for w in h2]
+                kids.append({"s": seg, "e": {"tx": tx, "w": works, "mm": mm}})
+        return {"q": {"prompt": prompt, "labels": [opts[i][0] for i in idx]}, "n": kids}
+
+    st0 = {"y": y1, "n": 0}
+    s0 = run("p0", 0, 3, st0)
+    root = node("r", 0, 0, st0, list(s0), frozenset(), frozenset())
+    return {"m": meta, "t": {"s": s0, "q": root["q"], "n": root["n"]}}
 
 
-def trees(n_each=4):
+def trees(n_each=N_RARE):
+    n_each = max(n_each, N_RARE)
     out = []
     for k in range(n_each):
         out.append(tree(P2, k, group=(k % 2 == 0)))
@@ -297,7 +341,7 @@ LY3 = {
     "旅立ちの唄": dict(a=["笠の紐を結びなおして、村を振り返る", "草鞋の底が、もう街道の石を覚えている", "母が握り飯を持たせて、何も言わなかった"], b=["故郷の山が、小さくなっていく", "次の宿場で、どんな夜が待つのか"], h=["行ってきます、また会う日まで", "道は遠くても、唄は連れていく", "橋を渡れば、もう旅の空", "帰る日までは、この唄ひとつ"]),
     "子守唄": dict(a=["背中の子が、ゆらゆら眠りに落ちていく", "囲炉裏の火が、赤くゆれている", "外では風が、障子を鳴らしている"], b=["泣かずにねんねしな、夜は長い", "明日になれば、みんなで畑へ行こう"], h=["ねんねんころり、ねんころり", "いい子だ、ねんねしな", "お山の向こうにも、星は出ている", "朝が来るまで、ここにいる"]),
     "恋の小唄": dict(a=["長屋の路地で、あの娘の下駄の音を聞いた", "井戸端の水面に、顔がゆれて映った", "目が合っただけで、一日が長くなる"], b=["言えない言葉が、喉のあたりにつかえる", "唄にするなら、言える気がした"], h=["惚れた惚れたよ、隣の娘", "唄にのせて、そっと送る", "月が出る頃、橋のたもと", "恋は小唄に、つのっていく"]),
-    "お上への愚痴": dict(a=["年貢の米が、またひと俵増えた", "役人の羽織が、やけに立派に見える", "働けど働けど、蔵は空のまま"], b=["笑いにしなけりゃ、やっていけない", "愚痴を唄えば、少し軽くなる"], h=["ありがたや、ありがたや(皮肉)", "お上のお達し、聞き流せ", "腹が減っても、唄は出る", "貧乏暇なし、唄は無料"]),
+    "お上への愚痴": dict(a=["年貢の米が、またひと俵増えた", "役人の羽織が、やけに立派に見える", "働けど働けど、蔵は空のまま"], b=["笑いにしなけりゃ、やっていけない", "愚痴を唄えば、少し軽くなる"], h=["ありがたや、ありがたや、と言っておく", "お上のお達し、聞き流せ", "腹が減っても、唄は出る", "貧乏暇なし、唄は無料"]),
     "祭りの囃子": dict(a=["山車が曲がり角で、ぎしりと鳴った", "町じゅうの提灯が、通りを赤く染める", "笛の音が、屋根の上まで響いている"], b=["今日ばかりは、誰もが主役", "太鼓の拍が、胸のなかで打つ"], h=["ソレ、祭りだ、祭りだ", "囃せや囃せ、山車を押せ", "笛を吹け、太鼓を打て", "町じゅうそろって、お祭りだ"]),
     "川止めの唄": dict(a=["川の水が増えて、渡し場が閉まった", "旅籠の広間に、旅人が肩を寄せ合う", "雨音が、ずっと屋根を叩いている"], b=["急ぐ旅でも、水には勝てない", "足止めの夜は、唄でもして過ごそう"], h=["雨よ止め止め、川を渡せ", "止まればこその、この宿の夜", "唄って待てば、日が昇る", "明日は晴れると、信じて寝よう"]),
 }
@@ -309,3 +353,21 @@ def lyr3(r, th, vg):
     s = {"A1": a, "B1": [b], "S": [f"{h[0]}、{hy[1]}", f"{h[1]}、{hy[2]}", h[2], hook], "A2": [r.choice(L["a"]), a[0]], "Sb": [f"{h[1]}、{hy[1]}", f"{h[0]}、{hy[2]}", h[2], hook], "S2": [h[2], f"{h[0]}、{hy[0]}", f"{h[1]}、{hy[1]}", hook, hook]}
     o = [["A1", "1番", "Verse", 0], ["B1", "つなぎ", "Pre-Chorus", 0], ["S", "囃子(くりかえし)", "Chorus", 1], ["A2", "2番", "Verse", 0], ["Sb", "囃子(かえて)", "Chorus", 1], ["S2", "最後の大囃子", "Chorus", 1]]
     return {"st": "民謡(唄と囃子)", "k": "full", "s": s, "o": o, "n1": 3, "tg": "traditional Japanese min'yo folk song, Edo period, shamisen and taiko, shakuhachi, kobushi vocal ornaments, call and response chorus, about 45 seconds", "vg": vg, "hl": "囃子"}
+
+
+# ---- レア時代の追加(分かれ道・称号・世間の声・性別つき名前) ----
+P2["decs"] = list(P2["decs"]) + [('日照りが続き、集落の皆が「雨を呼ぶ歌を」と頼んできた。', [('三日三晩歌い続ける', 2, '四日目の朝、本当に雨が降った。歌は奇跡と呼ばれた。'), ('歌より井戸を掘ろうと言う', 0, '水は出たが、歌い手としての出番は減った。'), ('子どもたちと輪になって歌う', 1, '雨は降らなかったが、皆の顔は少し明るくなった。')]), ('海の向こうから、見たことのない舟が着いた。', [('歌で迎える', 2, '舟の者たちが歌を覚えて帰り、海の向こうにまで広まった。'), ('隠れて様子を見る', -1, '舟は去り、歌は谷の中に留まった。'), ('舟の者の歌を教わる', 1, '知らない節が混ざり、歌が新しくなった。')]), ('年老いて、声がかすれはじめた。', [('若い者に歌を託す', 1, '若い声で、歌はさらに遠くまで届いた。'), ('かすれた声のまま歌う', 2, 'その声がかえって胸を打ち、皆が泣いた。'), ('しばらく黙る', -1, '集落はしんと静かになった。')])]
+P2.update(nm_m=['ウル', 'ホロ', 'アギ', 'ナム', 'トゥ', 'ガル', 'ドド', 'グン', 'バオ', 'タク'], nm_f=['カラ', 'ミド', 'ヨヨ', 'サラ', 'ベイ', 'リオ', 'ナナ', 'ミア', 'ルル', 'ネネ'], cw=[['焚き火の主', '焚き火があるところに、いつもこの声があった'], ['谷の唸り手', '谷じゅうがその唸りを知っていた'], ['雨呼びの声', '歌えば雨が降る、と信じられた'], ['はじめの語り部', '名のない歌に、最初に節をつけた'], ['月の輪の歌い手', '満月の夜ごとに、輪の真ん中にいた'], ['骨と声の人', '骨を叩き、声を重ねて、歌をこしらえた']], vc=[['焚き火の番', 'あの声が聞こえると、火が少し大きくなる気がした。', 'fan'], ['長老', '若いのに、古い歌の心を知っておる。', 'pen'], ['子ども', 'まねして唸ったら、母にうるさいと言われた。', 'bubble'], ['隣の集落の者', '谷を越えて、あの歌を聞きに行った。', 'friends'], ['狩りの仲間', '獲物を追うとき、頭の中であの節が鳴っていた。', 'note'], ['母', '小さいころから、よく洞窟で叫んでいた子だった。', 'home'], ['語り部', 'あの歌は、わしの次の代にも渡しておく。', 'bubble'], ['壁画を描く者', '歌を絵にしようとしたが、どうにも描けなかった。', 'pen']], ms=['初めて集落の外へ', '谷じゅうの歌に', '語り継がれる歌に', '長い沈黙からの復活', '三つ続けて皆が歌い返した'])
+P2["onames"] = list(P2["onames"]) + ['やっつめの歌', 'ここのつめの歌', 'とおめの歌']
+
+
+# ---- レア時代の追加(分かれ道・称号・世間の声・性別つき名前) ----
+P6["decs"] = list(P6["decs"]) + [('冷凍睡眠から目覚めると、百年が過ぎていた。', [('百年後の流行りを学んで歌う', 1, '新しい音に馴染み、若い世代に受け入れられた。'), ('百年前の歌をそのまま歌う', 2, '『生きた化石の歌』として、星系じゅうで話題になった。'), ('もう一度眠る', -1, '次に目覚めたとき、聴き手はほとんど残っていなかった。')]), ('移民船の出航式で歌ってほしいと頼まれた。', [('船に乗って一緒に旅立つ', 2, '航海の何世代にもわたり、船の歌として歌い継がれた。'), ('見送る側で歌う', 1, '別れの歌として、コロニーの記念日に流れるようになった。'), ('録音だけ渡す', 0, '船の記録庫に収まり、静かに再生され続けた。')]), ('自分の声のホログラムが、勝手に別の星で歌っていた。', [('本物として会いに行く', 2, '本物とホログラムの共演が、伝説の夜になった。'), ('削除を申し立てる', -1, '手続きに何年もかかり、新曲を出す暇がなかった。'), ('ホログラムに曲を書いてあげる', 1, '二人の自分が歌う曲が、ちょっとした話題になった。')])]
+P6.update(nm_m=['ミナト・K', 'ユウ・オメガ', 'ハル・Z', 'リク・Σ', 'レン・X', 'カナタ・0', 'ソウ・12', 'タイガ・β'], nm_f=['ソラ・7', 'ミオ・3', 'アオイ・9', 'サラ・Ⅱ', 'ルナ・5', 'ヒカリ・Δ', 'ノア・8', 'ユナ・γ'], ns_m=['ネオ・ミナト', 'オリオン・リク', 'アルタイル・ハル', 'カノープス', 'ポラリス', 'シリウス・ジン'], ns_f=['ルナ=4', 'ミラ・ステーション', 'ヴェガ・サラ', 'プロキシマ・アオイ', 'スピカ・ミオ', 'ソラリス・ユウ'], cw=[['軌道のうたうたい', 'コロニーの空を、歌でひとまわりした'], ['星間の声', '光の速さでも足りない距離を、歌でつないだ'], ['無重力の名手', '浮かびながら歌うのが、誰よりうまかった'], ['最後の生身の歌手', '機械の声の時代に、生身の声を貫いた'], ['移民船の子守唄', '何世代もの子どもが、その歌で眠った'], ['記憶庫の常連', 'アーカイブに残った曲が、いちばん多かった']], vc=[['コロニーの住人', '人工の朝日が昇るたびに、あの曲を流している。', 'fan'], ['星間放送のDJ', '今夜もリクエストの半分は、あの人の曲です。', 'radio'], ['移民船の乗員', '航海の三年目に、はじめて泣けた曲だった。', 'bubble'], ['音楽AI', '解析不能な揺らぎがあった。それが良さなのだと学んだ。', 'note'], ['記憶保存館の司書', '千年後の誰かのために、いちばん良い棚に置いた。', 'record'], ['星系ネットの声', '遅延三分の向こうで、みんなで同時に歌った。', 'bubble'], ['整備士の親', '工具箱の中から、いつも鼻歌が聞こえていた。', 'home'], ['遠い星の聴き手', '届くまでに八年かかった。でも、届いた。', 'mail']])
+P6["onames"] = list(P6["onames"]) + ['5thシングル', '4thアルバム', '6thシングル']
+
+
+# ---- レア時代の追加(分かれ道・称号・世間の声・性別つき名前) ----
+P3["decs"] = list(P3["decs"]) + [('大名行列が宿場を通ることになった。', [('行列の前では黙っている', 0, '何事もなく行列は過ぎた。唄は宿の夜にとっておいた。'), ('お供の足軽たちに唄を教える', 2, '足軽たちが国元へ唄を持ち帰り、遠い国で流行った。'), ('こっそり替え唄で茶化す', 1, '宿場の者は大笑いしたが、少しひやりとした。')]), ('お伊勢参りの一行が「道中で唄ってくれ」と誘ってきた。', [('一緒に旅に出る', 2, '街道の宿ごとに唄が残り、伊勢まで評判が続いた。'), ('村に残って見送る', 0, '村の唄として、静かに守られた。'), ('道中唄をこしらえて持たせる', 1, '一行が唄いながら歩き、街道に節が広まった。')]), ('芝居小屋の座元が「幕間で唄わないか」と声をかけてきた。', [('引き受ける', 2, '幕間の唄が芝居より評判になり、座元が苦い顔をした。'), ('断る', -1, '村の唄い手のまま、町には知られなかった。'), ('役者に節を教える', 1, '役者が舞台で唄い、唄の文句が町に広まった。')])]
+P3.update(nm_m=['茂吉', '与市', '弥助', '喜平', '源太', '長次', '半七', '伊之助', '熊五郎', '清吉'], nm_f=['お鶴', 'おゆう', 'お春', 'おきく', 'おりん', 'お七', 'おとめ', 'おみよ', 'お糸', 'おせん'], ns_m=['茂吉', '与市', '弥助', '喜平', '源太', '伊之助'], ns_f=['おとめ', 'お鶴', 'おゆう', 'お春', 'おきく', 'お糸'], cw=[['櫓の上の名人', '祭りの夜は、いつも櫓の上にいた'], ['街道の唄い手', '宿場から宿場へ、唄が先に着いていた'], ['盆踊りの主', 'この唄が始まると、輪が倍になった'], ['長屋の小唄名人', '路地の奥から、粋な節が聞こえてきた'], ['瓦版の常連', '唄の文句が、何度も刷られた'], ['田植え唄の名手', '早乙女たちが、この節でそろって植えた']], vc=[['長屋のおかみさん', '井戸端で、あの唄を知らない者はいないよ。', 'fan'], ['瓦版屋', '今月も、あの唄の文句がいちばん売れた。', 'news'], ['旅の座頭', '次の宿場でも、もう誰かが唄っていた。', 'note'], ['庄屋', '騒がしいが、田植えがはかどるので許しておる。', 'pen'], ['子ども', '手まり唄にして、毎日ついている。', 'bubble'], ['旅籠の主', '川止めの夜、あの唄で宿じゅうが一つになった。', 'friends'], ['三味線の師匠', '型は崩れておるが、節に心がある。', 'note'], ['おっかさん', 'あの子が唄うと、畑の皆が手を止めちまうんだよ。', 'home']], ms=['初めて宿場の外へ', '街道じゅうの評判に', '盆踊りの定番に', '長い不遇からの返り咲き', '三つ続けて宿場の評判に'])
+P3["onames"] = list(P3["onames"]) + ['八つ目の唄', '九つ目の唄', '十の唄']

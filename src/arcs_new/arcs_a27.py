@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ARCS = [
- dict(k="a27_rls", nm="THE ROLLING SCONES", st="band", y0=1962, ge="ブリティッシュ・ロック", vg="m",
+ dict(k="a27_rls", nm="THE ROLLING PINS", st="band", y0=1962, ge="ブリティッシュ・ロック", vg="m",
   th=["社会への怒り", "恋のはじまり", "時代風刺", "孤独と夜"], sa="ロンドンの小さなリズム&ブルース・クラブ",
   tx="黒人ブルースが好きすぎる学生たちが、狭いクラブの隅で音を鳴らし始めた",
   roles=["Vo", "Gt", "Gt", "Ba", "Dr"], tr=["唇の動きがやたら大きい", "リフを弾くとき片眉が上がる", "ギターを二人で弾き分けるのが得意", "ステージの端で動かず低音を支える", "拍の置き方が静かで正確"],
@@ -17,7 +17,7 @@ ARCS = [
   cp=["ブルースのカバー", "悪童の看板", "原点回帰", "終わらない巡業"],
   members=[{"n": "ミック・ジャガイモ", "r": "Vo", "g": "m"}, {"n": "キース・リッチマン", "r": "Gt", "g": "m"}, {"n": "ロニー・ウッディ", "r": "Gt", "g": "m"}, {"n": "ビル・ワイパー", "r": "Ba", "g": "m"}, {"n": "チャーリー・ワッフル", "r": "Dr", "g": "m"}]),
 
- dict(k="a27_ejb", nm="エルトン・ジョンブル", st="solo", y0=1969, ge="ピアノ・ロック", vg="m",
+ dict(k="a27_ejb", nm="エルトン・ジョッキ", st="solo", y0=1969, ge="ピアノ・ロック", vg="m",
   th=["恋のはじまり", "喪失と再生", "自己否定と肯定", "旅立ちと別れの春"], sa="ロンドンの音楽出版社の小部屋",
   tx="ピアノの前で、他人の書いた詞に曲をつける仕事から始まった",
   roles=[], tr=[], par="a27_ejb",
@@ -32,7 +32,7 @@ ARCS = [
   ea=["自作自演を貫き、一曲ごとの重みを増した。", "地味な歌い手で通し、通の間で長く愛された。", "大人の聴き手を守ったが、広がる機会は少なかった。"],
   cp=["作詞家との二人三脚", "ピアノ弾き語り", "派手な衣装", "映画の歌"], members=[]),
 
- dict(k="a27_bgs", nm="BEE GEESE", st="band", y0=1958, ge="ディスコ・ポップ", vg="m",
+ dict(k="a27_bgs", nm="BEE CHEESE", st="band", y0=1958, ge="ディスコ・ポップ", vg="m",
   th=["家族への感謝", "恋のはじまり", "時代風刺", "喪失と再生"], sa="南半球の港町の兄弟のアマチュア舞台",
   tx="三人兄弟が、港町の小さな舞台で子どものハモリを披露するところから始まった",
   roles=["Vo/Gt", "Vo", "Ba/Key"], tr=["高い声のときだけ目を閉じる", "帽子を深くかぶったまま歌う", "弟の声に合わせてベースの音量を変える"],
@@ -146,7 +146,7 @@ ARCS = [
   cp=["ゆったりしたリズム", "島の路地", "世界への扉", "平和の舞台"],
   members=[{"n": "ボブ・マーマレー", "r": "Vo/Gt", "g": "m"}, {"n": "ピーター・トースト", "r": "Vo/Gt", "g": "m"}, {"n": "バニー・ウォーラー", "r": "Vo/Perc", "g": "m"}]),
 
- dict(k="a27_spg", nm="SPICY GIRLS", st="band", y0=1994, ge="ガールズ・ポップ", vg="f",
+ dict(k="a27_spg", nm="七味ガールズ", st="band", y0=1994, ge="ガールズ・ポップ", vg="f",
   th=["応援歌", "夏と青春", "恋のはじまり", "自己否定と肯定"], sa="ロンドンのダンス・スタジオのオーディション会場",
   tx="新聞の募集広告をきっかけに、五人の少女が同じダンス・スタジオに集まった",
   roles=["Vo", "Vo", "Vo", "Vo", "Vo"], tr=["キメ顔をするとき必ず腰に手を当てる", "足を高く上げる振りだけは誰にも負けない", "笑顔が先で、歌詞が後からついてくる", "髪の色を毎回変えて登場する", "ヒールの高さで身長を競う"],
@@ -166,14 +166,14 @@ ARCS = [
 ]
 
 PT = {
- "a27_rls": ["(I Can't Get No) 満腹", "Paint It Brown", "Start Me Up(エンジン編)", "Jumpin' Jack Flask", "Brown Sugar(三温糖)", "Sympathy for the Deviled Egg", "Gimme Shelf", "Wild Horse-radish", "Ruby Thursday", "Honky Tonk Waffles", "You Can't Always Get What You Order", "Get Off of My Cloudy", "19th Nervous Brunch", "Tumbling Rice", "Mr. You", "Angel Hair", "唇と舌のスコーン", "黒いブルースの焼き菓子", "リフは二人で弾く"],
- "a27_ejb": ["Your Sofa", "Rocket Pan", "Crocodile Sock", "Tiny Danish", "Benny and the Jelly", "Don't Go Breaking My Egg", "I'm Still Sitting", "Goodbye Yellow Brick Roll", "Saturday Night's Alright for Fitting", "Circle of Lime", "Can You Feel the Lunch Tonight", "Philadelphia Cream Cheese", "Honky Cat(ニャー)", "Candle in the Window", "Levon(レモン)", "Sorry Seems to Be the Hardest Weight", "ピアノの上のこぼれた飲み物", "眼鏡と羽根の夜", "詞が先に届いた朝"],
- "a27_bgs": ["Stayin' Alike", "How Deep Is Your Pool", "Night Fiber", "Jive Talkin'(ジャム)", "Massachusetts(誤字)", "To Lug Somebody", "Words(単語帳)", "More Than a Waffle", "You Should Be Dozing", "Too Much Heavy", "Lonely Daze", "I Started a Joke(未完)", "Run to Me(駅まで)", "Love You Inside Outlet", "A Loan", "高い声の秘密", "三兄弟のハモリ", "白いスーツで踊る夜", "港町から来た三人"],
- "a27_bjv": ["Livin' on a Plate", "You Give Lunch a Bad Name", "Wanted: Bread or Alive", "Bad Medicine(粉薬)", "Bed of Rosemary", "Almost", "It's My Lifeboat", "Runaway(迷子)", "Keep the Fish", "Blaze of Gravy", "Have a Nice Dinner", "Born to Be My Bagel", "Lay Your Hands on Me(手洗い)", "These Daze", "I'll Be There for Stew", "Someday I'll Be Sunday Morning", "Slippery When Dry", "港町のデモテープ", "革ジャンのファスナー"],
- "a27_whp": ["I Wanna Dine with Somebody", "Greatest Lunch of All", "How Will I Snow", "Saving All My Lunch for You", "I'm Every Woman(全部のせ)", "One Moment in Tea", "So Emotional(玉ねぎ)", "Didn't We Almost Have It Tall", "Exhale (Shoo Shoo)", "I'm Your Baby Sitter", "Where Do Broken Pots Go", "My Love Is Your Loaf", "I Will Always Love Stew", "Queen of the Nightcap", "Step by Stair", "Love Will Save the Date", "It's Not Right but It's Okra", "聖歌隊の少女", "日曜の朝の天井"],
- "a27_bsb": ["Fight for Your Right (To Nap)", "Sabotage(おやつ抜き)", "Intergalactic(銀河系売店)", "No Nap till Brooklyn", "Brass Monkfish", "So What'cha Wanton", "Hey Lazies", "Body Moving Company", "Paul Reverse", "Ch-Check It In", "Pass the Mice", "Shake Your Rump Roast", "Sure Shot(カップ入り)", "Looking Down the Barrel of a Gum", "Girls(売り切れ)", "Hold It Now, Hit Snooze", "Root Beer Down", "Triple Treble", "早口とターンテーブル"],
- "a27_clh": ["We Found Lunch", "Summery", "Feel So Cloze", "This Is What You Came Fur", "Sweet Nutting", "Blamed", "Outsize", "Slice", "One Kitsch", "I'm Not Alone(二人暮らし)", "Acceptable in the 90s", "Thinking About Zoo", "Pray to Cod", "Giant(小)", "Promises(約款)", "Under Controller", "Let's Gogo", "I Created Disco Ball", "Ready for the Weekday", "自室の夜の機材"],
- "a27_dpt": ["Jo-Lemon", "9 to 5(定時退社)", "I Will Always Love Ewe", "Coat of Many Collars", "Here You Come Again(宅配)", "Islands in the Steam", "Two Doors Dawn", "Love Is Like a Buttercup", "Little Sparrow(小さな雀)", "Applejack(りんご)", "Backwoods Barbed", "Light of a Clear Blue Morning Coffee", "Starting Over Again(二度目)", "Eagle When She Flies(離陸)", "Down from Dover(舌平目)", "My Tennessee Mountain Hamburger", "Why'd You Come in Here Cooking Like That", "高く結った髪とドア枠", "遊園地の入口"],
- "a27_bmw": ["No Woman, No Pie", "Three Little Burgers", "Redemption Sung", "One Loaf", "Is This Lunch", "Jamming(ジャム瓶)", "Get Up, Stand Up(朝六時)", "Exodus(引っ越し)", "Buffalo Solder", "Could You Be Lovely", "Stir It Up(かき混ぜ)", "Natural Mystic Mix", "Waiting in Vein", "Iron Lion Onion", "Sun Is Shinning", "Concrete Jingle", "Trenchtown Sock", "Satisfy My Soup", "Positive Vibration(マッサージ)"],
- "a27_spg": ["Wanna-Bee", "Say You'll Be Square", "2 Become 1(割り勘)", "Spice Up Your Lunch", "Stop(止まれ)", "Viva Forever(消費期限)", "Mama(買い物)", "Goodbag", "Too Mulch", "Holler(山びこ)", "Headlines(見出し)", "Who Do You Think You Ate", "Move Oven", "Girl Flower", "Right Back at Yaki", "Let Love Lead the Wayne", "新聞広告のオーディション", "二階建てバスの上で", "厚底の靴と階段"],
+"a27_rls": ["(I Can't Get No) 満腹", "Paint It Brown", "Start Me Up(エンジン編)", "Jumpin' Jack Flask", "Brown Sugar(三温糖)", "Sympathy for the Deviled Egg", "Gimme Shelf", "Wild Horse-radish", "Ruby Thursday", "Honky Tonk Waffles", "You Can't Always Get What You Order", "Get Off of My Cloudy", "19th Nervous Brunch", "Tumbling Rice", "Miss Stew", "Angel Hair", "Under My Thumbtack", "Beast of Burdock", "Mother's Little Helping"],
+"a27_ejb": ["Your Sofa", "Rocket Pan", "Crocodile Sock", "Tiny Danish", "Benny and the Jelly", "Don't Go Breaking My Egg", "I'm Still Sitting", "Goodbye Yellow Brick Roll", "Saturday Night's Alright for Fitting", "Circle of Lime", "Can You Feel the Lunch Tonight", "Philadelphia Cream Cheese", "Honky Cat(ニャー)", "Candle in the Window", "Levon(レモン)", "Sorry Seems to Be the Hardest Weight", "Spaniel", "Nigirita", "Sad Songs (Say So Munch)"],
+"a27_bgs": ["Stayin' Alike", "How Deep Is Your Pool", "Night Fiber", "Jive Talkin'(ジャム)", "Massachusoup", "To Lug Somebody", "Words(単語帳)", "More Than a Waffle", "You Should Be Dozing", "Too Much Heavy", "Lonely Daze", "I Started a Joke(未完)", "Run to Me(駅まで)", "Love You Inside Outlet", "A Loan", "Nights on Broadbeans", "You Wine Again", "New York Mining Dessert 1941", "I've Gotta Get a Massage to You"],
+"a27_bjv": ["Livin' on a Plate", "You Give Lunch a Bad Name", "Wanted: Bread or Alive", "Bad Medicine(粉薬)", "Bed of Rosemary", "Almost", "It's My Lifeboat", "Runaway(迷子)", "Keep the Fish", "Blaze of Gravy Boat", "Have a Nice Dinner", "Born to Be My Bagel", "Lay Your Hands on Me(手洗い)", "These Daze", "I'll Be There for Stew", "Someday I'll Be Sunday Morning", "Slippery When Dry", "Thank You for Loving Meat", "In These Arm-chairs"],
+"a27_whp": ["I Wanna Dine with Somebody", "Greatest Lunch of All", "How Will I Snow", "Saving All My Lunch for You", "I'm Every Woman(全部のせ)", "One Moment in Tea", "So Emotional(玉ねぎ)", "Didn't We Almost Have It Tall", "Exhale (Shoo Fly)", "I'm Your Baby Sitter", "Where Do Broken Pots Go", "My Love Is Your Loaf", "I Will Always Love Stew", "Queen of the Nightcap", "Step by Stair", "Love Will Save the Date", "It's Not Right but It's Okra", "Run to Zoo", "All the Man That I Knead"],
+"a27_bsb": ["Fight for Your Right (To Nap)", "Sabotage(おやつ抜き)", "Intergalactic(銀河系売店)", "No Nap till Brooklyn", "Brass Monkfish", "So What'cha Wanton", "Hey Lazies", "Body Moving Company", "Paul Reverse", "Ch-Check It In", "Pass the Mice", "Shake Your Rump Roast", "Sure Shot(カップ入り)", "Looking Down the Barrel of a Gum", "Girls(売り切れ)", "Hold It Now, Hit Snooze", "Root Beer Down", "Triple Treble", "早口とターンテーブル"],
+"a27_clh": ["We Found Lunch", "Summery", "Feel So Cloze", "This Is What You Came Fur", "Sweet Nutting", "Blamed", "Outsize", "Sliced", "One Kitsch", "I'm Not Alone(二人暮らし)", "Acceptable in the 90s", "Thinking About Zoo", "Pray to Cod", "Giant(小)", "Promises(約款)", "Under Controller", "Let's Gogo", "I Created Disco Ball", "Ready for the Weekday", "Rollin' Oats"],
+"a27_dpt": ["Jo-Lemon", "9 to 5(定時退社)", "I Will Always Love Ewe", "Coat of Many Collars", "Here You Come Again(宅配)", "Islands in the Steam", "Two Doors Dawn", "Love Is Like a Buttercup", "Little Spatula", "Apple Jacket", "Backwoods Barbed", "Light of a Clear Blue Morning Coffee", "Starting Over Again(二度目)", "Eagle When She Flies(離陸)", "Down from Dover(舌平目)", "My Tennessee Mountain Hamburger", "Why'd You Come in Here Cooking Like That", "Dumb Brownie", "Romaine"],
+"a27_bmw": ["No Woman, No Pie Crust", "Three Little Burgers", "Redemption Sung", "One Loaf", "Is This Lunch", "Jamming(ジャム瓶)", "Get Up, Stand Up(朝六時)", "Exodus(引っ越し)", "Buffalo Solder", "Could You Be Lovely", "Stir-Fry It Up", "Natural Mystic Mix", "Waiting in Vein", "Iron Lion Onion", "Sun Is Shinbone", "Concrete Jingle", "Trenchtown Sock", "Satisfy My Soup", "Positive Vibration(マッサージ)"],
+"a27_spg": ["Wanna-Bee", "Say You'll Be Square", "2 Become 1(割り勘)", "Spice Up Your Lunch", "Stomp", "Viva Forever(消費期限)", "Mama(買い物)", "Goodbag", "Too Mulch", "Holler(山びこ)", "Headlettuce", "Who Do You Think You Ate", "Move Oven", "Girl Flower", "Right Back at Yaki", "Let Love Lead the Wayne", "Something Kinda Fondue", "Last Lunch Lover", "Girl Powder"],
 }

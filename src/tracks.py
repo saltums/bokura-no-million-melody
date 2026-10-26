@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """収録曲(トラックリスト)とメンバーの生成。すべて決定的(作品名と年から決まる)。"""
 import random
-import gen_vocab, hashlib, bio
+import gen_vocab, hashlib, bio, eraword
 
 def _seed(*a):
     return int(hashlib.md5("|".join(map(str, a)).encode()).hexdigest()[:8], 16)
@@ -28,7 +28,7 @@ TT = {
 "旅立ちと別れの春": ["卒業式の前の日", "桜の下で泣いた", "寄せ書きの隅", "ボタンをひとつ", "最後のチャイム", "またねの意味", "春休みの空", "旅立ちの駅"],
 }
 # 曲名のもじり(作品名のみ・時代で解禁)
-PARODY = [("天体観察", -1), ("世界に一つだけの傘", 2), ("終わりなき残業", 1), ("木綿のティッシュ", -1), ("春よ、遅れて来い", 1), ("ロビンスン", 1),
+PARODY = [("天体観察", -1), ("世界に一つだけの傘", 2), ("終わりなき残業", 1), ("木綿のティッシュ", -1), ("春よ、遅れて来い", 1),
           ("なごり雨", -1), ("チェリーパイ", 1), ("Tomorrow never comes", 1), ("夜に駆けたい", 4), ("ぬるいレモン", 3), ("さくらぼん", 2), ("ハナミズ", 2),
           ("守ってあげたいけど", 0), ("勝手にシンドバッド屋", 0), ("世界でいちばん暑い夏", 0), ("君がいない夏の終わりに", 0), ("乾杯と見せかけて", 2),
           ("めざせポケット", 1), ("涙そうそうそう", 2), ("負けないで、とは言えない", 1), ("アジアの純真さ", 1), ("粉雪と砂利", 2), ("糸くず", 3)]
@@ -46,10 +46,10 @@ try:
 except Exception as _e:
     print('gen_titles skip', _e)
 
-def _titles(r, theme, era, n, avoid, extra=None):
+def _titles(r, theme, era, n, avoid, extra=None, year=None):
     out = []
     if extra:
-        ex = [t for t in extra if t not in avoid]
+        ex = [t for t in extra if t not in avoid and eraword.ok(t, year)]
         r.shuffle(ex)
         for t in ex:
             if len(out) >= n: break
@@ -58,12 +58,13 @@ def _titles(r, theme, era, n, avoid, extra=None):
     pool = list(TT.get(theme, [])) + (GENERIC if len(GENERIC) > 200 else GENERIC + GENERIC)
     _bad = ('通知', '既読', 'メッセージ', 'ペンライト')
     pool += [z for z in gen_vocab.titles(theme, r, 24) if era >= 3 or not any(k in z for k in _bad)]
+    pool = [z for z in pool if eraword.ok(z, year)]
     par = [t for t, e in PARODY if era >= e]
     tries = 0
     while len(out) < n and tries < 400:
         tries += 1
         x = r.random()
-        if x < 0.04 and par: t = r.choice(par)
+        if x < 0.02 and par and extra is None: t = r.choice(par)  # 実在アーティスト(extraあり)には他人のもじり曲を混ぜない
         elif x < 0.9: t = r.choice(pool)
         else: t = r.choice(GENERIC)
         if t not in avoid and t not in out: out.append(t)
@@ -75,6 +76,7 @@ def _dur(r):
 def tracklist(h, style, era, theme, prev_titles, extra=None):
     """h: 作品dict(title, kind, ...)。返り値: [{n,t,d,tag}]"""
     r = random.Random(_seed(h['title'], h['year'], "trk"))
+    yy = h.get('year')
     kind = h['kind']; title = h['title']; tr = []
     avoid = set(prev_titles) | {title}
     def add(t, tag="", d=None): tr.append({"t": t, "d": d or _dur(r), "g": tag})
@@ -83,19 +85,18 @@ def tracklist(h, style, era, theme, prev_titles, extra=None):
         if kind == "配信限定シングル":
             if r.random() < 0.5: add(title, "Instrumental")
         else:
-            for t in _titles(r, theme, era, 2 if r.random() < 0.5 else 1, avoid, extra): add(t, "c/w" if era <= 2 else "")
+            for t in _titles(r, theme, era, 2 if r.random() < 0.5 else 1, avoid, extra, yy): add(t, "c/w" if era <= 2 else "")
             if r.random() < 0.55: add(title, "Instrumental")
     elif kind == "EP":
-        n = r.randint(4, 6); ts = _titles(r, theme, era, n - 1, avoid, extra)
+        n = r.randint(4, 6); ts = _titles(r, theme, era, n - 1, avoid, extra, yy)
         lead = r.randrange(0, 2); order = ts[:]
         order.insert(lead, title)
         for i, t in enumerate(order): add(t, "表題曲" if t == title else "")
         if r.random() < 0.3: tr[-1]["g"] = "ボーナストラック"
     else:  # アルバム
-        n = r.randint(9, 13); ts = _titles(r, theme, era, n, avoid, extra)
+        n = r.randint(9, 13); ts = _titles(r, theme, era, n, avoid, extra, yy)
         gag = r.random()
-        if r.random() < 0.65: ts[0] = ts[0]; main = title
-        else: main = ts.pop() if ts else title
+        r.random(); main = title  # 表題曲は必ずアルバム名と同じ曲(歌詞もアルバム名で作られるため)
         if era <= 2 and r.random() < 0.5: add("Intro", "SE", "0:%02d" % r.randint(20, 59))
         order = ts[:n - 2]
         pos = r.randrange(1, max(2, len(order)))
@@ -105,7 +106,7 @@ def tracklist(h, style, era, theme, prev_titles, extra=None):
         if r.random() < 0.35: tr.insert(len(tr) // 2, {"t": "Interlude", "d": "1:%02d" % r.randint(0, 40), "g": ""})
         if r.random() < 0.18: tr[r.randrange(1, len(tr))]["d"] = "%d:%02d" % (r.randint(9, 17), r.randint(0, 59)); 
         if r.random() < 0.25: add("無題", "隠しトラック", "%d:%02d" % (r.randint(10, 12), r.randint(0, 59)))
-        elif r.random() < 0.3: add(r.choice(extra or GENERIC), "初回限定盤のみ")
+        elif r.random() < 0.3: add(r.choice(eraword.filt([t for t in (extra or GENERIC) if t not in avoid] or GENERIC, h.get('year'))), "初回限定盤のみ")
         if style in ("rap",) and r.random() < 0.5 and len(tr) > 3: tr[2]["t"] += " feat. " + r.choice(["KAGE", "N.O.W.", "SHIN", "ミナト", "ゲスト"])
     for i, t in enumerate(tr): t["n"] = i + 1
     return tr

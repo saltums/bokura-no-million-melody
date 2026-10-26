@@ -4,7 +4,7 @@
 import copy, random, glob, os, re, importlib.util
 import roster as _ro0
 import ongaku_storyline_gen as g
-import lyrics, lyrics_struct, tracks, bio
+import lyrics, lyrics_struct, tracks, bio, eraword
 from arcs_gen import H, cl, era_of, pr_of, HIT, FLOP, FORM, KIND, ORD, WORDS, THEME, wk
 from parody_titles import PT as PT0
 
@@ -14,7 +14,18 @@ BRIDGE_TX = ["しばらくの空白があった。それでも、また音を鳴
 
 
 def era_ok(tx, year):
-    return all(year >= y for w, y in ERA_WORDS.items() if w in tx)
+    return all(year >= y for w, y in ERA_WORDS.items() if w in tx) and eraword.ok(tx, year)
+
+
+_KN = "一二三四五六七八九十"
+_CNT_RX = re.compile(r"(?<![一-龥])([二三四五六七八九])人(?=[はがでのとも全揃だ、。]|$)")
+_CNT_SKIP = re.compile(r"客|観客|世代|若い|子|娘|息子|兄弟|姉妹|(?<!駆け)抜け|去|加わ|増え|減|残|新し|なくなった|人のまま|かつて|元の|二人組|三人組|がかり|ボーカル|声|男|女|仲間|DJ|顔を描")
+
+
+def fix_count(s, n):
+    """本文の「四人は」などを実際の人数に合わせる(編成替え・客・他人の話の文は触らない)"""
+    if not isinstance(s, str) or not 2 <= n <= 9 or _CNT_SKIP.search(s): return s
+    return _CNT_RX.sub(lambda m: _KN[n - 1] + "人", s)
 
 
 def cap_fives(tree, cap=2):
@@ -64,13 +75,26 @@ def load_specs(dirpath='/home/claude/arcs_new'):
     return arcs, pt
 
 
+def _nth(n): return "%d%s" % (n, "th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th"))
+
+
+def kind_of(pos): return "EP" if pos == 0 else ("アルバム" if pos % 2 else "シングル")
+
+
+def ord_of(pos):
+    """0=自主制作盤, 以降アルバムとシングルが交互。番号は種類ごとに数える(7thアルバムが何枚も出ないように)"""
+    return "自主制作盤" if pos == 0 else _nth((pos + 1) // 2) + kind_of(pos)
+
+
 def rel(a, pool, seen, pos, y, tier, th, lb, dev, era):
     r = random.Random(H(a["k"], "rel", pos, dev, era))
     ti = pool[(pos * 3 + dev * 2) % len(pool)]
     n = 0
-    while ti in seen and n < len(pool): ti = pool[(pool.index(ti) + 1) % len(pool)]; n += 1
+    while (ti in seen or not eraword.ok(ti, y)) and n < len(pool): ti = pool[(pool.index(ti) + 1) % len(pool)]; n += 1
+    if n >= len(pool):  # 時代に合う曲名が尽きたら、時代違いでも未使用のものを使う
+        ti = next((t for t in pool if t not in seen), ti)
     seen.append(ti)
-    pr = pr_of(r, th); k = KIND[min(pos, len(KIND) - 1)]
+    pr = pr_of(r, th); k = kind_of(pos)
     h = dict(kind=k, ord="", title=ti, year=y, tier=tier, theme=th, premise=pr, label=lb)
     st = a["st"] if a["st"] in ("band", "duo", "rap", "solo", "beat") else "band"
     tk = tracks.tracklist(h, st, era, th, list(seen), extra=__import__('ptover').deep(a['k'], pool, seen))
@@ -79,7 +103,26 @@ def rel(a, pool, seen, pos, y, tier, th, lb, dev, era):
     ly = lyrics_struct.make_struct(th, a["ge"], pr, ti, y, WORDS, era <= 1, era)
     if ly: ly["vg"] = a["vg"]
     t = THEME[th]; rs = r.choice(t["hit"]) if tier >= 2 else r.choice(FLOP)
-    return {"t": "r", "y": y, "o": ORD[min(pos, len(ORD) - 1)], "ti": ti, "lb": lb, "tr": tier, "pr": pr, "th": th, "rs": rs if tier < 2 else r.choice(HIT), "fm": r.choice(FORM), "tk": tk, "ly": ly}
+    return {"t": "r", "y": y, "o": ord_of(pos), "ti": ti, "lb": lb, "tr": tier, "pr": pr, "th": th, "rs": rs if tier < 2 else r.choice(HIT), "fm": r.choice(FORM), "tk": tk, "ly": ly}
+
+
+def _bg(s):
+    s = re.sub(r"[、。「」!?!?・\s]", "", s); return {s[i:i + 2] for i in range(len(s) - 1)}
+
+
+def end_text(a, path):
+    """選んだ道(path: 各分かれ道で 0=筋 / 1=別)に合う結末。
+    ea の各文を「どの分かれ道の別選択を書いた文か」に割り当て、実際に別選択をした分かれ道の文だけを使う。
+    合う文がなければ、最後に外れた分かれ道の結果文を結末にする(選ばなかった選択を語らない)。"""
+    D = a["d"]; alts = [i for i, x in enumerate(path) if x == 1 and i < len(D)]
+    if not alts: return a["eh"]
+    best = None
+    for e in a.get("ea") or []:
+        sc = [len(_bg(e) & _bg(d[2] + d[4])) for d in D]
+        o = max(range(len(D)), key=lambda i: sc[i]); s2 = sorted(sc)[-2] if len(sc) > 1 else 0
+        if sc[o] >= 3 and sc[o] > s2 and o in alts and (best is None or o > best[0]): best = (o, e)
+    if best: return best[1]
+    return D[alts[-1]][4]
 
 
 def build(a, i, pool, era=None, nm=None):
@@ -111,14 +154,25 @@ def build(a, i, pool, era=None, nm=None):
     import roster as _ro
     mm = _ro.apply(a, mm, seed)
     top = "グループ" if st in ("band", "duo", "inst") else "ソロ"
+    solo_inst = st == "inst" and not roles and not (a.get('members') or _ro0.ROSTER.get(a['k']))
+    if solo_inst:  # トランペット奏者など「一人の名前」のインスト: 本人+バックの奏者(Gt/Gt/Ba/Drのバンドにしない)
+        lead = next((v for w, v in (("トランペット", "Tp"), ("サックス", "Sax"), ("ピアノ", "Pf"), ("ギター", "Gt"), ("ベース", "Ba"), ("ドラム", "Dr")) if w in a["tx"]), "Gt")
+        back = [r_ for r_ in ("Pf", "Ba", "Dr", "Gt") if r_ != lead][:3]
+        mm = [dict(m_, r="サポート" + {"Pf": "ピアノ", "Ba": "ベース", "Dr": "ドラム", "Gt": "ギター"}[r_]) for m_, r_ in zip(tracks.people(seed, "band"), back)]
+        top = "ソロ"
     E = g.ERAS[era]
     name = nm or a["nm"]
     meta = {"id": seed, "a": name, "pun": None, "top": top, "st": st if st != "dj" else "solo", "sn": STN.get(st, "シンガーソングライター"), "pe": "まじめ", "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
-            "tx": a["tx"], "ai": None, "mm": mm, "vg": a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ"), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
+            "tx": a["tx"], "ai": None, "mm": mm, "vg": a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
+    bio.localize(a, meta["bio"], mm, seed)  # 出身地・結成地を国と「始まりの場所」に合わせる
+    if solo_inst: meta["sn"] = "インスト奏者"
     th = a["th"]; D = a["d"]; N = len(D); cv = a["cv"]; ev = list(a["ev"]); ex = list(a.get("ex") or [])
     _yy = y0 + 2
     ex = [x for x in ex if era_ok(x, _yy)]
     ev = [x if era_ok(x, _yy) else "活動は、少しずつ、確かな形になっていった。" for x in ev]
+    if top == "グループ":  # 人数語を実際のメンバー数に
+        _n = len(mm); ev = [fix_count(x, _n) for x in ev]; ex = [fix_count(x, _n) for x in ex]; meta["histTx"] = fix_count(meta["histTx"], _n)
+        D = [tuple(fix_count(z, _n) for z in d_) for d_ in D]
     rr = random.Random(H(a["k"], "ex", era)); rr.shuffle(ex)
     counter = [0]
 
@@ -140,7 +194,7 @@ def build(a, i, pool, era=None, nm=None):
 
     def q(d): return {"prompt": d[0], "labels": [d[1], d[2]], "h": 0}
 
-    def node(si, eff, dv, seen, pos0, prior_works):
+    def node(si, eff, dv, seen, pos0, prior_works, path=()):
         # si: 次に控える分かれ道の番号。この関数が返すのは「分かれ道siの子ノード群」
         kids = []
         for x in (0, 1):
@@ -151,9 +205,10 @@ def build(a, i, pool, era=None, nm=None):
             pos1 = pos0 + len(cv[min(si + 1, len(cv) - 1)])
             works = prior_works + [w for w in seg if w["t"] == "r"]
             if si + 1 < N:
-                kids.append({"s": seg, "q": q(D[si + 1]), "n": node(si + 1, e2, dv2, sn, pos1, works)})
+                kids.append({"s": seg, "q": q(D[si + 1]), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,))})
             else:
-                tx = a["eh"] if dv2 == 0 else a["ea"][min(dv2 - 1, len(a["ea"]) - 1)]
+                tx = end_text(a, path + (x,))
+                if top == "グループ": tx = fix_count(tx, len(mm))
                 kids.append({"s": seg, "e": {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}})
         return kids
 
@@ -170,7 +225,7 @@ def build_all(dirpath='/home/claude/arcs_new', variants=True):
     for i, a in enumerate(arcs):
         try:
             pool = pt.get(a["par"]) or PT0.get(a["par"]) or PT0["misc"]
-            pool = list(dict.fromkeys(pool + PT0["misc"][:6]))
+            pool = list(dict.fromkeys(pool))
             out.append(build(a, i, pool))
             if variants:
                 real_era = era_of(a["y0"]); alts = [e for e in a.get("eras", []) if e != real_era and e in ERA_Y]

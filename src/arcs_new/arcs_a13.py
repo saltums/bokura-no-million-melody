@@ -60,7 +60,7 @@ dict(k='a13_kendrick', nm='Kenneth Llama', st='rap', y0=2003, ge='ヒップホ�
  ea=['声は小さくなったが、地元ではいまも語り継がれる存在になった。', '大きな会社の下で、らしさと数字の間を歩き続けた。', '一つの路線にとどまり、通好みの名前になった。'],
  cp=['ミックステープ', '地元系', 'コンセプトアルバム', 'ジャンル越境', '社会派'], eras=[1, 2, 3], alt=['街角のポエトリー', '路地裏の語り部']),
 
-dict(k='a13_beyonce', nm='Beyawnce', st='solo', y0=1997, ge='R&B', vg='f',
+dict(k='a13_beyonce', nm='Beyawnce Knowles-Slaw', st='solo', y0=1997, ge='R&B', vg='f',
  th=['自己否定と肯定', '恋のはじまり', '応援歌'], sa='地元の歌のコンテスト',
  tx='地元の少女たち数人で、歌のコンテストの舞台に立ったのが始まりだった',
  roles=[], tr=[], par='a13_beyonce', yr=[0, 3, 6, 9, 11, 13, 14, 16, 20],
@@ -90,7 +90,7 @@ dict(k='a13_beyonce', nm='Beyawnce', st='solo', y0=1997, ge='R&B', vg='f',
  ea=['グループの絆と、ソロの挑戦の間で、自分の形を見つけた。', '無理をせず、安定して愛される歌い手として歩いた。', 'ひと晩の舞台に懸ける熱は、いつまでも消えなかった。'],
  cp=['グループからソロ', 'サプライズ公開', '映像作品', '舞台の完成度', '頂点'], eras=[0, 2, 3], alt=['サテン・ガールズ', '光の中のディーヴァ']),
 
-dict(k='a13_bjork', nm='Bjerk', st='solo', y0=1986, ge='エレクトロニカ', vg='f',
+dict(k='a13_bjork', nm='Björkoli', st='solo', y0=1986, ge='エレクトロニカ', vg='f',
  th=['人工物への違和感', '自己否定と肯定', '旅立ちと別れの春'], sa='北の島のバンド',
  tx='北の小さな島で、変わった名前のバンドの声として歌ったのが始まりだった',
  roles=[], tr=[], par='a13_bjork', yr=[0, 3, 6, 8, 11, 14, 16, 19, 22],
@@ -120,7 +120,7 @@ dict(k='a13_bjork', nm='Bjerk', st='solo', y0=1986, ge='エレクトロニカ', 
  ea=['聴き手は少なくなったが、誰にもまねできない声を持ち続けた。', '普通と実験の間で揺れながら、独自の道を歩んだ。', '大きな会社の枠のなかで、らしさをどう守るかを探した。'],
  cp=['バンドからソロ', 'ジャンル越境', '声のみの作品', '前衛', '異形の存在感'], eras=[0, 2, 3], alt=['氷の国のシンセ少女', '森のアルトボイス']),
 
-dict(k='a13_gorillaz', nm='Gorilloz', st='band', y0=1998, ge='オルタナティブ', vg='x',
+dict(k='a13_gorillaz', nm='Gorilla Zzz', st='band', y0=1998, ge='オルタナティブ', vg='x',
  th=['人工物への違和感', 'ナンセンスと言葉遊び', '時代風刺'], sa='安いアパートの一室',
  tx='安アパートで、二人の男が、存在しないバンドの四人の顔を描いたのが始まりだった',
  roles=['Vo', 'Gt', 'Ba', 'Dr'], tr=['絵の中でだけ喋る', '現実に出てこない', '設定が毎回少し変わる', 'ライブでは映像のなか'],
@@ -151,7 +151,7 @@ dict(k='a13_gorillaz', nm='Gorilloz', st='band', y0=1998, ge='オルタナティ
  ea=['謎の魅力は薄れたが、音楽の力で愛され続けた。', '内輪の世界で、静かにファンを育てた。', '消えたり現れたりしながら、神話は続いた。'],
  cp=['覆面', '架空のバンド', 'ジャンル越境', '客演', '映像と一体'], eras=[2, 3, 4], alt=['ゴリラ・ファクトリー', '絵の中のカルテット']),
 
-dict(k='a13_rhcp', nm='Red Hot Chili Poppers', st='band', y0=1983, ge='ファンクロック', vg='m',
+dict(k='a13_rhcp', nm='Red Hot Chili Pepperoni', st='band', y0=1983, ge='ファンクロック', vg='m',
  th=['夏と青春', 'ナンセンスと言葉遊び', '喪失と再生'], sa='地元の小さなライブハウス',
  tx='高校の仲間四人で、ふざけた衣装のまま小さなライブハウスに立ったのが始まりだった',
  roles=['Vo', 'Gt', 'Ba', 'Dr'], tr=['舞台ではほとんど着ない', 'ギターが静かに泣く', 'ベースが跳ねすぎ', 'ドラムが踊る'],
@@ -182,7 +182,7 @@ dict(k='a13_rhcp', nm='Red Hot Chili Poppers', st='band', y0=1983, ge='ファン
  ea=['顔ぶれを変えながらも、何とかバンドの形を守り続けた。', '熱は少し冷めたが、ライブの跳ね具合は変わらなかった。', '小さな箱で、昔のままの音を鳴らし続けた。'],
  cp=['メンバーの入れ替わり', '復帰', 'ファンクとパンク', 'ライブバンド', '路線転換'], eras=[0, 2, 3], alt=['ホット・ペッパー・ポップ', '赤い靴下の四人']),
 
-dict(k='a13_greenday', nm='Green Daze', st='band', y0=1987, ge='パンクロック', vg='m',
+dict(k='a13_greenday', nm='Green Dairy', st='band', y0=1987, ge='パンクロック', vg='m',
  th=['日常のぼやき', '社会への怒り', '時代風刺'], sa='地元のパンクの小さな箱',
  tx='街のはずれの小さな箱で、三人組が速くて短い曲ばかり鳴らしたのが始まりだった',
  roles=['Vo/Gt', 'Ba', 'Dr'], tr=['MCが長い', 'ベースが走る', 'スティックを折る'],
@@ -213,7 +213,7 @@ dict(k='a13_greenday', nm='Green Daze', st='band', y0=1987, ge='パンクロッ�
  ea=['地元の英雄のまま、小さな箱で今も最速の曲を鳴らしている。', '迷いながらも、速い曲を書くことをやめなかった。', '三人のまま、静かに愛され続けた。'],
  cp=['インディーからメジャー', '迷走からの復活', 'ロックオペラ', '三人組', '舞台化'], eras=[0, 2, 3], alt=['グリーン・ドーナツ', '三色パンクス']),
 
-dict(k='a13_linkin', nm='Linkin Perk', st='band', y0=1996, ge='ラップロック', vg='m',
+dict(k='a13_linkin', nm='Linkin Parfait', st='band', y0=1996, ge='ラップロック', vg='m',
  th=['自己否定と肯定', '社会への怒り', '孤独と夜'], sa='学校の仲間のガレージ',
  tx='学校の仲間六人が、ガレージでラップとギターを混ぜて鳴らしたのが始まりだった',
  roles=['Vo', 'MC', 'Gt', 'Ba', 'Dr', 'DJ'], tr=['叫ぶと声が裏返る', 'ステージで走り回る', 'ギターは静か', '一番真面目', 'ドラムを壊す', 'ターンテーブルに住んでいる'],
@@ -275,7 +275,7 @@ dict(k='a13_foo', nm='Foo Fryers', st='band', y0=1994, ge='オルタナティブ
  ea=['一人で、自分の音を守りながら静かに続けた。', '大きな音と小さな音の間で、自分の形を探した。', '身内の仲間と、ずっとガレージで鳴らし続けた。'],
  cp=['宅録から始まる', '一人でバンド', 'ガレージ', 'ライブバンド', '大会場'], eras=[0, 2, 3], alt=['フー・ボーイズ', '地下室のドラム']),
 
-dict(k='a13_gaga', nm='Lady Gogo', st='solo', y0=2005, ge='ダンスポップ', vg='f',
+dict(k='a13_gaga', nm='Lady GariGari', st='solo', y0=2005, ge='ダンスポップ', vg='f',
  th=['自己否定と肯定', '推しとファンへの手紙', 'ナンセンスと言葉遊び'], sa='大きな街の小さなクラブ',
  tx='ピアノを弾きながら、街の小さなクラブで派手な衣装で歌い始めたのが始まりだった',
  roles=[], tr=[], par='a13_gaga', yr=[0, 3, 4, 6, 8, 10, 13, 15, 18],
@@ -307,16 +307,16 @@ dict(k='a13_gaga', nm='Lady Gogo', st='solo', y0=2005, ge='ダンスポップ', 
 ]
 
 PT = {
-'a13_billie': ['bad pie', 'ocean ice', "when the pasta's over", 'everything i wonted', 'Hungrier Than Ever', 'lonely(夜更け)', 'Therefore I Ham', 'No Time to Dye', 'Birds of a Leather', 'What Was I Maid For?', 'my furniture', 'idontwannabeyouanymore(再放送)', 'bury a fried', 'you should see me in a clown', 'Lunch(冷めた)', 'TB', 'Your Powder', 'NDA(おやつ)', 'Chikiro', "L'AMOUR DE MA VIE(深夜便)", 'Skinny Pudding', 'getting older(古本)', 'party favorite(余り)', 'bad ガイド', 'my sleeping room', '寝室はひとつの海'],
-'a13_kendrick': ['HUMBLE.(ほどほど)', 'DNA.(でんぷん)', 'ELEMENT.(元素記号)', 'LOYALTY.(定食)', 'Alright(オールナイト)', 'King Kunta(キング・クンタ)→King Cantaloupe', 'Swimming Pools(ぷーるサイド)', 'Money Trees(マネー・ツリーハウス)', 'Poetic Justice(詩的ジャスティス)→Poetic Juice', "m.A.A.d city(まっどシティ)", 'Backseat Freestyle(後部座席フリースタイル)', 'N95(マスクの人)', 'Not Like Us(ぼくらみたいじゃない)→Not Like Ass', 'Silent Hill(しずかな丘)', 'Count Me Out(数に入れないで)→Count Me In', 'Die Hard(堅いパン)', 'Mother I Sober(母も醒める)→Mother I Soda', 'Father Time(父の時間)→Father Thyme', 'euphoria(昼寝)', 'The Heart Part 5(心臓第五部)→The Heart Part 6', 'i(あい)', 'Bitch, Don\'t Kill My Vibe(気分を殺すな)→Don\'t Kill My Vibe Check', 'Rigamortis(硬直)→Rigatoni', 'Sing About Me(わたしを歌って)→Sing About Tea', 'Poetic Poultry', 'Compton Cafe'],
-'a13_beyonce': ['Crazy in Lunch', 'Single Ladies(丸まった傘)', 'Halo(ハロハロ)', 'Irreplaceable(取り替え可)', 'Formation(整列)→Formation Flight', 'Drunk in Soap', 'Run the World(世界を走れ)→Run the Whirl', 'Love on Top(上に載せた恋)→Love on Toast', 'Partition(間仕切り)→Partition Wall', 'Sorry(売り切れ)', 'Hold Up(待った)→Hold Out', 'Break My Soul(魂は割れない)→Break My Bowl', 'Cuff It(ベルト巻き)', 'Texas Hold \'Em(テキサス・ホルダー)', 'If I Were a Boy(もしぼくが少年なら)→If I Were a Toy', 'Survivor(サバイバー)→Survivor Series', 'Say My Name(名前を呼んで)→Say My Game', 'Bootylicious(尻まるごと)→Bootylicious Bread', 'Naughty Girl(わるい子)→Naughty Pearl', 'Deja Vu(既視感)→Deja Stew', 'Ring the Alarm(目覚ましを鳴らせ)', 'Black Parade(黒い行進)→Black Parade Ground', 'Daddy Lessons(お父さんの教え)→Daddy Lemonade', 'Virgo\'s Groove'],
-'a13_bjork': ['Human Behaviour(人間の行動)→Human Behaviour Chart', 'Venus as a Boy(少年としての金星)→Venus as a Bun', 'Army of Me(わたしの軍隊)→Army of Mice', 'Hyperballad(超バラッド)→Hyperballoon', 'Bachelorette(独身の女)→Bachelorette Party Pack', 'Joga(大地)→Yoga', 'Hunter(狩人)→Hunter Hat', 'Pagan Poetry(異教の詩)→Pagan Pottery', 'Cocoon(さなぎ)→Cocoon Cafe', 'Isobel(イザベル)→Is a Bell', 'Big Time Sensuality(大時代の感性)→Big Time Sensibility', 'Oceania(オセアニア)→Oceanic Iron', 'Declare Independence(独立宣言)→Declare Independents', 'Unravel(ほどく)→Unravel Yarn', 'Violently Happy(暴力的に幸せ)→Violently Hungry', 'Jóga の次の朝', 'It\'s Oh So Quiet(静かなのだ)→It\'s Oh So Quiche', 'Possibly Maybe(多分かも)→Possibly Maybe Not', 'Play Dead(死んだふり)→Play Bread', 'Mutual Core(共通の核)→Mutual Corn', 'Crystalline(結晶)→Crystal Linen', 'Wanderlust(放浪癖)→Wonderlust', 'Anchor Song(碇の歌)→Anchor Song Book', 'Undo(元に戻す)→Undo Button', 'Bjerk\'s Fjord Breakfast'],
-'a13_gorillaz': ['Clint Eastwood(クリント・イーストウッド)→Clint Eastfood', 'Feel Good Inc.(気分よく株式会社)→Feel Good Inn', 'Dare(挑戦)→Dare Bear', 'Dirty Harry(汚れたハリー)→Dirty Hairy', 'On Melancholy Hill(憂鬱の丘で)→On Melon Hill', 'Stylo(スタイロ)→Stylo Pen', 'Rhinestone Eyes(ラインストーンの目)→Rhinestone Pies', 'Tomorrow Comes Today(明日は今日来る)→Tomorrow Comes Toady', 'Rock the House(家を揺らせ)→Rock the Mouse', 'Kids with Guns(銃を持った子供たち)→Kids with Gums', 'Humility(謙虚)→Humidity', 'Saturnz Barz(土星の棒)→Saturnz Bars of Soap', 'Andromeda(アンドロメダ)→Andromeda Strain-Free', 'DARE ME(来いよ)→Dare Me Pie', 'Strobelite(ストロボ灯)→Strobe Lite Beer', 'She\'s My Collar(彼女は首輪)→She\'s My Cola', 'Plastic Beach(プラスチックの浜)→Plastic Beach Ball', 'Cracker Island(クラッカー島)→Cracker Island Picnic', 'Tranz(トランツ)→Trans Fat', 'Momentary Bliss(束の間の至福)→Momentary Biscuit', 'Sunshine in a Bag(袋に入った日差し)→Sunshine in a Bagel', '19-2000(ナインティーン・トゥエンティ)→19-2000 Yen', '眼のない四人', 'Murdoc\'s Garage Sale'],
-'a13_rhcp': ['Under the Bridge(橋の下)→Under the Fridge', 'Californication(カリフォルニケーション)→Californi-Vacation', 'Scar Tissue(傷跡)→Scar Tissue Paper', 'Give It Away(あげちゃえ)→Give It Away Now Sale', 'Otherside(向こう側)→Otherslide', 'By the Way(ところで)→Buy the Way', 'Can\'t Stop(止まらない)→Can\'t Shop', 'Dani California(ダニ・カリフォルニア)→Dani Caramel', 'Snow (Hey Oh)(雪)→Slow (Hey Oh)', 'Dark Necessities(暗い必需品)→Dark Necessities Store', 'Suck My Kiss(キスを吸え)→Pick My Kiss', 'Around the World(世界一周)→Around the Wall', 'Breaking the Girl(少女を砕く)→Baking the Girl', 'Soul to Squeeze(搾るべき魂)→Soul to Sneeze', 'Aeroplane(飛行機)→Aero-Plain', 'My Friends(友達)→My Fiends', 'Parallel Universe(平行宇宙)→Parallel Unicycle', 'Fortune Faded(運は褪せた)→Fortune Cookie', 'Tell Me Baby(教えて)→Sell Me Baby', 'Hump de Bump(こぶのこぶ)', 'Higher Ground(より高い場所)→Hire Ground', 'Zephyr Song(そよ風の歌)→Zephyr Soup', 'Road Trippin\'(ドライブ旅)→Road Dippin\'', 'The Adventures of Rain Dance Maggie(雨乞いの冒険)', 'Socks and Funk(靴下とファンク)'],
-'a13_greenday': ['Basket Case(かご持ち)→Basket Cake', 'Longview(長い眺め)→Longview Lunch', 'When I Come Around(戻ってくる時)→When I Come Around the Corner', 'Good Riddance(それじゃさよなら)→Good Ridance', 'American Idiot(アメリカン・イディオット)→American Idol Cut', 'Boulevard of Broken Dreams(壊れた夢の大通り)→Boulevard of Broken Beans', 'Holiday(休日)→Holiday Inn', 'Wake Me Up When September Ends(九月が終わったら起こして)→Wake Me Up When Summer Starts', 'Welcome to Paradise(楽園へようこそ)→Welcome to Parasol', 'Brain Stew(脳みそのスープ)→Brain Stewpot', 'Jesus of Suburbia(郊外のイエス)→Jesus of Suburbia Lane', 'Minority(少数派)→Minority Report Card', 'Warning(警告)→Warming', 'Redundant(余分な)→Redundant Pizza', 'Hitchin\' a Ride(ヒッチハイク)→Hitchin\' a Rice', 'Macy\'s Day Parade(デパートの日)→Macy\'s Day Pancake', 'Nice Guys Finish Last(いい人は最後)→Nice Guys Finish Lunch', 'Geek Stink Breath(オタクの口臭)→Geek Stink Mints', 'Know Your Enemy(敵を知れ)→Know Your Enemy Menu', '21 Guns(二十一丁)→21 Buns', 'Time of Your Life(人生の時)→Time of Your Lime', 'She(彼女)→Shy', 'Stuart and the Avenue(スチュアートと通り)', 'Dookie Day(ドゥーキーの日)', 'みんなで三コード'],
-'a13_linkin': ['In the End(最終的に)→In the End Zone', 'Numb(麻痺)→Numb Chuck', 'Crawling(這う)→Crawling Home', 'One Step Closer(あと一歩)→One Step Closet', 'Faint(気絶)→Paint', 'Breaking the Habit(習慣を破る)→Baking the Habit', 'Somewhere I Belong(居場所)→Somewhere I Belong to Dinner', 'What I\'ve Done(やってしまったこと)→What I\'ve Dumped', 'Bleed It Out(吐き出せ)→Bleed It Out Loud', 'Papercut(紙で切る)→Papercup', 'New Divide(新たな溝)→New Dividend', 'Burn It Down(燃やし尽くせ)→Burn It Down Town', 'Leave Out All the Rest(残りは置いていく)→Leave Out All the Rice', 'Shadow of the Day(日の影)→Shadow of the Daisy', 'Given Up(あきらめた)→Given Pup', 'Points of Authority(権力のポイント)→Points of Authority Card', 'Pushing Me Away(押しのける)→Pushing Me Away Bay', 'From the Inside(内側から)→From the Inside Out Cake', 'Waiting for the End(終わりを待つ)→Waiting for the Bus', 'Lost in the Echo(こだまに迷う)→Lost in the Eco', 'Easier to Run(逃げるのは楽)→Easier to Rum', 'The Catalyst(触媒)→The Catalog', 'Castle of Glass(ガラスの城)→Castle of Grass', 'Heavy(重い)→Heavy Metal Spoon', 'ガレージの六人'],
-'a13_foo': ['Everlong(永遠)→Everlong Weekend', 'Learn to Fly(飛び方を覚える)→Learn to Fry', 'The Pretender(偽る者)→The Pretzel', 'Best of You(君のベスト)→Best of Stew', 'My Hero(ぼくのヒーロー)→My Zero', 'Monkey Wrench(モンキーレンチ)→Monkey Lunch', 'Times Like These(こんな時)→Times Like Cheese', 'All My Life(一生)→All My Wife-Dishes', 'Walk(歩く)→Walk-in', 'Big Me(大きなぼく)→Big Meal', 'This Is a Call(これは呼びかけ)→This Is a Mall', 'Breakout(脱出)→Breakfast Out', 'Rope(ロープ)→Soap', 'Long Road to Ruin(破滅への長い道)→Long Road to Rice', 'Arlandria(アーランドリア)→Laundry-A', 'DOA(到着時死亡)→DOA Cafe', 'Something from Nothing(無から有)→Something from Nutmeg', 'Run(走れ)→Run-Down', 'The Sky Is a Neighborhood(空は隣近所)→The Sky Is a Neighbor\'s Nap', 'Wheels(車輪)→Wheeze', 'Stacked Actors(積み上がった役者)→Stacked Actors Soup', 'Resolve(決意)→Resolve Rice', 'Under You(君の下)→Under Brew', 'Skin and Bones(骨と皮)→Skin and Scones', 'Basement Tape Rehearsal'],
-'a13_gaga': ['Poker Face(ポーカーフェイス)→Poker Case', 'Just Dance(ただ踊れ)→Just Danish', 'Bad Romance(悪い恋)→Bad Rosemary', 'Paparazzi(パパラッチ)→Papa Razzi', 'Born This Way(こう生まれた)→Born This Weigh', 'Alejandro(アレハンドロ)→Alejandro Dojo', 'Telephone(電話)→Tele-Phone-Book', 'LoveGame(恋のゲーム)→LoveGum', 'Applause(拍手)→Applesauce', 'Shallow(浅瀬)→Shallot', 'Million Reasons(百万の理由)→Million Raisins', 'Judas(ユダ)→Jude Ass', 'The Edge of Glory(栄光の縁)→The Edge of Gravy', 'You and I(あなたとわたし)→You and Pie', 'Rain on Me(わたしに雨を)→Rain on Tea', 'Stupid Love(バカな恋)→Stupid Glove', 'Marry the Night(夜と結婚)→Marry the Knight', 'Speechless(言葉を失う)→Speechless Sleeves', 'Dance in the Dark(暗闇で踊れ)→Dance in the Dork', 'Hair(髪)→Hare', 'Perfect Illusion(完璧な幻)→Perfect Allusion', 'Always Remember Us This Way(こんなふうに覚えていて)→Always Remember Us This Waffle', 'Bloody Mary(ブラッディ・メアリー)→Bloody Merry', 'Disease(病気)→Dis-Ease Chair', 'ピアノ弾き語りのクラブ'],
+    'a13_billie': ['bad pie', 'ocean ice', "when the pasta's over", 'everything i wontons', 'Hungrier Than Ever', 'lonely(夜更け)', 'Therefore I Ham', 'No Time to Dye', 'Birds of a Leather', 'What Was I Maid For?', 'my furniture', 'idontwannabeyoghurtanymore', 'bury a fried', 'you should see me in a clown', 'Bellyache Pills', 'TV Dinner', 'Your Powder', 'NDA(おやつ)', 'Chihuahua', "L'AMOUR DE MA VIANDE", 'Skinny Pudding', 'getting olives', 'party flavor'],
+    'a13_kendrick': ['HUMBLE PIE.', 'DNAN.', 'ELEMENT.(元素記号)', 'ROYAL TEA.', 'Allnight', 'King Cantaloupe', 'Swimming Pools(ぷーるサイド)', 'Money Trees(マネー・ツリーハウス)', 'Poetic Juice', "m.A.A.d kitty", "Backseat Free Refill", 'N95(マスクの人)', 'Not Like Bus', "Silent Hillbilly", 'Count Me In', 'Die Hard(堅いパン)', 'Mother I Soda', 'Father Thyme', 'euphoria(昼寝)', 'The Heart Part 6', "i(アイロン)", "Don't Kill My Vibe Check", 'Rigatoni', 'Sing About Tea', 'Compton Cafe'],
+    'a13_beyonce': ['Crazy in Lunch', 'Single Ladles', 'Halo(ハロハロ)', 'Irreplaceable Pie', 'Formation Flight', 'Drunk in Soap', 'Run the Whirl', 'Love on Toast', 'Partition Wall', 'Sorry, Sold Out', 'Hold Out', 'Break My Bowl', 'Cuff Links', "Texas Hold 'Em Hotpot", 'If I Were a Toy', 'Survivor Series', 'Say My Game', 'Bootylicious Bread', 'Naughty Pearl', 'Deja Stew', "Ring the Halal", 'Black Parade Ground', 'Daddy Lemonade', "Virgo's Gravy"],
+    'a13_bjork': ['Human Behaviour Chart', 'Venus as a Bun', 'Army of Mice', 'Hyperballoon', 'Bachelorette Pancake', 'Yoga Mat', 'Hunter Hat', 'Pagan Pottery', 'Cocoon Cafe', 'Is a Bell', 'Big Time Sensibility', 'Oceanic Iron', 'Declare Independents', 'Unravel Yarn', 'Violently Hungry', "It's Oh So Quiche", 'Possibly Maybe Not', 'Play Bread', 'Mutual Corn', 'Crystal Linen', 'Wanderlunch', 'Anchor Song Book', 'Undo Button'],
+    'a13_gorillaz': ['Clint Eastfood', 'Feel Good Inn', 'Dare Bear', 'Dirty Hairy', 'On Melon Hill', 'Stylo Pen', 'Rhinestone Pies', 'Tomorrow Comes Toady', 'Rock the Mousse', 'Kids with Gums', 'Humidity', 'Saturnz Bars of Soap', 'Andromeda Strain-Free', 'Strobe Lite Beer', "She's My Cola", 'Plastic Beach Ball', 'Cracker Island Picnic', 'Trans Fat', 'Momentary Biscuit', 'Sunshine in a Bagel', '19-2000 Yen', "Murdoc's Garage Sale"],
+    'a13_rhcp': ['Under the Fridge', 'Californi-Vacation', 'Scar Tissue Paper', 'Give It Away Now Sale', 'Otherslide', 'Buy the Way', "Can't Shop", 'Dani Caramel', 'Slow (Hey Oh)', 'Dark Necessities Store', 'Pick My Kiss', 'Around the Wall', 'Baking the Girl', 'Soul to Sneeze', 'Aero-Plain', 'My Fiends', 'Parallel Unicycle', 'Fortune Cookie', 'Hump de Bump(こぶのこぶ)', 'Hire Ground', 'Zephyr Soup', "Road Dippin'", 'The Adventures of Rain Dance Maggie(雨乞いの冒険)'],
+    'a13_greenday': ['Basket Cake', 'Longview Lunch', 'When I Come Around the Corner', "Good Radish", 'American Idol Cut', 'Boulevard of Broken Beans', 'Holiday Inn', 'Wake Me Up When Summer Starts', 'Welcome to Parasol', 'Brain Stewpot', 'Jesus of Suburbia Lane', 'Minority Report Card', 'Warming', 'Redundant Pizza', "Hitchin' a Rice", "Macy's Day Pancake", 'Nice Guys Finish Lunch', 'Geek Stink Mints', 'Know Your Enemy Menu', '21 Buns', 'Time of Your Lime', 'Stuart and the Revenue', 'Dookie Day(ドゥーキーの日)'],
+    'a13_linkin': ['In the End Zone', 'Numb Chuck', 'Crawling Home', 'One Step Closet', 'Paint', 'Baking the Habit', 'Somewhere I Belong to Dinner', "What I've Dumped", 'Bleed It Out Loud', 'Papercup', 'New Dividend', 'Burn It Down Town', 'Leave Out All the Rice', 'Shadow of the Daisy', 'Given Pup', 'Points of Authority Card', 'Pushing Me Away Bay', 'From the Inside Out Cake', 'Waiting for the Bus', 'Lost in the Eco', 'Easier to Rum', 'The Catalog', 'Castle of Grass', 'Heavy Metal Spoon'],
+    'a13_foo': ['Everlong Weekend', 'Learn to Fry', 'The Pretzel', 'Best of Stew', 'My Zero', 'Monkey Lunch', 'Times Like Cheese', 'All My Wife-Dishes', 'Walk-in', 'Big Meal', 'This Is a Mall', 'Breakfast Out', 'Long Road to Rice', 'DOA Cafe', 'Something from Nutmeg', 'Run-Down', "The Sky Is a Neighbor's Nap", 'Wheeze', 'Stacked Actors Soup', 'Resolve Rice', 'Skin and Scones'],
+    'a13_gaga': ['Poker Case', 'Just Danish', 'Bad Rosemary', 'Papa Razzi', 'Born This Weigh', 'Alejandro Dojo', 'Tele-Phone-Book', 'LoveGum', 'Applesauce', 'Shallot', 'Million Raisins', 'Judas Tea', 'The Edge of Gravy', 'You and Pie', 'Rain on Tea', 'Stupid Glove', 'Marry the Knight', 'Speechless Sleeves', 'Dance in the Dork', 'Hare', 'Perfect Allusion', 'Always Remember Us This Waffle', 'Bloody Merry', 'Dis-Ease Chair'],
 }
 
 # 段階の補完と曲名の整形
