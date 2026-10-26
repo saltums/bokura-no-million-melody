@@ -375,12 +375,12 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .dsi .dh .jk { width: 44px; height: 44px; }
 .dsi .dt { font-weight: 700; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
 .dsi .ds { font: 500 13px/1.5 var(--f-m); color: var(--muted); }
-.dsi .dr { font: 400 18px/1 var(--f-d); color: var(--tc); text-align: right; }
+.dsi .dr { font: 400 18px/1 var(--f-d); color: var(--tc); text-align: right; } .dsi .dr.long { font-size: 12px; line-height: 1.4; max-width: 7.5em; }
 .dsi .trk { padding-block: 4px; border-bottom: 0; }
 .dsi .trk .tt { font-size: 14px; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .stat { border: 1px solid var(--line); background: var(--surface); padding: 10px; }
-.stat .v { font: 400 24px/1.2 var(--f-d); }
+.stat .v { font: 400 24px/1.2 var(--f-d); overflow-wrap: anywhere; } .stat .v.long { font-size: 14px; line-height: 1.4; }
 .stat .l { font: 500 13px/1.4 var(--f-m); color: var(--muted); }
 .works { display: flex; flex-direction: column; border-top: 2px solid var(--fg); }
 .wk { border-bottom: 1px solid var(--line); padding-block: 12px; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
@@ -2250,7 +2250,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   if (S.log && S.log.length) { tail.append(el('span', 'lab', '人生の年表(下から上へ)')); try { tail.append(renderTimeline()); } catch (_) {} }
   const hits = e.w.filter((w) => w.tr >= 2).length; const best = e.w.reduce((m, w) => Math.min(m, rankOf(w.tr, w.ti).n), 999);
   const st = el('div', 'stats');
-  [[e.w.length, '作品数'], [hits, '小ヒット以上'], [bestTxt(best), S.entry.m.rare ? '最高評価' : '最高順位']].forEach(([v, l]) => { const s = el('div', 'stat'); s.append(el('div', 'v', String(v)), el('div', 'l', l)); st.append(s); });
+  [[e.w.length, '作品数'], [hits, '小ヒット以上'], [bestTxt(best), S.entry.m.rare ? '最高評価' : '最高順位']].forEach(([v, l]) => { const s = el('div', 'stat'); s.append(el('div', 'v' + (String(v).length > 5 ? ' long' : ''), String(v)), el('div', 'l', l)); st.append(s); });
   tail.append(st);
   { const T = awTab(S.entry.m), P = T[S.stg][1]; const aw = el('p', 'dcm'); aw.append('たどり着いた広がり:' + T[S.stg][0] + '(認知度 ' + fmtPct(S.awP / P * 100) + '%・約' + fmtN(S.awP) + ')' + (S.fesOk ? '。祭りや遠征での成功 ' + S.fesOk + '回' : '')); tail.append(aw); }
   { const grp = S.top === 'グループ'; const cur = S.mem || [];
@@ -2261,7 +2261,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
     const item = el('div', 'dsi'); item.style.setProperty('--tc', tc(w.tr)); const dh = el('div', 'dh'); dh.append(jacket(w.ti));
     const mid = el('div'); mid.style.minWidth = '0'; mid.append(el('div', 'dt', '「' + w.ti + '」'));
     mid.append(el('div', 'ds', fmtY(w.y) + ' · ' + w.o + (w.it && w.it.selft ? ' · セルフタイトル' : '') + ' · ' + w.lb + ' · ' + TIER[w.tr] + (w.tk ? ' · 全' + w.tk.length + '曲' : ''))); dh.append(mid);
-    const r = rankOf(w.tr, w.ti); dh.append(el('div', 'dr' + (r.n === 999 ? ' out' : ''), r.txt)); item.append(dh);
+    const r = rankOf(w.tr, w.ti); dh.append(el('div', 'dr' + (r.n === 999 ? ' out' : '') + (String(r.txt).length > 5 ? ' long' : ''), r.txt)); item.append(dh);
     if (w.it && w.it.ly) { const ac = el('div', 'acts'); const lb = el('button', 'lbtn', w.it.ly.k === 'inst' ? '展開を見る' : '歌詞を見る'); lb.type = 'button'; lb.onclick = () => openLyrics(w.it); ac.append(lb); item.append(ac); }
     if (w.tk && w.tk.length > 1) w.tk.forEach((t) => item.append(trkRow(t, w.ti)));
     ds.append(item);
