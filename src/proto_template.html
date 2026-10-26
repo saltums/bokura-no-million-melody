@@ -436,7 +436,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .endl.on { opacity: 1; transform: none; }
 .endl.sub { color: #aab3c6; font-size: 15px; } .endl.sub2 { color: #8892a8; font-size: 13px; }
 .endl.era { color: #ffd94a; font-size: 14px; letter-spacing: .3em; } .endl.art { font-size: 24px; font-weight: 900; }
-.endl.fin { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: .08em; margin-top: 8px; }
+.endl.efin { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: .08em; margin-top: 8px; }
 .endl.blink { animation: endBlink 1.6s infinite; }
 @keyframes endBlink { 50% { opacity: .25; } }
 #opn { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 90; background: linear-gradient(180deg, #05071a 0%, #0b1030 45%, #1a2050 78%, #2a2f66 100%); overflow: hidden; }
@@ -2155,9 +2155,9 @@ const ENDING = (() => {
         await line('チューニングは、もう始まっている。', 'sub', 3000);
         if (best) await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', 'sub', 4200);
         clear();
-        const fin = el('p', 'endl fin', '音楽がまた鳴り始めた。'); fin.style.transition = 'opacity 2.4s ease'; box.append(fin); requestAnimationFrame(() => requestAnimationFrame(() => fin.classList.add('on'))); try { if (bgm) bgm.note(76); } catch (_) {}
+        const fin = el('p', 'endl efin', '音楽がまた鳴り始めた。'); fin.style.transition = 'opacity 2.4s ease'; box.append(fin); requestAnimationFrame(() => requestAnimationFrame(() => fin.classList.add('on'))); try { if (bgm) bgm.note(76); } catch (_) {}
         await new Promise((r) => { nextFn = r; T(r, 3500); }); const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
-        const ty = el('p', 'endl on fin', 'Thank you for playing'); ty.style.cssText = 'margin-top:18px;letter-spacing:.14em;font-size:15px'; box.append(ty); const ty2 = el('p', 'endl on sub2', 'ここまで遊んでくれて、ありがとう。'); box.append(ty2); nextFn = null; await new Promise((r) => T(r, 4500)); const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
+        const ty = el('p', 'endl on efin', 'Thank you for playing'); ty.style.cssText = 'margin-top:18px;letter-spacing:.14em;font-size:15px'; box.append(ty); const ty2 = el('p', 'endl on sub2', 'ここまで遊んでくれて、ありがとう。'); box.append(ty2); nextFn = null; await new Promise((r) => T(r, 4500)); const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; T(r, 9000); });
         try { box.style.transition = 'transform 1.4s ease-in, opacity 1.4s ease-in'; box.style.transform = 'scale(2.6)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 1300)); } catch (_) {}
