@@ -3478,7 +3478,7 @@ const ENDING = (() => {
     const bgm = (() => { try { THEME.stop(true); BGM.stop(); return BGM.ending(); } catch (_) { return null; } })();
     let alive = true, timers = [], nextFn = null;
     const T = (f, ms) => { const t = setTimeout(() => { if (alive) f(); }, ms); timers.push(t); return t; };
-    const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); box.append(p); requestAnimationFrame(() => p.classList.add('on')); nextFn = res; T(res, hold || 2200); });
+    const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); if (txt.indexOf('\n') >= 0) p.style.whiteSpace = 'pre-line'; box.append(p); requestAnimationFrame(() => p.classList.add('on')); nextFn = res; T(res, hold || 2200); });
     const clear = () => { box.textContent = ''; };
     const finish = (toTitle) => { alive = false; timers.forEach(clearTimeout); try { if (bgm) bgm.stop(); } catch (_) {} ov.classList.add('off'); setTimeout(() => ov.remove(), 700); if (toTitle) { show('s-title'); badge(); } };
     ov.addEventListener('click', (e) => { if (e.target === skip) return; if (nextFn) { const f = nextFn; nextFn = null; f(); } });
@@ -3515,7 +3515,7 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, 3000); });
         if (bgm) bgm.stop(); clear();
         await new Promise((r) => { nextFn = r; T(r, 3200); });
-        { const fa = FA.get(); if (fa) { await line('いちばん最初に出会ったのは、' + fa + 'だった。', '', 4200); clear(); await new Promise((r) => { nextFn = r; T(r, 1800); }); } }
+        { const fa = FA.get(); if (fa) { await line('いちばん最初に出会ったのは、\n' + fa + 'だった。', '', 4200); clear(); await new Promise((r) => { nextFn = r; T(r, 1800); }); } }
         if (bgm) bgm.note();
         await line('どこかで、弦が一本、はじかれた。', '', 3400);
         await line('チューニングは、もう始まっている。', 'sub', 3000);
