@@ -3523,7 +3523,7 @@ const ENDING = (() => {
         clear();
         const fin = el('p', 'endl on fin', '音楽がまた鳴り始めた。'); box.append(fin); try { if (bgm) bgm.note(76); } catch (_) {}
         const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
-        const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
+        const ty = el('p', 'endl on fin', 'Thank you for playing'); ty.style.cssText = 'margin-top:18px;letter-spacing:.14em;font-size:15px'; box.append(ty); const ty2 = el('p', 'endl on sub2', 'ここまで遊んでくれて、ありがとう。'); box.append(ty2); const hint = el('p', 'endl on sub2 blink', 'タップでタイトルへ'); box.append(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; });
         finish(true);
