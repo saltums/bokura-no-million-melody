@@ -448,6 +448,8 @@ body.opening #s-title, body.opening #gnav { visibility: hidden; }
 @keyframes ostw { 50% { opacity: .25; } }
 #opn canvas { position: absolute; left: 50%; bottom: 0; width: min(92%, 360px); transform: translateX(-50%); image-rendering: pixelated; image-rendering: crisp-edges; opacity: 0; transition: opacity .6s; }
 #opn canvas.on { opacity: 1; }
+#opn .ohint { position: absolute; left: 0; right: 0; top: calc(env(safe-area-inset-top,0px) + 18px); text-align: center; color: #9fb0ff; font-size: 12px; letter-spacing: .15em; opacity: .8; animation: ohp 1.6s ease-in-out infinite; pointer-events: none; }
+@keyframes ohp { 50% { opacity: .3; } }
 #opn .og { position: absolute; left: 0; right: 0; bottom: 0; height: calc(min(92vw, 360px) * .1125); background: #1b1722; transition: background .6s; }
 #opn canvas { -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
 @media (prefers-reduced-motion: reduce) { #opn { display: none; } }
@@ -752,6 +754,8 @@ const BGM = (() => {
       master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .4);
       return { layer(k) { L.add(k); }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note(m) { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, m || 69, 3.2, 'sine', .16, true, .01); if (m) tone(ctx.currentTime + .05, m + 12, 2.2, 'sine', .05, true, .01); } };
     },
+    locked() { return !!(ctx && on && ctx.state !== 'running'); },
+    unlock() { try { if (ctx) ctx.resume(); } catch (_) {} },
     stop(fade) { if (!ctx) return; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, fade ? .8 : .15); const t0 = timer; setTimeout(() => { if (timer === t0) { clearInterval(timer); timer = null; } }, fade ? 3200 : 700); },
     end() { if (!ctx || !on || !cfg) return; const t = ctx.currentTime + .05; clearInterval(timer); timer = null; master.gain.cancelScheduledValues(t); master.gain.setTargetAtTime(.55, t, .05); const sc = cfg.scale; [0, 2, 4, 7, 9].forEach((d, k) => { const m = cfg.root + 12 + 12 * Math.floor(d / sc.length) + sc[d % sc.length]; tone(t + k * .16, m, 1.6, cfg.lead === 'pluck' ? 'triangle' : 'sine', .12, true, .01); }); [0, 2, 4].forEach((d) => tone(t + .8, cfg.root - 12 + sc[d % sc.length], 3.2, 'sine', .08, true, .05)); master.gain.setTargetAtTime(0, t + 3.6, .8); },
     toggle() { on = !on; try { localStorage.setItem('bgm', on ? '1' : '0'); } catch (_) {} if (!on) this.stop(); else if (era0 != null && $('#s-game') && !$('#s-game').hidden && !document.querySelector('.gcols.done')) this.start(era0, (S.entry && S.entry.m.id) || 1); return on; }
@@ -2172,7 +2176,8 @@ const OPEN = (() => {
     const draw = () => { if (!alive) return; fr++; g.clearRect(0, 0, 160, 80); const sc = SC[cur]; if (!sc) return; try { sc.bg(g, fr); const m = mOf(sc.e); if (m) { g.save(); g.translate(sc.x, 62 - 49); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, m, m.st, 0, 'sing', fr >> 1)); g.restore(); } } catch (_) {} };
     const tm = setInterval(draw, 230);
     let done = false; const melt = (fast) => { if (done) return; done = true; alive = false; clearInterval(tm); cv.classList.remove('on'); if (fast) ov.style.animationDuration = '.7s'; ov.classList.add('melt'); document.body.classList.remove('opening'); try { if (bgm) setTimeout(() => bgm.stop(), 600); } catch (_) {} setTimeout(() => ov.classList.add('gone'), fast ? 800 : 1700); setTimeout(() => ov.remove(), fast ? 900 : 1800); };
-    ov.addEventListener('click', () => melt(true));
+    const hint = el('div', 'ohint', '♪ タップで音を出す'); let lk = false; try { lk = BGM.locked(); } catch (_) {} if (lk) ov.append(hint);
+    ov.addEventListener('click', () => { let l = false; try { l = BGM.locked(); } catch (_) {} if (l) { BGM.unlock(); hint.remove(); return; } melt(true); });
     const T = 1900;
     SC.forEach((sc, i) => { setTimeout(() => { if (done) return; cur = i; og.style.background = GC[sc.e] || '#1b1722'; draw(); cv.classList.add('on'); try { if (bgm) bgm.note(sc.n); } catch (_) {} }, 300 + i * T); setTimeout(() => { if (!done && i < SC.length - 1) cv.classList.remove('on'); }, 300 + i * T + T - 650); });
     setTimeout(() => melt(false), 300 + SC.length * T - 200);
