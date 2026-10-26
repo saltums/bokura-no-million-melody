@@ -950,7 +950,7 @@ let DBG_ERA = null;
 const FA = { get: () => { try { return localStorage.getItem('hit30000_first') || ''; } catch (_) { return ''; } }, set: (v) => { try { if (v && !localStorage.getItem('hit30000_first')) localStorage.setItem('hit30000_first', String(v).slice(0, 60)); } catch (_) {} } };
 const PL = (() => { const K = 'hit30000_plays', NEED = 5; const get = () => { try { return parseInt(localStorage.getItem(K), 10) || 0; } catch (_) { return 0; } };
   return { NEED, set: (v) => { try { if (v > get()) localStorage.setItem(K, String(v)); } catch (_) {} }, n: get, ok: () => get() >= NEED || DBG_ERA != null, inc: () => { const v = get() + 1; try { localStorage.setItem(K, String(v)); } catch (_) {} return v; } }; })();
-const RARE_BASE = { '-3': 5, '-2': 5, '6': 5 };
+const RARE_BASE = { '-3': 5, '-2': 5, '6': 5, '21': 15, '22': 15 };
 let _RE = null;
 function rareEras() { if (_RE) return _RE; const m = new Map(); DATA.forEach((d) => { if (d.m.rare && !m.has(d.m.era)) m.set(d.m.era, { e: d.m.era, es: d.m.es, tier: RARE_BASE[String(d.m.era)] || d.m.tier || 5 }); });
   const ord = (x) => (RARE_BASE[String(x.e)] ? -1 : 0); _RE = [...m.values()].sort((a, b) => a.tier - b.tier || ord(a) - ord(b) || a.e - b.e); return _RE; }
