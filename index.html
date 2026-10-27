@@ -3264,7 +3264,7 @@ function injectLife(list) {
   list.forEach((it) => {
     if (it.t === 'r') {
       S.relN = (S.relN || 0) + 1;
-      if (life && !S.selfDone && S.selfAt && S.relN >= S.selfAt && m.a.length <= 18) {
+      if (life && !S.selfDone && S.selfAt && S.relN >= S.selfAt && m.a.length <= 18 && /アルバム/.test(it.o || '')) {
         S.selfDone = true; const old = it.ti; it = Object.assign({}, it, { ti: m.a, selft: true }); if (it.tk && it.tk.length) it.tk = it.tk.map((k, i) => (i === 0 || k.t === old ? Object.assign({}, k, { t: m.a }) : k));
         const tx = grp ? ['ここまでの全部を詰め込んで、バンド名をそのままタイトルにしたアルバムを作ることにした。「これが名刺だ」と、全員の意見が一致した。', '「いま自分たちが何者か」を一枚で答えるため、アルバムの題名はバンド名にした。ジャケットには、メンバー全員の影が並んでいる。'][m.a.length % 2]
           : ['ここまでの全部を詰め込んで、自分の名前をそのまま題名にしたアルバムを作ることにした。「これが名刺だ」と思えた。', '「いま自分は何者か」を一枚で答えるため、アルバムの題名は自分の名前にした。'][m.a.length % 2];
