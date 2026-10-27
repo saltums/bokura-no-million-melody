@@ -3646,7 +3646,6 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, 3200); });
                 if (bgm) bgm.note();
         await line('どこかで、弦が一本、はじかれた。', '', 3600); await fade();
-        await line('チューニングは、もう始まっている。', '', 3400); await fade();
         if (best) { await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', '', 4400); await fade(); }
         clear();
         const fin = el('p', 'endl efin', '音楽がまた鳴り始めた。'); fin.style.transition = 'opacity 2.4s ease'; box.append(fin); requestAnimationFrame(() => requestAnimationFrame(() => fin.classList.add('on'))); try { if (bgm) bgm.note(76); } catch (_) {}
