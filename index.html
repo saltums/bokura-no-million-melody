@@ -3637,7 +3637,12 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, dur); });
         clearInterval(ptm); if (bgm) for (let g = 1; g <= 7; g++) bgm.layer(g);
         clear();
-        await line('宇宙の果て\n最後の歌うたいが、\n最後の歌を歌った', 'era', 3600); await fade();
+        { const sc = document.createElement('canvas'); sc.width = 256; sc.height = 112; sc.className = 'endl'; sc.style.cssText = 'width:min(92vw,420px);height:auto;image-rendering:pixelated;align-self:center;margin-bottom:6px'; box.append(sc); void sc.offsetWidth; requestAnimationFrame(() => requestAnimationFrame(() => sc.classList.add('on')));
+          const g = sc.getContext('2d'); g.imageSmoothingEnabled = false; const lm = (DATA.find((d) => d.m.era === 22) || DATA[0]).m; let f2 = 0;
+          const dr = () => { f2++; try { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, 256, 112); if (SCENES[22]) SCENES[22].fn(g, 0, 0, f2); g.save(); g.translate(112, 28); g.scale(2, 2); drawChar(g, 0, 0, mkLook(null, lm, lm.st, 0, 'sing', f2 >> 1)); g.restore(); } catch (_) {} };
+          dr(); const stm = setInterval(() => { if (!alive || !sc.isConnected) { clearInterval(stm); return; } dr(); }, 260); timers.push(stm);
+          await new Promise((r) => { nextFn = r; T(r, 2600); }); }
+        await line('宇宙の果て\n最後の歌うたいが、\n最後の歌を歌った', 'era', 4200); await fade();
         clear();
         const st = [`通算 ${PL.n()}回プレイ`, `出会った時代 ${[...met].filter((e) => all.indexOf(e) >= 0).length} / ${all.length}`, `最高評価 ${(z.lives || []).reduce((m, l) => Math.max(m, l.tot), 0)} / 400`];
         for (const s of st) { box.append(el('p', 'endl on sub', s)); }
@@ -3652,11 +3657,11 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, 4000); }); nextFn = null; await fade();
         const show_ = (e) => requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add('on')));
         const ty = el('p', 'endl efin', 'Thank you for playing'); ty.style.letterSpacing = '.14em'; ty.style.fontSize = '17px';
-        const ty2 = el('p', 'endl sub2', 'ここまで遊んでくれて、ありがとう。');
+        
         const tt = el('p', 'endl sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); tt.style.marginTop = '22px';
         const hint = el('p', 'endl sub2', opt.back ? 'タップで結果へ' : 'タップでタイトルへ'); hint.style.marginTop = '22px';
-        box.append(ty, ty2, tt, hint); void box.offsetWidth;
-        show_(ty); await new Promise((r) => T(r, 1400)); show_(ty2); await new Promise((r) => T(r, 2600)); show_(tt); await new Promise((r) => T(r, 2600)); hint.classList.add('blink'); show_(hint);
+        box.append(ty, tt, hint); void box.offsetWidth;
+        show_(ty); await new Promise((r) => T(r, 3000)); show_(tt); await new Promise((r) => T(r, 2600)); hint.classList.add('blink'); show_(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; T(r, 9000); });
         try { nextFn = null; box.style.transition = 'transform 4.2s cubic-bezier(.3,0,.2,1), opacity 3.6s ease'; box.style.transform = 'scale(1.35)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 4200)); await new Promise((r) => setTimeout(r, 1200)); } catch (_) {}
