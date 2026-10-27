@@ -453,7 +453,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .endov { position: fixed; inset: 0; z-index: 95; background: #05060c; color: #e8ecf4; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity .6s; padding: max(16px, env(safe-area-inset-left)); }
 .endov.off { opacity: 0; pointer-events: none; }
 .endbox { width: 100%; max-width: 440px; text-align: center; display: flex; flex-direction: column; gap: 14px; }
-.endl { margin: 0; opacity: 0; transform: translateY(8px); transition: opacity 1s, transform 1s; font-size: 18px; line-height: 1.8; }
+.endl { margin: 0; opacity: 0; transform: translateY(8px); transition: opacity 1.6s ease, transform 1.6s ease; font-size: 18px; line-height: 1.8; }
 .endl.on { opacity: 1; transform: none; }
 .endl.sub { color: #aab3c6; font-size: 15px; } .endl.sub2 { color: #8892a8; font-size: 13px; }
 .endl.era { color: #ffd94a; font-size: 14px; letter-spacing: .3em; } .endl.art { font-size: 24px; font-weight: 900; }
@@ -2238,8 +2238,9 @@ const ENDING = (() => {
     const bgm = (() => { try { THEME.stop(true); BGM.stop(); return BGM.ending(); } catch (_) { return null; } })();
     let alive = true, timers = [], nextFn = null;
     const T = (f, ms) => { const t = setTimeout(() => { if (alive) f(); }, ms); timers.push(t); return t; };
-    const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); if (txt.indexOf('\n') >= 0) p.style.whiteSpace = 'pre-line'; box.append(p); requestAnimationFrame(() => p.classList.add('on')); nextFn = res; T(res, hold || 2200); });
+    const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); if (txt.indexOf('\n') >= 0) p.style.whiteSpace = 'pre-line'; box.append(p); void p.offsetWidth; requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('on'))); nextFn = res; T(res, hold || 2200); });
     const clear = () => { box.textContent = ''; };
+    const fade = () => new Promise((r) => { [...box.children].forEach((c) => { c.style.transition = 'opacity .9s'; c.style.opacity = '0'; }); T(() => { box.textContent = ''; r(); }, 950); });
     const finish = (toTitle) => { alive = false; timers.forEach(clearTimeout); try { if (bgm) bgm.stop(); } catch (_) {} ov.classList.add('off'); setTimeout(() => ov.remove(), 700); if (toTitle && !opt.back) { show('s-title'); badge(); } else { badge(); if (opt.back) window.scrollTo(0, 0); } };
     ov.addEventListener('click', (e) => { if (e.target === skip) return; if (nextFn) { const f = nextFn; nextFn = null; f(); } });
     skip.onclick = () => { finish(false); };
@@ -2277,11 +2278,10 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, 3000); });
         if (bgm) bgm.stop(); clear();
         await new Promise((r) => { nextFn = r; T(r, 3200); });
-        { const fa = FA.get(); if (fa) { await line('いちばん最初に出会ったのは、\n' + fa + 'だった。', '', 4200); clear(); await new Promise((r) => { nextFn = r; T(r, 1800); }); } }
-        if (bgm) bgm.note();
-        await line('どこかで、弦が一本、はじかれた。', '', 3400);
-        await line('チューニングは、もう始まっている。', 'sub', 3000);
-        if (best) await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', 'sub', 4200);
+                if (bgm) bgm.note();
+        await line('どこかで、弦が一本、はじかれた。', '', 3600); await fade();
+        await line('チューニングは、もう始まっている。', '', 3400); await fade();
+        if (best) { await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', '', 4400); await fade(); }
         clear();
         const fin = el('p', 'endl efin', '音楽がまた鳴り始めた。'); fin.style.transition = 'opacity 2.4s ease'; box.append(fin); requestAnimationFrame(() => requestAnimationFrame(() => fin.classList.add('on'))); try { if (bgm) bgm.note(76); } catch (_) {}
         await new Promise((r) => { nextFn = r; T(r, 3500); }); const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
