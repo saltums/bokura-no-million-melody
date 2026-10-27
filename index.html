@@ -450,7 +450,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 @keyframes shk { 0%,100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
 @media (prefers-reduced-motion: reduce) { .dec.in, .dec > .lab, .dec .opt, .gcols.shake, .dec .opt.chosen { animation: none !important; } }
 
-.endov { position: fixed; inset: 0; z-index: 95; background: #05060c; color: #e8ecf4; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity .6s; padding: max(16px, env(safe-area-inset-left)); }
+.endov { position: fixed; inset: 0; z-index: 95; background: #05060c; color: #e8ecf4; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 1.6s ease; padding: max(16px, env(safe-area-inset-left)); }
 .endov.off { opacity: 0; pointer-events: none; }
 .endbox { width: 100%; max-width: 440px; text-align: center; display: flex; flex-direction: column; gap: 14px; }
 .endl { margin: 0; opacity: 0; transform: translateY(8px); transition: opacity 1.6s ease, transform 1.6s ease; font-size: 18px; line-height: 1.8; }
@@ -3607,7 +3607,7 @@ const ENDING = (() => {
     const line = (txt, cls, hold) => new Promise((res) => { const p = el('p', 'endl ' + (cls || ''), txt); if (txt.indexOf('\n') >= 0) p.style.whiteSpace = 'pre-line'; box.append(p); void p.offsetWidth; requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('on'))); nextFn = res; T(res, hold || 2200); });
     const clear = () => { box.textContent = ''; };
     const fade = () => new Promise((r) => { [...box.children].forEach((c) => { c.style.transition = 'opacity .9s'; c.style.opacity = '0'; }); T(() => { box.textContent = ''; r(); }, 950); });
-    const finish = (toTitle) => { alive = false; timers.forEach(clearTimeout); try { if (bgm) bgm.stop(); } catch (_) {} ov.classList.add('off'); setTimeout(() => ov.remove(), 700); if (toTitle && !opt.back) { show('s-title'); badge(); } else { badge(); if (opt.back) window.scrollTo(0, 0); } };
+    const finish = (toTitle) => { alive = false; timers.forEach(clearTimeout); try { if (bgm) bgm.stop(); } catch (_) {} ov.classList.add('off'); setTimeout(() => ov.remove(), 1700); if (toTitle && !opt.back) { show('s-title'); badge(); } else { badge(); if (opt.back) window.scrollTo(0, 0); } };
     ov.addEventListener('click', (e) => { if (e.target === skip) return; if (nextFn) { const f = nextFn; nextFn = null; f(); } });
     skip.onclick = () => { finish(false); };
     (async () => {
@@ -3659,7 +3659,7 @@ const ENDING = (() => {
         show_(ty); await new Promise((r) => T(r, 1400)); show_(ty2); await new Promise((r) => T(r, 2600)); show_(tt); await new Promise((r) => T(r, 2600)); hint.classList.add('blink'); show_(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; T(r, 9000); });
-        try { box.style.transition = 'transform 1.4s ease-in, opacity 1.4s ease-in'; box.style.transform = 'scale(2.6)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 1300)); } catch (_) {}
+        try { nextFn = null; box.style.transition = 'transform 4.2s cubic-bezier(.3,0,.2,1), opacity 3.6s ease'; box.style.transform = 'scale(1.35)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 4200)); await new Promise((r) => setTimeout(r, 1200)); } catch (_) {}
         finish(true);
       } catch (_) { finish(true); }
     })();
