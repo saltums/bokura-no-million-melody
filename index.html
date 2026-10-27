@@ -3650,8 +3650,14 @@ const ENDING = (() => {
         if (best) { await line('あなたが歩いた全部の時代が、いまも誰かの耳の中で鳴っている。', '', 4400); await fade(); }
         clear();
         const fin = el('p', 'endl efin', '音楽がまた鳴り始めた。'); fin.style.transition = 'opacity 2.4s ease'; box.append(fin); requestAnimationFrame(() => requestAnimationFrame(() => fin.classList.add('on'))); try { if (bgm) bgm.note(76); } catch (_) {}
-        await new Promise((r) => { nextFn = r; T(r, 3500); }); const tt = el('p', 'endl on sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); box.append(tt);
-        const ty = el('p', 'endl on efin', 'Thank you for playing'); ty.style.cssText = 'margin-top:18px;letter-spacing:.14em;font-size:15px'; box.append(ty); const ty2 = el('p', 'endl on sub2', 'ここまで遊んでくれて、ありがとう。'); box.append(ty2); nextFn = null; await new Promise((r) => T(r, 4500)); const hint = el('p', 'endl on sub2 blink', opt.back ? 'タップで結果へ' : 'タップでタイトルへ'); box.append(hint);
+        await new Promise((r) => { nextFn = r; T(r, 4000); }); nextFn = null; await fade();
+        const show_ = (e) => requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add('on')));
+        const ty = el('p', 'endl efin', 'Thank you for playing'); ty.style.letterSpacing = '.14em'; ty.style.fontSize = '17px';
+        const ty2 = el('p', 'endl sub2', 'ここまで遊んでくれて、ありがとう。');
+        const tt = el('p', 'endl sub2', '称号「' + (best ? '全知全能のシンフォニア' : '3万年の調律者') + '」'); tt.style.marginTop = '22px';
+        const hint = el('p', 'endl sub2', opt.back ? 'タップで結果へ' : 'タップでタイトルへ'); hint.style.marginTop = '22px';
+        box.append(ty, ty2, tt, hint); void box.offsetWidth;
+        show_(ty); await new Promise((r) => T(r, 1400)); show_(ty2); await new Promise((r) => T(r, 2600)); show_(tt); await new Promise((r) => T(r, 2600)); hint.classList.add('blink'); show_(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; T(r, 9000); });
         try { box.style.transition = 'transform 1.4s ease-in, opacity 1.4s ease-in'; box.style.transform = 'scale(2.6)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 1300)); } catch (_) {}
