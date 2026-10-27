@@ -3612,7 +3612,7 @@ const ENDING = (() => {
     skip.onclick = () => { finish(false); };
     (async () => {
       try {
-        await line('3万年前、最初の人間が骨を叩いた。', '', 2600); await line('歌は、そこから始まった。', 'sub', 2400); clear();
+        await line('3万年前、最初の人間が骨を叩いた。', '', 3200); await fade(); await line('歌は、そこから始まった。', '', 3000); await fade();
         const eraNm = new Map(); DATA.forEach((d) => { if (!eraNm.has(d.m.era)) eraNm.set(d.m.era, d.m.es); });
         const topBy = new Map(), mBy = new Map(); { const byId = new Map(); DATA.forEach((d) => { if (!byId.has(d.m.id)) byId.set(d.m.id, d.m); });
           (z.lives || []).slice().sort((a, b) => b.tot - a.tot).forEach((l) => { const e0 = e2.has(l.es) ? e2.get(l.es) : (byId.get(l.id) || {}).era; if (e0 == null || topBy.has(e0)) return; topBy.set(e0, l.a); const mm = byId.get(l.id); if (mm) mBy.set(e0, mm); });
@@ -3637,7 +3637,7 @@ const ENDING = (() => {
         await new Promise((r) => { nextFn = r; T(r, dur); });
         clearInterval(ptm); if (bgm) for (let g = 1; g <= 7; g++) bgm.layer(g);
         clear();
-        await line('宇宙の果て\n最後の歌うたいが、\n最後の歌を歌った', 'era', 3600);
+        await line('宇宙の果て\n最後の歌うたいが、\n最後の歌を歌った', 'era', 3600); await fade();
         clear();
         const st = [`通算 ${PL.n()}回プレイ`, `出会った時代 ${[...met].filter((e) => all.indexOf(e) >= 0).length} / ${all.length}`, `最高評価 ${(z.lives || []).reduce((m, l) => Math.max(m, l.tot), 0)} / 400`];
         for (const s of st) { box.append(el('p', 'endl on sub', s)); }
