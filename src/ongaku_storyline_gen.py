@@ -794,16 +794,20 @@ def _(c):
     return "歌い手が曲をカバーすると、カバーの方が大きく伸びた。元の曲の作者としての名前も、そこから知られていく。"
 
 
+def _famous(c): return {"band": "バンド", "duo": "二人組", "inst": "バンド", "rap": "ラッパー", "dj": "DJ", "beat": "作り手"}.get(c['style'], "歌手")
+
+
 @ev("name_confusion", 4, lambda c: c.get('pun') and lt(c) <= 1 and 'name_conf' not in tags(c))
 def _(c):
     tags(c).add('name_conf'); fx(c, mom=-0.4)
-    return ("名前が「%s」に似すぎていて、検索すると本家ばかり出てくる。新作の存在がほとんど知られなかった。" if c['era'] >= 3 else "名前が「%s」に似すぎていて、レコード店でも雑誌でも本家と間違えられ、新作の存在がほとんど知られなかった。") % c['pun_src']
+    # 実名(pun_src)は出さない
+    return "名前が、ある有名な%sに似すぎていて、%s。新作の存在がほとんど知られなかった。" % (_famous(c), "検索すると本家ばかり出てくる" if c['era'] >= 3 else "レコード店でも雑誌でも本家と間違えられた")
 
 
 @ev("pun_viral", 3, lambda c: c.get('pun') and lt(c) >= 1 and 'pun_viral' not in tags(c))
 def _(c):
     tags(c).add('pun_viral'); fx(c, fame=6, fans=4, mom=0.4)
-    return "本家「%s」のファンが『名前がそっくりなバンドがいる』と面白がって話題にした。最初は名前だけが話題だったが、曲を聴いた人が残った。" % c['pun_src']
+    return "本家のファンが『名前がそっくりな%sがいる』と面白がって話題にした。最初は名前だけが話題だったが、曲を聴いた人が残った。" % ("バンド" if c['style'] == 'band' else "人")
 
 
 @ev("label_scout", 9, lambda c: c['st']['status'] == "アマチュア" and lt(c) >= 2 and 'first_label_done' not in tags(c))
@@ -1270,7 +1274,7 @@ dec("ai_stage", lambda c: c['style'] == 'ai_collab' and c['st']['fame'] >= 10 an
 
 
 dec("pun_name", lambda c: c.get('pun') and len(c['hist']) >= 2 and not done(c, "pun_name"),
-    "名前が知られてきたところで、本家「{pun}」の事務所から『名前が紛らわしい』と連絡が来た。",
+    "名前が知られてきたところで、本家の事務所から『名前が紛らわしい』と連絡が来た。",
     [O("名前を変えて出直す", Pw(lambda P: 0.7 + 0.2 * P['stab']), lambda c: 0.5,
        "改名そのものを話題にした再出発が好評で、むしろ記憶に残った。", "改名で積み上げた知名度が途切れ、ファンが散った。",
        dict(fame=2, fans=2, mom=0.3), dict(fans=-8, mom=-0.6), mode='rename'),
@@ -1310,6 +1314,231 @@ dec("career_turn", lambda c: c['style'] != 'ai_pure' and len(c['hist']) >= 4 and
        dict(fans=2, mom=0.3), dict(mom=-0.4))])
 
 
+# ------------------------------------------------------------------ 重い岐路(1人生に最低2回出す)
+def _hh(*a):
+    import hashlib
+    return int(hashlib.md5("|".join(map(str, a)).encode()).hexdigest()[:8], 16)
+
+
+def age_now(c):
+    """リーダー/ボーカル(=bio)の今の年齢。bio.ag(デビュー時)+最初の作品からの経過年。AI(完全生成)は None"""
+    if c['style'] == 'ai_pure' or not c.get('hist'):
+        return None
+    if 'age0' not in c:
+        import bio
+        c['age0'] = bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ").get('ag')
+    if not isinstance(c['age0'], int):
+        return None
+    return c['age0'] + c['last']['year'] - c['hist'][0]['year']
+
+
+def _grp(c): return c['style'] in GROUP
+
+
+def _mate(c, k=""):
+    """グループの誰か(ソロは None)"""
+    if c['style'] == 'duo':
+        return "相方"
+    if c['style'] in ('band', 'inst'):
+        return ["ドラム", "ベース", "ギター"][_hh(c['seed'], 'mate', k) % 3]
+    return None
+
+
+def _pk(c, k, xs):
+    xs = [x for x in xs if x]
+    return xs[_hh(c['seed'], 'pr', k) % len(xs)]
+
+
+def _pr_major(c):
+    return _pk(c, 'major', [
+        "{T}が売れた翌週、楽屋のテーブルに大手レーベルの名刺が置いてあった。『メジャーでやりませんか。次の曲は、一緒に決めましょう』" if live(c) else None,
+        "打ち合わせの喫茶店で、大手レーベルの人が言った。『{T}、聴きました。メジャーで出しませんか。ただ、宣伝の都合で曲は少し短くしてほしい』",
+        "大手レーベルから電話が来た。『{T}の次は、うちから出しませんか』。電話を切ったあと、しばらく手が震えていた。"])
+
+
+def _pr_first(c):
+    return _pk(c, 'first', [
+        "ライブ終わりの物販の机に、知らない人が名刺を置いた。『{T}、うちのレーベルで出しませんか』" if live(c) else None,
+        "{T}を聴いたという小さなレーベルの人から電話が来た。『うちで出さない? 流通はやるよ』",
+        "{T}を聴いた事務所の人が言った。『マネージャー、付けてみない? 窓口はこっちでやるから』"])
+
+
+def _pr_overseas(c):
+    return _pk(c, 'ovs', [
+        "{T}の動画に、読めない言語のコメントが並び始めた。ある朝、海外のプロモーターから『こっちで演らないか』と連絡が来た。" if c['era'] >= 3 else None,
+        "海の向こうの小さなレーベルから、{T}を聴いたという手紙が届いた。『一度、こっちに来ないか』"])
+
+
+def _pr_move(c):
+    if not live(c):
+        return "{T}を聴いた東京の制作会社から電話が来た。『仕事はいくらでもある。こっちに出てこない?』"
+    return _pk(c, 'move', [
+        "{T}を聴いた東京のライブハウスの店長から電話。『こっちで月に何本か出ない? 出るなら住んだほうが早いよ』",
+        "地元の駅のホームで、東京行きの時刻表をもう三回見ている。{T}を出した今なら、向こうでもやれる気がする。",
+        "地元の先輩が言った。『お前、いつまでこの街でやるの。東京、行けよ』"])
+
+
+def _pr_quit(c):
+    return _pk(c, 'quit', [
+        "職場の上司に呼ばれた。『来月から責任者をやってほしい』。その週には、次の録音の予定が入っている。",
+        "残業明けの夜十一時、スタジオに着くと全員がもう待っていた。仕事と音楽、体はひとつしかない。" if _grp(c) else "残業明けの夜十一時、部屋に戻ると作りかけの曲が待っていた。仕事と音楽、体はひとつしかない。",
+        "給料日。通帳を見て、それから今月の制作費の領収書を見た。仕事を減らせば曲は増える。暮らしは減る。"])
+
+
+def _pr_style(c):
+    m = _mate(c, 'style')
+    if lt(c) >= 3:
+        return _pk(c, 'sty', ["{T}のあと、ディレクターが言った。『次も同じ感じでお願いします』。正直、もう別の音を鳴らしたい。",
+                              "打ち上げで、知らない客に言われた。『{T}みたいな曲、またやってくださいね』。笑ってうなずいたが、帰り道ずっと考えていた。" if live(c) else None])
+    return _pk(c, 'sty', ["{T}も伸びなかった。%sが言った。『もっと流行りに寄せたほうがいいんじゃないか』" % (m or "マネージャー"),
+                          "レコード店の店員に言われた。『{genre}は今、正直きついですよ』。帰りの電車で、自分の曲を聴き返した。" if c['era'] <= 2 else "再生数の画面を閉じた。流行りの曲は、どれも最初の五秒で歌が始まる。自分の曲は、まだイントロだ。"])
+
+
+def _pr_member(c):
+    if c['style'] == 'duo':
+        return "相方がいなくなった部屋で、マイクが一本余っている。これから、どうする。"
+    return "スタジオの、いつもの立ち位置がひとつ空いている。誰も、そこに機材を置こうとしない。これから、どうする。"
+
+
+def _pr_label(c):
+    return _pk(c, 'lab', ["レーベルの会議室で、担当が言った。『次は売れ線でいきましょう。{T}みたいな曲は、もういい』",
+                          "新曲のデモを聴き終えた担当者が、ヘッドホンを外して言った。『いい曲です。でも、これじゃ売れません』"])
+
+
+def _pr_tieup(c):
+    if c['style'] in ('inst', 'dj', 'beat'):
+        return "広告代理店の会議室。『{T}を新商品のCMに使いたい。ただ、十五秒に切って、山場を頭に持ってきてほしい』"
+    return "広告代理店の会議室。『{T}を新商品のCMに使いたい。ただ、サビの言葉をひとつ、商品名に変えてほしい』"
+
+
+def _pr_retire(c):
+    return _pk(c, 'ret', ["年末、部屋を片付けていたら、最初に作った音源が出てきた。あれから何年経っただろう。続ける理由を、うまく言えない。",
+                          "同窓会で『まだやってるの?』と聞かれた。笑ってうなずいたが、帰りの電車で答えを探していた。"])
+
+
+def _pr_career(c):
+    return _pk(c, 'car', ["{T}も伸びなかった。行きつけのライブハウスの店長が言った。『そろそろ、こっち側の仕事もやってみない?』" if live(c) else None,
+                          "{T}も伸びなかった。知り合いのエンジニアが言った。『スタジオ、人が足りないんだ。手伝わない?』"])
+
+
+PROMPTS = {
+    "major_debut": _pr_major, "first_label": _pr_first, "go_overseas": _pr_overseas, "move_city": _pr_move, "quit_job": _pr_quit,
+    "style_change": _pr_style, "member_crisis": _pr_member, "label_conflict": _pr_label, "tieup": _pr_tieup, "retire": _pr_retire, "career_turn": _pr_career,
+    "tv_appear": lambda c: "{T}を聴いた{tv}のスタッフから電話が来た。『来月の収録、出てもらえませんか。持ち時間は一曲だけです』",
+    "collab_offer": lambda c: "誰もが名前を知っている歌手から連絡が来た。『{T}、よかった。一緒に一曲作らない?』",
+    "sell_masters": lambda c: "投資会社の人が、分厚い資料を机に置いた。『これまでの曲の権利を、まとめて買わせてください』。金額の桁を二度数えた。",
+    "crowdfund": lambda c: "次のアルバムの見積もりが届いた。通帳の残高では、半分も払えない。",
+    "release_strategy": lambda c: "新作を出して一週間。数字はほとんど動いていない。届け方を変えるなら、今だ。",
+    "tour": lambda c: "{T}のあと、事務所の人がホワイトボードに日本地図を描いた。『全国、回ってみない? 赤字かもしれないけど』",
+    "ai_use": lambda c: "締め切りまであと三日。後輩が言った。『生成AIに下書きさせたら、一晩で終わりますよ』",
+    "ai_policy_review": lambda c: "記者から連絡が来た。『本当は、誰が曲を作っているんですか』",
+    "voice_license": lambda c: "企業の担当者が言った。『あなたの声を、AIの音声モデルとして使わせてください』",
+    "stance": lambda c: "{T}をめぐって言い合いが広がった。取材の最後に、記者が聞いた。『で、どちらの立場なんですか』",
+    "face_reveal": lambda c: "雑誌の撮影が決まった。編集者が言った。『顔、出してもらえますよね?』",
+    "sns_policy": lambda c: "{T}を出した夜、通知はふたつだけだった。発信のやり方を変えたほうがいいかもしれない。",
+    "producer_offer": lambda c: "名の知れたプロデューサーから電話が来た。『{T}、アレンジを手伝わせてくれないか』",
+    "provide_song": lambda c: "{T}を聴いた歌手の事務所から依頼が来た。『うちの子に、一曲書いてもらえませんか』",
+    "festival_slot": lambda c: "夏フェスの主催者から電話が来た。『いちばん小さいステージ、朝十一時。持ち時間は二十分です』",
+    "cover_song": lambda c: "%sが言った。『有名な曲のカバーをやれば、もっと人が来るよ』" % (_mate(c, 'cov') or ("ライブハウスの店長" if live(c) else "知り合いの配信者")),
+    "merch": lambda c: "物販の机に、音源だけが並んでいる。隣の出演者の机には、Tシャツとタオルが山積みだ。" if live(c) else "通販のページに、音源がひとつだけ並んでいる。",
+    "ai_stage": lambda c: "初めてのライブの会場が決まった。でも、ステージに立つのは誰だ。",
+    "festival": lambda c: "{T}を聴いた野外フェスの主催者から電話が来た。『今年、出てもらえませんか』",
+}
+for _d in DECS:
+    if _d['id'] in PROMPTS:
+        _d['prompt'] = PROMPTS[_d['id']]
+for _d in DECS:  # ライブをしない形態(宅録など)に「ライブで見てほしい」は出さない
+    for _o in _d['opts']:
+        if 'ライブで' in _o['lab'] and _o['cond'] is not None:
+            _c0 = _o['cond']; _o['cond'] = (lambda c, _c0=_c0: live(c) and _c0(c))
+
+
+def _pr_parents(c):
+    return _pk(c, 'par', ["正月の実家。こたつの向かいで父が言った。『いつまで音楽を続けるんだ』。母は黙ってみかんをむいている。",
+                          "母から電話が来た。『お父さん、最近あなたの話をしなくなったよ』。それだけ言って、電話は切れた。",
+                          "法事で久しぶりに親戚が集まった。叔父が言った。『で、いつ就職するんだ』。父は何も言わなかった。",
+                          "実家から段ボールが届いた。米と缶詰の下に、求人誌が一冊入っていた。"])
+
+
+dec("parents", lambda c: not isai(c) and len(c['hist']) >= 2 and c['st']['status'] != "メジャー" and not done(c, "parents"), _pr_parents,
+    [O("『あと三年だけ』と期限を約束する", Pw(lambda P: 0.8 + 0.3 * P['stab']), lambda c: 0.6,
+       "期限があると思うと、一曲ごとの迷いが消えた。", "期限ばかりが気になって、曲が縮こまった。",
+       dict(mom=0.5), dict(mom=-0.4)),
+     O("何も言わず、新しい曲を聴かせる", Pw(lambda P: 0.7 + 0.3 * P['perf']), lambda c: 0.5,
+       "曲が終わると、父は『もう一回』とだけ言った。", "父は途中で席を立った。その曲は、しばらく聴き返せなかった。",
+       dict(fans=3, mom=0.4), dict(mom=-0.5)),
+     O("実家に戻り、家の仕事を手伝いながら続ける", Pw(lambda P: 0.5 + 0.4 * P['stab'] - 0.2 * P['amb']), lambda c: 0.65,
+       "暮らしが落ち着き、地元で曲を作る日々が始まった。", "家の仕事に追われ、楽器に触る日が減っていった。",
+       dict(fans=4), dict(mom=-0.6), wtag='daywork', ltag='daywork')], w=1.5)
+
+
+dec("norma", lambda c: live(c) and c['style'] != 'dj' and c['st']['status'] in ("アマチュア", "インディーズ") and lt(c) <= 2 and not done(c, "norma"),
+    lambda c: _pk(c, 'nor', ["ライブハウスの店長が電卓を叩いた。『チケットノルマ二十枚。売れなかった分は、いつも通り払ってね』。先月売れたのは十二枚だった。",
+                             "出番が終わると、ブッキング担当に呼ばれた。『今日のお客さん、身内だけだったよね。次もノルマは同じだよ』"]),
+    [O("自腹を切ってでも出続ける", Pw(lambda P: 0.7 + 0.4 * P['amb']), lambda c: 0.5,
+       "毎月の赤字の向こうで、名前を覚えてくれる客が少しずつ増えた。", "財布が先に尽きた。バイトのシフトを倍にした。",
+       dict(fans=6, mom=0.3), dict(mom=-0.6)),
+     O("ノルマのない店を探す", lambda c: 0.9, lambda c: 0.55,
+       "客は少ないが、店長が本気で音を聴いてくれる店に出会えた。", "条件のいい店は、どこも出番が深夜だった。",
+       dict(fans=4, mom=0.3), dict(mom=-0.3)),
+     O("ライブは月一本に減らし、集客に集中する", Pw(lambda P: 0.7 + 0.3 * P['stab']), lambda c: 0.55,
+       "一本ずつの重みが増え、その日の客席が埋まり始めた。", "間が空いて、客に名前を忘れられた。",
+       dict(fans=5, mom=0.2), dict(fans=-3, mom=-0.3))], w=2)
+
+
+dec("age30", lambda c: not isai(c) and (age_now(c) or 0) in (29, 30) and c['st']['fame'] < 50 and not done(c, "age30"),
+    lambda c: _pk(c, 'a30', ["同級生の結婚式の帰り道。引き出物の紙袋が、やけに重い。もうすぐ三十歳になる。",
+                             "免許の更新に行った。新しい写真の自分は、思っていたより大人の顔をしていた。もうすぐ三十歳だ。",
+                             "後輩の%sが、先にデビューを決めた。おめでとうと言った帰り道、三十歳まであと何か月かを数えた。" % ("バンド" if _grp(c) else "歌い手")]),
+    [O("三十歳を区切りに、あと一年だけ全力でやる", Pw(lambda P: 0.7 + 0.4 * P['amb']), lambda c: 0.5,
+       "退路を断った一年で、今までで一番いい曲ができた。", "全力の一年は、静かに過ぎていった。",
+       dict(fame=4, mom=0.7), dict(mom=-0.5)),
+     O("年齢は関係ないと、このまま続ける", Pw(lambda P: 0.8 + 0.3 * P['perf']), lambda c: 0.6,
+       "焦りが消えた分、曲に余裕が出た。", "同じ毎日が続き、周りだけが先に進んでいった。",
+       dict(fans=4, mom=0.2), dict(mom=-0.4)),
+     O("就職して、音楽は週末に回す", Pw(lambda P: 0.5 + 0.4 * P['stab'] - 0.2 * P['amb']), lambda c: 0.7,
+       "生活が安定し、週末の音楽が前より楽しくなった。", "平日の疲れが抜けず、週末も楽器を開けない日が増えた。",
+       dict(fans=2), dict(mom=-0.6), wtag='daywork', ltag='daywork')], w=5)
+
+
+dec("shushoku", lambda c: not isai(c) and c['era'] <= 4 and (age_now(c) or 99) <= 23 and c['st']['status'] in ("アマチュア", "インディーズ") and not done(c, "shushoku"),
+    lambda c: _pk(c, 'shu', ["大学四年の秋。ゼミの仲間は、みんな黒いスーツになった。母から『説明会くらい行ったら』と電話が来た。",
+                             "内定の通知が届いた。入社は来年の四月。その日の夜も、スタジオの予約が入っている。" if _grp(c) else "内定の通知が届いた。入社は来年の四月。机の上には、作りかけの曲がある。"]),
+    [O("就職せず、音楽一本でいく", Pw(lambda P: 0.6 + 0.5 * P['amb']), lambda c: 0.45,
+       "朝から晩まで音のことだけ考えられる日々が始まった。", "バイト代だけでは、機材の分割払いが苦しかった。",
+       dict(fame=3, mom=0.6), dict(mom=-0.5)),
+     O("就職して、夜と週末に続ける", Pw(lambda P: 0.7 + 0.4 * P['stab']), lambda c: 0.6,
+       "限られた時間が、かえって曲を研ぎ澄ませた。", "新人研修の三か月、一曲も書けなかった。",
+       dict(fans=3, mom=0.2), dict(mom=-0.5), wtag='daywork', ltag='daywork'),
+     O("一年だけ猶予をもらう", lambda c: 0.8, lambda c: 0.5,
+       "期限つきの一年が、いちばん濃い一年になった。", "一年はあっという間に過ぎ、答えは出なかった。",
+       dict(mom=0.5), dict(mom=-0.3))], w=4)
+
+
+dec("breakup_talk", lambda c: c['style'] in GROUP and len(c['hist']) >= 4 and lt(c) <= 2 and 'member_left' not in tags(c) and not done(c, "breakup_talk"),
+    lambda c: ("最後の出番のあと、相方が言った。『この二人でやるのは、ここまでにしないか』" if c['style'] == 'duo' else
+               "ツアー最終日の楽屋。%sが缶コーヒーを置いて言った。『そろそろ、終わりにしないか』" % _mate(c, 'brk')),
+    [O("解散する", Pw(lambda P: 0.4 - 0.2 * P['stab']), None,
+       "最後のライブの日、客席は初めて満員になった。", "",
+       dict(fans=3), {}, stop='broke_up'),
+     O("一度休んで、また集まる約束をする", lambda c: 0.8, lambda c: 0.55,
+       "離れてみて、互いの音がどれだけ好きだったか分かった。", "連絡は少しずつ途絶えがちになった。",
+       dict(mom=0.2), dict(fans=-4, mom=-0.5), wtag='hiatus', ltag='hiatus'),
+     O("引き留めて、このまま続ける", Pw(lambda P: 0.7 + 0.3 * P['soc']), lambda c: 0.5,
+       "朝まで話し込み、もう一枚だけ作ることに決めた。それが代表作になった。", "続けると決めたが、スタジオの空気は重いままだった。",
+       dict(fame=3, mom=0.6), dict(mom=-0.6))], w=2.5)
+
+
+HEAVY = {"major_debut", "first_label", "move_city", "quit_job", "style_change", "label_conflict", "member_crisis", "career_turn", "retire",
+         "parents", "norma", "age30", "shushoku", "breakup_talk"}
+
+
+def age_pre(c):
+    """分かれ道の問いの前置き「29歳。」"""
+    a = age_now(c)
+    return "%d歳。" % a if a else ""
+
+
 class NeedChoice(Exception):
     pass
 
@@ -1326,7 +1555,7 @@ def resolve(c, d):
             c['spos'] += 1
         else:
             p0 = d['prompt'](c) if callable(d['prompt']) else d['prompt']
-            raise NeedChoice(p0.format(**fm(c)), [x['lab'] for x in opts])
+            raise NeedChoice(age_pre(c) + p0.format(**fm(c)), [x['lab'] for x in opts])
     o = opts[idx]
     ok = True if o['p'] is None else (r.random() < clamp(o['p'](c), 0.05, 0.95))
     prompt = d['prompt'](c) if callable(d['prompt']) else d['prompt']
@@ -1360,7 +1589,7 @@ def resolve(c, d):
         c['ai_use'] = 'secret'
     elif m == 'ai_disclose':
         c['ai_mode'] = "公表"
-    return dict(id=d['id'], prompt=prompt.format(**F), labels=[x['lab'] for x in opts], chosen=idx, ok=ok, text=text + extra)
+    return dict(id=d['id'], prompt=age_pre(c) + prompt.format(**F), labels=[x['lab'] for x in opts], chosen=idx, ok=ok, text=text + extra)
 
 
 # ------------------------------------------------------------------ 結末
@@ -1489,7 +1718,7 @@ def generate(seed, script=None, maxdec=None):
             c['artist'] = p[0]; c['pun'] = p[0]; c['pun_src'] = p[1]
     c['artist0'] = c['artist']
     n = r.randint(5, 9)
-    for _ in range(n):
+    for _i in range(n):
         rec = do_release(c)
         c['log'].append(('release', rec))
         st = c['st']
@@ -1506,7 +1735,15 @@ def generate(seed, script=None, maxdec=None):
         # 分かれ道
         elig = [d for d in DECS if d['cond'](c)]
         pd = 0.7 if len(c['decs']) < 2 else 0.4
-        if elig and r.random() < pd and (maxdec is None or len(c['decs']) < maxdec):
+        # 重い岐路(HEAVY)を1人生に最低2回: 残りの作品数か分かれ道の枠が足りなくなったら重い岐路だけから出す
+        need = 0 if isai(c) else 2 - sum(1 for x in c['decs'] if x['id'] in HEAVY)
+        force = False
+        if need > 0:
+            hv = [d for d in elig if d['id'] in HEAVY]
+            tight = maxdec is not None and len(c['decs']) + need >= maxdec
+            force = bool(hv) and n - _i <= 2 * need
+            if tight or force: elig = hv
+        if elig and (force or r.random() < pd) and (maxdec is None or len(c['decs']) < maxdec):
             d = r.choices(elig, [x['w'] for x in elig])[0]
             try:
                 res = resolve(c, d)

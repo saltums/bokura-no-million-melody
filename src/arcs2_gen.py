@@ -110,19 +110,39 @@ def _bg(s):
     s = re.sub(r"[、。「」!?!?・\s]", "", s); return {s[i:i + 2] for i in range(len(s) - 1)}
 
 
+def real_of(a, j):
+    """分かれ道 j で本家の経歴に沿う側(0=A / 1=B)。real が無ければ A。"""
+    r = a.get("real") or []
+    return 1 if j < len(r) and r[j] == 1 else 0
+
+
+# 本家の筋から外れた後、本家固有の転機の代わりに出す文
+OFF_TX = ["選んだ道の先は、どこの地図にも載っていなかった。", "答え合わせのできない日々が続いた。それでも音は鳴らしていた。",
+          "あの日の選択が、少しずつ毎日の形を変えていった。", "手探りのまま、次の作品に取りかかった。",
+          "予定表は白紙のまま。それでも、音を鳴らさない日はなかった。", "誰かの真似ではない一日が、静かに積み重なっていった。"]
+EV_FILL = "活動は、少しずつ、確かな形になっていった。"
+OFF_EX = re.compile(r"解散|休止|脱退|再結成|再始動|メジャー|海外|上京|移籍|独立|復帰|引退")
+
+
+def start_age(meta, key):
+    """人生の開始年齢(既存の bio.ag。無ければ 18〜24 で決定的に)"""
+    ag = (meta.get("bio") or {}).get("ag")
+    return ag if isinstance(ag, int) else 18 + H(key, "age") % 7
+
+
 def end_text(a, path):
-    """選んだ道(path: 各分かれ道で 0=筋 / 1=別)に合う結末。
+    """選んだ道(path: 各分かれ道で 0=A / 1=B)に合う結末。real(本家側)と違う側を選んだ分かれ道を「外れ」とする。
     ea の各文を「どの分かれ道の別選択を書いた文か」に割り当て、実際に別選択をした分かれ道の文だけを使う。
     合う文がなければ、最後に外れた分かれ道の結果文を結末にする(選ばなかった選択を語らない)。"""
-    D = a["d"]; alts = [i for i, x in enumerate(path) if x == 1 and i < len(D)]
+    D = a["d"]; alts = [i for i, x in enumerate(path) if i < len(D) and x != real_of(a, i)]
     if not alts: return a["eh"]
     best = None
     for e in a.get("ea") or []:
-        sc = [len(_bg(e) & _bg(d[2] + d[4])) for d in D]
+        sc = [len(_bg(e) & _bg((d[1] + d[3]) if real_of(a, j) else (d[2] + d[4]))) for j, d in enumerate(D)]
         o = max(range(len(D)), key=lambda i: sc[i]); s2 = sorted(sc)[-2] if len(sc) > 1 else 0
         if sc[o] >= 3 and sc[o] > s2 and o in alts and (best is None or o > best[0]): best = (o, e)
     if best: return best[1]
-    return D[alts[-1]][4]
+    i = alts[-1]; return D[i][3] if real_of(a, i) else D[i][4]
 
 
 def build(a, i, pool, era=None, nm=None):
@@ -169,7 +189,10 @@ def build(a, i, pool, era=None, nm=None):
     th = a["th"]; D = a["d"]; N = len(D); cv = a["cv"]; ev = list(a["ev"]); ex = list(a.get("ex") or [])
     _yy = y0 + 2
     ex = [x for x in ex if era_ok(x, _yy)]
-    ev = [x if era_ok(x, _yy) else "活動は、少しずつ、確かな形になっていった。" for x in ev]
+    ev = [x if era_ok(x, _yy) else EV_FILL for x in ev]
+    if st == "beat" and y0 >= 2016:  # 配信時代のボカロP・トラックメイカーに「CDにして売るか」は出さない
+        _cd = lambda z: re.sub(r"CD(にして|として)売", "有料で配信して売", z).replace("CDを出し", "有料配信で出し").replace("CDを", "音源を") if isinstance(z, str) else z
+        ev = [_cd(x) for x in ev]; ex = [_cd(x) for x in ex]; D = [tuple(_cd(z) for z in d_) for d_ in D]
     if top == "グループ":  # 人数語を実際のメンバー数に
         _n = len(mm); ev = [fix_count(x, _n) for x in ev]; ex = [fix_count(x, _n) for x in ex]; meta["histTx"] = fix_count(meta["histTx"], _n)
         D = [tuple(fix_count(z, _n) for z in d_) for d_ in D]
@@ -184,38 +207,57 @@ def build(a, i, pool, era=None, nm=None):
             out.append(rel(a, pool, seen, pos, y, cl(bt + eff), th[(pos + dv) % len(th)], a["lb"][min(si, len(a["lb"]) - 1)], dv, era))
         return out
 
-    def evs(si):
-        o = [{"t": "e", "tx": ev[min(si, len(ev) - 1)]}]
-        if ex and si >= 1: o.append({"t": "e", "tx": ex[(si - 1) % len(ex)]})
-        return o
+    def evs(si, off=False, path=()):
+        """off: 本家の筋から外れた後。本家固有の転機(ev)は出さず中立の文にし、出さなかった ev を返す"""
+        e0 = ev[min(si, len(ev) - 1)]
+        if off:
+            o = [{"t": "e", "tx": OFF_TX[(H(a["k"], "off", path[:1], era) + si) % len(OFF_TX)]}]
+            xs = [x_ for x_ in ex if not OFF_EX.search(x_)]
+        else:
+            o = [{"t": "e", "tx": e0}]; xs = ex
+        if xs and si >= 1: o.append({"t": "e", "tx": xs[(si - 1) % len(xs)]})
+        return o, ([e0] if off else [])
 
     def X(d, alt):
         return {"t": "x", "c": d[2] if alt else d[1], "ok": (d[6] if alt else d[5]) >= 0, "tx": d[4] if alt else d[3]}
 
-    def q(d): return {"prompt": d[0], "labels": [d[1], d[2]], "h": 0}
+    ag0 = start_age(meta, a["k"])
 
-    def node(si, eff, dv, seen, pos0, prior_works, path=()):
+    def q(d, works):
+        # 年齢はリーダー/ボーカル(=bio)の、問いの直前の作品の年での年齢
+        y = works[-1]["y"] if works else y0
+        fy = works[0]["y"] if works else y0
+        return {"prompt": "%d歳。" % (ag0 + max(0, y - fy)) + d[0], "labels": [d[1], d[2]], "h": 0}
+
+    def node(si, eff, dv, seen, pos0, prior_works, path=(), off=False, hon=(), hc=()):
         # si: 次に控える分かれ道の番号。この関数が返すのは「分かれ道siの子ノード群」
         kids = []
         for x in (0, 1):
             sn = copy.deepcopy(seen); counter[0] = pos0
             e2 = eff + D[si][6 if x else 5]; dv2 = dv + x
             lab_ = D[si][2 if x else 1]
-            seg = [X(D[si], x)] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + evs(si + 1) + stage(si + 1, e2, dv2, sn)
+            dev = x != real_of(a, si); off2 = off or dev
+            hc2 = hc + ((D[si][2 if real_of(a, si) else 1],) if dev else ())
+            ev_, miss = evs(si + 1, off2, path + (x,))
+            seg = [X(D[si], x)] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + ev_ + stage(si + 1, e2, dv2, sn)
+            hon2 = hon + tuple(miss)
             pos1 = pos0 + len(cv[min(si + 1, len(cv) - 1)])
             works = prior_works + [w for w in seg if w["t"] == "r"]
             if si + 1 < N:
-                kids.append({"s": seg, "q": q(D[si + 1]), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,))})
+                kids.append({"s": seg, "q": q(D[si + 1], works), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,), off2, hon2, hc2)})
             else:
                 tx = end_text(a, path + (x,))
                 if top == "グループ": tx = fix_count(tx, len(mm))
-                kids.append({"s": seg, "e": {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}})
+                e_ = {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}
+                if off2:  # 本家の道: 外れた分かれ道で本家が選んだ側(hc)と、出なかった本家の転機(hon)。本家の結末は m.histTx
+                    e_["hon"] = [h_ for h_ in dict.fromkeys(hon2) if h_ != EV_FILL]; e_["hc"] = list(hc2)
+                kids.append({"s": seg, "e": e_})
         return kids
 
     seen0 = []; counter[0] = 0
-    s0 = evs(0)[:1] + stage(0, 0, 0, seen0)
+    s0 = evs(0)[0][:1] + stage(0, 0, 0, seen0)
     pos1 = len(cv[0]); w0 = [w for w in s0 if w["t"] == "r"]
-    tree = {"s": s0, "q": q(D[0]), "n": node(0, 0, 0, seen0, pos1, w0)}
+    tree = {"s": s0, "q": q(D[0], w0), "n": node(0, 0, 0, seen0, pos1, w0)}
     cap_fives(tree)
     return {"m": meta, "t": tree}
 

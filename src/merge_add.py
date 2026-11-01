@@ -57,4 +57,5 @@ for f in sorted(_g.glob('/home/claude/add_sd/sd_*.json')):
         except Exception: continue
 b['sd'] = sd; print('sd', len(sd))
 import nb_sanitize; nb_sanitize.sanitize(b)  # 実名に近すぎるもじり・「a:」ラベル・グループ文の人数語
+import bank_fit; bank_fit.tag(b)  # 活動形態に合わない寄り道・出来事に ns(出さない st)を付ける
 json.dump(b, open(p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

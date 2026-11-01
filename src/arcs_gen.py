@@ -247,30 +247,40 @@ def build(a, i):
     # 開幕
     s0 = [{"t": "e", "tx": a["ev"][0]}] + stage_rels(0, 0, 0)
     d1, d2, d3 = a["d"]
-    def q(d): return {"prompt": d[0], "labels": [d[1], d[2]], "h": 0}
+    _ag = m["bio"].get("ag") if isinstance(m["bio"].get("ag"), int) else 18 + H(a["k"], "age") % 7
+    def q(d, ws):  # 問いに年齢を前置き(リーダー/ボーカル。問いの直前の作品の年)
+        return {"prompt": "%d歳。" % (_ag + max(0, ws[-1]["y"] - ws[0]["y"])) + d[0], "labels": [d[1], d[2]], "h": 0}
+    def evx(k, path):  # 本家(A側)から外れた後は本家の転機を出さない
+        if not any(path): return {"t": "e", "tx": a["ev"][k]}
+        import arcs2_gen as _a2
+        return {"t": "e", "tx": _a2.OFF_TX[(H(a["k"], "off", path[:1]) + k) % len(_a2.OFF_TX)]}
     def X(d, alt):
         return {"t": "x", "c": d[2] if alt else d[1], "ok": (d[6] if alt else d[5]) >= 0, "tx": d[4] if alt else d[3]}
     kids = []
     for x1 in (0, 1):
         seen1 = copy.deepcopy(seen); seen_ref[0] = seen1
-        seg1 = [X(d1, x1), {"t": "e", "tx": a["ev"][1]}] + stage_rels(1, d1[6 if x1 else 5], x1)
+        seg1 = [X(d1, x1), evx(1, (x1,))] + stage_rels(1, d1[6 if x1 else 5], x1)
         k2 = []
         for x2 in (0, 1):
             seen2 = copy.deepcopy(seen1); seen_ref[0] = seen2
             eff = d1[6 if x1 else 5] + d2[6 if x2 else 5]
-            seg2 = [X(d2, x2), {"t": "e", "tx": a["ev"][2]}] + stage_rels(2, eff, x1 + x2)
+            seg2 = [X(d2, x2), evx(2, (x1, x2))] + stage_rels(2, eff, x1 + x2)
             k3 = []
             for x3 in (0, 1):
                 seen3 = copy.deepcopy(seen2); seen_ref[0] = seen3
                 eff3 = eff + d3[6 if x3 else 5]
-                seg3 = [X(d3, x3), {"t": "e", "tx": a["ev"][3]}] + stage_rels(3, eff3, x1 + x2 + x3)
+                seg3 = [X(d3, x3), evx(3, (x1, x2, x3))] + stage_rels(3, eff3, x1 + x2 + x3)
                 works = [w for w in s0 + seg1 + seg2 + seg3 if w["t"] == "r"]
                 dv = x1 + x2 + x3
                 tx = a["eh"] if dv == 0 else a["ea"][min(dv - 1, len(a["ea"]) - 1)]
-                k3.append({"s": seg3, "e": {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}})
-            k2.append({"s": seg2, "q": q(d3), "n": k3})
-        kids.append({"s": seg1, "q": q(d2), "n": k2})
-    return {"m": m, "t": {"s": s0, "q": q(d1), "n": kids}}
+                e_ = {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}
+                if dv:  # 本家の道(arcs2_gen と同じキー): hc=外れた分かれ道で本家が選んだ側, hon=出なかった本家の転機
+                    p_ = (x1, x2, x3); f_ = p_.index(1)
+                    e_["hc"] = [d[1] for d, x in zip((d1, d2, d3), p_) if x]; e_["hon"] = a["ev"][f_ + 1:4]
+                k3.append({"s": seg3, "e": e_})
+            k2.append({"s": seg2, "q": q(d3, [w for w in s0 + seg1 + seg2 if w["t"] == "r"]), "n": k3})
+        kids.append({"s": seg1, "q": q(d2, [w for w in s0 + seg1 if w["t"] == "r"]), "n": k2})
+    return {"m": m, "t": {"s": s0, "q": q(d1, [w for w in s0 if w["t"] == "r"]), "n": kids}}
 
 
 def build_all():
