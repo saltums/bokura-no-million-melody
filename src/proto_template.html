@@ -560,7 +560,8 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
     <button class="btn primary" id="b-quick" type="button">▶ いますぐ遊ぶ</button>
     <button class="btn line" id="b-start" type="button">自分で選んで始める</button>
     <p class="small fic">※実在の人物・団体とは関係のないフィクションです。</p>
-    <button class="btn" id="b-zk" type="button">図鑑・殿堂を見る</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="b-zk" type="button">図鑑・殿堂</button><button class="btn" id="b-tell" type="button">友だちに教える</button></div>
+    <p class="small" id="tell-note" hidden></p>
     <div class="unl-box" id="unl-title"></div>
     <div id="dbg" hidden style="display:none;flex-direction:column;gap:8px">
       <div class="erow" id="dtabs"></div>
@@ -2021,6 +2022,11 @@ function renderTimeline() {
 const TALLY_URL = 'https://tally.so/r/QoKaQ8'; // TallyのフォームURL(例: 'https://tally.so/r/xxxxxx')。空のあいだはアンケートを出さない
 const SURVEY_AT = 3;
 const SHARE_URL = 'https://saltums.github.io/bokura-no-million-melody/';
+{ const bt = document.getElementById('b-tell'); if (bt) bt.onclick = async () => {
+  const text = 'あのとき、別の道を選んでいたら。音楽家の人生を追体験するゲーム「ぼくらのミリオンメロディ」'; const nt = document.getElementById('tell-note');
+  try { if (navigator.share) { await navigator.share({ title: 'ぼくらのミリオンメロディ', text, url: SHARE_URL }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(text + '\n' + SHARE_URL); if (nt) { nt.textContent = '紹介文とURLをコピーしました。LINEやXに貼ってください。'; nt.hidden = false; } } catch (_) { if (nt) { nt.textContent = SHARE_URL; nt.hidden = false; } }
+}; }
 function makeCard(dr, m, topTitle) {
   const W = 720, H = 900, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
   const F = (w, px) => w + ' ' + px + 'px "Zen Kaku Gothic New","Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif';
