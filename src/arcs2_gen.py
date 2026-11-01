@@ -72,6 +72,7 @@ def load_specs(dirpath='/home/claude/arcs_new'):
     arcs = _u
     pt = {k: list(dict.fromkeys(t.split('→')[-1].strip() for t in v)) for k, v in pt.items()}
     import ptover; pt = ptover.apply(arcs, dict(pt))
+    import realtitles; pt = {k: realtitles.fix_list(v, k) for k, v in pt.items()}  # 実在曲名そのまま(末尾の(…)を外して同じも含む)はもじりに差し替え、残りは外す
     return arcs, pt
 
 

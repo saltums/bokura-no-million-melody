@@ -24,4 +24,9 @@ PT = {
     "misc": ["天体観察", "世界に一つだけの傘", "終わりなき残業", "木綿のティッシュ", "春よ、遅れて来い", "ロビンスン", "栄光の架け路", "マリーゴールデン", "Lemmon", "君の名は?",
              "夜を駆ける", "ドライフラワー畑", "怪獣のあくび", "白旗", "二日月", "いとしのエリンギ", "さらば青春の灯", "SUNAMI", "千の風にのれない", "島歌い"],
 }
+try:  # 実在曲名そのまま(末尾の(…)を外して同じも含む)は rosters/titlefix.json のもじりに差し替え、残りは外す
+    import realtitles as _rt
+    PT = {_k: _rt.fix_list(_v, None, 'parody') for _k, _v in PT.items()}
+except Exception as _e:
+    print('realtitles skip', _e)
 ALL = [t for v in PT.values() for t in v]

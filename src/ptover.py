@@ -5,6 +5,7 @@ for _f in sorted(glob.glob('/home/claude/ptfix/out*.json')):
     try:
         for k, v in json.load(open(_f)).items():
             v = [t for t in dict.fromkeys(x.strip() for x in v if isinstance(x, str) and x.strip())]
+            import realtitles as _rt; v = _rt.fix_list(v, None, 'parody')  # 実在曲名そのままは差し替え・除外
             if len(v) >= 8: PTO[k] = v
     except Exception as e:
         print('PTO SKIP', _f, e)

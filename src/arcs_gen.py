@@ -233,6 +233,7 @@ def build(a, i):
     import roster as _ro
     mm = _ro.apply(a, mm, seed)
     m = meta(a, mm, i); th = a["th"]; seen = []
+    bio.localize(a, m["bio"], mm, 96000 + i)  # 出身地・結成地を「始まりの場所」に合わせる
     def stage_rels(si, dev_eff, dev):
         out = []; cv = a["cv"][si]
         base_pos = [0, 2, 4, 5][si]

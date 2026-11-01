@@ -84,10 +84,10 @@ def count_leaves(n):
 def meta(c):
     sc = c['start_choice']
     start_txt = g.AI_START[c['ai_mode']] if c['ai_mode'] else g.START[(c['start'], c['era'])]
-    return {"id": c['seed'], "a": c['artist'], "pun": c['pun_src'], "top": sc['top'], "st": c['style'],
+    return bio.fit({"id": c['seed'], "a": c['artist'], "pun": c['pun_src'], "top": sc['top'], "st": c['style'],
             "sn": g.style_name(c), "pe": c['P']['n'], "era": c['era'], "en": g.ERAS[c['era']]['name'],
             "es": g.ERAS[c['era']]['short'], "sa": c['start'], "ge": c['genre'], "tx": start_txt, "ai": c['ai_mode'],
-            "mm": tracks.people(c['seed'], c['style']), "vg": gender.vocal(c, tracks.people(c['seed'], c['style'])), "bio": bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ")}
+            "mm": tracks.people(c['seed'], c['style']), "vg": gender.vocal(c, tracks.people(c['seed'], c['style'])), "bio": bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ")})  # 出身・結成地を紹介文の地名に合わせる
 
 
 def main():

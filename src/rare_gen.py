@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """レア時代(原始・3000年)の人生を、通常の生成器とは別に組み立てて、同じ木構造(JSON)で出す。"""
-import random, hashlib
+import random, hashlib, re
 
 
 def H(*a): return int(hashlib.md5("|".join(map(str, a)).encode()).hexdigest()[:8], 16)
@@ -177,6 +177,37 @@ def _ystep(P, era):
     return lo, hi
 
 
+_PL_STOP = set("のでにをはがとへ、。小大古一夜日人声歌音手口目見聞始")
+
+
+def _fit_place(meta, P, r):
+    """紹介文(tx)の始まりの場所・タグ(sa)・結成の地(fd)・出身を一つの場所にそろえる(江戸で「櫓の下」「長屋の井戸端」「漁村」が並ばないように)"""
+    tx = meta.get("tx") or ""
+    m = re.match(r"^([^、。]{2,16}?)で、", tx)
+    if m and not re.search(r"[てたるいう]$", m.group(1)): meta["sa"] = m.group(1)  # 「長屋の井戸端で、…」→ タグも「長屋の井戸端」
+    key = meta["sa"] if m else (tx.split("、")[0] if "、" in tx else meta["sa"])
+    hms = P["bio"]["hms"]
+    def sc(h): return len({c for c in key if c not in _PL_STOP} & {c for c in h if c not in _PL_STOP})
+    best = max(sc(h) for h in hms)
+    if best == 0:
+        key = P["sa"]; best = max(sc(h) for h in hms)
+    b = meta.get("bio") or {}
+    if best > 0:
+        place = r.choice([h for h in hms if sc(h) == best])
+    else:
+        place = b.get("fd") or b.get("hm")
+    if not place: return
+    if "fd" in b:
+        b["fd"] = place
+        mm = meta.get("mm") or []
+        if mm and place not in [b.get("hm")] + [x.get("h") for x in mm]:
+            for x in mm[1:] or mm:
+                if r.random() < 0.5: x["h"] = place
+            if place not in [x.get("h") for x in mm]: (mm[1] if len(mm) > 1 else mm[0])["h"] = place
+    elif best > 0 and r.random() < 0.7:
+        b["hm"] = place
+
+
 def tree(P, seed, group):
     r = random.Random(H(seed, "rare"))
     era = P["era"]; r6 = era == 6
@@ -210,6 +241,7 @@ def tree(P, seed, group):
             "rare": True, **({"bgm": P["bgm"], "aw": AW_DEF.get(era), "dec": P.get("dec"), "vgt": P.get("vgt"), "tier": P.get("tier")} if P.get("bgm") else {}), "tn": P["tn"], "rk": P["rk"], "stg": P["stg"]}
     for k in ("cw", "vc", "ms"):
         if P.get(k): meta[k] = P[k]
+    _fit_place(meta, P, random.Random(H(seed, "place")))
     lo, hi = _ystep(P, era)
     D = 4 if r.random() < 0.5 else 3  # 分かれ道は一生に3〜4回
     CNT = [2, 1, 1, 1] if D == 4 else [2, 2, 1]  # 各分かれ道のあとの作品数(どの道でも一生で8作)

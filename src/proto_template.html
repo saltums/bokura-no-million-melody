@@ -174,6 +174,8 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 /* candidates */
 .cand { background: var(--surface); border: 1px solid var(--line); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
 .cand.tap { cursor: pointer; } .cand.tap:active { transform: scale(.985); } .cand.mine { background: var(--accent); color: var(--accent-ink); border: 2px dashed var(--accent-ink); cursor: pointer; text-align: center; align-items: center; padding: 18px 14px; } .cand.mine .nm { font-size: 20px; } .cand.mine .small { color: var(--accent-ink); }
+body:has(.mdl) #gnav, body:has(.ldv) #gnav { display: none; }
+.ldv { position: fixed; inset: 0; z-index: 97; display: flex; align-items: flex-end; justify-content: center; padding: 0 16px calc(28px + env(safe-area-inset-bottom)); } .ldv.fail { align-items: center; background: rgba(8,10,14,.62); padding: 20px; } .ldv .ldb { background: var(--surface); color: var(--fg); border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 700; } .ldv.fail .ldb { border: 2px solid var(--fg); border-radius: 0; padding: 18px; max-width: 360px; width: 100%; display: flex; flex-direction: column; gap: 10px; font-size: 15px; } .ldv.fail .ldb p { margin: 0; line-height: 1.6; } .ldv.fail .ldb small { font-weight: 400; color: var(--muted); font-size: 12px; }
 .mdl { position: fixed; inset: 0; z-index: 60; background: rgba(8,10,14,.62); display: flex; align-items: center; justify-content: center; padding: 20px; } .mdl .box { background: var(--surface); color: var(--fg); border: 2px solid var(--fg); max-width: 420px; width: 100%; padding: 18px; display: flex; flex-direction: column; gap: 12px; max-height: 88vh; overflow: auto; } .mdl .row { display: flex; gap: 10px; } .mdl .row .btn { flex: 1; }
 .cand .nm { font: 400 22px/1.3 var(--f-d); overflow-wrap: anywhere; }
 .erow { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 } .chip { padding: 6px 12px; border: 1px solid var(--line, #444); border-radius: 999px; background: transparent; color: inherit; font: inherit; font-size: 13px } .chip.on { background: var(--accent, #f5c518); color: #111; border-color: transparent }
@@ -348,7 +350,7 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .sumc .sr .k { flex: none; width: 3.6em; font: 500 12px/1.4 var(--f-m); opacity: .8; }
 .sumc .sr .v { font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
 .sumc .sif { margin-top: 8px; appearance: none; text-align: left; background: transparent; color: inherit; border: 1.5px dashed var(--accent); padding: 10px 12px; font: 500 14px/1.5 var(--f-b); cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
-.sumc .sif b { color: var(--accent); font-size: 15px; line-height: 1.6; font-weight: 700; }
+.sumc .sif b { color: var(--accent); font-size: 14px; line-height: 1.6; font-weight: 700; }
 .sumc .sif small { opacity: .7; font-size: 12px; }
 .sumc .sif:focus-visible { outline: 3px solid var(--pick); outline-offset: 2px; }
 .sumb { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -679,9 +681,21 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
 
 <div id="boot" style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:#111;color:#fff;font:700 15px sans-serif">読み込み中…</div>
 <script>
-const DATA = __DATA__;
-const BANK = __BANK__;
-try { DATA.forEach((d) => { const a = d.m && d.m.a; if (a && /[((]別[))]$/.test(a)) { d.m.a = a.replace(/\s*[((]別[))]$/, ''); d.m.alt = 1; } }); } catch (_) {}
+// DATA(人生の一覧)と BANK(名前・曲名の素材)は data.json / bank.json から後で読む(初回表示を軽くするため)。
+// 読み終わってから走らせる初期化は onReady(f) に、ボタンは needData(f) で包む(読み終わる前に押されたら「読み込み中…」で待つ)
+let DATA = [], BANK = {}, READY = false; const _RQ = []; let _LD = null;
+const onReady = (f) => { if (READY) { try { f(); } catch (e) { console.error(e); } } else _RQ.push(f); };
+const DV = '__DV__';
+function loadData() {
+  if (READY) return Promise.resolve();
+  const get = (u) => fetch(u + '?v=' + DV).then((r) => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
+  return _LD || (_LD = Promise.all([get('data.json'), get('bank.json')]).then(([d, b]) => {
+    DATA = d; BANK = b;
+    try { DATA.forEach((d) => { const a = d.m && d.m.a; if (a && /[((]別[))]$/.test(a)) { d.m.a = a.replace(/\s*[((]別[))]$/, ''); d.m.alt = 1; } }); } catch (_) {}
+    READY = true; _RQ.splice(0).forEach((f) => { try { f(); } catch (e) { console.error(e); } });
+  }).catch((e) => { _LD = null; throw e; }));
+}
+const needData = (f) => function (...a) { if (READY) return f.apply(this, a); loadWait(loadData, () => f.apply(this, a), () => {}); };
 
 const $ = (s) => document.querySelector(s);
 const TIER_D = ['不発', '通好みの評価', '小ヒット', 'ヒット', '大ヒット', '社会現象'];
@@ -801,7 +815,7 @@ const BGM = (() => {
           if (L.has(7) && s16 % 2 === 1) tone(t, 72 + PE[(s16 * 3) % 5], .1, 'square', .02, true, .005);
           nt += sd; st++; } }, 80);
       master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .4);
-      return { layer(k) { L.add(k); }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note(m) { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, m || 69, 3.2, 'sine', .16, true, .01); if (m) tone(ctx.currentTime + .05, m + 12, 2.2, 'sine', .05, true, .01); } };
+      return { layer(k) { L.add(k); }, fade(sec) { try { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, (sec || 3) / 3); } catch (_) {} }, stop() { run = false; clearInterval(tm); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0, ctx.currentTime, .5); }, note(m) { master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.5, ctx.currentTime, .05); tone(ctx.currentTime + .05, m || 69, 3.2, 'sine', .16, true, .01); if (m) tone(ctx.currentTime + .05, m + 12, 2.2, 'sine', .05, true, .01); } };
     },
     locked() { return !!(ctx && on && ctx.state !== 'running'); },
     unlock() { try { if (ctx) ctx.resume(); } catch (_) {} },
@@ -832,7 +846,7 @@ function stepBar(id) {
   STEP_NM.forEach((t, i) => { bar.append(el('i', i < cur ? 'done' : i === cur ? 'cur' : '')); nm.append(el('span', i === cur ? 'cur' : '', (i + 1) + ' ' + t)); });
   st.append(bar, nm);
 }
-function show(id) { try { document.body.classList.toggle('ontitle', id === 's-title'); } catch (_) {} try { if (id === 's-title') ENDING.badge(); } catch (_) {} try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
+function show(id) { try { document.body.classList.toggle('ontitle', id === 's-title'); } catch (_) {} try { if (id === 's-title') ENDING.badge(); } catch (_) {} try { if (id === 's-title' || id === 's-zukan') refreshUnl(); } catch (_) {} try { const g = $('#gnav'); if (g) g.hidden = ['s-title', 's-game', 's-intro'].includes(id); const gz = $('#gnav-zk'); if (gz) gz.hidden = id === 's-zukan'; } catch (_) {} stepBar(id); screens.forEach((s) => { $('#' + s).hidden = s !== id; }); window.scrollTo(0, 0); if (id !== 's-game') { try { BGM.stop(); } catch (_) {} } }
 
 const AWC = {
   p: [['自分の集落', 100], ['谷の集落', 2000], ['山向こうの部族', 12000], ['海の向こうの民', 30000]],
@@ -854,10 +868,11 @@ function fmtN(n) {
   const t = (v) => (v >= 100 ? String(Math.round(v)) : v >= 10 ? v.toFixed(0) : v.toFixed(1)).replace(/\.0$/, '');
   if (n < 1e8) return t(n / 1e4) + '万人'; return t(n / 1e8) + '億人';
 }
+function aboutN(n) { return n < 1 ? '1人未満' : '約' + fmtN(n); }
 function fmtPct(p) { return (p >= 10 ? p.toFixed(0) : p >= 1 ? p.toFixed(1) : p >= 0.01 ? p.toFixed(2) : '0.01未満'); }
 function awShow() {
   const e = $('#h-aw'); if (!e || !S.entry) return; const T = awTab(S.entry.m), P = T[S.stg][1], pct = S.awP / P * 100;
-  e.textContent = ''; e.append('認知度 '); e.append(el('b', null, fmtPct(pct) + '%')); e.append(' · ' + T[S.stg][0] + 'で約' + fmtN(S.awP));
+  e.textContent = ''; e.append('認知度 '); e.append(el('b', null, fmtPct(pct) + '%')); e.append(' · ' + T[S.stg][0] + 'で' + aboutN(S.awP));
 }
 function awAdd(tr) {
   const T = awTab(S.entry.m), P = T[S.stg][1]; const G = [0.0003, 0.003, 0.015, 0.05, 0.12, 0.28][tr];
@@ -1048,7 +1063,7 @@ function crownOf(w) {
 let S = { top: null, style: null, entry: null, node: null, works: 0, best: 999, skip: false, timers: [] };
 
 /* ---- 選択画面 ---- */
-$('#b-start').onclick = () => { S.auto = false; S.quick = false; show('s-top'); };
+$('#b-start').onclick = needData(() => { S.auto = false; S.quick = false; show('s-top'); });
 function quickNow() {
   S.quick = true; S.auto = false; S.eraPick = null; S.eraF = null; S.sz = null;
   let L = DATA.filter((d) => !d.m.rare && d.m.st); const R = L.filter((d) => d.m.real); if (R.length && Math.random() < 0.55) L = R;
@@ -1057,17 +1072,17 @@ function quickNow() {
   const ws = L.map(qw); let r = Math.random() * ws.reduce((a, b) => a + b, 0), qi = 0; while (qi < L.length - 1 && (r -= ws[qi]) > 0) qi++;
   const d = L[qi]; S.top = d.m.top; S.style = d.m.st; startTree(d);
 }
-$('#b-quick').onclick = quickNow;
+$('#b-quick').onclick = needData(quickNow);
 function bestSum(n) { if (n._b !== undefined) return n._b; n._b = n.e ? n.e.w.reduce((m, w) => m + w.tr * w.tr, 0) : Math.max(...n.n.map(bestSum)); return n._b; }
 const startRare = (era) => { const L = DATA.filter((d) => d.m.rare && d.m.era === era); const d = L[Math.floor(Math.random() * L.length)]; S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); };
-{ const box = $('#dbg-real'); const lab = el('span', 'lab', 'デバッグ: 着想型の人生(' + DATA.filter((x) => x.m.real).length + '組)を選んで遊ぶ'); box.append(lab); DATA.filter((x) => x.m.real).forEach((d) => { const b = el('button', 'btn line', d.m.a + '(' + d.m.sn.replace(/\(.*$/, '') + '・' + d.m.es + ')'); b.type = 'button'; b.onclick = () => { S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); }; box.append(b); }); }
+onReady(() => { const box = $('#dbg-real'); const lab = el('span', 'lab', 'デバッグ: 着想型の人生(' + DATA.filter((x) => x.m.real).length + '組)を選んで遊ぶ'); box.append(lab); DATA.filter((x) => x.m.real).forEach((d) => { const b = el('button', 'btn line', d.m.a + '(' + d.m.sn.replace(/\(.*$/, '') + '・' + d.m.es + ')'); b.type = 'button'; b.onclick = () => { S.auto = false; S.top = d.m.top; S.style = d.m.st; startTree(d); }; box.append(b); }); });
 let DBG_ERA = null;
 const FA = { get: () => { try { return localStorage.getItem('hit30000_first') || ''; } catch (_) { return ''; } }, set: (v) => { try { if (v && !localStorage.getItem('hit30000_first')) localStorage.setItem('hit30000_first', String(v).slice(0, 60)); } catch (_) {} } };
 const PL = (() => { const K = 'hit30000_plays', NEED = 3; const get = () => { try { return parseInt(localStorage.getItem(K), 10) || 0; } catch (_) { return 0; } };
   return { NEED, set: (v) => { try { if (v > get()) localStorage.setItem(K, String(v)); } catch (_) {} }, n: get, ok: () => get() >= NEED || DBG_ERA != null, inc: () => { const v = get() + 1; try { localStorage.setItem(K, String(v)); } catch (_) {} return v; } }; })();
 const RARE_BASE = { '-3': 3, '-2': 3, '6': 3, '11': 5, '12': 5, '13': 5, '14': 5, '15': 7, '16': 7, '17': 7, '18': 7, '19': 7, '20': 7, '23': 7, '21': 15, '22': 15 };
 let _RE = null;
-function rareEras() { if (_RE) return _RE; const m = new Map(); DATA.forEach((d) => { if (d.m.rare && !m.has(d.m.era)) m.set(d.m.era, { e: d.m.era, es: d.m.es, tier: RARE_BASE[String(d.m.era)] || d.m.tier || 5 }); });
+function rareEras() { if (_RE) return _RE; if (!READY) return []; const m = new Map(); DATA.forEach((d) => { if (d.m.rare && !m.has(d.m.era)) m.set(d.m.era, { e: d.m.era, es: d.m.es, tier: RARE_BASE[String(d.m.era)] || d.m.tier || 5 }); });
   const ord = (x) => (RARE_BASE[String(x.e)] ? -1 : 0); _RE = [...m.values()].sort((a, b) => a.tier - b.tier || ord(a) - ord(b) || a.e - b.e); return _RE; }
 const isRareEra = (e) => e != null && rareEras().some((x) => x.e === e);
 const eraOk = (e) => { const r = rareEras().find((x) => x.e === e); return !!r && (PL.n() >= r.tier || DBG_ERA != null); };
@@ -1089,8 +1104,8 @@ function unlockPanel() {
 function refreshUnl() { try { ['#unl-title', '#unl-zk'].forEach((q) => { const b = $(q); if (b) { b.textContent = ''; b.append(unlockPanel()); } }); } catch (_) {} }
 const ERA_OPT = [[null, 'おまかせ'], [-1, '70年代'], [0, '80年代'], [1, '90年代'], [2, '00年代'], [3, '10年代'], [4, '20年代'], [5, '近未来']];
 { const eb = $('#dbg-era'); eb.append(el('span', 'lab', 'デバッグ: 時代を固定(人選びに反映)')); const cs = []; ERA_OPT.forEach(([v, l]) => { const c = el('button', 'chip' + (v === null ? ' on' : ''), v === null ? '固定しない' : l); c.type = 'button'; c.onclick = () => { DBG_ERA = v; cs.forEach((x) => x.classList.remove('on')); c.classList.add('on'); }; cs.push(c); eb.append(c); }); }
-refreshUnl();
-{ const tabs = [['route', 'ルート'], ['rare', 'レア時代'], ['era', '時代固定'], ['unl', '解放・回数'], ['real', '着想型']];
+onReady(refreshUnl);
+onReady(() => { const tabs = [['route', 'ルート'], ['rare', 'レア時代'], ['era', '時代固定'], ['unl', '解放・回数'], ['real', '着想型']];
   const tb = $('#dtabs'), panes = [...document.querySelectorAll('#dbg .dpane')], chips = [];
   const sel = (t) => { panes.forEach((p) => { p.hidden = p.dataset.t !== t; p.style.display = p.dataset.t === t ? 'flex' : 'none'; }); chips.forEach((c) => c.classList.toggle('on', c.dataset.t === t)); try { sessionStorage.setItem('dbg_tab', t); } catch (_) {} };
   tabs.forEach(([t, l]) => { const c = el('button', 'chip', l); c.type = 'button'; c.dataset.t = t; c.onclick = () => { if (t === 'unl') drawUnl(); sel(t); }; chips.push(c); tb.append(c); });
@@ -1104,13 +1119,13 @@ refreshUnl();
     { const ep = $('#dp-unl'); const cb = el('button', 'btn line', 'クリア済み状態を切り替え(太陽系レコード確認)'); cb.type = 'button'; cb.onclick = () => { const g = ENDING.get(); try { localStorage.setItem('hit30000_end', JSON.stringify(g.n > 0 ? { n: 0, best: 0 } : { n: 1, best: 0, ts: Date.now() })); } catch (_) {} document.body.classList.remove('cleared'); const dc = document.querySelector('#s-title .disc'); if (dc) dc.querySelectorAll('.orb').forEach((x) => x.remove()); ENDING.badge(); cb.textContent = 'クリア済み状態: ' + (ENDING.get().n > 0 ? 'ON' : 'OFF'); }; ep.append(cb); }
     { const ep = $('#dp-unl'); [['エンディング(通常・初回版)', { best: 0, first: 1, debug: 1 }], ['エンディング(最高・初回版)', { best: 1, first: 1, debug: 1 }], ['エンディング(2回目以降・短縮版)', { best: 0, first: 0, debug: 1 }]].forEach(([l, o]) => { const b = el('button', 'btn line', l); b.type = 'button'; b.onclick = () => ENDING.start(o); ep.append(b); }); }
     const sv = el('button', 'btn line', 'アンケートを見る'); sv.type = 'button'; sv.onclick = () => surveyModal(true); up.append(sv); }
-  drawUnl(); let t0 = 'route'; try { t0 = sessionStorage.getItem('dbg_tab') || 'route'; } catch (_) {} sel(t0); }
+  drawUnl(); let t0 = 'route'; try { t0 = sessionStorage.getItem('dbg_tab') || 'route'; } catch (_) {} sel(t0); });
 $('#b-bgm').onclick = () => { const o = BGM.toggle(); $('#b-bgm').textContent = o ? '♪' : '♪×'; };
 $('#b-bgm').textContent = BGM.on ? '♪' : '♪×';
-$('#b-debug').onclick = () => {
+$('#b-debug').onclick = needData(() => {
   const L0 = DATA.filter((d) => !d.m.rare && !d.m.real); const best = L0[Math.floor(Math.random() * L0.length)];
   S.auto = true; S.top = best.m.top; S.style = best.m.st; startTree(best);
-};
+});
 document.querySelectorAll('[data-top]').forEach((b) => { b.onclick = () => { S.top = b.dataset.top; renderStyles(); show('s-style'); }; });
 document.querySelectorAll('[data-go]').forEach((b) => { b.onclick = () => show(b.dataset.go); });
 
@@ -1224,7 +1239,7 @@ function applyCz(d) {
     if (pf) { const PL_ = /(雪深い北国|北国|南国|下町|関西|関東|東北|九州|北陸|大阪|京都|神戸|東京|都内|都会|杉並|下北沢|高円寺|渋谷|新宿|吉祥寺|名古屋|博多|福岡|札幌|仙台|横浜|北の街|南の街|中部の街|地方都市|港町|海沿いの街|地方)/;
       ['sa', 'tx'].forEach((k) => { if (m[k]) m[k] = m[k].replace(PL_, pf); });
       if (m.bio) { m.bio.hm = pf; m.bio.fd = pf; } (m.mm || []).forEach((x) => { x.h = pf; }); m.czHome = pf; }
-    if (z.age && m.bio && !m.bio.ai) m.bio.ag = z.age;
+    if (z.age && m.bio && !m.bio.ai) { m.bio.ag = z.age; m.czAge = z.age; }
     if (z.part) {
       if (m.st === 'solo') { m.me = z.part; m.meR = SOLO_ROLE[z.part]; }
       else if (m.mm && m.mm.length) {
@@ -1241,7 +1256,7 @@ $('#b-fixed').onclick = () => { renderCands(); show('s-cand'); };
 $('#b-custom').onclick = () => { S.eraF = null; S.sz = null; S.cz = {}; $('#nm-in').value = ''; nameExamples(); renderCustom(); show('s-custom'); };
 $('#nm-more').onclick = () => { const bk = BANK.a[S.style] || {}; const all = []; Object.keys(bk).forEach((k) => (bk[k] || []).forEach((n) => all.push(n))); if (all.length) $('#nm-in').value = all[Math.floor(Math.random() * all.length)]; };
 $('#b-cgo').onclick = () => {
-  if (isRareEra(S.eraF) && eraOk(S.eraF)) { let L = DATA.filter((d) => d.m.rare && d.m.era === S.eraF && d.m.st === S.style); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === S.eraF); const r = L[Math.floor(Math.random() * L.length)]; hydrate(r).then(() => startTree(renameTo(r, $('#nm-in').value))).catch(() => {}); return; }
+  if (isRareEra(S.eraF) && eraOk(S.eraF)) { let L = DATA.filter((d) => d.m.rare && d.m.era === S.eraF && d.m.st === S.style); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === S.eraF); const r = L[Math.floor(Math.random() * L.length)]; loadWait(() => hydrate(r), () => startTree(renameTo(r, $('#nm-in').value)), () => {}); return; }
   let pl = cPool().filter((d) => (S.sz == null || szOf(d) === S.sz) && (S.eraF == null || d.m.era === S.eraF));
   const rares = S.eraF == null && S.sz == null ? DATA.filter((d) => d.m.st === S.style && d.m.rare && eraSeen(d)) : [];
   if (!pl.length) pl = cPool();
@@ -1251,7 +1266,7 @@ $('#b-cgo').onclick = () => {
   let d = pl[Math.floor(Math.random() * pl.length)];
   const czOn = S.cz && (S.cz.part || S.cz.reg != null || S.cz.age);
   if (!czOn && rares.length && Math.random() < 0.08) d = rares[Math.floor(Math.random() * rares.length)];
-  hydrate(d).then(() => startTree(applyCz(renameTo(reskin(d), $('#nm-in').value)))).catch(() => { const n = el('div', null, '読み込みに失敗しました。通信を確認して、もう一度お試しください。'); n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:13px'; n.onclick = () => n.remove(); document.body.append(n); setTimeout(() => n.remove(), 6000); });
+  loadWait(() => hydrate(d), () => startTree(applyCz(renameTo(reskin(d), $('#nm-in').value))), () => {});
 };
 function surveyModal(force) {
   const url = TALLY_URL; if (!url && !force) return;
@@ -1279,7 +1294,7 @@ function renderCands() {
   { const eb = $('#era-pick'); eb.textContent = ''; eb.hidden = false; eb.style.cssText = 'flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:2px';
     { let lk = $('#era-lock'); if (!lk) { lk = el('div', 'elock'); lk.id = 'era-lock'; lk.style.cssText = 'font-size:12px;line-height:1.5;color:var(--muted);margin:2px 0 0'; eb.parentNode.insertBefore(lk, eb); } const nt = unlockTiers().find(([k]) => PL.n() < k); lk.textContent = nt ? '🔒 あと' + (nt[0] - PL.n()) + '回あそぶと「' + nt[1] + '」の時代が解放' : ''; lk.hidden = !nt; } eraPK().forEach(([v, l]) => { if (v !== null && !DATA.some((d) => d.m.era === v && (d.m.rare || d.m.st === S.style))) return; const c = el('button', 'chip' + ((S.eraPick == null ? null : S.eraPick) === v ? ' on' : ''), l); c.type = 'button'; c.style.cssText = 'flex:none;padding:5px 10px;font-size:12px'; c.onclick = () => { S.eraPick = v; renderCands(); }; eb.append(c); }); }
   { const E = DBG_ERA != null ? DBG_ERA : S.eraPick;
-    if (isRareEra(E) && eraOk(E)) { let L = DATA.filter((d) => d.m.rare && d.m.era === E && d.m.st === S.style); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === E); const pk = shuffle(L).slice(0, 3); $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style]; Promise.all(pk.map(hydrate)).then(() => renderCands2(pk)).catch(() => {}); return; } }
+    if (isRareEra(E) && eraOk(E)) { let L = DATA.filter((d) => d.m.rare && d.m.era === E && d.m.st === S.style); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === E); const pk = shuffle(L).slice(0, 3); $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style]; $('#cand-list').textContent = ''; const tok = S._ct = (S._ct || 0) + 1; loadWait(() => Promise.all(pk.map(hydrate)), () => { if (tok === S._ct) renderCands2(pk); }, () => show('s-title')); return; } }
   $('#k-cand').textContent = S.top + ' / ' + STYLE_LABEL[S.style];
   const box = $('#cand-list'); box.textContent = '';
   const E_ = DBG_ERA != null ? DBG_ERA : S.eraPick; const ef = (d) => E_ == null || d.m.era === E_; let base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real && ef(d)); if (!base.length) { base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real); } const pick = shuffle(base).slice(0, 3);
@@ -1287,7 +1302,7 @@ function renderCands() {
   { const rares = DATA.filter((d) => d.m.st === S.style && d.m.rare && eraSeen(d)); if (rares.length && Math.random() < 0.08) pick[Math.floor(Math.random() * pick.length)] = rares[Math.floor(Math.random() * rares.length)]; }
   { const fx = (d) => d.m.pun || d.m.real || d.m.rare; const spare = shuffle(base.filter((d) => !pick.includes(d))); const seenN = new Set();
     for (let i = 0; i < pick.length; i++) { let g = 0; while (fx(pick[i]) && seenN.has(pick[i].m.a) && spare.length && g++ < 40) pick[i] = spare.shift(); if (fx(pick[i])) seenN.add(pick[i].m.a); } }
-  Promise.all(pick.map(hydrate)).then(() => { const names = new Set(); pick.forEach((d) => { if (d.m.pun || d.m.real || d.m.rare) names.add(d.m.a); }); const out = pick.map((d) => { if (d.m.pun || d.m.real || d.m.rare) return d; let r = reskin(d); for (let i = 0; i < 25 && names.has(r.m.a); i++) r = reskin(d); names.add(r.m.a); return r; }); renderCands2(out); }).catch(() => {});
+  const tok = S._ct = (S._ct || 0) + 1; loadWait(() => Promise.all(pick.map(hydrate)), () => { if (tok !== S._ct) return; const names = new Set(); pick.forEach((d) => { if (d.m.pun || d.m.real || d.m.rare) names.add(d.m.a); }); const out = pick.map((d) => { if (d.m.pun || d.m.real || d.m.rare) return d; let r = reskin(d); for (let i = 0; i < 25 && names.has(r.m.a); i++) r = reskin(d); names.add(r.m.a); return r; }); renderCands2(out); }, () => show('s-title'));
 }
 function confirmStart(d) {
   const m = d.m; const o = el('div', 'mdl'); const bx = el('div', 'box');
@@ -1329,6 +1344,21 @@ $('#b-reroll').onclick = renderCands;
 function clearTimers() { S.timers.forEach(clearTimeout); S.timers = []; }
 const PK = {};
 const hydrate = (d) => (d.t || !d.m.lz) ? Promise.resolve(d) : (PK[d.m.lz] || (PK[d.m.lz] = fetch(d.m.lz).then((r) => { if (!r.ok) throw 0; return r.json(); }).catch(() => fetch(d.m.lz + '?r=' + Date.now()).then((r) => r.json())).catch((e) => { delete PK[d.m.lz]; throw e; }))).then((o) => { d.t = o[d.m.lk]; return d; });
+/* ---- 読み込み待ちの表示: 0.3秒以上かかる時だけ「読み込み中…」、失敗したら「もう一度」 ---- */
+let _ldv = null;
+function ldHide() { if (_ldv) { _ldv.remove(); _ldv = null; } }
+function ldShow(retry, cancel) {
+  ldHide(); const o = el('div', 'ldv' + (retry ? ' fail' : '')); const b = el('div', 'ldb');
+  if (retry) { b.append(el('p', null, '読み込みに失敗しました。'), el('small', null, '通信を確認して、もう一度お試しください。')); const r = el('button', 'btn primary', 'もう一度'); r.type = 'button'; r.onclick = () => { ldHide(); retry(); }; b.append(r);
+    if (cancel) { const c = el('button', 'btn line', 'やめる'); c.type = 'button'; c.onclick = () => { ldHide(); cancel(); }; b.append(c); } }
+  else b.append(el('span', null, '読み込み中…'));
+  o.append(b); document.body.append(o); _ldv = o;
+}
+// job: Promise を返す関数。成功で done(結果)。失敗時は再試行ボタン(cancel があれば「やめる」も)
+function loadWait(job, done, cancel) {
+  const tm = setTimeout(() => ldShow(), 300);
+  Promise.resolve().then(job).then((v) => { clearTimeout(tm); ldHide(); done(v); }, () => { clearTimeout(tm); ldShow(() => loadWait(job, done, cancel), cancel); });
+}
 function openingFade(entry, cb) {
   const m = entry.m; const ov = el('div', 'open-fade'); ov.append(el('div', 'of-k', m.es + ' / ' + m.sn), el('div', 'of-n', m.a), el('div', 'of-s', m.ge)); document.body.append(ov);
   let called = false, gone = false; const run = () => { if (!called) { called = true; try { cb(); } catch (e) { console.error(e); } } };
@@ -1339,7 +1369,7 @@ function openingFade(entry, cb) {
 }
 function startTree(entry) {
   const go = () => { if (S.skipIntro) { S.skipIntro = false; startTree0(entry); } else showIntro(entry, () => openingFade(entry, () => startTree0(entry))); };
-  if (!entry.t && entry.m.lz) { hydrate(entry).then(go).catch(() => { const n = el('div', null, '読み込みに失敗しました。通信を確認して、もう一度お試しください。'); n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:13px'; n.onclick = () => n.remove(); document.body.append(n); setTimeout(() => n.remove(), 6000); }); return; }
+  if (!entry.t && entry.m.lz) { loadWait(() => hydrate(entry), go, () => {}); return; }
   go();
 }
 function showIntro(entry, go) {
@@ -1358,7 +1388,7 @@ function startTree0(entry) { if (!S.skipNote) noteTitles(entry); if (S.forceEntr
   S.entry = entry; S.awP = 0; S.stg = 0; S.rtN = 0; S.rtW = -1; S.fesN = 0; S.fesOk = 0; S.evN = 0; S.relN = 0; S.fuq = []; S.selfDone = false; S.selfAt = Math.random() < 0.5 ? 3 + Math.floor(Math.random() * 3) : 0; S.sdN = 0; S.sdUsed = new Set(); S.evUsed = new Set(); S.evFam = new Set(); S.expAsk = new Set(); TIER = entry.m.tn || TIER_D; S.works = 0; S.best = 999; S.skip = false; S.heat = 0; S.tiers = []; S.ms = {}; S.dn = 0; S.path = []; S.log = []; S.lastY = null; S.mem = JSON.parse(JSON.stringify(entry.m.mm || [])); S.exMem = []; S.inMem = []; S.curEl = null; $('#gcols').classList.remove('done'); $('#gcols').classList.remove('deciding');
   $('#feed').textContent = ''; $('#tail').textContent = '';
   const m = entry.m;
-  $('#h-nm').textContent = m.a; $('#h-y').textContent = '—'; $('#h-w').textContent = '0'; $('#h-b').textContent = m.rare ? '—' : '圏外'; setHeat(false); { const aw = $('#h-aw'); if (aw) aw.textContent = ''; }
+  $('#h-nm').textContent = m.a; $('#h-y').textContent = (() => { try { const y = firstYear(); return y == null ? '' : fmtY(y); } catch (_) { return ''; } })(); $('#h-w').textContent = '0'; $('#h-b').textContent = m.rare ? '—' : '圏外'; setHeat(false); { const aw = $('#h-aw'); if (aw) aw.textContent = ''; }
   const intro = el('div', 'card intro in');
   intro.append(el('span', 'lab', '出発点'));
   intro.append(el('p', null, m.pe + (/い$/.test(m.pe) ? '' : m.pe === '普通' ? 'の' : 'な') + m.sn + '。' + m.en + '、' + m.tx + '。'));
@@ -1878,26 +1908,58 @@ const FEEL = {
 function feelKey(it) { return choiceKind(it.c) + (it.ok ? '1' : '0'); }
 function gainLoss(it) { const a = GL[it.sk === 'side' ? 's' + (it.ok ? '1' : '0') : feelKey(it)]; return a[hash(String(it.c) + (S.entry ? S.entry.m.a : '')) % a.length]; }
 function feelOf(it) { const a = FEEL[feelKey(it)]; const k = hash(String(it.c) + '|' + (S.dn || 0) + (S.entry ? S.entry.m.a : '')) % a.length; return ij(a[k]); }
-function choiceHead(it) { return it.rt ? '「' + it.c + '」を選んだ。' : '「' + it.c + CH_HEAD[choiceKind(it.c)]; }
+// 選択肢の中のカギ括弧は『』にして、「「…」」の二重を避ける
+const qIn = (t) => String(t).replace(/「/g, '『').replace(/」/g, '』');
+function choiceHead(it) { return it.rt ? '「' + qIn(it.c) + '」を選んだ。' : '「' + qIn(it.c) + CH_HEAD[choiceKind(it.c)]; }
 
-function ageAt(y) { try { const m = S.entry.m, b = m.bio; if (!b || !b.ag || b.ai || m.rare || y == null) return null; const fy = firstYear(); if (fy == null) return null; const a = b.ag + (y - fy); return a >= 8 && a < 100 ? a : null; } catch (_) { return null; } }
-// 選ばなかった側の子ノードから、その先の最初の転機を1〜2文で取り出す
+function ageAt(y) { try { const m = S.entry.m, b = m.bio; if (!b || !b.ag || b.ai || m.rare || y == null) return null; const fy = firstYear(); if (fy == null) return null; const a = b.ag + Math.max(0, y - fy); return a >= 8 && a < 100 ? a : null; } catch (_) { return null; } }
+// 分かれ道の問いの「29歳。」(生成時の年齢)を、自作で始めた年齢を変えたときは ageAt で計算し直す
+function qAge(p) { try { const m = S.entry.m; if (!m.czAge || !/^\d+歳。/.test(p)) return p; const a = ageAt(S.lastY != null ? S.lastY : firstYear()); return a ? p.replace(/^\d+歳。/, a + '歳。') : p; } catch (_) { return p; } }
+// 選ばなかった側の子ノードから「その先の一場面」を年齢付き2文で作る(最初の転機 + 代表の葉の最高曲と結末)
+const ALT_TE = ['は鳴かず飛ばずで、', 'が一部で評価され、', 'がじわじわ広まり、', 'がヒットし、', 'が大ヒットし、', 'が社会現象になり、'];
+const ALT_TA = ['は鳴かず飛ばずだった。', 'が一部で評価された。', 'がじわじわ広まった。', 'がヒットした。', 'が大ヒットした。', 'が社会現象になった。'];
+// 本筋を外れたあとの穴埋め文(arcs2_gen.OFF_TX / EV_FILL)は「その先の一場面」にならないので使わない
+const ALT_FILL = /^(選んだ道の先は、どこの地図|答え合わせのできない日々|あの日の選択が、少しずつ|手探りのまま、次の作品|予定表は白紙のまま|誰かの真似ではない一日|活動は、少しずつ、確かな形)/;
+function altClean(t) { return meFix(ij(String(t || '').replace(/\s*\((認知度|広がり)[^)]*\)\s*$/, '').trim())); }
+// 長い文は、文末の形を残すため後ろの節から n 字に収まるぶんだけ使う
+function altFirst(t, n) { let o = altClean(t).split(/(?<=[。!?])/)[0].replace(/[。]$/, ''); if (o.length > n) { const ps = o.split('、'); let r = ps.pop(); while (ps.length && (ps[ps.length - 1] + '、' + r).length <= n) r = ps.pop() + '、' + r; o = r.length <= n ? r : r.slice(0, n - 1) + '…'; } return o; }
 function altScene(pe, k) {
   try {
-    const ch = pe.node.n[k]; if (!ch) return null; const L = ch.s || []; let tx = null, y = null;
-    // ほかの道にも同じ文で出る出来事(選択に関係ない転機)は使わない
-    const sib = new Set(); pe.node.n.forEach((o, j) => { if (j !== k) (o.s || []).forEach((it) => { if (it.t === 'e' && it.tx) sib.add(it.tx); }); });
-    let ly = pe.y != null ? pe.y : null; for (const it of L) { if (it.t === 'r') ly = it.y; if (it.t === 'e' && it.tx && !sib.has(it.tx)) { tx = it.tx; y = ly; break; } }
-    if (!tx) { const x = L.find((it) => it.t === 'x' && it.tx); if (x) tx = x.tx; }
-    if (!tx && ch.e) tx = ch.e.tx;
-    if (!tx) return null;
-    tx = meFix(ij(String(tx).replace(/\s*\((認知度|広がり)[^)]*\)\s*$/, '').trim()));
-    const ss = tx.split(/(?<=[。!?])/); let o = ss[0]; if (o.length < 28 && ss[1] && (o + ss[1]).length <= 74) o += ss[1]; if (o.length > 74) o = o.slice(0, 72) + '…'; if (!/[。…」!?]$/.test(o)) o += '。';
-    if (y == null) y = pe.y != null ? pe.y + 1 : null;
-    return { tx: o, ag: ageAt(y) };
+    const ch = pe.node.n[k]; if (!ch) return null;
+    // ほかの道(選んだ道を含む)に出てくる文・曲名は使わない
+    const sib = new Set(); const walk = (n, f) => { (n.s || []).forEach(f); if (n.e) { f({ t: 'E', tx: n.e.tx }); (n.e.w || []).forEach((w) => f({ t: 'r', ti: w.ti, tr: w.tr })); } (n.n || []).forEach((c) => walk(c, f)); };
+    pe.node.n.forEach((o, j) => { if (j !== k) walk(o, (it) => { if (it.tx) sib.add(altClean(it.tx)); if (it.ti) sib.add('♪' + it.ti + '|' + it.tr); }); });
+    // 代表の葉 = 最高曲がいちばん当たった葉(同点なら、ほかの道と違う結末・曲を持つ葉)
+    const uw = (e) => (e.w || []).filter((w) => (pe.y == null || w.y > pe.y) && !sib.has('♪' + w.ti + '|' + w.tr));
+    let best = null; const seek = (n, path) => { const p2 = path.concat([n]); if (n.e) { const mx = (n.e.w || []).reduce((m, w) => Math.max(m, w.tr), -1); const sc = mx * 4 + (n.e.tx && !sib.has(altClean(n.e.tx)) ? 2 : 0) + (uw(n.e).length ? 1 : 0); if (!best || sc > best.sc) best = { e: n.e, mx, sc, path: p2 }; return; } (n.n || []).forEach((c) => seek(c, p2)); };
+    seek(ch, []);
+    const L = best ? best.path.flatMap((n) => n.s || []) : (ch.s || []);
+    // 結末と同じ中身の出来事は、結末と二重になるので転機には使わない
+    const enX = best && best.e.tx ? altFirst(best.e.tx, 30) : null;
+    const bg = (t) => { const x = altClean(t).replace(/[、。!?\s]/g, ''); const o = new Set(); for (let i = 0; i < x.length - 1; i++) o.add(x.slice(i, i + 2)); return o; };
+    const near = (a, b) => { if (!a || !b) return false; const A = bg(a), B = bg(b); let c = 0; A.forEach((x) => { if (B.has(x)) c++; }); return (2 * c) / Math.max(1, A.size + B.size) > 0.45; };
+    let ev = null, ly = pe.y != null ? pe.y : null;
+    for (const it of L) { if (it.t === 'r') ly = it.y; if (it.t === 'e' && it.tx && !ALT_FILL.test(it.tx) && !sib.has(altClean(it.tx)) && !near(it.tx, enX) && !near(altFirst(it.tx, 30), enX)) { ev = { tx: altFirst(it.tx, 34), y: ly }; break; } }
+    if (!ev) { const x = (ch.s || []).find((it) => it.t === 'x' && it.tx && !sib.has(altClean(it.tx)) && !near(it.tx, enX) && altClean(it.tx).length > 6); if (x) ev = { tx: altFirst(x.tx, 34), y: pe.y != null ? pe.y + 1 : null }; }
+    let wk = null, en = null;
+    if (best) {
+      const ws = uw(best.e);
+      wk = ws.reduce((m, w) => (!m || w.tr > m.tr ? w : m), null);
+      if (best.e.tx && !sib.has(altClean(best.e.tx)) && !(ev && near(ev.tx, enX))) en = enX;
+    }
+    const ag = (y) => { const a = ageAt(y); return a ? a + '歳、' : ''; };
+    const out = [];
+    if (ev) out.push({ y: ev.y, tx: ag(ev.y) + ev.tx + '。' });
+    if (wk) { const tr = Math.max(0, Math.min(5, wk.tr)); const wt = '『' + cut(wk.ti, 20) + '』'; const late = !ev || ev.y == null || wk.y == null || wk.y >= ev.y; const rt = S.entry.m.rare && TIER !== TIER_D ? 'の評判は「' + TIER[tr] + '」。' : null; out.push({ y: wk.y, tx: ag(wk.y) + wt + (en && ev && late ? (rt ? rt + en + '。' : ALT_TE[tr] + en + '。') : (rt || ALT_TA[tr])) }); if (en && !ev) out.push({ y: 1e9, tx: en + '。' }); }
+    else if (en) out.push({ y: 1e9, tx: (out.length ? 'やがて、' : '') + en + '。' });
+    if (!out.length) return null;
+    out.sort((x, y) => (x.y == null ? 0 : x.y) - (y.y == null ? 0 : y.y));
+    // 年齢は昇順に並べ、同じ年齢が続くときは2つ目の年齢を省く
+    if (out.length === 2) { const m1 = out[0].tx.match(/^(\d+)歳、/), m2 = out[1].tx.match(/^(\d+)歳、/); if (m1 && m2 && m1[1] === m2[1]) out[1].tx = out[1].tx.replace(/^\d+歳、/, 'その年、'); }
+    return { tx: out.slice(0, 2).map((o) => o.tx).join('') };
   } catch (_) { return null; }
 }
-function altLine(pe, k) { const s = altScene(pe, k); if (!s) return 'その先は、まだ誰も知らない。'; return (s.ag ? s.ag + '歳、' : '') + s.tx; }
+function altLine(pe, k) { const s = altScene(pe, k); if (!s) return 'その先は、まだ誰も知らない。'; return s.tx; }
 // 本家の道(担当Gが葉に入れる転機リスト)。キー名が決まるまで候補を順に見る。無ければ出さない
 function honOf(e) {
   const K = ['hon'];
@@ -2142,7 +2204,7 @@ function injectLife(list) {
     if (it.t === 'r') {
       S.relN = (S.relN || 0) + 1;
       if (life && !S.selfDone && S.selfAt && S.relN >= S.selfAt && m.a.length <= 18 && /アルバム/.test(it.o || '')) {
-        S.selfDone = true; const old = it.ti; it = Object.assign({}, it, { ti: m.a, selft: true }); if (it.tk && it.tk.length) it.tk = it.tk.map((k, i) => (i === 0 || k.t === old ? Object.assign({}, k, { t: m.a }) : k));
+        S.selfDone = true; const old = it.ti; it = Object.assign({}, it, { ti: m.a, selft: true }); if (it.tk && it.tk.length) { const hit = it.tk.findIndex((k) => k.t === old); const ti0 = hit >= 0 ? hit : 0; it.tk = it.tk.map((k, i) => (i === ti0 ? Object.assign({}, k, { t: m.a }) : k)).filter((k, i) => i === ti0 || !(k.t === m.a || k.t === m.a + ' 表題曲' || k.t.indexOf(m.a + ' ') === 0 && /表題曲/.test(k.t))); }
         const tx = grp ? ['ここまでの全部を詰め込んで、バンド名をそのままタイトルにしたアルバムを作ることにした。「これが名刺だ」と、全員の意見が一致した。', '「いま自分たちが何者か」を一枚で答えるため、アルバムの題名はバンド名にした。ジャケットには、メンバー全員の影が並んでいる。'][m.a.length % 2]
           : ['ここまでの全部を詰め込んで、自分の名前をそのまま題名にしたアルバムを作ることにした。「これが名刺だ」と思えた。', '「いま自分は何者か」を一枚で答えるため、アルバムの題名は自分の名前にした。'][m.a.length % 2];
         out.push({ t: 'e', tx, life: 1 });
@@ -2183,12 +2245,12 @@ function finishNode(node) {
 }
 function showDecision(node) {
   const tail = $('#tail');
-  const big = /(バンド|解散|脱退|契約|賭|ステージ|フェス|デビュー|売|結婚|やめ|辞め|離|東京|上京|海外|命|戦|旅立)/.test(node.q.prompt) || S.dn >= 2; const d = el('div', 'dec in' + (big ? ' big' : '')); d.append(el('span', 'lab', (big ? '運命の分かれ道 ' : '分かれ道 ') + (S.dn + 1))); d.append(el('p', 'q', meFix(node.q.prompt)));
+  const big = /(バンド|解散|脱退|契約|賭|ステージ|フェス|デビュー|売|結婚|やめ|辞め|離|東京|上京|海外|命|戦|旅立)/.test(node.q.prompt) || S.dn >= 2; const d = el('div', 'dec in' + (big ? ' big' : '')); d.append(el('span', 'lab', (big ? '運命の分かれ道 ' : '分かれ道 ') + (S.dn + 1))); const qp = meFix(qAge(node.q.prompt)); d.append(el('p', 'q', qp));
   const btns = [];
   node.q.labels.forEach((lab, i) => {
     const b = el('button', 'opt'); b.type = 'button'; b.append(el('span', 'l', 'ABCD'[i]), el('span', null, lab));
     b.onclick = () => { btns.forEach((x) => { x.disabled = true; }); b.classList.add('chosen'); d.classList.add('picked'); try { SFX.play('choose'); } catch (_) {} S.path.push({ node, i, y: S.lastY }); S.dn += 1;
-      const f = $('#feed'); const q = el('div', 'card res in'); q.append(el('span', 'lab', '分かれ道')); q.append(el('p', null, meFix(node.q.prompt))); f.prepend(q); collapseOld(q);
+      const f = $('#feed'); const q = el('div', 'card res in'); q.append(el('span', 'lab', '分かれ道')); q.append(el('p', null, qp)); f.prepend(q); collapseOld(q);
       tail.textContent = ''; $('#gcols').classList.remove('deciding'); document.documentElement.style.setProperty('--dockh', '0px'); playNode(node.n[i]); };
     btns.push(b);
   });
@@ -2203,9 +2265,18 @@ function showDecision(node) {
   if (S.auto) { let bi = 0; node.n.forEach((k, i) => { if (bestSum(k) > bestSum(node.n[bi])) bi = i; }); S.timers.push(setTimeout(() => btns[bi].click(), 2000)); }
   requestAnimationFrame(() => { measureHud(); c_scroll(); });
 }
-function wrapT(t, n, mx) { t = String(t); const o = []; const CL = /^[。、,.」』)\])!?!?ー…ぁぃぅぇぉっゃゅょァィゥェォッャュョ]/, OP = /[「『(\[(]$/; let i = 0;
-  while (i < t.length && o.length < mx) { let j = Math.min(t.length, i + n); while (j < t.length && j - i < n + 2 && CL.test(t.slice(j))) j++; if (j < t.length && j - i > 2 && OP.test(t.slice(i, j))) j--; o.push(t.slice(i, j)); i = j; }
-  if (i < t.length) o[mx - 1] = o[mx - 1].slice(0, -1) + '…'; return o; }
+function wrapT(t, n, mx) { t = String(t); const o = []; const CL = /^[。、,.」』)\])!?!?ー…ぁぃぅぇぉっゃゅょァィゥェォッャュョ]/, OP = /[「『(\[(]$/;
+  // 幅は全角=1・半角はおよそ0.3〜0.7で数える。英数字の単語は塊のまま折り返し、1行に入らないほど長い単語だけ途中で折る
+  const cw = (c) => (/[A-Z]/.test(c) ? 0.7 : c === ' ' ? 0.3 : c.charCodeAt(0) < 0x2000 || /[\uFF61-\uFF9F]/.test(c) ? 0.55 : 1); const wd = (x) => [...x].reduce((a, c) => a + cw(c), 0);
+  const tk = t.match(/[A-Za-z0-9'’&.\-]+ ?|[\s\S]/g) || []; let cur = '', w = 0; const push = () => { o.push(cur.replace(/ +$/, '')); cur = ''; w = 0; };
+  tk.forEach((x) => { const sw = wd(x), sw0 = / $/.test(x) ? sw - 0.3 : sw;
+    if (!cur && x === ' ') return;
+    if (w + sw0 <= n || (cur && CL.test(x) && w + sw0 <= n + 2)) { cur += x; w += sw; return; }
+    if (sw0 > n) { [...x].forEach((c) => { if (cur && w + cw(c) > n) push(); cur += c; w += cw(c); }); return; }
+    if (cur.length > 2 && OP.test(cur)) { const lc = cur.slice(-1); cur = cur.slice(0, -1); push(); cur = lc; w = cw(lc); } else push();
+    cur += x; w += sw; });
+  if (cur) push();
+  if (o.length > mx) { o.length = mx; o[mx - 1] = o[mx - 1].slice(0, -1) + '…'; } return o; }
 function cut(t, n) { t = String(t); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
 function renderTimeline() {
   const NS = 'http://www.w3.org/2000/svg'; const mk = (tag, at) => { const n = document.createElementNS(NS, tag); Object.entries(at || {}).forEach(([k, v]) => n.setAttribute(k, v)); return n; };
@@ -2219,13 +2290,20 @@ function renderTimeline() {
     rows.push(row);
   });
   const W = 360, RX0 = 22, RX1 = 112, LX = 134, GAP = 54, PAD = 26;
-  rows.forEach((r) => { const x = r.x; r.L = x.t === 'r' ? wrapT('「' + x.ti + '」', 16, 3) : x.t === 'e' ? wrapT(x.tx, 18, 5) : wrapT('分かれ道 ▸ ' + x.c, 18, 4); r.ex = Math.max(0, r.L.length - (x.t === 'r' ? 1 : 2)) * 15; });
-  let h = PAD; rows.forEach((r) => { r.h = GAP + r.ex + r.ghosts.length * 17; h += r.h; }); h += PAD;
+  rows.forEach((r) => { const x = r.x; r.L = x.t === 'r' ? wrapT('「' + x.ti + '」', 16, 3) : x.t === 'e' ? wrapT(x.tx, 17, 5) : wrapT('分かれ道 ▸ ' + x.c, 17, 4); r.ex = Math.max(0, r.L.length - (x.t === 'r' ? 1 : 2)) * 15; });
+  rows.forEach((r) => r.ghosts.forEach((gh) => { gh.L = ['もし「' + cut(qIn(gh.lab), 15) + '」──'].concat(wrapT(gh.sc, 19, 6)); }));
+  // 行ごとに中心から上(up)・下(dn)へ文字や丸がはみ出す量を測り、次の行と重ならない間隔をとる(分かれ道の「もし〜」は上側に積む)
+  rows.forEach((r) => { const x = r.x, L = r.L.length; let up, dn;
+    if (x.t === 'r') { const y0 = -3 - (L - 1) * 7.5, rad = 7 + x.tr * 2.4; up = Math.max(rad, 11 - y0); dn = Math.max(rad, y0 + L * 15 + 1); }
+    else { const y0 = 4 - (L - 1) * 7.5; up = Math.max(7, 11 - y0); dn = Math.max(7, y0 + (L - 1) * 15 + 4);
+      let off = 20 + (L - 1) * 7.5; r.ghosts.forEach((gh) => { up = Math.max(up, off + (gh.L.length - 1) * 14 + 7); off += gh.L.length * 14 + 6; }); }
+    r.up = up; r.dn = dn; });
+  const bot = PAD + Math.max(14, rows[0].dn); let h = bot; rows.forEach((r, i) => { const nx = rows[i + 1]; r.h = nx ? Math.max(GAP, r.up + nx.dn + 16) : r.up; h += r.h; }); h += PAD;
   const svg = mk('svg', { viewBox: '0 0 ' + W + ' ' + h, class: 'tl', role: 'img', 'aria-label': '人生の年表。下から上へ時間が進み、丸が作品と出来事を表します。' });
-  let y = h - PAD; const pts = [];
+  let y = h - bot; const pts = [];
   rows.forEach((r) => { r.y = y; r.px = RX0 + Math.min(1, r.heat / 14) * (RX1 - RX0); pts.push([r.px, y]); y -= r.h; });
   const d = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join(' ');
-  const base = mk('path', { d: 'M' + RX0 + ' ' + (h - PAD + 14) + ' L' + pts[0][0] + ' ' + pts[0][1], class: 'ln', style: 'stroke:var(--line)' }); svg.append(base);
+  const base = mk('path', { d: 'M' + RX0 + ' ' + (h - bot + 14) + ' L' + pts[0][0] + ' ' + pts[0][1], class: 'ln', style: 'stroke:var(--line)' }); svg.append(base);
   const line = mk('path', { d, class: 'ln draw' }); svg.append(line);
   rows.forEach((r, i) => {
     const g = mk('g', { class: 'pop', style: 'animation-delay:' + (0.2 + i * 0.09) + 's' }); const x = r.x;
@@ -2239,11 +2317,13 @@ function renderTimeline() {
     } else {
       g.append(mk('circle', { cx: r.px, cy: r.y, r: 6, class: 'dc' }));
       const y0 = r.y + 4 - (r.L.length - 1) * 7.5; r.L.forEach((ln, k) => { const t1 = mk('text', { x: LX, y: y0 + k * 15, 'font-size': 12, 'font-weight': 700 }); t1.textContent = ln; g.append(t1); });
-      r.ghosts.forEach((gh, k) => {
-        const gy = r.y - 20 - k * 17;
+      let off = 20 + (r.L.length - 1) * 7.5;
+      r.ghosts.forEach((gh) => {
+        const gy = r.y - off - (gh.L.length - 1) * 14;
         g.append(mk('path', { d: 'M' + r.px + ' ' + r.y + ' Q ' + (r.px + 14) + ' ' + (r.y - 10) + ' ' + (r.px + 22) + ' ' + gy, class: 'gl' }));
         g.append(mk('circle', { cx: r.px + 22, cy: gy, r: 4, class: 'gh' }));
-        const gt = mk('text', { x: LX, y: gy + 4, 'font-size': 11, class: 'gt' }); gt.textContent = cut('もし「' + cut(gh.lab, 9) + '」→' + gh.sc, 25); g.append(gt);
+        gh.L.forEach((ln, i) => { const gt = mk('text', { x: LX, y: gy + 4 + i * 14, 'font-size': 11, class: 'gt' }); gt.textContent = ln; g.append(gt); });
+        off += gh.L.length * 14 + 6;
       });
     }
     svg.append(g);
@@ -2282,6 +2362,8 @@ function makeCard(dr, m, topTitle) {
   return cv;
 }
 
+// 画面のディスコグラフィと同じ曲名(実行時に差し替えた曲名を含む S.log)を使う。無ければ結末データの e.w
+const relW = (e) => { const L = (S.log || []).filter((x) => x.t === 'r'); return L.length ? L.map((x) => ({ y: x.y, ti: x.ti, tr: x.tr })) : (e.w || []); };
 function makeCards(dr, m, e, topW) {
   const W = 720, H = 900; const FF = '"Zen Kaku Gothic New","Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif'; const F = (w, px) => w + ' ' + px + 'px ' + FF;
   const base = (sub, idx) => { const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d'); g.textBaseline = 'alphabetic';
@@ -2321,10 +2403,10 @@ function makeCards(dr, m, e, topW) {
     g.fillStyle = '#FFD21F'; g.font = F(900, 64); g.fillText(dr.total + ' / 400', 48, 600); g.fillStyle = '#fff'; g.font = F(700, 30); wrap(g, e.tx, 48, 664, W - 96, 44, 4); out.push(cv); }
   // 4 ディスコグラフィー
   { const [cv, g] = base('ディスコグラフィー', 4); g.fillStyle = '#fff'; g.font = F(900, 40); g.fillText(fit(g, m.a, W - 96), 48, 126);
-    const ws = e.w.slice(0, 14), lh = Math.min(52, Math.floor((H - 300) / Math.max(1, ws.length)));
+    const EW = relW(e), ws = EW.slice(0, 14), lh = Math.min(52, Math.floor((H - 300) / Math.max(1, ws.length)));
     ws.forEach((w, i) => { const y = 190 + i * lh; g.fillStyle = '#9aa4b2'; g.font = F(700, 22); g.fillText(String(w.y), 48, y); g.fillStyle = '#fff'; g.font = F(700, 28); g.fillText(fit(g, '「' + w.ti + '」', 360), 124, y);
       g.fillStyle = w.tr >= 3 ? '#FFD21F' : '#7d8696'; g.font = F(700, 22); g.textAlign = 'right'; g.fillText((TIER[w.tr] || ''), W - 48, y); g.textAlign = 'left'; });
-    if (e.w.length > ws.length) { g.fillStyle = '#9aa4b2'; g.font = F(500, 22); g.fillText('ほか ' + (e.w.length - ws.length) + '作', 48, H - 100); } out.push(cv); }
+    if (EW.length > ws.length) { g.fillStyle = '#9aa4b2'; g.font = F(500, 22); g.fillText('ほか ' + (EW.length - ws.length) + '作', 48, H - 100); } out.push(cv); }
   return out;
 }
 function dramaOf(e) {
@@ -2451,11 +2533,12 @@ const ZK = (() => {
   };
   return { record, render, exp, imp, load };
 })();
-{ let tc_ = 0; const dbgOn = () => { const d = $('#dbg'); d.hidden = false; d.style.display = 'flex'; };
-  try { if (location.hash === '#debug' || localStorage.getItem('hit30000_dbg') === '1') dbgOn(); } catch (_) {}
-  $('#ttl').addEventListener('click', () => { tc_ += 1; if (tc_ >= 5) { dbgOn(); try { localStorage.setItem('hit30000_dbg', '1'); } catch (_) {} } }); }
-$('#b-zk').onclick = () => { ZK.render(); show('s-zukan'); };
-{ const g = el('div'); g.id = 'gnav'; g.hidden = true; const h = el('button', null, '⌂ ホーム'); h.type = 'button'; h.onclick = () => show('s-title'); const z = el('button', null, '図鑑'); z.type = 'button'; z.onclick = () => { ZK.render(); show('s-zukan'); }; g.append(h, z); document.body.append(g); }
+// デバッグパネルは URL の #debug のときだけ開く(タイトル連打や localStorage では開かない)
+{ const dbgOn = () => { const d = $('#dbg'); d.hidden = false; d.style.display = 'flex'; };
+  try { localStorage.removeItem('hit30000_dbg'); } catch (_) {}
+  if (location.hash === '#debug') dbgOn(); }
+$('#b-zk').onclick = needData(() => { ZK.render(); show('s-zukan'); });
+{ const g = el('div'); g.id = 'gnav'; g.hidden = true; const h = el('button', null, '⌂ ホーム'); h.type = 'button'; h.onclick = () => show('s-title'); const z = el('button', null, '図鑑'); z.type = 'button'; z.onclick = needData(() => { ZK.render(); show('s-zukan'); }); z.id = 'gnav-zk'; g.append(h, z); document.body.append(g); }
 $('#zk-back').onclick = () => show('s-title');
 $('#zk-exp').onclick = () => { const c = ZK.exp(); $('#zk-code').value = c; const m = $('#zk-msg'); try { navigator.clipboard.writeText(c).then(() => { m.textContent = 'コードをコピーしました。メモなどに貼って控えてください。'; }, () => { $('#zk-code').select(); m.textContent = '下のコードを選択してコピーしてください。'; }); } catch (_) { $('#zk-code').select(); m.textContent = '下のコードを選択してコピーしてください。'; } };
 $('#zk-imp').onclick = () => { const ok = ZK.imp($('#zk-code').value); $('#zk-msg').textContent = ok ? '読み込みました。' : '読み込めませんでした。コードを確認してください。'; if (ok) ZK.render(); };
@@ -2549,7 +2632,7 @@ const ENDING = (() => {
         show_(ty); await new Promise((r) => T(r, 3000)); show_(tt); await new Promise((r) => T(r, 2600)); hint.classList.add('blink'); show_(hint);
         if (!opt.debug) { const g2 = get(); put({ n: g2.n + 1, best: (g2.best || best) ? 1 : 0, ts: Date.now() }); }
         await new Promise((r) => { nextFn = r; T(r, 9000); });
-        try { nextFn = null; box.style.transition = 'transform 4.2s cubic-bezier(.3,0,.2,1), opacity 3.6s ease'; box.style.transform = 'scale(1.35)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 4200)); await new Promise((r) => setTimeout(r, 1200)); } catch (_) {}
+        try { if (bgm && bgm.fade) bgm.fade(4.5); } catch (_) {} try { nextFn = null; box.style.transition = 'transform 4.2s cubic-bezier(.3,0,.2,1), opacity 3.6s ease'; box.style.transform = 'scale(1.35)'; box.style.opacity = '0'; await new Promise((r) => setTimeout(r, 4200)); await new Promise((r) => setTimeout(r, 1200)); } catch (_) {}
         finish(true);
       } catch (_) { finish(true); }
     })();
@@ -2669,7 +2752,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const st = el('div', 'stats');
   [[e.w.length, '作品数'], [hits, (S.entry.m.rare && [6, 11, 13, 14].indexOf(S.entry.m.era) < 0) ? '評判になった作品' : '小ヒット以上'], [bestTxt(best), S.entry.m.rare ? '最高評価' : '最高順位']].forEach(([v, l]) => { const s = el('div', 'stat'); s.append(el('div', 'v' + (String(v).length > 5 ? ' long' : ''), String(v)), el('div', 'l', l)); st.append(s); });
   tail.append(st);
-  { const T = awTab(S.entry.m), P = T[S.stg][1]; const aw = el('p', 'dcm'); aw.append('たどり着いた広がり:' + T[S.stg][0] + '(認知度 ' + fmtPct(S.awP / P * 100) + '%・約' + fmtN(S.awP) + ')' + (S.fesOk ? '。祭りや遠征での成功 ' + S.fesOk + '回' : '')); tail.append(aw); }
+  { const T = awTab(S.entry.m), P = T[S.stg][1]; const aw = el('p', 'dcm'); aw.append('たどり着いた広がり:' + T[S.stg][0] + '(認知度 ' + fmtPct(S.awP / P * 100) + '%・' + aboutN(S.awP) + ')' + (S.fesOk ? '。祭りや遠征での成功 ' + S.fesOk + '回' : '')); tail.append(aw); }
   { const grp = S.top === 'グループ'; const cur = S.mem || [];
     if (cur.length) { tail.append(el('span', 'lab', grp ? 'メンバー' : '支えてくれた人たち')); const mw = el('div'); if (!grp) mw.append(selfRow(S.entry.m)); cur.forEach((m_) => mw.append(memRow(m_))); (S.exMem || []).forEach((m_) => mw.append(memRow(m_, true))); tail.append(mw); } }
   tail.append(el('span', 'lab', 'ディスコグラフィ'));
@@ -2691,7 +2774,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const bestAlt = alts.slice().sort((x, y) => y.max - x.max || x.j - y.j)[0];
   if (S.path.length) {
     const iff = el('div', 'iff'); iff.append(el('span', 'lab', '選ばなかった道'), el('p', 'small', '「この道でやり直す」で、同じ人生をその分かれ道まで早送りして、別の道を選び直せます。'));
-    alts.forEach((al) => { const it = el('div', 'it'); it.append(el('b', null, 'もし「' + al.lab + '」を選んでいたら──'), el('span', 'sc', al.sc));
+    alts.forEach((al) => { const it = el('div', 'it'); it.append(el('b', null, 'もし「' + qIn(al.lab) + '」を選んでいたら──'), el('span', 'sc', al.sc));
       const rb = el('button', 'btn line ifgo', 'この道でやり直す ▶'); rb.type = 'button'; rb.onclick = () => replay(al); it.append(rb); iff.append(it); });
     try { const hn = S.entry.m.real ? honOf(e) : null; if (hn && hn.length) { const hb = el('div', 'hon'); const hx = hn.length > 4 ? hn.slice(0, 3).concat(hn.slice(-1)) : hn; hb.append(el('b', null, '本家の道はこうだった'), el('br')); if (Array.isArray(e.hc) && e.hc.length) hb.append('本家は' + e.hc.slice(0, 3).map((x) => '「' + cut(String(Array.isArray(x) ? x[x.length - 1] : x), 16) + '」').join('') + 'を選んだ。', el('br')); hb.append(hx.map((x) => cut(x, 34)).join(' → ')); iff.append(hb); } } catch (_) {}
     const rb0 = el('button', 'btn line', '最初から自分で選び直す'); rb0.type = 'button'; rb0.onclick = () => { clearTimers(); S.auto = false; S.force = null; S.skipIntro = true; startTree(S.entry); }; iff.append(rb0);
@@ -2704,7 +2787,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
     try { navigator.clipboard.writeText(tx).then(done, () => { b3.textContent = tx; }); } catch (_) { b3.textContent = tx; } };
   const b1 = el('button', 'btn line', '同じ人生を別の選択で'); b1.type = 'button'; b1.onclick = () => { S.auto = false; S.skipIntro = true; startTree(S.entry); };
   const b2 = el('button', 'btn line', '別の人生を始める'); b2.type = 'button'; b2.onclick = () => { clearTimers(); S.auto = false; show('s-top'); };
-  const topW = e.w.reduce((m_, w) => (w.tr > m_.tr ? w : m_), e.w[0] || { tr: 0, ti: '' });
+  const topW = relW(e).reduce((m_, w) => (w.tr > m_.tr ? w : m_), relW(e)[0] || { tr: 0, ti: '' });
   const mojiLine = (() => { try { const PTS = new Set(BANK.pt || []); const tiS = new Set(), relS = new Set(); S.log.filter((x) => x.t === 'r').forEach((w) => { tiS.add(w.ti); relS.add(w.ti); (w.tk || []).forEach((t) => { const b = String(t.t || '').replace(/\s*[\((].*$/, ''); if (b) tiS.add(b); }); });
     const n = S.entry.m.real ? relS.size : [...tiS].filter((t) => PTS.has(t)).length; return ''; } catch (_) { return ''; } })();
   const bars = (v) => '★'.repeat(Math.max(1, Math.round(v / 20))) + '☆'.repeat(5 - Math.max(1, Math.round(v / 20)));
@@ -2734,7 +2817,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   { const sm = el('div', 'sumc'); const m = S.entry.m; sm.append(el('div', 'sk', m.es + ' ・ ' + m.sn), el('div', 'sa', m.a));
     const ss = el('div', 'ss'); ss.append(el('b', null, String(dr.total)), el('span', null, '/ 400'), el('em', null, '「' + dr.tl + '」')); sm.append(ss);
     const r1 = el('div', 'sr'); r1.append(el('span', 'k', '称号'), el('span', 'v', cr[0])); const r2 = el('div', 'sr'); r2.append(el('span', 'k', '代表曲'), el('span', 'v', '「' + topW.ti + '」 ' + TIER[topW.tr])); sm.append(r1, r2);
-    if (bestAlt) { const f = el('button', 'sif'); f.type = 'button'; f.append(el('span', null, 'もし「' + cut(bestAlt.lab, 26) + '」を選んでいたら──'), el('b', null, bestAlt.sc), el('small', null, 'タップで、この道を選び直す ▶')); f.onclick = () => replay(bestAlt); sm.append(f); }
+    if (bestAlt) { const f = el('button', 'sif'); f.type = 'button'; f.append(el('span', null, 'もし「' + cut(qIn(bestAlt.lab), 26) + '」を選んでいたら──'), el('b', null, bestAlt.sc), el('small', null, 'タップで、この道を選び直す ▶')); f.onclick = () => replay(bestAlt); sm.append(f); }
     if (m.rare && m.era === 22) { const eb = el('button', 'sif'); eb.type = 'button'; eb.append(el('b', null, '大エンディングを見る ▶')); eb.onclick = () => ENDING.start({ back: true }); sm.append(eb); }
     const tb = el('div', 'sumb'); const bq = qGo('もう1回(おまかせ)', 'go'); tb.append(bimg, bq);
     const tb2 = el('div', 'sumb2'); const hm = el('button', 'btn line', 'ホーム'); hm.type = 'button'; hm.onclick = b4.onclick; const zk = el('button', 'btn line', '図鑑'); zk.type = 'button'; zk.onclick = b5.onclick; tb2.append(mGo('自分で選んで始める'), hm, zk);
@@ -2786,6 +2869,7 @@ const OPEN = (() => {
 try { const b = document.getElementById('boot'); if (b) b.remove(); } catch (_) {}
 try { const ts = document.createElement('div'); ts.id = 'tsky'; ts.setAttribute('aria-hidden', 'true'); for (let i = 0; i < 46; i++) { const st = document.createElement('i'); st.style.cssText = 'left:' + ((i * 53 + 7) % 100) + '%;top:' + ((i * 29 + 3) % 62) + '%;animation-delay:-' + ((i % 9) * 0.33).toFixed(2) + 's;width:' + (i % 7 === 0 ? 3 : 2) + 'px;height:' + (i % 7 === 0 ? 3 : 2) + 'px'; ts.append(st); } document.body.prepend(ts); const t0 = document.getElementById('s-title'); if (t0 && !t0.hidden) document.body.classList.add('ontitle'); } catch (_) {}
 try { OPEN.start(); } catch (_) {}
+loadData().catch(() => {});
 try { ENDING.badge(); } catch (_) {}
 try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); } catch (_) { const n = document.createElement('div'); n.textContent = 'このブラウザでは記録を保存できません(プライベートモード等)。遊べますが、人生の記録・時代解放は残りません。'; n.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:90;background:#400;color:#fff;padding:10px;border-radius:8px;font-size:12px'; n.onclick = () => n.remove(); document.body.append(n); }
 </script>

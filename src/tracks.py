@@ -29,7 +29,7 @@ TT = {
 }
 # 曲名のもじり(作品名のみ・時代で解禁)
 PARODY = [("天体観察", -1), ("世界に一つだけの傘", 2), ("終わりなき残業", 1), ("木綿のティッシュ", -1), ("春よ、遅れて来い", 1),
-          ("なごり雨", -1), ("チェリーパイ", 1), ("Tomorrow never comes", 1), ("夜に駆けたい", 4), ("ぬるいレモン", 3), ("さくらぼん", 2), ("ハナミズ", 2),
+          ("なごり飴", -1), ("チェリーパイ", 1), ("Tomorrow never comes", 1), ("夜に駆けたい", 4), ("ぬるいレモン", 3), ("さくらぼん", 2), ("ハナミズ", 2),
           ("守ってあげたいけど", 0), ("勝手にシンドバッド屋", 0), ("世界でいちばん暑い夏", 0), ("君がいない夏の終わりに", 0), ("乾杯と見せかけて", 2),
           ("めざせポケット", 1), ("涙そうそうそう", 2), ("負けないで、とは言えない", 1), ("アジアの純真さ", 1), ("粉雪と砂利", 2), ("糸くず", 3)]
 GENERIC = ["夜行バス", "週末の遠回り", "冷たい炭酸", "三日月の下", "言い訳の天才", "ひとりぼっちの合唱", "電柱の影", "雨宿り", "窓際の席", "残り香", "うたかた", "遠雷"]
@@ -45,6 +45,12 @@ try:
         GENERIC = list(dict.fromkeys(GENERIC + [x for x in (_g.get('GENERIC') or []) if isinstance(x, str) and x.strip()]))
 except Exception as _e:
     print('gen_titles skip', _e)
+try:  # 実在曲名そのまま(rosters/realtitles.txt)は外す
+    import realtitles as _rt
+    TT = {_k: _rt.fix_list(_v) for _k, _v in TT.items()}; GENERIC = _rt.fix_list(GENERIC)
+    PARODY = [(_rt.fix(_t), _e) for _t, _e in PARODY if not _rt.hit(_rt.fix(_t), None, 'parody')]
+except Exception as _e:
+    print('realtitles skip', _e)
 
 def _titles(r, theme, era, n, avoid, extra=None, year=None):
     out = []
@@ -106,7 +112,10 @@ def tracklist(h, style, era, theme, prev_titles, extra=None):
         if r.random() < 0.35: tr.insert(len(tr) // 2, {"t": "Interlude", "d": "1:%02d" % r.randint(0, 40), "g": ""})
         if r.random() < 0.18: tr[r.randrange(1, len(tr))]["d"] = "%d:%02d" % (r.randint(9, 17), r.randint(0, 59)); 
         if r.random() < 0.25: add("無題", "隠しトラック", "%d:%02d" % (r.randint(10, 12), r.randint(0, 59)))
-        elif r.random() < 0.3: add(r.choice(eraword.filt([t for t in (extra or GENERIC) if t not in avoid] or GENERIC, h.get('year'))), "初回限定盤のみ")
+        elif r.random() < 0.3:
+            _in = {x["t"] for x in tr}  # 同じ曲が二度入らないように(表題曲・収録済みの曲を除く)
+            _c = eraword.filt([t for t in (extra or GENERIC) if t not in avoid and t not in _in] or [t for t in GENERIC if t not in _in] or GENERIC, h.get('year'))
+            if _c: add(r.choice(_c), "初回限定盤のみ")
         if style in ("rap",) and r.random() < 0.5 and len(tr) > 3: tr[2]["t"] += " feat. " + r.choice(["KAGE", "N.O.W.", "SHIN", "ミナト", "ゲスト"])
     for i, t in enumerate(tr): t["n"] = i + 1
     return tr
@@ -125,13 +134,16 @@ TEAM = {"solo": ["サポートギター", "マネージャー", "録音担当"],
 def people(seed, style, n=None):
     r = random.Random(_seed(seed, style, "mem"))
     roles = ROLES.get(style) or TEAM.get(style, [])
-    out = []; used = set()
+    out = []; used = set(); nicks = set()
     for i, role in enumerate(roles):
         while True:
             g = "m" if r.random() < 0.55 else "f"
             nm = r.choice(FAM) + " " + r.choice(GIV_M if g == "m" else GIV_F)
             if nm not in used: used.add(nm); break
-        out.append({"g": g, "n": nm, "r": role, "k": r.choice(NICK) if r.random() < 0.35 else "", "t": r.choice(TRAIT) if r.random() < 0.7 else "", **bio.member_extra(seed, role, i)})
+        k = r.choice(NICK) if r.random() < 0.35 else ""
+        while k and k in nicks: k = NICK[(NICK.index(k) + 1) % len(NICK)]  # 愛称はグループ内で重ならない(「リーダー」が二人いない)
+        if k: nicks.add(k)
+        out.append({"g": g, "n": nm, "r": role, "k": k, "t": r.choice(TRAIT) if r.random() < 0.7 else "", **bio.member_extra(seed, role, i)})
     return out
 
 def newcomer(seed, role, taken):

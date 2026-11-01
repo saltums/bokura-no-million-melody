@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """人物のバイオグラフィー(出身・生い立ち・きっかけなど)。シード固定で決まる。"""
-import random, hashlib
+import random, hashlib, re
+import eraword
 
 PL = [("北海道", ["札幌市", "旭川市", "函館市", "釧路市"]), ("青森県", ["弘前市", "八戸市"]), ("岩手県", ["盛岡市", "花巻市"]), ("宮城県", ["仙台市", "石巻市"]), ("秋田県", ["秋田市", "横手市"]), ("山形県", ["山形市", "酒田市"]),
       ("福島県", ["郡山市", "いわき市"]), ("茨城県", ["水戸市", "つくば市"]), ("栃木県", ["宇都宮市", "足利市"]), ("群馬県", ["高崎市", "前橋市"]), ("埼玉県", ["さいたま市", "川越市", "所沢市"]),
@@ -40,18 +41,26 @@ def place(r):
     return p[0] + r.choice(p[1])
 
 
-def make(seed, style, era, ai_mode, group):
+ERA_YEAR = {-3: 1960, -2: 1960, -1: 1970, 0: 1980, 1: 1990, 2: 2000, 3: 2010, 4: 2020, 5: 2030}
+
+
+def make(seed, style, era, ai_mode, group, year=None):
     r = random.Random(_s(seed, "bio"))
+    yy = year or ERA_YEAR.get(era, 2000)
     if ai_mode == "公表":
         return {"ai": True, "dev": r.choice(AIDEV) + "存在", "vo": r.choice(AIVOICE), "ln": "学習した音楽は" + r.choice(AILEARN), "hm": "非公開のサーバー", "hb": r.choice(["同じ曲を何千回も聴き返す", "感想を読むのが日課", "季節の話題が好き", "朝と夜で歌い方を変える"])}
     ag = r.choice([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 30, 32])
     story = STORY + (STORY_NEW if era >= 3 else []) + (STORY_OLD if era <= 1 else [])
     gear = GEAR_ST.get(style) and r.random() < 0.7 and GEAR_ST[style] or GEAR_ERA.get(era, GEAR_ERA[2])
     jobs = JOB + (JOB_NEW if era >= 3 else [])
+    jobs = eraword.filt(jobs, yy); story = eraword.filt(story, yy)  # 1967年に「コンビニのバイト」等が出ないように
     b = {"hm": place(r), "ag": ag, "fm": "実家は" + r.choice(FAMJ) + "。" + r.choice(SIB), "st": r.choice(story), "gr": "最初に手にしたのは" + r.choice(gear), "jb": "デビュー前は" + r.choice(jobs) + "をしていた",
          "hb": r.choice(HABIT), "fv": r.choice(FOOD), "hy": r.choice(HOBBY)}
     if group:
-        b["fd"] = place(r)
+        # 結成の地はリーダーの出身県(別の市)。たまに上京・進学先の大都市
+        p0 = next((p for p, cs in PL if b["hm"].startswith(p)), "東京都"); x = r.random()
+        p1 = p0 if x < 0.8 else ("東京都" if x < 0.93 else "大阪府")
+        b["fd"] = p1 + r.choice(dict(PL)[p1])
     return b
 
 
@@ -62,3 +71,177 @@ def member_extra(seed, role, idx):
     cs = dict(PL).get(pref)
     h = pref + r.choice(cs) if cs else place(r)
     return {"h": h, "o": r.choice([-3, -2, -1, 0, 0, 1, 2, 3])}
+
+
+# ---- 実在モデルのアーティスト(arcs)用: 出身地・結成地を「始まりの場所」と国に合わせる ----
+CITIES = {"イギリス": ["ロンドン", "マンチェスター", "リヴァプール", "バーミンガム", "グラスゴー", "リーズ", "シェフィールド", "ブリストル"],
+          "アメリカ": ["ニューヨーク", "ロサンゼルス", "シカゴ", "シアトル", "デトロイト", "ボストン", "ナッシュビル", "サンフランシスコ"],
+          "カナダ": ["トロント", "モントリオール", "バンクーバー"], "アイルランド": ["ダブリン", "コーク", "ゴールウェイ"],
+          "スウェーデン": ["ストックホルム", "ヨーテボリ", "マルメ"], "ドイツ": ["デュッセルドルフ", "ハンブルク", "ベルリン", "ハノーファー"],
+          "韓国": ["ソウル", "釜山", "仁川", "大邱"], "オーストラリア": ["シドニー", "メルボルン", "パース", "ブリスベン"], "アイスランド": ["レイキャビク"],
+          "ノルウェー": ["オスロ", "ベルゲン"], "ジャマイカ": ["キングストン"], "フランス": ["パリ", "ヴェルサイユ"], "イタリア": ["ローマ", "ミラノ"],
+          "台湾": ["台北", "台中"], "バルバドス": ["ブリッジタウン"], "コロンビア": ["バランキージャ"], "プエルトリコ": ["サンフアン"],
+          "ニュージーランド": ["オークランド"], "中国": ["上海", "深圳"], "タイ": ["バンコク"], "ブラジル": ["リオデジャネイロ"], "ナイジェリア": ["ラゴス"], "セネガル": ["ダカール"]}
+_FOREIGN = [
+    (r'ロンドン|イギリス|英国|マンチェスター|リヴァプール|リバプール|バーミンガム|グラスゴー|リーズ|シェフィールド|デヴォン|チェシャー|サリー|スコットランド|ブリストル', 'イギリス'),
+    (r'ニューヨーク|ロサンゼルス|シアトル|シカゴ|カリフォルニア|ネバダ|テネシー|ニュージャージー|フィラデルフィア|デトロイト|ボストン|オハイオ|アメリカ|西海岸|中西部|太平洋岸北西部|サンフランシスコ|クイーンズ|ナッシュビル|南部の街', 'アメリカ'),
+    (r'カナダ|トロント|モントリオール', 'カナダ'), (r'ダブリン|アイルランド|西の海辺の村', 'アイルランド'), (r'北欧', 'スウェーデン'),
+    (r'ドイツ|大きな川沿いの街|工場跡のスタジオ', 'ドイツ'), (r'ソウル|海の向こう', '韓国'), (r'パース|オーストラリア|南半球', 'オーストラリア'),
+    (r'北の島国', 'アイスランド'), (r'北国の首都', 'ノルウェー'), (r'南の島の貧しい街', 'ジャマイカ')]
+# 始まりの場所に地名が無い海外勢・地名があっても日本の人(上書き用。None=日本)
+COUNTRY_K = {"a11_daft": "フランス", "a11_avicii": "スウェーデン", "a11_skrillex": "アメリカ", "a12_abba": "スウェーデン", "a12_swfy": "アメリカ", "a12_dyln": "アメリカ",
+             "a12_beet": "イギリス", "a12_oats": "イギリス", "a12_radf": "イギリス", "a12_cold": "イギリス", "a12_artm": "イギリス", "a12_fleet": "イギリス",
+             "a13_rhcp": "アメリカ", "a13_greenday": "アメリカ", "a13_linkin": "アメリカ", "a13_foo": "アメリカ", "a13_billie": "アメリカ", "a13_kendrick": "アメリカ",
+             "a13_beyonce": "アメリカ", "a13_bjork": "アイスランド", "a13_gorillaz": "イギリス", "a13_gaga": "アメリカ",
+             "a19_queen": "イギリス", "a19_zep": "イギリス", "a19_floyd": "イギリス", "a19_nirb": "アメリカ", "a19_blur": "イギリス", "a19_meta": "アメリカ",
+             "a19_acdec": "オーストラリア", "a19_v2": "アイルランド", "a19_wheez": "アメリカ", "a19_strike": "アメリカ",
+             "a20_mj": "アメリカ", "a20_mad": "アメリカ", "a20_prn": "アメリカ", "a20_mar": "アメリカ", "a20_emi": "アメリカ", "a20_rih": "バルバドス", "a20_ed": "イギリス",
+             "a20_bts": "韓国", "a20_sha": "コロンビア", "a20_ade": "イギリス", "a23_ivy": "韓国", "a23_blackpeach": "韓国", "a23_oldjeans": "韓国",
+             "a27_whp": "アメリカ", "a27_dpt": "アメリカ", "a39_are": "アメリカ", "a39_ray": "アメリカ", "a39_bru": "アメリカ", "a39_ari": "アメリカ", "a39_kat": "アメリカ",
+             "a41_bigbong": "韓国", "a41_shiney": "韓国", "a41_shoujojikoku": "韓国", "a41_twise": "韓国", "a41_seventea": "韓国", "a41_straykits": "韓国", "a41_psi": "韓国",
+             "a41_jaychow": "台湾", "a41_teresatei": "台湾", "b04_rsk": "カナダ", "b04_jdp": "イギリス", "b04_bnk": "アメリカ", "b04_ofs": "アメリカ", "b04_rdh": "イギリス",
+             "b04_msk": "イギリス", "b04_bkk": "アメリカ", "b05_tlc": "アメリカ", "b05_bsb": "アメリカ", "b05_nsy": "アメリカ", "b05_tkt": "イギリス", "b05_psb": "イギリス",
+             "b05_eur": "イギリス", "b05_hao": "アメリカ", "b05_sag": "アメリカ", "b05_car": "アメリカ", "b05_dsm": "アメリカ", "b05_mvg": "アメリカ", "b05_dua": "イギリス",
+             "b05_wkd": "カナダ", "c01_chk": "アメリカ", "c03_drn": "イギリス", "c03_smi": "イギリス", "c03_eur": "イギリス", "c04_plp": "イギリス", "c05_kan": "イギリス",
+             "c06_lrd": "ニュージーランド", "c06_bms": "アメリカ", "c06_ari": "アメリカ", "c07_mnk": "イタリア", "c07_olv": "アメリカ", "c07_sbc": "アメリカ", "c07_sbb": "プエルトリコ",
+             "c08_eny": "アイルランド", "c08_pia": "フランス", "c08_bcl": "イタリア", "c08_job": "ブラジル", "c08_fla": "ナイジェリア", "c08_ynd": "セネガル", "c08_jmc": "ジャマイカ",
+             "c08_csh": "アメリカ", "c08_bbk": "アメリカ",
+             "a32_mwm": None, "c05_rsl": None, "d01_smb": None, "a21_igr": None, "a20_rih_jp": None}
+# 多国籍グループのメンバーの出身(名簿の名前 → 国)
+MEMBER_FROM = {"c06_twc": {"平熱もち": "日本", "湊町紗冬": "日本", "名井北": "日本", "周子餅": "台湾"},
+               "a41_twise": {"モモ吉": "日本", "サニャ": "日本", "ミニャ": "日本", "ツウイ": "台湾"},
+               "c07_lsr": {"ミヤマキ・サクヤ": "日本", "カズマ": "日本"}, "a41_seventea": {"ジュニア": "中国", "ディエイツ": "中国", "ジョシュラ": "アメリカ", "バーモン": "アメリカ"},
+               "a23_blackpeach": {"Rosso": "オーストラリア", "Pisa": "タイ"}, "b06_exa": {"Lag": "中国"}}
+_JP = [(r'大阪|梅田|心斎橋|堺', '大阪府'), (r'京都', '京都府'), (r'神戸|尼崎|兵庫', '兵庫県'), (r'横浜|神奈川|湘南|川崎', '神奈川県'),
+       (r'東京|都内|下北沢|高円寺|渋谷|新宿|吉祥寺|中野|原宿|六本木|池袋|上野|浅草|銀座|秋葉原|町田|八王子', '東京都'), (r'札幌|北海道|函館|旭川', '北海道'),
+       (r'仙台|宮城', '宮城県'), (r'名古屋|愛知|三河|豊橋', '愛知県'), (r'福岡|博多|九州|北九州|久留米', '福岡県'), (r'沖縄|那覇|琉球', '沖縄県'), (r'広島', '広島県'),
+       (r'金沢|石川', '石川県'), (r'静岡|浜松', '静岡県'), (r'千葉', '千葉県'), (r'埼玉|大宮', '埼玉県'), (r'長崎', '長崎県'), (r'熊本', '熊本県'), (r'鹿児島', '鹿児島県'),
+       (r'青森|津軽', '青森県'), (r'秋田', '秋田県'), (r'岩手|盛岡', '岩手県'), (r'新潟', '新潟県'), (r'群馬|高崎|前橋', '群馬県'), (r'栃木|宇都宮', '栃木県'),
+       (r'茨城|水戸', '茨城県'), (r'山形', '山形県'), (r'福島|郡山', '福島県'), (r'長野|信州', '長野県'), (r'岐阜', '岐阜県'), (r'三重', '三重県'), (r'奈良', '奈良県'),
+       (r'和歌山', '和歌山県'), (r'岡山|倉敷', '岡山県'), (r'香川|高松|讃岐', '香川県'), (r'愛媛|松山', '愛媛県'), (r'高知|土佐', '高知県'), (r'徳島', '徳島県'), (r'山口|下関', '山口県'),
+       (r'鳥取', '鳥取県'), (r'島根|松江', '島根県'), (r'佐賀', '佐賀県'), (r'大分|別府', '大分県'), (r'宮崎', '宮崎県'), (r'富山', '富山県'), (r'福井', '福井県'), (r'山梨|甲府', '山梨県'), (r'滋賀', '滋賀県')]
+
+
+def country_of(a):
+    """海外の人なら国名、日本なら None"""
+    k = a.get("k")
+    if k in COUNTRY_K: return COUNTRY_K[k]
+    for rx, c in _FOREIGN:
+        if re.search(rx, a.get("sa", "")): return c
+    return None
+
+
+def jp_pref_of(a):
+    for txt in (a.get("sa", ""), a.get("tx", "")):
+        for rx, p in _JP:
+            if re.search(rx, txt): return p
+    return None
+
+
+def localize(a, b, mm, seed):
+    """b(bio)と mm(メンバー)の出身地・結成地を、国と「始まりの場所」に合わせる(その場で書き換える)"""
+    if not isinstance(b, dict) or b.get("ai"): return
+    r = random.Random(_s(seed, "loc", a.get("k")))
+    c = country_of(a)
+    if c:
+        cs = CITIES.get(c, [c]); home = r.choice(cs)
+        m = re.search(r'(' + '|'.join(re.escape(x) for x in cs) + r')', a.get("sa", ""))
+        base = m.group(1) if m else home
+        b["hm"] = c + "・" + (base if r.random() < 0.6 else home)
+        if "fd" in b: b["fd"] = c + "・" + base
+        ov = MEMBER_FROM.get(a.get("k"), {})
+        for x in mm:
+            c2 = ov.get(x.get("n"))
+            if c2 == "日本": x["h"] = place(r)
+            elif c2: x["h"] = c2 + "・" + r.choice(CITIES.get(c2, [c2]))
+            else: x["h"] = c + "・" + (base if r.random() < 0.5 else r.choice(cs))
+        return
+    fit_jp(a, b, mm, r)
+
+
+# ---- 紹介文(始まりの場所 sa・紹介 tx)の地名と、出身・結成地・メンバーの出身を一致させる ----
+ALLC = [p + c for p, cs in PL for c in cs]
+_RG = {"関西": ("大阪府", "京都府", "兵庫県", "奈良県", "滋賀県", "和歌山県"), "関東": ("東京都", "神奈川県", "埼玉県", "千葉県", "茨城県", "栃木県", "群馬県"),
+       "東北": ("青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"), "北陸": ("新潟県", "富山県", "石川県", "福井県"),
+       "九州": ("福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県"), "四国": ("徳島県", "香川県", "愛媛県", "高知県"),
+       "中国": ("鳥取県", "島根県", "岡山県", "広島県", "山口県"), "中部": ("愛知県", "岐阜県", "静岡県", "三重県", "長野県", "山梨県"),
+       "北": ("北海道", "青森県", "岩手県", "秋田県", "山形県", "新潟県"), "南": ("沖縄県", "鹿児島県", "宮崎県", "高知県")}
+_METRO = ("東京都", "神奈川県", "大阪府", "埼玉県", "千葉県")
+_BIG = ("名古屋市", "福岡市", "札幌市", "神戸市", "京都市", "仙台市", "広島市", "横浜市", "川崎市", "さいたま市")
+_PORT = ("函館市", "釧路市", "石巻市", "八戸市", "銚子市", "横浜市", "神戸市", "下関市", "長崎市", "佐世保市", "呉市", "酒田市", "敦賀市", "沼津市", "鳴門市",
+         "今治市", "那覇市", "石垣市", "新潟市", "高松市", "鹿児島市", "別府市", "藤沢市", "田辺市", "松山市", "四日市市", "北九州市", "堺市", "奄美市", "天草市")
+_SUB = ("町田市", "八王子市", "相模原市", "所沢市", "川越市", "松戸市", "船橋市", "藤沢市", "枚方市", "東大阪市", "堺市", "尼崎市", "宇治市", "多治見市", "つくば市", "岡崎市", "西尾市", "久留米市")
+_DOWN = ("足立区", "江戸川区", "大阪市", "東大阪市")
+_CITY = ("世田谷区", "杉並区", "足立区", "江戸川区", "大阪市", "名古屋市", "横浜市", "福岡市", "札幌市")
+_ISLE = ("那覇市", "沖縄市", "石垣市", "奄美市", "天草市")
+
+
+def _pc(x):
+    p = next((q for q, _ in PL if x.startswith(q)), "")
+    return p, x[len(p):]
+
+
+def _cons(txt):
+    """紹介文から、出身・結成地の候補(都道府県+市区)の絞り込みを優先度順に返す"""
+    C = []
+    def add(f): C.append([x for x in ALLC if f(*_pc(x))])
+    for rx, p in _JP:
+        if re.search(rx, txt): add(lambda q, c, p=p: q == p); break
+    for w, k in (("関西", "関西"), ("関東|首都圏", "関東"), ("東北", "東北"), ("北陸", "北陸"), ("九州", "九州"), ("四国", "四国"), ("中国地方|山陰|山陽", "中国"),
+                 ("中部の|東海", "中部"), ("北国|北の街|北の町|雪国|雪深い|北の小さな島|北の島", "北"), ("南国|南の街|南の町", "南")):
+        if re.search(w, txt): add(lambda q, c, k=k: q in _RG[k])
+    if re.search(r"南の島|三線|琉球|島の言葉|島唄", txt): add(lambda q, c: q == "沖縄県" or c == "奄美市")
+    if re.search(r"離島|海辺の島|小さな島|島の(学校|同級生|小さな|音楽|民謡|高校|居間|中学|舞台|バンド)", txt) and not re.search(r"北の小さな島|北の島", txt): add(lambda q, c: c in _ISLE)
+    if re.search(r"港町|港の|海沿い|海辺|漁港|漁村|海の見える", txt): add(lambda q, c: c in _PORT)
+    if re.search(r"郊外", txt): add(lambda q, c: c in _SUB)
+    if re.search(r"下町", txt): add(lambda q, c: c in _DOWN)
+    if re.search(r"都会|大都市|都心", txt) and not re.search(r"地方|田舎", txt): add(lambda q, c: c in _CITY)
+    if re.search(r"地方|田舎|山あい|山間|農村|田園", txt): add(lambda q, c: q not in _METRO and c not in _BIG)
+    return C
+
+
+def _meet(C):
+    s = set(ALLC)
+    for c in C:
+        t = s & set(c)
+        if t: s = t
+    return sorted(s, key=ALLC.index)
+
+
+def fit_jp(a, b, mm, r):
+    """日本の人: 紹介文(sa・tx)の地名・地域に、出身・結成地・メンバーの出身を合わせる(その場で書き換える)"""
+    txt = (a.get("sa") or "") + " " + (a.get("tx") or "")
+    C = _cons(txt)
+    if not C: return
+    ok = _meet(C)
+    moved = bool(re.search(r"上京(し|後|して|した|すると|先)", txt))  # 上京してから結成: 結成は東京、出身は地方
+    if moved:
+        ok_h = _meet([[x for x in ALLC if _pc(x)[0] != "東京都"]] + [c for c in C if not all(_pc(x)[0] == "東京都" for x in c)])
+        ok_f = [x for x in ALLC if x.startswith("東京都")]
+    else:
+        ok_h = ok_f = ok
+    if b.get("hm") not in ok_h: b["hm"] = r.choice(ok_h)
+    if "fd" in b:
+        if b["fd"] not in ok_f:
+            same = [x for x in ok_f if _pc(x)[0] == _pc(b["hm"])[0]]
+            b["fd"] = r.choice(same if same and r.random() < 0.8 else ok_f)
+        base = b["fd"]
+    else:
+        base = b["hm"]
+    lp = _pc(base)[0]; ok_m = ok_f if moved else ok
+    near = [x for x in ok_m if _pc(x)[0] == lp] or ok_m
+    for i, x in enumerate(mm or []):
+        if not x.get("h"): continue
+        if x["h"] not in ok_m or (not moved and not x["h"].startswith(lp) and r.random() < 0.85):
+            x["h"] = r.choice(near if r.random() < 0.85 else ok_m)
+    if "fd" in b and mm and b["fd"] not in [b.get("hm")] + [x.get("h") for x in mm]:
+        mm[0 if len(mm) == 1 else 1]["h"] = b["fd"]  # 結成地はメンバーの誰かの地元(build_proto の後処理で結成地が動かないように)
+
+
+def fit(m):
+    """生成した人生(meta)の bio・メンバー出身を、紹介文と国に合わせる"""
+    if not isinstance(m, dict) or m.get("rare") or m.get("ai"): return m
+    b = m.get("bio")
+    if isinstance(b, dict) and not b.get("ai"):
+        localize({"k": None, "sa": m.get("sa", ""), "tx": m.get("tx", "")}, b, m.get("mm") or [], m.get("id"))
+    return m
