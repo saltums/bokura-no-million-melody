@@ -2465,7 +2465,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const b2 = el('button', 'btn line', '別の人生を始める'); b2.type = 'button'; b2.onclick = () => { clearTimers(); S.auto = false; show('s-top'); };
   const topW = e.w.reduce((m_, w) => (w.tr > m_.tr ? w : m_), e.w[0] || { tr: 0, ti: '' });
   const mojiLine = (() => { try { const PTS = new Set(BANK.pt || []); const tiS = new Set(), relS = new Set(); S.log.filter((x) => x.t === 'r').forEach((w) => { tiS.add(w.ti); relS.add(w.ti); (w.tk || []).forEach((t) => { const b = String(t.t || '').replace(/\s*[\((].*$/, ''); if (b) tiS.add(b); }); });
-    const n = S.entry.m.real ? relS.size : [...tiS].filter((t) => PTS.has(t)).length; return n ? 'この人生のもじり' + n + '個、元ネタ分かる?' : ''; } catch (_) { return ''; } })();
+    const n = S.entry.m.real ? relS.size : [...tiS].filter((t) => PTS.has(t)).length; return ''; } catch (_) { return ''; } })();
   const bars = (v) => '★'.repeat(Math.max(1, Math.round(v / 20))) + '☆'.repeat(5 - Math.max(1, Math.round(v / 20)));
   const xt = ['『' + S.entry.m.a + '』(' + S.entry.m.es + '・' + S.entry.m.sn + ')', '総合' + dr.total + '/400「' + dr.tl + '」 ' + dr.cm, 'レア' + dr.rl + ' ドラマチック' + dr.sc + ' 愛され' + dr.love + ' 売れ度' + dr.ure, '代表曲「' + topW.ti + '」', mojiLine, '#ぼくらのミリオンメロディ'].filter(Boolean).join('\n');
   const bx = el('a', 'btn line', 'Xに文章だけポスト'); bx.target = '_blank'; bx.rel = 'noopener noreferrer'; bx.href = 'https://x.com/intent/post?text=' + encodeURIComponent(xt) + '&url=' + encodeURIComponent(SHARE_URL); bx.style.textAlign = 'center'; bx.style.textDecoration = 'none';
