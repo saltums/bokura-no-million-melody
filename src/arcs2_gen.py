@@ -22,10 +22,27 @@ _CNT_RX = re.compile(r"(?<![一-龥])([二三四五六七八九])人(?=[はが�
 _CNT_SKIP = re.compile(r"客|観客|世代|若い|子|娘|息子|兄弟|姉妹|(?<!駆け)抜け|去|加わ|増え|減|残|新し|なくなった|人のまま|かつて|元の|二人組|三人組|がかり|ボーカル|声|男|女|仲間|DJ|顔を描")
 
 
-def fix_count(s, n):
-    """本文の「四人は」などを実際の人数に合わせる(編成替え・客・他人の話の文は触らない)"""
-    if not isinstance(s, str) or not 2 <= n <= 9 or _CNT_SKIP.search(s): return s
-    return _CNT_RX.sub(lambda m: _KN[n - 1] + "人", s)
+_PART = [(r"管楽器|ホーン|吹奏", r"Tp|Tb|Sax|Hr|Fl|Cl|Tu|管"), (r"弦楽器|弦", r"Vn|Va|Vc|Cb|弦"), (r"ギター", r"Gt"), (r"MC|ラッパー", r"MC"),
+         (r"歌い手|ボーカル", r"^Vo|Vo$|/Vo"), (r"演奏者|奏者", r"^(?!Vo$)"), (r"太鼓|打楽器", r"Dr|Per|太鼓")]
+_PART_SKIP = re.compile(_CNT_SKIP.pattern.replace("客|観客|", ""))  # 一部の担当の人数: 客の話の文でも合わせる(編成替え・仲間の話は触らない)
+_PART_RX = re.compile(r"(?<![一-龥])([一二三四五六七八九])人の(" + "|".join(p for p, _ in _PART) + ")")
+
+
+def fix_count(s, n, roles=None):
+    """本文の「四人は」などを実際の人数に合わせる(編成替え・客・他人の話の文は触らない)。
+    「三人の管楽器」のような一部の担当の人数は、roles(担当の並び)のその担当の数に合わせる(数えられなければそのまま)"""
+    if not isinstance(s, str) or not 2 <= n <= 9: return s
+    def part(m):
+        rx = next(r for p, r in _PART if re.fullmatch(p, m.group(2)))
+        c = sum(1 for r in roles or [] if re.search(rx, str(r)))
+        return (_KN[c - 1] if 1 <= c <= 9 else m.group(1)) + "人の" + m.group(2)
+    if not _PART_SKIP.search(s): s = _PART_RX.sub(part, s)
+    if _CNT_SKIP.search(s): return s
+    out, last = [], 0
+    for m in _CNT_RX.finditer(s):
+        if _PART_RX.match(s, m.start()): continue  # 一部の担当の人数は上で済み
+        out.append(s[last:m.start()] + _KN[n - 1] + "人"); last = m.end()
+    return "".join(out) + s[last:]
 
 
 def cap_fives(tree, cap=2):
@@ -158,7 +175,7 @@ def build(a, i, pool, era=None, nm=None):
             nw = tracks.newcomer(seed, roles[len(mm)], {x["n"] for x in mm}); mm.append(nw)
         for j, m_ in enumerate(mm):
             m_["r"] = roles[j]
-            if j < len(a.get("tr", [])): m_["t"] = a["tr"][j]
+            if j < len(a.get("tr", [])): m_["t"] = _ro0.trait(a["tr"][j])
         G = a.get("vg")
         if G in ("m", "f"):
             import re as _re, random as _rd
@@ -174,7 +191,8 @@ def build(a, i, pool, era=None, nm=None):
                     taken.discard(m_["n"]); taken.add(nm2); m_["n"] = nm2; m_["g"] = G
     import roster as _ro
     mm = _ro.apply(a, mm, seed)
-    top = "グループ" if st in ("band", "duo", "inst") else "ソロ"
+    top = "グループ" if _ro.is_group(st, mm) else "ソロ"
+    if top == "ソロ": mm = _ro.solo_side(a, st, mm, seed)  # ソロ/ボカロPの本人がメンバー一覧に別人として並ばないように
     solo_inst = st == "inst" and not roles and not (a.get('members') or _ro0.ROSTER.get(a['k']))
     if solo_inst:  # トランペット奏者など「一人の名前」のインスト: 本人+バックの奏者(Gt/Gt/Ba/Drのバンドにしない)
         lead = next((v for w, v in (("トランペット", "Tp"), ("サックス", "Sax"), ("ピアノ", "Pf"), ("ギター", "Gt"), ("ベース", "Ba"), ("ドラム", "Dr")) if w in a["tx"]), "Gt")
@@ -187,6 +205,7 @@ def build(a, i, pool, era=None, nm=None):
             "tx": a["tx"], "ai": None, "mm": mm, "vg": a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
     bio.localize(a, meta["bio"], mm, seed)  # 出身地・結成地を国と「始まりの場所」に合わせる
     if solo_inst: meta["sn"] = "インスト奏者"
+    if st == "rap" and top == "グループ": meta["sn"] = "ヒップホップグループ"
     th = a["th"]; D = a["d"]; N = len(D); cv = a["cv"]; ev = list(a["ev"]); ex = list(a.get("ex") or [])
     _yy = y0 + 2
     ex = [x for x in ex if era_ok(x, _yy)]
@@ -195,8 +214,11 @@ def build(a, i, pool, era=None, nm=None):
         _cd = lambda z: re.sub(r"CD(にして|として)売", "有料で配信して売", z).replace("CDを出し", "有料配信で出し").replace("CDを", "音源を") if isinstance(z, str) else z
         ev = [_cd(x) for x in ev]; ex = [_cd(x) for x in ex]; D = [tuple(_cd(z) for z in d_) for d_ in D]
     if top == "グループ":  # 人数語を実際のメンバー数に
-        _n = len(mm); ev = [fix_count(x, _n) for x in ev]; ex = [fix_count(x, _n) for x in ex]; meta["histTx"] = fix_count(meta["histTx"], _n)
-        D = [tuple(fix_count(z, _n) for z in d_) for d_ in D]
+        _n = len(mm); _rl = [x.get("r") for x in mm]; ev = [fix_count(x, _n, _rl) for x in ev]; ex = [fix_count(x, _n, _rl) for x in ex]; meta["histTx"] = fix_count(meta["histTx"], _n, _rl)
+        D = [tuple(fix_count(z, _n, _rl) for z in d_) for d_ in D]
+    _b = meta["bio"]  # 出来事・紹介文の地名語(古都・津軽・港町など)が出身・結成地に合わなければ地名を外す
+    ev = [bio.fit_text(x, _b) for x in ev]; ex = [bio.fit_text(x, _b) for x in ex]; D = [tuple(bio.fit_text(z, _b) for z in d_) for d_ in D]
+    meta["histTx"] = bio.fit_text(meta["histTx"], _b); meta["sa"] = bio.fit_text(meta["sa"], _b); meta["tx"] = bio.fit_text(meta["tx"], _b)
     rr = random.Random(H(a["k"], "ex", era)); rr.shuffle(ex)
     counter = [0]
 
@@ -248,7 +270,8 @@ def build(a, i, pool, era=None, nm=None):
                 kids.append({"s": seg, "q": q(D[si + 1], works), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,), off2, hon2, hc2)})
             else:
                 tx = end_text(a, path + (x,))
-                if top == "グループ": tx = fix_count(tx, len(mm))
+                if top == "グループ": tx = fix_count(tx, len(mm), [x.get("r") for x in mm])
+                tx = bio.fit_text(tx, meta["bio"])
                 e_ = {"tx": tx.rstrip("。"), "w": [wk(w) for w in works], "mm": mm}
                 if off2:  # 本家の道: 外れた分かれ道で本家が選んだ側(hc)と、出なかった本家の転機(hon)。本家の結末は m.histTx
                     e_["hon"] = [h_ for h_ in dict.fromkeys(hon2) if h_ != EV_FILL]; e_["hc"] = list(hc2)

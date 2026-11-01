@@ -930,9 +930,11 @@ const EXP_ACT = { '国内': '全国ツアーに出る', 'アジア': 'アジア�
 function fesMake() {
   const m = S.entry.m; if (m.bgm) return null; if (S.rtN >= 3 || S.works - S.rtW < 2 || S.works < 2) return null;
   const T = awTab(m), P = T[S.stg][1], pct = S.awP / P * 100, lt = S.tiers[S.tiers.length - 1], last = S.stg >= T.length - 1;
-  const ek = m.era === -2 ? 'p' : m.era === -3 ? 'e' : m.era === 6 ? 'f' : (SGRP[m.st] || 'g');
+  let ek = m.era === -2 ? 'p' : m.era === -3 ? 'e' : m.era === 6 ? 'f' : (SGRP[m.st] || 'g'); if (ek === 'g' && m.top !== 'グループ') ek = 's';
+  // 祭りの文が用意されていないレア時代(平安・戦国など)には、現代のフェスのお誘いを出さない
+  const fesNo = m.rare && [-2, -3, 6].indexOf(m.era) < 0;
   S.expAsk = S.expAsk || new Set();
-  let kind = null; if (!last && pct >= 9 && lt >= 2 && !S.expAsk.has(S.stg)) { kind = 'exp'; S.expAsk.add(S.stg); } else if (pct >= 3 && lt >= 2 && S.fesN < 2) kind = 'fes';
+  let kind = null; if (!last && pct >= 9 && lt >= 2 && !S.expAsk.has(S.stg)) { kind = 'exp'; S.expAsk.add(S.stg); } else if (!fesNo && pct >= 3 && lt >= 2 && S.fesN < 2) kind = 'fes';
   if (!kind || (kind === 'fes' && Math.random() > 0.85)) return null;
   const pick = (a) => a[Math.floor(Math.random() * a.length)];
   if (kind === 'fes') {
@@ -949,9 +951,9 @@ function fesMake() {
 function sideMake() {
   const m = S.entry.m; if (!BANK.sd || m.rare || S.sdN >= 7 || S.works < 1) return null;
   const eb = eraBucket(m.era), grp = m.top === 'グループ' || m.st === 'duo';
-  const c = BANK.sd.filter((x) => !(x.ns || []).includes(m.st) && (x.e === 'all' || x.e === eb) && (x.k === 'a' || (x.k === 'g') === grp) && !S.sdUsed.has(x.pr) && evFit(x.pr + ' ' + x.o.map((o) => o.l).join(' ')));
+  const c = BANK.sd.filter((x) => !(x.ns || []).includes(m.st) && (x.e === 'all' || x.e === eb) && (x.k === 'a' || (x.k === 'g') === grp) && !S.sdUsed.has(x.pr) && evFit(x.pr + ' ' + x.o.map((o) => o.l).join(' ')) && lifeOk(x.o.map((o) => [o.ok, o.ng, o.fu_ok, o.fu_ng].filter(Boolean).join(' ')).join(' ')));
   if (!c.length) return null; const pk = c[Math.floor(Math.random() * c.length)]; S.sdUsed.add(pk.pr); S.sdN += 1;
-  return { kind: 'side', lab: pk.lab || '寄り道', prompt: pk.pr, opts: pk.o.filter((o) => !o.gs || pk.o.length < 3 || Math.random() < 0.25).map((o) => ({ l: o.l, p: o.p, g: o.g, ok: o.ok, ng: o.ng || o.ok, up: false, gs: o.gs, fu: [o.fu_ok, o.fu_ng] })) };
+  return { kind: 'side', lab: pk.lab || '寄り道', prompt: cjFix(pk.pr), opts: pk.o.filter((o) => !o.gs || pk.o.length < 3 || Math.random() < 0.25).map((o) => ({ l: o.l, p: o.p, g: o.g, ok: o.ok, ng: o.ng || o.ok, up: false, gs: o.gs, fu: [o.fu_ok, o.fu_ng] })) };
 }
 function showFes(d, done) {
   const tail = $('#tail'); tail.textContent = '';
@@ -1098,7 +1100,7 @@ function unlockPanel() {
     for (let i = 0; i < span; i++) { const d = el('span'); d.style.cssText = 'flex:1;height:8px;border:1px solid var(--line);background:' + (i < n - from ? '#f2c230' : 'transparent'); bar.append(d); }
     const nxt = el('div', 'small', 'あと' + left + '回で ' + nx[1]); nxt.style.cssText = 'font-weight:700;color:var(--fg)'; c.append(bar, nxt); } else c.append(el('div', 'small', 'すべての時代を解放しました!'));
   const ul = el('div'); ul.style.cssText = 'margin-top:8px;display:flex;flex-direction:column;gap:3px;font-size:13px';
-  UT.forEach(([k, l]) => { const ok = n >= k; const r = el('div', null, ok ? '✓ ' + l + '(解放ずみ)' : '🔒 あと' + (k - n) + '回で ' + l); r.style.opacity = ok ? '1' : '.65'; ul.append(r); });
+  UT.forEach(([k, l]) => { if (nx && k === nx[0]) return; const ok = n >= k; const r = el('div', null, ok ? '✓ ' + l + '(解放ずみ)' : '🔒 あと' + (k - n) + '回で ' + l); r.style.opacity = ok ? '1' : '.65'; ul.append(r); });
   c.append(ul); return c;
 }
 function refreshUnl() { try { ['#unl-title', '#unl-zk'].forEach((q) => { const b = $(q); if (b) { b.textContent = ''; b.append(unlockPanel()); } }); } catch (_) {} }
@@ -1787,13 +1789,13 @@ function setHeat(up) {
 function bestTxt(n) { const rkm = S.entry && S.entry.m.rk; if (rkm) { const t = { 999: 0, 998: 1, 20: 2, 8: 3, 2: 4, 1: 5 }[n]; return t == null ? '—' : rkm[t]; } return n === 999 ? '圏外' : n + '位'; }
 function milestone(it, r) {
   const t = S.tiers, m = S.ms; let out = null; if (it.selft) out = 'セルフタイトルのアルバム';
-  if (S.entry.m.rare && S.entry.m.ms) { const M = S.entry.m.ms; if (it.tr >= 2 && !m.chart) { m.chart = 1; out = M[0]; } if (it.tr >= 3 && !m.top10) { m.top10 = 1; out = M[1]; } if (it.tr >= 4 && !m.no1) { m.no1 = 1; out = M[2]; } if (!out && it.tr >= 3 && t.length >= 2 && t.slice(-2).every((x) => x <= 1)) out = M[3]; if (!out && it.tr >= 2 && t.length >= 2 && t.slice(-2).every((x) => x >= 2)) out = M[4]; return out; }
+  if (S.entry.m.rare && S.entry.m.ms) { const M = S.entry.m.ms; if (it.tr >= 2 && !m.chart) { m.chart = 1; out = M[0]; } if (it.tr >= 3 && !m.top10) { m.top10 = 1; out = M[1]; } if (it.tr >= 4 && !m.no1) { m.no1 = 1; out = M[2]; } if (!out && it.tr >= 3 && t.length >= 2 && t.slice(-2).every((x) => x <= 1)) out = M[3]; if (!out && it.tr >= 2 && t.length >= 2 && t.slice(-2).every((x) => x >= 2)) { let k = 1; for (let i = t.length - 1; i >= 0 && t[i] >= 2; i--) k++; const KN = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']; out = k > 3 ? String(M[4]).replace(/^三/, KN[k] || String(k)) : M[4]; } return out; }
   if (S.entry.m.rare && S.entry.m.era <= -2) { const ed = S.entry.m.era === -3; if (it.tr >= 2 && !m.chart) { m.chart = 1; out = ed ? '初めて宿場の外へ' : '初めて集落の外へ'; } if (it.tr >= 4 && !m.no1) { m.no1 = 1; out = ed ? '盆踊りの定番に' : '語り継がれる歌に'; } if (!out && it.tr >= 3 && t.length >= 2 && t.slice(-2).every((x) => x <= 1)) out = '長い不遇からの復活'; return out; }
   if (it.tr >= 2 && !m.chart) { m.chart = 1; out = it.selft ? out : '初のチャートイン'; }
   if (r.n <= 10 && !m.top10) { m.top10 = 1; out = '初のトップ10入り'; }
   if (r.n === 1 && !m.no1) { m.no1 = 1; out = '初の1位'; }
   if (!out && it.tr >= 3 && t.length >= 2 && t.slice(-2).every((x) => x <= 1)) out = '長い不遇からの復活';
-  if (!out && it.tr >= 2 && t.length >= 2 && t.slice(-2).every((x) => x >= 2)) out = '3作連続のヒット';
+  if (!out && it.tr >= 2 && t.length >= 2 && t.slice(-2).every((x) => x >= 2)) { let k = 1; for (let i = t.length - 1; i >= 0 && t[i] >= 2; i--) k++; out = k + '作連続のヒット'; }
   return out;
 }
 function applyMb(mb) {
@@ -1869,7 +1871,7 @@ function renderItem(it) {
     const c = el('div', 'card res in'); const mt = String(it.tx || '').match(/\((認知度[^)]*|広がり[^)]*)\)\s*$/); const body = mt ? it.tx.slice(0, mt.index) : it.tx;
     const gl = gainLoss(it); const hd = el('div', 'rhead'); hd.append(el('span', 'lab', '選んだ結果')); const bg = el('span', 'rbadge gl', '得たもの:' + gl[0] + ' / 失ったもの:' + gl[1]); hd.append(bg); if (mt) hd.append(el('span', 'rpct', mt[1])); c.append(hd);
     const p = el('p'); const pk = el('span', 'pk', choiceHead(it)); p.append(pk, ' '); p.append(body);
-    c.append(p); if (!it.rt) c.append(el('p', 'feel', feelOf(it))); { const bb = mbBadge(it.mb); if (bb) c.append(bb); } c.addEventListener('click', () => c.classList.remove('mini')); f.prepend(c); S.curEl = c; collapseOld(c);
+    c.append(p); if (!it.rt) { const fl = feelOf(it); if (fl) c.append(el('p', 'feel', fl)); } { const bb = mbBadge(it.mb); if (bb) c.append(bb); } c.addEventListener('click', () => c.classList.remove('mini')); f.prepend(c); S.curEl = c; collapseOld(c);
   }
   updateHud(it);
   c_scroll();
@@ -1906,15 +1908,16 @@ const FEEL = {
   q0: ['本当にこれでよかったのか。答えは、まだ出ていない。', '楽器ケースを押し入れにしまう手が、少しだけ止まった。', 'やめたはずなのに、街で流れる音楽ばかり耳に入る。', '「もったいない」と言われるたびに、うなずくことしかできなかった。', 'スマホの写真フォルダを、しばらく開けなかった。', '終わらせたのは自分だ。なのに、置いていかれた気がした。', '帰り道、昔よく通ったライブハウスの前を、わざと通らなかった。'],
 };
 function feelKey(it) { return choiceKind(it.c) + (it.ok ? '1' : '0'); }
-function gainLoss(it) { const a = GL[it.sk === 'side' ? 's' + (it.ok ? '1' : '0') : feelKey(it)]; return a[hash(String(it.c) + (S.entry ? S.entry.m.a : '')) % a.length]; }
-function feelOf(it) { const a = FEEL[feelKey(it)]; const k = hash(String(it.c) + '|' + (S.dn || 0) + (S.entry ? S.entry.m.a : '')) % a.length; return ij(a[k]); }
+function gainLoss(it) { const a0 = GL[it.sk === 'side' ? 's' + (it.ok ? '1' : '0') : feelKey(it)]; const a1 = a0.filter((x) => lifeOk(x.join(' '))); const a = a1.length ? a1 : a0; return a[hash(String(it.c) + (S.entry ? S.entry.m.a : '')) % a.length]; }
+// 心情の一文も、レア時代の現代語・ソロのバンド前提・10代の酒などを除く。合うものがなければ出さない
+function feelOf(it) { const a = FEEL[feelKey(it)].filter((x) => lifeOk(x)); if (!a.length) return ''; const k = hash(String(it.c) + '|' + (S.dn || 0) + (S.entry ? S.entry.m.a : '')) % a.length; return ij(a[k]); }
 // 選択肢の中のカギ括弧は『』にして、「「…」」の二重を避ける
 const qIn = (t) => String(t).replace(/「/g, '『').replace(/」/g, '』');
 function choiceHead(it) { return it.rt ? '「' + qIn(it.c) + '」を選んだ。' : '「' + qIn(it.c) + CH_HEAD[choiceKind(it.c)]; }
 
 function ageAt(y) { try { const m = S.entry.m, b = m.bio; if (!b || !b.ag || b.ai || m.rare || y == null) return null; const fy = firstYear(); if (fy == null) return null; const a = b.ag + Math.max(0, y - fy); return a >= 8 && a < 100 ? a : null; } catch (_) { return null; } }
 // 分かれ道の問いの「29歳。」(生成時の年齢)を、自作で始めた年齢を変えたときは ageAt で計算し直す
-function qAge(p) { try { const m = S.entry.m; if (!m.czAge || !/^\d+歳。/.test(p)) return p; const a = ageAt(S.lastY != null ? S.lastY : firstYear()); return a ? p.replace(/^\d+歳。/, a + '歳。') : p; } catch (_) { return p; } }
+function qAge(p) { try { const m = S.entry.m; if (!m.czAge || !/^\d+歳。/.test(p)) return p; const a = ageAt(S.lastY != null ? S.lastY : firstYear()); return a ? ageFix(p.replace(/^\d+歳。/, a + '歳。')) : p; } catch (_) { return p; } }
 // 選ばなかった側の子ノードから「その先の一場面」を年齢付き2文で作る(最初の転機 + 代表の葉の最高曲と結末)
 const ALT_TE = ['は鳴かず飛ばずで、', 'が一部で評価され、', 'がじわじわ広まり、', 'がヒットし、', 'が大ヒットし、', 'が社会現象になり、'];
 const ALT_TA = ['は鳴かず飛ばずだった。', 'が一部で評価された。', 'がじわじわ広まった。', 'がヒットした。', 'が大ヒットした。', 'が社会現象になった。'];
@@ -1933,19 +1936,25 @@ function altScene(pe, k) {
     const uw = (e) => (e.w || []).filter((w) => (pe.y == null || w.y > pe.y) && !sib.has('♪' + w.ti + '|' + w.tr));
     let best = null; const seek = (n, path) => { const p2 = path.concat([n]); if (n.e) { const mx = (n.e.w || []).reduce((m, w) => Math.max(m, w.tr), -1); const sc = mx * 4 + (n.e.tx && !sib.has(altClean(n.e.tx)) ? 2 : 0) + (uw(n.e).length ? 1 : 0); if (!best || sc > best.sc) best = { e: n.e, mx, sc, path: p2 }; return; } (n.n || []).forEach((c) => seek(c, p2)); };
     seek(ch, []);
-    const L = best ? best.path.flatMap((n) => n.s || []) : (ch.s || []);
-    // 結末と同じ中身の出来事は、結末と二重になるので転機には使わない
-    const enX = best && best.e.tx ? altFirst(best.e.tx, 30) : null;
+    // 文は途中で切らず、1文まるごと使う(後ろの節だけ残すと主語が消えて意味が通らなくなる)。長すぎる文は使わない
+    const sent = (t) => { const o = altClean(t).split(/(?<=[。!?])/)[0].replace(/[。]$/, ''); return o && o.length <= 44 ? o : null; };
+    const enX = best && best.e.tx ? sent(best.e.tx) : null;
     const bg = (t) => { const x = altClean(t).replace(/[、。!?\s]/g, ''); const o = new Set(); for (let i = 0; i < x.length - 1; i++) o.add(x.slice(i, i + 2)); return o; };
-    const near = (a, b) => { if (!a || !b) return false; const A = bg(a), B = bg(b); let c = 0; A.forEach((x) => { if (B.has(x)) c++; }); return (2 * c) / Math.max(1, A.size + B.size) > 0.45; };
-    let ev = null, ly = pe.y != null ? pe.y : null;
-    for (const it of L) { if (it.t === 'r') ly = it.y; if (it.t === 'e' && it.tx && !ALT_FILL.test(it.tx) && !sib.has(altClean(it.tx)) && !near(it.tx, enX) && !near(altFirst(it.tx, 30), enX)) { ev = { tx: altFirst(it.tx, 34), y: ly }; break; } }
-    if (!ev) { const x = (ch.s || []).find((it) => it.t === 'x' && it.tx && !sib.has(altClean(it.tx)) && !near(it.tx, enX) && altClean(it.tx).length > 6); if (x) ev = { tx: altFirst(x.tx, 34), y: pe.y != null ? pe.y + 1 : null }; }
+    const lcs5 = (a, b) => { const x = altClean(a).replace(/[、。!?\s]/g, ''), y = altClean(b).replace(/[、。!?\s]/g, ''); for (let i = 0; i + 5 <= x.length; i++) if (y.indexOf(x.slice(i, i + 5)) >= 0) return true; return false; };
+    const near = (a, b) => { if (!a || !b) return false; const A = bg(a), B = bg(b); let c = 0; A.forEach((x) => { if (B.has(x)) c++; }); return (2 * c) / Math.max(1, A.size + B.size) > 0.3 || lcs5(a, b); };
+    const lab = ((pe.node.q || {}).labels || [])[k] || '';
+    // その分岐の直後の結果文(子ノードの最初の x)だけを使う。もっと先の別の分かれ道の文は拾わない。選択肢の言い直しだけの文も使わない
+    let ev = null;
+    { const x = (ch.s || []).find((it) => it.t === 'x'); const tx = x && x.tx ? sent(x.tx) : null;
+      if (tx && tx.length > 6 && !ALT_FILL.test(tx) && !sib.has(altClean(x.tx)) && !near(tx, lab)) ev = { tx, y: pe.y != null ? pe.y : null }; }
     let wk = null, en = null;
     if (best) {
       const ws = uw(best.e);
       wk = ws.reduce((m, w) => (!m || w.tr > m.tr ? w : m), null);
-      if (best.e.tx && !sib.has(altClean(best.e.tx)) && !(ev && near(ev.tx, enX))) en = enX;
+      // 結末が転機と同じ中身・選択肢の言い直し・最高曲の当たり具合と食い違う(社会現象なのに小さく終わる等)ときは結末を足さない
+      const SM = /変わらなかった|届かなかった|広がらなかった|埋もれ|小さな|ひっそり|知られないまま|誰にも|鳴かず飛ばず|通好み|伸び悩/, BG = /国民的|社会現象|頂点|世界|ドーム|国じゅう|日本じゅう|神話|伝説|時代を代表/;
+      const clash = enX && wk && ((wk.tr >= 4 && SM.test(enX)) || (wk.tr <= 2 && BG.test(enX)));
+      if (enX && !sib.has(altClean(best.e.tx)) && !(ev && near(ev.tx, enX)) && !near(lab, enX) && !clash) en = enX;
     }
     const ag = (y) => { const a = ageAt(y); return a ? a + '歳、' : ''; };
     const out = [];
@@ -2034,15 +2043,21 @@ function epilogueOf(e) {
   const m = S.entry.m; if (m.rare || !e || !e.w) return [];
   const st = m.st, ai = /^ai/.test(st); const T = e.w.map((w) => w.tr), top = Math.max(0, ...T), hl = top >= 4 ? 2 : top >= 2 ? 1 : 0;
   const ended = EPI_END.test(e.tx) && !EPI_CONT.test(e.tx);
-  const fm = (st === 'band' || st === 'duo' || st === 'inst') ? 'g' : st === 'rap' ? 'r' : (st === 'beat' || st === 'dj') ? 'd' : 's';
+  const grpE = m.top === 'グループ';
+  const fm = grpE && (st === 'band' || st === 'duo' || st === 'inst') ? 'g' : st === 'rap' ? 'r' : (st === 'beat' || st === 'dj') ? 'd' : 's';
   const voc = !(st === 'inst' || st === 'beat' || st === 'dj' || m.vg === 'inst' || ai), ins = !(fm === 'r' || fm === 'd' || ai);
   const ok = (f) => { if (/[012]/.test(f) && f.indexOf(String(hl)) < 0) return false; if (f.includes('g') && fm !== 'g') return false; if (f.includes('s') && fm === 'g') return false; if (f.includes('r') && fm !== 'r') return false; if (f.includes('d') && fm !== 'd') return false;
     if (f.includes('v') && !voc) return false; if (f.includes('i') && !ins) return false; if (f.includes('N') && m.era < 3) return false; if (f.includes('C') && !(m.era >= 0 && m.era <= 3)) return false; if (f.includes('c') && ended) return false; if (f.includes('e') && !ended) return false; return true; };
   const h = hash(m.a + '|' + e.tx + '|' + T.join(''));
-  const pk = (pool, salt) => { const c = pool.filter((x) => ok(x[1])); return c.length ? c[(h + salt * 7919) % c.length][0] : null; };
+  const ly = (e.w[e.w.length - 1] || {}).y; const a0 = ageAt(ly); const age = a0 ? a0 + 2 + (h % 7) : null;
+  const pk = (pool, salt) => { const c = pool.filter((x) => ok(x[1]) && lifeOk(x[0], age)); return c.length ? c[(h + salt * 7919) % c.length][0] : null; };
   const out = [];
-  if (!ai) { const ly = (e.w[e.w.length - 1] || {}).y; const a0 = ageAt(ly); const age = a0 ? a0 + 2 + (h % 7) : null; const now = pk(ended ? EPI_NOW_E : EPI_NOW_C, 1); if (now) out.push((age && age < 95 ? 'いま' + age + '歳。' : '') + now); }
-  { const cur = (S.mem || []).filter((x) => !x.me), ex = (S.exMem || []).filter((x) => !x.me); const used = new Set(); const L = [];
+  if (!ai) { const now = pk(ended ? EPI_NOW_E : EPI_NOW_C, 1); if (now) out.push((age && age < 95 ? 'いま' + age + '歳。' : '') + now); }
+  { // 主人公(自作のあなた、なければ先頭のメンバー)自身のパートは他人として語らない。ソロは楽器パートの人(バンド前提)を語らない
+    const mm0 = m.mm || [], meM = mm0.find((x) => x.me) || (grpE ? mm0[0] : null);
+    const meP = new Set(meM ? String(meM.r || '').split('/').map((r) => partOf(r)).filter(Boolean) : []); if (m.me) meP.add(m.me);
+    const fit = (x) => !x.me && !(meM && x.n === meM.n) && (grpE ? !meP.has(partOf(x.r)) : !partOf(x.r) && !/^サポート/.test(String(x.r || '')));
+    const cur = (S.mem || []).filter(fit), ex = (S.exMem || []).filter(fit); const used = new Set(meM ? [partWord(meM.r)] : []); const L = [];
     const add = (x, pool, salt) => { const w = partWord(x.r); if (!w || used.has(w)) return; const t = pk(pool, salt); if (!t) return; used.add(w); L.push(t.split('{p}').join(w)); };
     const xs = cur.slice(); if (xs.length) add(xs[(h >>> 3) % xs.length], EPI_MEM, 2);
     if (ex.length && (!xs.length || (h >>> 5) % 2 === 0)) add(ex[(h >>> 7) % ex.length], EPI_EX, 3); else if (fm === 'g' && xs.length >= 3 && (h >>> 9) % 2 === 0) add(xs[((h >>> 3) + 1) % xs.length], EPI_MEM, 4);
@@ -2170,12 +2185,31 @@ const EVF = {
   cd: /CD|ＣＤ|カセット|レコード店|CDショップ|手売り|プレス工場|プレスし|ジャケット印刷|在庫の段ボール|\bMD\b|ラジカセ/,
   me: { Dr: /ドラム|ドラマー/, Ba: /ベース|ベーシスト/, Gt: /ギタリスト|ギターの(?![音弦])|ギターが|ギターは/, Key: /キーボード|鍵盤の|鍵盤が/, Vo: /ボーカルが|ボーカルの|ボーカルは|歌い手が/ },
 };
+// 差し込み文の共通フィルタ: レア時代に現代語、ソロにバンド・メンバー前提、20歳未満に酒・打ち上げ・上京して数年 を出さない
+const LF_MODERN = /自販機|缶コーヒー|缶ビール|カレンダー|ライブ|バイト|シフト|スタジオ|終電|メール|電車|通帳|コンビニ|スマホ|携帯|電話|駐車場|車で|車から|ラーメン|ビール|招待状|同級生|土曜|目覚まし|写真|SNS|配信|CD|テレビ|ラジオ|マイク|楽器ケース|ハコ|チケット|フェス|バンド|レコード|通勤|会社|カラオケ|エフェクター|アンプ|ギャラ|ノルマ|物販|プレイリスト|再生数|事務所|レーベル/;
+const LF_SOLO = /バンド|メンバー|対バン|ドラマー|ベーシスト|ギタリスト|全員|四人|三人|五人|自分たち|再結成|ツアー車|機材車/;
+const LF_TEEN = /酒|ビール|居酒屋|飲み会|乾杯|打ち上げ|終電|晩酌|ワイン|ハイボール|焼酎|二日酔い|酔っ|酔い|上京して数年/;
+// 名前の重複よけの付記「(初期)」「(旧)」などを外した名前(アルバム名・セルフタイトル・世間の声で使う)
+function aBare(a) { a = String(a || ''); const b = a.replace(/\s*[((](?:初期|旧|古参|仮|昼|夕|電子|同人|古|夏版|別人|別働隊|現代版|別|S)[))]$/, ''); return b || a; }
+function curAge() { try { return ageAt(S.ageY != null ? S.ageY : S.lastY != null ? S.lastY : firstYear()); } catch (_) { return null; } }
+function lifeOk(t, age) {
+  try { if (!t || !S.entry) return true; const m = S.entry.m;
+    if (m.rare && LF_MODERN.test(t)) return false;
+    if (m.top !== 'グループ' && LF_SOLO.test(t)) return false;
+    const a = age !== undefined ? age : curAge(); if (a != null && a < 20 && LF_TEEN.test(t)) return false;
+    return true; } catch (_) { return true; }
+}
+// 10代のうちに「上京して数年」など、年齢と合わない言い回しを直す(生成データの文に使う)
+function ageFix(t) { try { const a = curAge(); if (a == null || a >= 20 || typeof t !== 'string') return t; return t.replace(/上京して数年/g, '上京してまだ間もない'); } catch (_) { return t; } }
+// 寄り道の問いの頭の接続詞(「そんな折、」など)が続かないようにする
+const LF_CJ = /^(そんな折、|ふと気づくと、|ふと、|いつの間にか、|ある日、|最近、|数日前から、)/;
+function cjFix(pr) { pr = String(pr || ''); let mm = pr.match(LF_CJ); while (mm && pr.slice(mm[0].length).indexOf(mm[0]) === 0) pr = pr.slice(mm[0].length); mm = pr.match(LF_CJ); const c = mm ? mm[1] : ''; if (c && S.lastCj === c) pr = pr.slice(c.length); S.lastCj = c; return pr; }
 function evFit(t) {
-  if (!t || !S.entry) return true; const m = S.entry.m, st = m.st, pk = Math.max(0, ...(S.tiers || []));
+  if (!t || !S.entry) return true; if (!lifeOk(t)) return false; const m = S.entry.m, st = m.st, pk = Math.max(0, ...(S.tiers || []));
   if (pk >= 4 || S.stg >= 1 && pk >= 3) { if (EVF.poor.test(t) && !EVF.past.test(t)) return false; }
   if (pk <= 1 && S.stg === 0 && EVF.fame.test(t)) return false;
   if ((st === 'rap' || st === 'beat' || st === 'dj' || st === 'ai_pure') && EVF.noInst.test(t)) return false;
-  if ((st === 'solo' || st === 'rap' || st === 'beat' || st === 'dj') && EVF.solo1.test(t)) return false;
+  if ((st === 'solo' || st === 'rap' || st === 'beat' || st === 'dj' || m.top !== 'グループ') && EVF.solo1.test(t)) return false;
   if (st === 'duo' && /四人|三人で|五人|ドラマー/.test(t)) return false;
   if ((st === 'inst' || m.vg === 'inst') && EVF.noVoc.test(t)) return false;
   // 活動形態ごとの追加の除外(担当T): 2人組にバンド前提、ラッパーに合唱・弾き語り、トラックメイカー/DJに歌唱・路上、配信時代にCD前提
@@ -2199,12 +2233,14 @@ function injectLife(list) {
   const m = S.entry.m; const life = !(m.rare || !BANK.ev);
   const eb = eraBucket(m.era), grp = ['グループ'].includes(m.top) || m.st === 'duo'; const out = [];
   list.forEach((it) => {
+    if (it.t === 'r' && it.y != null) S.ageY = it.y;
     if (m.me && (it.t === 'e' || it.t === 'x') && it.tx) { const f = meFix(it.tx); if (f !== it.tx) it = Object.assign({}, it, { tx: f }); }
+    if ((it.t === 'e' || it.t === 'x') && it.tx) { const f = ageFix(it.tx); if (f !== it.tx) it = Object.assign({}, it, { tx: f }); }
     if (m.me && it.mb && it.mb.out) { const me = (m.mm || []).find((x) => x.me); if (me && it.mb.out.n === me.n) { const o2 = (S.mem || []).find((x) => !x.me && x.n !== me.n && !(S.exMem || []).some((q) => q.n === x.n)); it = o2 ? Object.assign({}, it, { mb: Object.assign({}, it.mb, { out: o2 }) }) : Object.assign({}, it, { mb: null }); } }
     if (it.t === 'r') {
       S.relN = (S.relN || 0) + 1;
       if (life && !S.selfDone && S.selfAt && S.relN >= S.selfAt && m.a.length <= 18 && /アルバム/.test(it.o || '')) {
-        S.selfDone = true; const old = it.ti; it = Object.assign({}, it, { ti: m.a, selft: true }); if (it.tk && it.tk.length) { const hit = it.tk.findIndex((k) => k.t === old); const ti0 = hit >= 0 ? hit : 0; it.tk = it.tk.map((k, i) => (i === ti0 ? Object.assign({}, k, { t: m.a }) : k)).filter((k, i) => i === ti0 || !(k.t === m.a || k.t === m.a + ' 表題曲' || k.t.indexOf(m.a + ' ') === 0 && /表題曲/.test(k.t))); }
+        S.selfDone = true; const old = it.ti, nm = aBare(m.a); it = Object.assign({}, it, { ti: nm, selft: true }); if (it.tk && it.tk.length) { const hit = it.tk.findIndex((k) => k.t === old); const ti0 = hit >= 0 ? hit : 0; it.tk = it.tk.map((k, i) => (i === ti0 ? Object.assign({}, k, { t: nm }) : k)).filter((k, i) => i === ti0 || ![m.a, nm].some((a) => k.t === a || k.t === a + ' 表題曲' || k.t.indexOf(a + ' ') === 0 && /表題曲/.test(k.t))); }
         const tx = grp ? ['ここまでの全部を詰め込んで、バンド名をそのままタイトルにしたアルバムを作ることにした。「これが名刺だ」と、全員の意見が一致した。', '「いま自分たちが何者か」を一枚で答えるため、アルバムの題名はバンド名にした。ジャケットには、メンバー全員の影が並んでいる。'][m.a.length % 2]
           : ['ここまでの全部を詰め込んで、自分の名前をそのまま題名にしたアルバムを作ることにした。「これが名刺だ」と思えた。', '「いま自分は何者か」を一枚で答えるため、アルバムの題名は自分の名前にした。'][m.a.length % 2];
         out.push({ t: 'e', tx, life: 1 });
@@ -2213,13 +2249,13 @@ function injectLife(list) {
     out.push(it);
     if (it.t !== 'r') return;
     out.push({ t: 'rdq' });
-    if (S.fuq && S.fuq.length) out.push({ t: 'e', tx: S.fuq.shift(), life: 1 });
+    while (S.fuq && S.fuq.length) { const f0 = S.fuq.shift(); if (lifeOk(f0)) { out.push({ t: 'e', tx: f0, life: 1 }); break; } }
     if (!life || S.evN >= 8 || Math.random() > 0.7) return;
     const up = it.tr >= 3, down = it.tr <= 1;
     const c = BANK.ev.filter((x) => !(x.ns || []).includes(m.st) && (x.e === 'all' || x.e === eb) && (x.k === 'a' || (x.k === 'g') === grp) && (x.m === 'any' || (x.m === 'up' && up) || (x.m === 'down' && down)) && !S.evUsed.has(x.t) && (x.f == null || !S.evFam.has(x.f)) && evFit(x.t));
     if (!c.length) return; const pk = c[Math.floor(Math.random() * c.length)]; S.evUsed.add(pk.t); if (pk.f != null) S.evFam.add(pk.f); S.evN += 1; out.push({ t: 'e', tx: pk.t, life: 1 }); if (Math.random() < 0.6) out.push({ t: 'rdq' });
   });
-  return out;
+  S.ageY = null; return out;
 }
 function playNode(node) {
   const ff = !!(S.force && S.force.length && S.forceEntry === S.entry); const items = injectLife(node.s); S.skip = reduce || ff;
@@ -2655,7 +2691,7 @@ function coherentEnding0(tx, w, nm) {
   const m = (S.entry && S.entry.m) || {}, rare = !!m.rare, TN = TIER || TIER_D;
   const T = w.map((x) => x.tr), top = Math.max(0, ...T), big = T.filter((x) => x >= 4).length, h = hash((nm || '') + tx);
   const pick = (a) => a[h % a.length];
-  const NEG = /ヒットはなく|大きなヒットはなく|看板にはならな|華やかさはなく|縁は薄|知れ渡ることはなかった|広がりが小さかった|広がりは小さかった|生まれなかった|届かなかった|届かず|届きにく|広がりには限界|までは遠|客席が遠|大きな名前にはならな|売れなかった|伸び悩|残らなかった|ならなかった|育たなかった|大きくはなれ|大きくはならな|知られないまま|広がらなかった|誰にも知られ|ひっそり|日の目を見|鳴かず飛ばず|少数|通好み|内輪|小さな箱/;
+  const NEG = /ヒットはなく|大きなヒットはなく|看板にはならな|華やかさはなく|縁は薄|知れ渡ることはなかった|広がりが小さかった|広がりは小さかった|生まれなかった|届かなかった|届かず|届きにく|広がりには限界|までは遠|客席が遠|大きな名前にはならな|売れなかった|伸び悩|残らなかった|ならなかった|育たなかった|大きくはなれ|大きくはならな|知られないまま|広がらなかった|誰にも知られ|ひっそり|日の目を見|鳴かず飛ばず|少数|通好み|内輪|小さな箱|通の客|静かに愛|濃いファン|埋もれ|小さな場所|小さな会場|小さなハコ|小さな店|知る人ぞ知る|細々|ささやか|一部の|身内|常連だけ|地元だけ|地元の小さな|片隅|玄人にだけ|玄人だけ|一握り|静かな活動|熱心な聴き手|熱心なファン|公演を絞/;
   const POS = rare ? /全国|国じゅう|日本じゅう|百年|千年|世界|神話|語り継|歌い継|唄い継|大陸|銀河|諸国|時代の歌|伝説|社会現象/ : null;
   const POS5 = /国民的|社会現象|時代を代表|時代の顔|伝説|日本中|日本じゅう|ミリオン|頂点/, POS3 = /ドーム|紅白|大ヒット|国じゅう|語り継|歌い継|全国に|世界中|世界じゅう/;
   const under = (s) => top >= 4 && NEG.test(s);
@@ -2668,6 +2704,7 @@ function coherentEnding0(tx, w, nm) {
   tx.split('。').map((x) => x.trim()).filter(Boolean).forEach((sn) => {
     if (!bad(sn)) { out.push(sn); return; }
     const k = sn.indexOf('、'), X = k > 0 ? sn.slice(0, k) : '';
+    // 前半(どう選んだか)も規模を語っている(「小さな場所に留まり」など)ときは使わない
     if (X.length >= 4 && !bad(X) && !/(として|の|を|に|へ|と|は|も)$/.test(X)) out.push(X + '、' + (under(sn) ? upTx() : dnTx()));
   });
   if (!out.length) return under(tx) ? (rare ? '歌は「' + TN[top] + '」ほどに広まり、名前は長く残った' : top === 5 ? pick(['数々の曲が時代を越えて歌い継がれ、名前は音楽の歴史に残った', '社会現象を起こした曲は、世代を越えて聴かれている', '時代の真ん中で鳴った歌は、いまも誰かの耳に残っている']) : pick(['大きな舞台に立ち、ヒット曲は世代を越えて聴かれている', 'ヒット曲を手に、確かな存在感を保ったまま歌い続けている', '大きな当たりを手にして、歌い続ける場所を守り抜いた'])) : dnTx();
@@ -2691,7 +2728,7 @@ const VICON = {
 const RWL = { 15: '歌人', 16: '旅の物書き', 17: '年代記作者', 18: '宮廷の記録官', 19: '詩人', 20: '年代記の記し手', 21: '語り部', 22: '星の記録係', 23: '新聞の批評家', '-2': '語り部', '-3': '瓦版屋', 12: '新聞記者', 13: 'ラジオ評論家', 11: '雑誌記者' };
 const RWP = [['のサビを', 'の節を'], ['サビ', 'くり返しの節'], ['新譜', '新しい唄'], ['チャートイン', '評判になる'], ['デビュー', '初めてのお目見え'], ['バンド', '一座'], ['ライブ', '宴']];
 function voicesOf(e, dr) {
-  const m = S.entry.m, a = m.a, ge = m.ge || '音楽', w = e.w || [], n = w.length;
+  const m = S.entry.m, a = aBare(m.a), ge = m.ge || '音楽', w = e.w || [], n = w.length;
   const bw = w.reduce((x, y) => (y.tr > x.tr ? y : x), w[0] || { ti: '', tr: 0 }); const best = bw.ti, first = (w[0] || {}).ti || '';
   const bq = '「' + best + '」'; const grp = S.top === 'グループ'; const who = grp ? 'このバンド' : 'この人'; const hs = ((a.length * 31 + n * 17 + dr.total) % 3);
   const pick = (arr) => arr[(hs + a.length) % arr.length];
@@ -2704,7 +2741,9 @@ function voicesOf(e, dr) {
   V.push(['音楽ライター', pick(wr), 'pen']);
   if (!rare) {
     V.push(['同じ時代のミュージシャン', pick([a + 'とは同じ時期に活動していた。' + (grp ? 'あの空気感は、あのメンバーでしか出せなかった。' : 'あの声の出し方は、真似しようとしてもできなかった。'), '正直、悔しかった。' + bq + 'みたいな曲を書きたかった。', 'ライブ会場の楽屋で会うと、いつも静かで、ステージに立つと別人だった。']), 'note']);
-    { const stars = Math.max(1, Math.min(5, Math.round(dr.total / 80))); const rv = { L: ['時代を決めた一枚。迷わず満点に近い。', '聴き逃すと後悔する。'], C: ['派手さはないが、聴くほど味が出る。', '通好みの佳作。'], H: ['売れ線の完成度は高い。が、尖りは丸くなった。', 'ヒットの裏に、計算が見える。'], S: ['地味だが誠実。もっと聴かれていい。', '時代と噛み合わなかった惜しい一枚。'], N: ['手堅い仕上がり。次作に期待したい。', 'ところどころに光る瞬間がある。'] }[tier]; V.push(['音楽誌のレビュー', '★'.repeat(stars) + '☆'.repeat(5 - stars) + '  ' + pick(rv), 'mag']); }
+    { const stars = Math.max(1, Math.min(5, Math.round(dr.total / 80))); const rv = { L: ['時代を決めた一枚。迷わず満点に近い。', '聴き逃すと後悔する。'], C: ['派手さはないが、聴くほど味が出る。', '通好みの佳作。'], H: ['売れ線の完成度は高い。が、尖りは丸くなった。', 'ヒットの裏に、計算が見える。'], S: ['地味だが誠実。もっと聴かれていい。', '時代と噛み合わなかった惜しい一枚。'], N: ['手堅い仕上がり。次作に期待したい。', 'ところどころに光る瞬間がある。'] }[tier]; // 文の調子は★の数に合わせる(★4に「ところどころに光る」などを出さない)。★3だけは人生の型(通好み・売れ線)の色を残す
+      const rv2 = stars >= 5 ? ['時代を決めた一枚。迷わず満点に近い。', '聴き逃すと後悔する。'] : stars === 4 ? (tier === 'H' ? ['売れ線の完成度は高い。尖りは丸くなったが、それも強みだ。', '隙のない仕上がり。大衆に届く理由がよく分かる。'] : tier === 'C' ? ['聴くほど味が出る。長く手元に置きたい一枚。', '派手さはないが、完成度は高い。'] : ['完成度が高く、何度でも聴き返したくなる。', '聴き逃すと後悔する。']) : stars === 3 ? rv : stars === 2 ? ['地味だが誠実。もっと聴かれていい。', 'ところどころに光る瞬間がある。'] : ['時代と噛み合わなかった惜しい一枚。', '狙いは伝わるが、まだ形になりきっていない。'];
+      V.push(['音楽誌のレビュー', '★'.repeat(stars) + '☆'.repeat(5 - stars) + '  ' + pick(stars === 3 && tier === 'L' ? ['手堅い仕上がり。次作に期待したい。', '確かな手応えのある一枚。'] : rv2), 'mag']); }
     if (old) V.push(['新聞の記事', pick([a + 'のライブに、' + (dr.love >= 60 ? '会場から入りきれない人があふれた。' : '静かな拍手が長く続いた。'), '若者の間で' + a + 'の名前が話題になっている。', '地元出身の' + ge + 'の担い手として、' + a + 'が注目されている。']), 'news']);
     V.push([old ? '雑誌の読者欄' : net ? 'ネットの声' : 'ラジオの投稿', old ? pick(['「' + best + '」、カセットが擦り切れるまで聴きました。', a + 'の次の曲はいつ出るんですか。待ちきれません。', '友だちに薦めたら、翌週にはみんなが' + a + 'の話をしていた。']) : net ? pick(['「' + best + '」ずっとリピートしてる。', a + 'の曲、気づいたらプレイリストの半分になってる。', 'この人の曲、深夜に聴くとやばい。']) : pick(['番組に' + a + 'の曲をリクエストしました。', '通勤の車で' + bq + 'が流れて、少し泣いた。', '今夜は' + a + 'の特集を聴きたいです。']), (old ? 'mail' : net ? 'bubble' : 'radio')]);
   } else {

@@ -213,7 +213,9 @@ def rel(a, seen, pos, y, tier, th, lb, dev):
 def meta(a, mm, i):
     era = era_of(a["y0"]); E = g.ERAS[era]
     sn = {"band": "バンド", "duo": "2人組ユニット", "solo": "シンガーソングライター", "rap": "ラッパー", "beat": "ボカロP・トラックメイカー"}[a["st"]]
-    top = "グループ" if a["st"] in ("band", "duo") else "ソロ"
+    import roster as _ro
+    top = "グループ" if _ro.is_group(a["st"], mm) else "ソロ"
+    if a["st"] == "rap" and top == "グループ": sn = "ヒップホップグループ"
     return {"id": 96000 + i, "a": a["nm"], "pun": None, "top": top, "st": a["st"], "sn": sn, "pe": "まじめ", "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
             "tx": a["tx"], "ai": None, "mm": mm, "vg": a["vg"], "bio": bio.make(96000 + i, a["st"], era, None, top == "グループ"), "real": True, "histTx": a["eh"]}
 
@@ -225,13 +227,14 @@ def build(a, i):
     st = a["st"]; seed = 96000 + i
     mm = tracks.people(seed, st if st != "beat" else "beat")
     for j, m_ in enumerate(mm[:len(a["roles"])] if a["roles"] else []):
-        m_["r"] = a["roles"][j]; m_["t"] = a["tr"][j] if j < len(a["tr"]) else m_["t"]
+        m_["r"] = a["roles"][j]; m_["t"] = __import__("roster").trait(a["tr"][j]) if j < len(a["tr"]) else m_["t"]
     if a["roles"]:
         mm = mm[:len(a["roles"])]
         while len(mm) < len(a["roles"]):
-            nw = tracks.newcomer(seed, a["roles"][len(mm)], {x["n"] for x in mm}); nw["r"] = a["roles"][len(mm)]; nw["t"] = a["tr"][len(mm)] if len(mm) < len(a["tr"]) else nw.get("t", ""); mm.append(nw)
+            nw = tracks.newcomer(seed, a["roles"][len(mm)], {x["n"] for x in mm}); nw["r"] = a["roles"][len(mm)]; nw["t"] = __import__("roster").trait(a["tr"][len(mm)]) if len(mm) < len(a["tr"]) else nw.get("t", ""); mm.append(nw)
     import roster as _ro
     mm = _ro.apply(a, mm, seed)
+    if not _ro.is_group(a["st"], mm): mm = _ro.solo_side(a, a["st"], mm, seed)  # ソロの本人をメンバー一覧に別人として並べない
     m = meta(a, mm, i); th = a["th"]; seen = []
     bio.localize(a, m["bio"], mm, 96000 + i)  # 出身地・結成地を「始まりの場所」に合わせる
     def stage_rels(si, dev_eff, dev):

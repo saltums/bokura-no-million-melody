@@ -2,6 +2,7 @@
 """曲の構成パターン(王道・サビだけ・語りだけ・歌詞なし...)。make_struct が構成名・節の並び・AI用タグを返す。"""
 import random
 import lyrics as L
+import eraword
 from lyrics_extra import EXTRA, ERA_SCENE, FAMILY_SCENE, FAMILY_HOOK_SUFFIX
 
 EN = ["I'm still here", "One more night", "Don't let go", "Tell me why", "We're alive", "Say it again", "Just let it burn", "Hold on"]
@@ -25,13 +26,17 @@ def _ctx(theme, genre, premise, title, year, words, era, seed_tag):
     TIME, PLACE, THING = words
     t0, p0, x0 = L._pick_words(premise, *words)
     t = t0 or r.choice(TIME); p = p0 or r.choice(PLACE); x = x0 or r.choice(THING)
+    if not eraword.ok(t, year): t = r.choice([z for z in TIME if eraword.ok(z, year)] or TIME)
+    if not eraword.ok(p, year): p = r.choice([z for z in PLACE if eraword.ok(z, year)] or PLACE)
+    if not eraword.ok(x, year): x = r.choice([z for z in THING if eraword.ok(z, year)] or THING)
     fam = L.family(genre)
     me0 = L.pick_me(fam, r)
     bad = ("SNS", "いいね", "タイムライン", "スマホ", "画面", "ペンライト", "ライブ配信", "メッセージ", "返信", "炎上", "通知", "既読")
     old = ("ケータイ", "メール", "ネット", "MD", "iPod", "サブスク", "動画", "アルゴリズム")
-    ok = lambda z: not ((era <= 2 and any(k in z for k in bad)) or (era <= 1 and any(k in z for k in old)))
+    ok = lambda z: not ((era <= 2 and any(k in z for k in bad)) or (era <= 1 and any(k in z for k in old))) and eraword.ok(z, year)
     Af = [z for z in A if ok(z)] or bank["a"]; Bf = [z for z in Bb if ok(z)] or bank["b"]
     S = [z for z in (list(ERA_SCENE.get(era, [])) + (list(FAMILY_SCENE[fam]) if fam else [])) if ok(z)]
+    H = [z for z in H if ok(z)] or bank["h"]; C = [z for z in C if ok(z)] or C  # サビ・Cメロも時代違いの語を除く
     return dict(r=r, A=Af, B=Bf, H=H, C=C, S=S, t=t, p=p, x=x, fam=fam, me=me0, suf=FAMILY_HOOK_SUFFIX.get(fam, ""))
 
 

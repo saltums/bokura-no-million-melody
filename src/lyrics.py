@@ -2,7 +2,7 @@
 """歌詞の一節を作る(すべて新規の文言)。テーマごとの行バンクから、作品IDで決定的に選ぶ。
 {t}=時間 {p}=場所 {x}=小物 {me}=一人称"""
 import random
-import gen_vocab, lyr_rich, hashlib
+import gen_vocab, lyr_rich, hashlib, eraword
 from lyrics_extra import EXTRA, ERA_SCENE, FAMILY_SCENE, FAMILY_HOOK_SUFFIX
 
 B = {
@@ -184,7 +184,11 @@ def make_full(theme, genre, premise, title, year, words, early, era=2):
     def ok(z):
         if era <= 2 and any(k in z for k in bad): return False
         if era <= 1 and any(k in z for k in old): return False
-        return True
+        return eraword.ok(z, year)
+    if not ok(t): t = r.choice([z for z in TIME if ok(z)] or TIME)
+    if not ok(p): p = r.choice([z for z in PLACE if ok(z)] or PLACE)
+    if not ok(x): x = r.choice([z for z in THING if ok(z)] or THING)
+    H = [z for z in H if ok(z)] or bank["h"]; C = [z for z in C if ok(z)] or C
     Af = [z for z in A if ok(z)] or bank["a"]; Bf = [z for z in Bb if ok(z)] or bank["b"]
     S = list(ERA_SCENE.get(era, [])) + (list(FAMILY_SCENE[fam]) if fam else [])
     S = [z for z in S if ok(z)]

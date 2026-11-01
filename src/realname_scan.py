@@ -57,19 +57,65 @@ def _cpart(a, b):
     return a == b or lev(a, b, 9) <= max(1, len(b) // 2) or (len(a) > 1 and sorted(a) == sorted(b))
 
 
+# 読み(ひらがな)。pykakasi/jaconv は /home/claude/_pylib(無ければ漢字の読みなしで比べる)
+sys.path.insert(0, '/home/claude/_pylib')
+try:
+    import pykakasi as _pk, jaconv as _jc
+    _KK = _pk.kakasi()
+except Exception:
+    _KK = _jc = None
+_SMALL = str.maketrans('ぁぃぅぇぉっゃゅょゎ', 'あいうえおつやゆよわ')
+
+
+def rd(s):
+    s = re.sub(r"[\s・\.\-'’=＝_*()()0-9]", '', unicodedata.normalize('NFKC', s).lower())
+    if _jc and re.fullmatch(r'[a-z]+', s or '-'): s = _jc.alphabet2kana(s)
+    h = ''.join(x['hira'] for x in _KK.convert(s)) if _KK else s
+    h = ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in h).translate(_SMALL)
+    h = re.sub(r'([おこそとのほもよろごぞどぼぽ])[うお]', r'\1', re.sub(r'[ーぅ]', '', h))
+    return re.sub(r'[^ぁ-ん]', '', h)
+
+
+def _nd(h): return ''.join(c for c in unicodedata.normalize('NFD', h) if c not in '\u3099\u309a')
+
+
+def _lv(a, b): return lev(a, b, 99)
+
+
+_PFX = re.compile(r"^(dj|mc|ザ|the)(?=[\s・]|[^a-z]|$)\s*|\s*(sr|jr)\.?$", re.I)
+
+
+def _np(n):
+    n = unicodedata.normalize('NFKC', n).strip()
+    n = _PFX.sub('', n).strip() or n  # DJ・MC などの肩書きは名前の語に数えない
+    return [x for x in re.split(r"[\s・=＝·]+", n) if x]
+
+
+def _sim(x, y):
+    """名前の一語どうしが「同じ語」か(同じ・同じ読み・漢字の半分以上が共通・読みの大半が同じ)"""
+    if x.lower() == y.lower(): return True
+    rx, ry = rd(x), rd(y)
+    if rx and rx == ry: return True
+    if _kanji(x) and _kanji(y) and len(x) >= 2 and len(y) >= 2 and len(set(x) & set(y)) * 2 >= min(len(x), len(y)): return True
+    if not rx or not ry: return False
+    m = min(len(rx), len(ry)); bx, by = _nd(rx), _nd(ry)
+    if m >= 2 and _lv(bx, by) <= max(1, max(len(bx), len(by)) // 3): return True
+    nx, ny = norm(x), norm(y)
+    if min(len(nx), len(ny)) >= 3 and _lv(nx, ny) * 2 <= max(len(nx), len(ny)) and not (_kanji(x) and _kanji(y)): return True
+    pre = 0
+    while pre < m and rx[pre] == ry[pre]: pre += 1
+    return pre >= 2 and pre * 2 >= m and not (_kanji(x) and _kanji(y))
+
+
 def near_real(fake, real):
-    """メンバー名が元ネタの実名に近すぎるか。どちらか一語を丸ごと置き換えていれば可(藤原基央→藤川基夫は不可)"""
-    a, b = _parts(fake), _parts(real)
-    fa, fb = norm(fake), norm(real)
-    if fa == fb: return True
-    if len(a) == len(b) and len(a) >= 2:
-        if all(_cpart(x, y) for x, y in zip(a, b)): return True
-        eq = [x == y for x, y in zip(a, b)]
-        if any(eq) and all(e or (len(x) == len(y) and _kanji(x) and _kanji(y)) for e, x, y in zip(eq, a, b)): return True  # 片方同じ+同じ字数の漢字(同音の当て字のおそれ)
-        return False
-    if len(a) == 1 and len(b) == 1:
-        return len(fb) >= 2 and (lev(fa, fb, 9) <= max(1, len(fb) // 3) or (len(fa) > 1 and sorted(fa) == sorted(fb)))
-    return len(fb) >= 4 and lev(fa, fb, 9) <= max(1, len(fb) // 4)
+    """メンバー名が元ネタの実在メンバーに近すぎるか: 姓が同じ・名が同じ・読みの大半が同じ のどれか。
+    姓名とも別の語にする(曽我部恵一→宗我部恵太、吉田良一郎→吉野良一朗、ファンキー末吉→ファンキー末広がり は不可)"""
+    a, b = _np(fake), _np(real)
+    if len(a) == 1 and len(b) == 2 and _kanji(a[0]) and len(a[0]) >= 3 and _kanji(b[0]): a = [a[0][:len(b[0])], a[0][len(b[0]):]]
+    if len(b) == 1 and len(a) == 2 and _kanji(b[0]) and len(b[0]) >= 3 and _kanji(a[0]): b = [b[0][:len(a[0])], b[0][len(a[0]):]]
+    if any(_sim(x, y) for x in a for y in b if len(rd(y)) >= 2 or len(rd(x)) >= 2 or x == y): return True
+    rf, rr = rd(''.join(a)), rd(''.join(b))
+    return bool(rf and rr and min(len(rf), len(rr)) >= 3 and _lv(rf, rr) * 2 <= max(len(rf), len(rr)))
 
 
 # ---- 実在の曲名(rosters/realtitles.txt。照合の本体は realtitles.py)
@@ -192,6 +238,7 @@ if ONLY != 'names':
         for f in ('ev', 'ex', 'eh', 'ea', 'd', 'tx'):
             for s in flat(L(a.get(f))):
                 for m in re.finditer(r'(あの|残りの|他の)?([二三四五六七八])人(?=[でははがとものだ組全揃]|$)', s):
+                    if G._PART_RX.match(s, m.start(2)): continue  # 「三人の管楽器」など一部の担当の人数(fix_count が担当数に合わせる)
                     c = CNT[m.group(2)] + (1 if m.group(1) in ('残りの', '他の') else 0)
                     if c != n and not re.search(r'客|観客|子|姉妹|兄弟|娘|息子|孫', s[max(0, m.start() - 6):m.end()]):
                         cnt_bad.append((k, n, f, s[:50]))

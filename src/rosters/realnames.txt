@@ -2980,3 +2980,49 @@ KANON
 ポール・ブレナン
 ノエル・ダガン
 パードリグ・ダガン
+
+[a32_hys]
+イイカワケン
+飯川 健
+
+[a14_fes]
+GEN
+HIRO-KAZ
+RYU-TA
+KOUHEI
+
+[a16_guitarookami]
+セイジ
+ビリー
+トオル
+
+[a28_tft]
+TAKUMA
+NAOKI
+KOUICHI
+
+[a31_ksy]
+清春
+人時
+臣
+
+[a32_hw9]
+HATANO
+YUTA
+
+[a34_rst]
+大江 慎也
+花田 裕之
+井上 富雄
+池畑 潤二
+
+[c05_rsl]
+RYO-Z
+ILMARI
+PES
+SU
+FUMIYA
+
+[c05_mhg]
+hiroko
+mitsuman
