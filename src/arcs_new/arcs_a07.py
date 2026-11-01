@@ -96,7 +96,7 @@ PT["a07_zzz"] = ["本能寺 → 本能時", "Cold Summer → Cold Sumo", "ヒミ
 PT["a07_zzz"] = [t.split(" → ")[-1] for t in PT["a07_zzz"]]
 
 # ---------- 4 凛として時雨型 ----------
-ARCS.append(dict(k="a07_rin", nm='凛として時雨煮', st="band", y0=2002, ge="オルタナ", vg="x",
+ARCS.append(dict(k="a07_rin", nm='凛として佃煮', st="band", y0=2002, ge="オルタナ", vg="x",
  th=["孤独と夜", "自己否定と肯定", "人工物への違和感"], sa="都内の貸しスタジオ",
  tx="学生のころ、同じバイト先で知り合った三人が、貸しスタジオで音を出したのが始まりだった",
  roles=["Vo/Gt", "Ba/Vo", "Dr"], tr=["ギターの音が高すぎて犬が反応する", "ベースの声が時々裏返る", "ドラムが細かすぎて誰も数えない"],
@@ -120,7 +120,7 @@ ARCS.append(dict(k="a07_rin", nm='凛として時雨煮', st="band", y0=2002, ge
  real=[0, 0, 0, 0],
  eh="三人のまま、声と音の細かさを研ぎ続け、国内外で熱狂的な客席を持つバンドになった。",
  ea=["形を保ちながら、少しずつ聴きやすくなった。", "別名義のほうが、バンドより有名になった。", "小さな客席だけを相手に、鋭さを保ち続けた。"],
- cp=["三人組", "男女ツインボーカル", "別名義", "アニメ主題歌", "海外"], eras=[3, 4, 1], alt=['凛として時雨煮丼', '凛としてしぐれ']))
+ cp=["三人組", "男女ツインボーカル", "別名義", "アニメ主題歌", "海外"], eras=[3, 4, 1], alt=['凛として佃煮丼', '凛として小雨']))
 PT["a07_rin"] = ["想像のセキュリティ → 想像のセキュリティ(三千円)", "abnormalize → abnormal rice", "Telecastic fake show → Telecastic fake shop", "Enigmatic Feeling → Enigmatic Filling",
  "DISCO FLIGHT → DISCO FIGHT", "Beautiful Circus → Beautiful Cactus", "unravel → unrabbit", "Nakano Kill You → Nakano Kill Zoo", "感覚UFO → 感覚UFO焼きそば",
  "傘の内側の遠吠え", "三拍目だけ高い声", "雨の日のシンバル", "停電のあいだにだけ鳴る", "高速のカーブと言い訳", "耳の奥のホッチキス",
@@ -160,7 +160,7 @@ PT["a07_9mm"] = ["Termination → Determination", "Black Market Blues → Black 
 PT["a07_9mm"] = [t.split(" → ")[-1] for t in PT["a07_9mm"]]
 
 # ---------- 6 ONE OK ROCK型 ----------
-ARCS.append(dict(k="a07_ook", nm='ONE OK ROCK SALT', st="band", y0=2005, ge="ポップロック", vg="m",
+ARCS.append(dict(k="a07_ook", nm='ONE OK ROLL SALT', st="band", y0=2005, ge="ポップロック", vg="m",
  th=["応援歌", "自己否定と肯定", "旅立ちと別れの春"], sa="ダンスの稽古場",
  tx="別の舞台で踊っていた若者と、楽器を持った仲間が出会って始まった",
  roles=["Vo", "Gt", "Ba", "Dr"], tr=["MCが長い", "ギターの機材を毎回増やす", "ベースの笑顔がたまに怖い", "ドラムは気合いで遅刻を取り戻す"],
@@ -184,7 +184,7 @@ ARCS.append(dict(k="a07_ook", nm='ONE OK ROCK SALT', st="band", y0=2005, ge="ポ
  real=[0, 0, 0, 0],
  eh="言葉の壁を越えて、国内のドームと海外のフェスの両方に立つバンドになった。",
  ea=["海外の挑戦は途中で終わったが、国内の客席が受け止めた。", "国内の足場を守り、大きな会場で毎年ライブを開いた。", "途中で方向を変えたが、歌う人の声は変わらなかった。"],
- cp=["異ジャンルからの転身", "主題歌", "英語", "海外挑戦", "大型会場"], eras=[3, 4, 1], alt=['ONE OK ROCK 塩', 'TWO OK ROCK SALT']))
+ cp=["異ジャンルからの転身", "主題歌", "英語", "海外挑戦", "大型会場"], eras=[3, 4, 1], alt=['ONE OK 岩塩', 'TWO OK ROCK SALT']))
 PT["a07_ook"] = ["完全感覚Dreamer → 完全感覚Dreamer(乾燥)", "The Beginning → The Beginner", "Wherever you are → Whenever you eat", "Cry out → Cry out(大盛)",
  "Mighty Long Fall → Mighty Long Fool", "Heartache → Heartburn", "アンサイズニア → アンサイズニア(Mサイズ)", "Re:make → Re:bake", "Let's take it all → Let's take it small",
  "Taking Off → Taking Out", "Clock Strikes → Clock Spikes", "Stand Out Fit In → Stand Out Fit Out", "ワンダー → ワンダーランド行き", "夢の続きは機内食", "ステージ裏で国境を越えて",
@@ -286,7 +286,7 @@ PT["a07_hor"] = ["恋のメガラバ → 恋のメガネバ", "絶望ビリー �
 PT["a07_hor"] = [t.split(" → ")[-1] for t in PT["a07_hor"]]
 
 # ---------- 10 銀杏BOYZ・GOING STEADY型 ----------
-ARCS.append(dict(k="a07_gin", nm='ぎんなんBOYS・GOING STEAMY', st="band", y0=1997, ge="パンクロック", vg="m",
+ARCS.append(dict(k="a07_gin", nm='ぎんなんBOYS・GOING STEAMED', st="band", y0=1997, ge="パンクロック", vg="m",
  th=["恋のはじまり", "夏と青春", "自己否定と肯定"], sa="地方の高校の部室",
  tx="地方の高校の部室で、友人たちと、うまくない音を出していたのが始まりだった",
  roles=["Vo/Gt", "Gt", "Ba", "Dr"], tr=["歌詞をノートの端に書く", "ギターはたまに音が出ない", "ベースは常に半袖", "ドラムは汗で滑る"],
@@ -310,7 +310,7 @@ ARCS.append(dict(k="a07_gin", nm='ぎんなんBOYS・GOING STEAMY', st="band", y
  real=[0, 0, 0, 0],
  eh="解散と再出発を経て、沈黙さえ作品の一部にしながら、音楽と俳優の両方で、世代を超えて愛されている。",
  ea=["沈黙は長かったが、待つ人が絶えなかった。", "弾き語りで回る夜が、静かな名物になった。", "大きな場所に行かず、小さな箱で青春を鳴らし続けた。"],
- cp=["解散", "再出発", "長い沈黙", "俳優", "青春の歌"], eras=[1, 3, 4], alt=['ぎんなんBOYS', 'GOING STEAMY']))
+ cp=["解散", "再出発", "長い沈黙", "俳優", "青春の歌"], eras=[1, 3, 4], alt=['ぎんなんBOYS', 'GOING STEAMED']))
 PT["a07_gin"] = ["BABY BABY → BABY BABEL", "銀河鉄道の夜 → 銀河鉄道の昼", "童貞ソー・ヤング → 童話ソー・ヤング", "駆け抜けて性春 → 駆け抜けて整春", "あいどんわなだい → あいどんわなだいえっと",
  "夢で逢えたら → 夢で会えたら", "NO FUTURE NO CRY → NO FUTURE NO CRAY", "SKOOL KILL → SKOOL KILT", "漂流教室 → 漂流教室(給食)", "なんとなく僕たちは大人になるんだ → なんとなく僕たちは大人になった",
  "骨 → 骨(多め)", "光 → 光熱費", "部室のラジカセ", "うまくない音の夜", "卒業式に歌えない歌", "駅のホームで頭を下げて", "ノートの端の一行",
