@@ -1,0 +1,62 @@
+{
+ "_doc": "元ネタの結成時メンバーと、後年のメンバー交代(roster.lineup)。start: {名簿の元の名前(後年の加入者): 結成時にその席にいたメンバー(null=結成時は不在)}。mc: 年順の交代。out=今いるメンバーの名前、in=名簿の元の名前(start で外した人)か新しいメンバー。名前は realname_scan.py で検査",
+ "a27_rls": {
+  "start": {"ロニー・ウッディ": {"n": "ブライム・ジョーネス", "r": "Gt", "g": "m"}},
+  "mc": [
+   {"y": 1969, "out": "ブライム・ジョーネス", "in": {"n": "ミット・テイラス", "r": "Gt", "g": "m"}},
+   {"y": 1975, "out": "ミット・テイラス", "in": "ロニー・ウッディ"}
+  ]
+ },
+ "a12_beet": {
+  "start": {"Mango Starr": {"n": "Peet Beast", "r": "Dr", "g": "m"}},
+  "mc": [
+   {"y": 1962, "out": "Peet Beast", "in": "Mango Starr"}
+  ]
+ },
+ "a25_dpp": {
+  "start": {"イアン・ギャラン": {"n": "ロッジ・エヴァンズ", "r": "Vo", "g": "m"}, "ロジャー・グローブ": {"n": "ニッケ・シンパル", "r": "Ba", "g": "m"}},
+  "mc": [
+   {"y": 1969, "out": "ロッジ・エヴァンズ", "in": "イアン・ギャラン"},
+   {"y": 1969, "out": "ニッケ・シンパル", "in": "ロジャー・グローブ"}
+  ]
+ },
+ "a19_queen": {
+  "start": {"ジョン・ビーコン": {"n": "マイキ・グロッサ", "r": "Ba", "g": "m"}},
+  "mc": [
+   {"y": 1971, "out": "マイキ・グロッサ", "in": "ジョン・ビーコン"}
+  ]
+ },
+ "a12_fleet": {
+  "start": {"Stevie Snacks": {"n": "Pita Greens", "r": "Gt/Vo", "g": "m"}, "Lindsey Bucklebam": {"n": "Jerky Spicer", "r": "Gt", "g": "m"}, "Christine McVeal": null},
+  "mc": [
+   {"y": 1970, "out": "Pita Greens"},
+   {"y": 1970, "in": "Christine McVeal"},
+   {"y": 1971, "out": "Jerky Spicer", "in": {"n": "Rob Welsh", "r": "Gt/Vo", "g": "m"}},
+   {"y": 1975, "out": "Rob Welsh", "in": "Lindsey Bucklebam"},
+   {"y": 1975, "in": "Stevie Snacks"}
+  ]
+ },
+ "a13_rhcp": {
+  "start": {"John Fruitciante": {"n": "Hillal Slowak", "r": "Gt", "g": "m"}, "Chad Smooth": {"n": "Jock Irens", "r": "Dr", "g": "m"}},
+  "mc": [
+   {"y": 1988, "out": "Hillal Slowak", "in": "John Fruitciante"},
+   {"y": 1988, "out": "Jock Irens", "in": "Chad Smooth"}
+  ]
+ },
+ "a40_gns": {
+  "start": {"スティーヴ・ハッケン": {"n": "アンソミー・フィリップズ", "r": "Gt", "g": "m"}, "フィル・コロンズ": {"n": "クリム・スチュワーツ", "r": "Dr", "g": "m"}},
+  "mc": [
+   {"y": 1970, "out": "クリム・スチュワーツ", "in": "フィル・コロンズ"},
+   {"y": 1970, "out": "アンソミー・フィリップズ"},
+   {"y": 1971, "in": "スティーヴ・ハッケン"}
+  ]
+ },
+ "a40_egl": {
+  "start": {"ジョー・ウォーク": {"n": "バーミー・リーダン", "r": "Gt", "g": "m"}, "ティモシー・B・シュミン": {"n": "ランデー・マイザナー", "r": "Ba/Vo", "g": "m"}, "ドン・フェルト": null},
+  "mc": [
+   {"y": 1974, "in": "ドン・フェルト"},
+   {"y": 1975, "out": "バーミー・リーダン", "in": "ジョー・ウォーク"},
+   {"y": 1977, "out": "ランデー・マイザナー", "in": "ティモシー・B・シュミン"}
+  ]
+ }
+}

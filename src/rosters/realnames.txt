@@ -577,6 +577,7 @@ John Lennon
 Paul McCartney
 George Harrison
 Ringo Starr
+Pete Best
 
 [a12_oats]
 Liam Gallagher
@@ -610,6 +611,9 @@ Lindsey Buckingham
 Christine McVie
 John McVie
 Mick Fleetwood
+Peter Green
+Jeremy Spencer
+Bob Welch
 
 [a12_abba]
 Agnetha Fältskog
@@ -628,6 +632,8 @@ Anthony Kiedis
 John Frusciante
 Flea
 Chad Smith
+Hillel Slovak
+Jack Irons
 
 [a13_greenday]
 Billie Joe Armstrong
@@ -804,6 +810,7 @@ Taku Takahashi
 ブライアン・メイ
 ジョン・ディーコン
 ロジャー・テイラー
+マイク・グロース
 
 [a19_zep]
 ロバート・プラント
@@ -1048,6 +1055,8 @@ Hikaru
 ジョン・ロード
 ロジャー・グローヴァー
 イアン・ペイス
+ロッド・エヴァンス
+ニック・シンパー
 
 [a25_imz]
 ブルース・ディッキンソン
@@ -1115,6 +1124,8 @@ Hikaru
 ロニー・ウッド
 ビル・ワイマン
 チャーリー・ワッツ
+ブライアン・ジョーンズ
+ミック・テイラー
 
 [a27_bgs]
 バリー・ギブ
@@ -1850,6 +1861,8 @@ manaka
 ジョー・ウォルシュ
 ドン・フェルダー
 ティモシー・B・シュミット
+バーニー・リードン
+ランディ・マイズナー
 
 [a40_gns]
 ピーター・ガブリエル
@@ -1857,6 +1870,8 @@ manaka
 マイク・ラザフォード
 スティーヴ・ハケット
 フィル・コリンズ
+アンソニー・フィリップス
+クリス・スチュワート
 
 [a40_vhl]
 デイヴィッド・リー・ロス

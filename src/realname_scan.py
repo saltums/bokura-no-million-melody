@@ -73,7 +73,7 @@ def rd(s):
     h = ''.join(x['hira'] for x in _KK.convert(s)) if _KK else s
     h = ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in h).translate(_SMALL)
     h = re.sub(r'([おこそとのほもよろごぞどぼぽ])[うお]', r'\1', re.sub(r'[ーぅ]', '', h))
-    return re.sub(r'[^ぁ-ん]', '', h)
+    return re.sub(r'[^ぁ-ゔ]', '', h)  # ゔ(ヴ)も読みに残す
 
 
 def _nd(h): return ''.join(c for c in unicodedata.normalize('NFD', h) if c not in '\u3099\u309a')
@@ -134,14 +134,39 @@ def near_real(fake, real):
     """メンバー名が元ネタの実在メンバーに近すぎるか(方針: 藤原基央→藤川基夫 の水準の軽いもじり)。
     不可: 完全一致 / 姓名を通した読みが同じ / 姓だけ・名だけ同じ(片方完全一致)。
     可: 姓・名それぞれ1字か読み1音の違い(名は同じ読みの別の字でもよい。姓名の読みが全部同じになるのは不可)。
-    海外勢(カタカナ・英字)は姓(最後の語)が同じなら不可(Billie Joe Armstrong→Billie Joe Armstring は可)。"""
-    if norm(fake) == norm(real) or same_rd(fake, real): return True
+    海外勢(カタカナ・英字)も同じ基準: 名(最初の語)・姓(最後の語)のどちらかが同じなら不可
+    (Mick Jagger→ミック・ジャガム は不可、ミッキ・ジャガム / ニック・ジャガム は可)。
+    海外勢の語どうしは、カナと英字をまたいだ同じ読み・長音だけの違い(チャーリー/チャリー)も「同じ」とみなす。"""
+    if norm(fake) == norm(real) or same_rd(fake, real) or _xrd(fake, real): return True
     a, b = _np(fake), _np(real)
     if len(a) == 1 and len(b) == 2 and _kanji(a[0]) and len(a[0]) >= 3 and _kanji(b[0]): a = [a[0][:len(b[0])], a[0][len(b[0]):]]
     if len(b) == 1 and len(a) == 2 and _kanji(b[0]) and len(b[0]) >= 3 and _kanji(a[0]): b = [b[0][:len(a[0])], b[0][len(a[0]):]]
     if len(a) < 2 or len(b) < 2: return False
-    if _foreign(real): return a[-1].lower() == b[-1].lower()
+    if _foreign(real) or _foreign(fake):  # 同じバンドの別人と名だけ同じ(ジョン・ボーナムとジョン・ポール・ジョーンズ)は、もう片方が似ているときだけ
+        return (_fpart(a[0], b[0]) and _akin(a[-1], b[-1])) or (_fpart(a[-1], b[-1]) and _akin(a[0], b[0]))
     return a[0].lower() == b[0].lower() or a[-1].lower() == b[-1].lower()
+
+
+def _akin(x, y):
+    """もう片方の語が元ネタの語らしい(似ている・読みの頭が同じ)"""
+    return _sim(x, y) or (bool(_rdc(x)) and _rdc(x)[:1] == _rdc(y)[:1]) or (_lat(x)[:1] != '' and _lat(x)[:1] == _lat(y)[:1])
+
+
+def _isl(s): return bool(re.fullmatch(r"[a-z\-'’.]+", unicodedata.normalize('NFKC', s).lower()))
+
+
+def _fpart(x, y):
+    """海外勢の名前の一語が「変わっていない」か。英字どうしは綴りが同じ、カナどうし・カナと英字は読みが同じ"""
+    if x.lower() == y.lower(): return True
+    if _isl(x) and _isl(y): return False
+    return bool(_rdc(x)) and _rdc(x) == _rdc(y)
+
+
+def _xrd(x, y):
+    """カナと英字をまたいで姓名を通した読みが同じ(Mick Jagger / ミック・ジャガー)"""
+    lx, ly = bool(_lat(x)), bool(_lat(y))
+    if lx == ly: return False  # 同じ文字種どうしは same_rd に任せる
+    return bool(_rdc(x)) and _rdc(x) == _rdc(y)
 
 
 _PRD = {}
@@ -152,7 +177,7 @@ def member_hits(n):
     """メンバー名: 実名(realnames.txt の全員)と一致 or 同じ読み。1字・1音違いは可"""
     x = norm(n)
     out = [p for p, q in PN if x == q]
-    return out + [p for p in _PRD.get(_rdc(n), []) if p not in out and same_rd(n, p)]
+    return out + [p for p in _PRD.get(_rdc(n), []) if p not in out and (same_rd(n, p) or _xrd(n, p))]
 
 
 # ---- 実在の曲名(rosters/realtitles.txt。照合の本体は realtitles.py)
@@ -202,7 +227,9 @@ _MEMB = {}  # 正規化した名前 -> 使っている arcs(ゲーム内で他�
 for a in list(G1.ARCS) + arcs:
     k = a['k']; R = roster.ROSTER.get(k) or L(a.get('members')) or []
     fx = roster.REALFIX.get(k) or {}
-    for x in R:
+    _LU = roster.LINEUP.get(k) or {}  # 結成時メンバー・後年の加入者(rosters/lineup.json)
+    _LN = [v for v in (_LU.get('start') or {}).values() if v] + [c['in'] for c in _LU.get('mc') or [] if isinstance(c.get('in'), dict)]
+    for x in list(R) + _LN:
         n = fx.get(x['n'], x['n'])
         _MEMB.setdefault(norm(n), []).append(k)
         mh = member_hits(n)

@@ -205,6 +205,7 @@ def build(a, i, pool, era=None, nm=None):
     meta = {"id": seed, "a": name, "pun": None, "top": top, "st": st if st != "dj" else "solo", "sn": STN.get(st, "シンガーソングライター"), "pe": "まじめ", "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
             "tx": a["tx"], "ai": None, "mm": mm, "vg": "inst" if st == "inst" else a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
     bio.localize(a, meta["bio"], mm, seed)  # 出身地・結成地を国と「始まりの場所」に合わせる
+    _mc = _ro.lineup(a, mm) if top == "グループ" else []  # 元ネタの結成時メンバーに。後年の加入・脱退は年で転機に差し込む(下の lineup_tree)
     if solo_inst: meta["sn"] = "インスト奏者"
     if st == "rap" and top == "グループ": meta["sn"] = "ヒップホップグループ"
     th = a["th"]; D = a["d"]; N = len(D); cv = a["cv"]; ev = list(a["ev"]); ex = list(a.get("ex") or [])
@@ -284,6 +285,7 @@ def build(a, i, pool, era=None, nm=None):
     pos1 = len(cv[0]); w0 = [w for w in s0 if w["t"] == "r"]
     tree = {"s": s0, "q": q(D[0], w0), "n": node(0, 0, 0, seen0, pos1, w0)}
     cap_fives(tree)
+    if _mc: _ro.lineup_tree(tree, mm, [(y_ - a["y0"] + y0, k_, m_, t_) for y_, k_, m_, t_ in _mc])
     return {"m": meta, "t": tree}
 
 

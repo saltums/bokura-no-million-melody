@@ -690,7 +690,7 @@ body.cleared #s-title .mast { background-image: radial-gradient(1.5px 1.5px at 1
 // 読み終わってから走らせる初期化は onReady(f) に、ボタンは needData(f) で包む(読み終わる前に押されたら「読み込み中…」で待つ)
 let DATA = [], BANK = {}, READY = false; const _RQ = []; let _LD = null;
 const onReady = (f) => { if (READY) { try { f(); } catch (e) { console.error(e); } } else _RQ.push(f); };
-const DV = 'da7240dbb6';
+const DV = '0318df6182';
 function loadData() {
   if (READY) return Promise.resolve();
   const get = (u) => fetch(u + '?v=' + DV).then((r) => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
@@ -960,7 +960,7 @@ function sideMake() {
   const eb = eraBucket(m.era), grp = m.top === 'グループ' || m.st === 'duo';
   const c = BANK.sd.filter((x) => !(x.ns || []).includes(m.st) && (x.e === 'all' || x.e === eb) && (x.k === 'a' || (x.k === 'g') === grp) && !S.sdUsed.has(x.pr) && evFit(x.pr + ' ' + x.o.map((o) => o.l).join(' ')) && coOk(x.pr + ' ' + x.o.map((o) => o.l).join(' '), 'side') && coOk(x.o.map((o) => [o.ok, o.ng].filter(Boolean).join(' ')).join(' '), 'side') && lifeOk(x.o.map((o) => [o.ok, o.ng, o.fu_ok, o.fu_ng].filter(Boolean).join(' ')).join(' ')));
   if (!c.length) return null; const pk = c[Math.floor(Math.random() * c.length)]; S.sdUsed.add(pk.pr); S.sdN += 1;
-  return { kind: 'side', lab: pk.lab || '寄り道', prompt: coTx(cjFix(pk.pr)), opts: pk.o.filter((o) => !o.gs || pk.o.length < 3 || Math.random() < 0.25).map((o) => ({ l: o.l, p: o.p, g: o.g, ok: o.ok, ng: o.ng || o.ok, up: false, gs: o.gs, fu: [o.fu_ok, o.fu_ng] })) };
+  return { kind: 'side', lab: pk.lab === '解散' && !/解散/.test(pk.pr) ? (/抜け|脱退|辞め|やめ/.test(pk.pr) ? '脱退' : 'メンバーの話') : (pk.lab || '寄り道'), prompt: coTx(cjFix(pk.pr)), opts: pk.o.filter((o) => !o.gs || pk.o.length < 3 || Math.random() < 0.25).map((o) => ({ l: o.l, p: o.p, g: o.g, ok: o.ok, ng: o.ng || o.ok, up: false, gs: o.gs, fu: [o.fu_ok, o.fu_ng] })) };
 }
 function showFes(d, done) {
   const tail = $('#tail'); tail.textContent = '';
@@ -1374,12 +1374,19 @@ function loadWait(job, done, cancel) {
   Promise.resolve().then(job).then((v) => { clearTimeout(tm); ldHide(); done(v); }, () => { clearTimeout(tm); ldShow(() => loadWait(job, done, cancel), cancel); });
 }
 function openingFade(entry, cb) {
-  const m = entry.m; const ov = el('div', 'open-fade'); ov.append(el('div', 'of-k', m.es + ' / ' + m.sn), el('div', 'of-n', m.a), el('div', 'of-s', m.ge)); document.body.append(ov);
+  const m = entry.m; const ov = el('div', 'open-fade'); ov.append(el('div', 'of-k', eraLab(entry).es + ' / ' + m.sn), el('div', 'of-n', m.a), el('div', 'of-s', m.ge)); document.body.append(ov);
   let called = false, gone = false; const run = () => { if (!called) { called = true; try { cb(); } catch (e) { console.error(e); } } };
   const end = () => { if (gone) return; gone = true; run(); ov.classList.add('out'); setTimeout(() => ov.remove(), 700); };
   ov.onclick = () => { run(); end(); };
   requestAnimationFrame(() => ov.classList.add('in'));
   setTimeout(run, 400); setTimeout(end, 1150);
+}
+// 時代ラベルは実際の最初の作品の年から出す(「70年代」の人生で1962年デビューなら「60年代」)。図鑑の集計は元の m.es のまま
+const ERA_DEC = { 1930: '30年代(ジャズと流行歌の時代)', 1940: '40年代(ビッグバンドと戦後の歌)', 1950: '50年代(ロックンロール誕生のころ)', 1960: '60年代(ビートとロックの夜明け)', 1970: '70年代(フォーク・ニューロックの黎明期)', 1980: '80年代(パンク・ニューウェーブ・バンドブーム)' };
+function eraLab(entry) {
+  const m = entry && entry.m; if (!m) return { es: '', en: '' }; const dflt = { es: m.es, en: m.en };
+  try { if (m.rare || !/^[0-9]0年代$/.test(String(m.es)) || !entry.t) return dflt; let y = null; for (const it of entry.t.s) if (it.t === 'r') { y = it.y; break; } if (y == null) return dflt;
+    const d = Math.floor(y / 10) * 10, es = String(d).slice(2) + '年代'; if (es === m.es || !ERA_DEC[d]) return dflt; return { es, en: ERA_DEC[d] }; } catch (_) { return dflt; }
 }
 function startTree(entry) {
   const go = () => { if (S.skipIntro) { S.skipIntro = false; startTree0(entry); } else showIntro(entry, () => openingFade(entry, () => startTree0(entry))); };
@@ -1388,9 +1395,9 @@ function startTree(entry) {
 }
 function showIntro(entry, go) {
   const m = entry.m; const prev = S.entry; S.entry = entry; S.top = m.top || S.top;
-  $('#in-k').textContent = m.es + ' / ' + m.sn; $('#in-nm').textContent = m.a;
+  $('#in-k').textContent = eraLab(entry).es + ' / ' + m.sn; $('#in-nm').textContent = m.a;
   const tg = $('#in-tags'); tg.textContent = ''; tg.append(el('span', 'tag p', m.pe), el('span', 'tag', m.ge), el('span', 'tag', m.sa));
-  $('#in-tx').textContent = m.en + '、' + m.tx + '。';
+  $('#in-tx').textContent = eraLab(entry).en + '、' + m.tx + '。';
   const bb = $('#in-bio'); bb.textContent = ''; try { const l0 = S.log; S.log = []; const rows = bioRows(); S.log = l0; rows.slice(0, 3).forEach((o) => bb.append(el('p', null, o[0] + ': ' + o[1]))); } catch (_) {}
   const grp = m.top === 'グループ' || (m.mm && m.mm.length > 1); const mem = $('#in-mem'); mem.textContent = '';
   if (!grp || (m.me && m.top !== 'グループ')) mem.append(selfRow(m)); if (m.mm && m.mm.length) { $('#in-ml').textContent = grp ? 'メンバー' : '支える人'; m.mm.forEach((x) => mem.append(memRow(x))); } else $('#in-ml').textContent = '';
@@ -1405,7 +1412,7 @@ function startTree0(entry) { if (!S.skipNote) noteTitles(entry); if (S.forceEntr
   $('#h-nm').textContent = m.a; $('#h-y').textContent = (() => { try { const y = firstYear(); return y == null ? '' : fmtY(y); } catch (_) { return ''; } })(); $('#h-w').textContent = '0'; $('#h-b').textContent = m.rare ? '—' : '圏外'; setHeat(false); { const aw = $('#h-aw'); if (aw) aw.textContent = ''; }
   const intro = el('div', 'card intro in');
   intro.append(el('span', 'lab', '出発点'));
-  intro.append(el('p', null, m.pe + (/い$/.test(m.pe) ? '' : m.pe === '普通' ? 'の' : 'な') + m.sn + '。' + m.en + '、' + m.tx + '。'));
+  intro.append(el('p', null, m.pe + (/い$/.test(m.pe) ? '' : m.pe === '普通' ? 'の' : 'な') + m.sn + '。' + eraLab(entry).en + '、' + m.tx + '。'));
   { const rows = bioRows(); if (rows.length) { const o = rows[0]; intro.append(el('p', 'bl', o[0] + ': ' + o[1])); if (rows[2] && !m.bio.ai) intro.append(el('p', 'bl', 'きっかけ: ' + m.bio.st)); } }
   if (m.mm && m.mm.length) { const ml = el('p', 'small', (S.top === 'グループ' ? 'メンバー: ' : '支える人: ') + m.mm.map((x) => x.n + '(' + x.r + ')').join('、')); intro.append(ml); }
   $('#feed').prepend(intro);
@@ -3286,7 +3293,7 @@ const FEEL = {
   q0: ['本当にこれでよかったのか。答えは、まだ出ていない。', '楽器ケースを押し入れにしまう手が、少しだけ止まった。', 'やめたはずなのに、街で流れる音楽ばかり耳に入る。', '「もったいない」と言われるたびに、うなずくことしかできなかった。', 'スマホの写真フォルダを、しばらく開けなかった。', '終わらせたのは自分だ。なのに、置いていかれた気がした。', '帰り道、昔よく通ったライブハウスの前を、わざと通らなかった。'],
 };
 function feelKey(it) { return choiceKind(it.c) + (it.ok ? '1' : '0'); }
-function gainLoss(it) { const a0 = GL[it.sk === 'side' ? 's' + (it.ok ? '1' : '0') : feelKey(it)]; const a1 = a0.filter((x) => lifeOk(x.join(' '))); const a = a1.length ? a1 : a0; return a[hash(String(it.c) + (S.entry ? S.entry.m.a : '')) % a.length]; }
+function gainLoss(it) { const a0 = GL[it.sk === 'side' ? 's' + (it.ok ? '1' : '0') : feelKey(it)]; const m_ = S.entry && S.entry.m, old_ = m_ && m_.rare && CO.OLD.indexOf(m_.era) >= 0; const a1 = a0.filter((x) => lifeOk(x.join(' ')) && !(old_ && (CO.MOD2.test(x.join(' ')) || /ファン/.test(x.join(' '))))); const a = a1.length ? a1 : a0; return a[hash(String(it.c) + (S.entry ? S.entry.m.a : '')) % a.length]; }
 // 心情の一文も、レア時代の現代語・ソロのバンド前提・10代の酒などを除く。合うものがなければ出さない
 function feelOf(it) { const a = FEEL[feelKey(it)].filter((x) => lifeOk(x)); if (!a.length) return ''; const k = hash(String(it.c) + '|' + (S.dn || 0) + (S.entry ? S.entry.m.a : '')) % a.length; return ij(a[k]); }
 // 選択肢の中のカギ括弧は『』にして、「「…」」の二重を避ける
@@ -3336,6 +3343,13 @@ function altScene(pe, k) {
       const clash = enX && wk && ((wk.tr >= 4 && SM.test(enX)) || (wk.tr <= 2 && BG.test(enX)));
       if (enX && !sib.has(altClean(best.e.tx)) && !(ev && near(ev.tx, enX)) && !near(lab, enX) && !LBS.some((l) => near(l, enX)) && !clash) en = enX;
     }
+    // 終わり系の道(別の道・区切り・解散・引退)なら、その先のヒット文は出さない。趣味・働きながらの道なら大ヒット以上は出さない
+    { const ENDL = /別の道|区切り|解散|引退|やめる|辞める|終える|終わら|終わりに|それぞれの道|別々の道|身を引|幕を|足を洗|音楽を離れ|畳む|たたむ|ここで降り/.test(lab) && !/やめずに|辞めずに|しない|せず/.test(lab);
+      const HOBL = /就職|趣味|進学を優先|学業を優先|働きながら|会社員/.test(lab);
+      if (wk && ((ENDL && wk.tr >= 2) || (HOBL && wk.tr >= 4))) { wk = null; if (en && /国民的|社会現象|頂点|世界|ドーム|伝説|大ヒット|ヒット/.test(en)) en = null; } }
+    // 年齢に合わない学年語・家族語(30代の「学食」、20代前半の「子どもが物販」など)を含む文は使わない
+    if (ev) { const f = coAgeCut(ev.tx, ageAt(ev.y)); if (f !== ev.tx) ev = f && f.replace(/^\d+歳。?/, '').length > 6 ? { tx: f.replace(/。$/, ''), y: ev.y } : null; }
+    if (en) { const f = coAgeCut(en, ageAt(wk ? wk.y : (best && (best.e.w || []).length ? best.e.w[best.e.w.length - 1].y : null))); if (f !== en) en = null; }
     const ag = (y) => { const a = ageAt(y); return a ? a + '歳、' : ''; };
     const out = [];
     if (ev) out.push({ y: ev.y, tx: ag(ev.y) + ev.tx + '。' });
@@ -3497,7 +3511,7 @@ function copyText(text, btn) {
   try { navigator.clipboard.writeText(text).then(done, fallback); } catch (_) { fallback(); }
 }
 function trkRow(t, mainTitle) {
-  const r = el('div', 'trk'); const tt = el('span', 'tt' + (t.t === mainTitle || t.g === '表題曲' ? ' main' : ''), t.t);
+  const r = el('div', 'trk'); const tt = el('span', 'tt' + (t.t === mainTitle || t.g === '表題曲' ? ' main' : ''), String(t.t).replace(/([けめれ]る)との/g, '$1と'));
   if (t.g) { const g = el('span', 'tg', t.g); tt.append(' ', g); }
   r.append(el('span', 'tn', String(t.n).padStart(2, '0')), tt, el('span', 'td', t.d)); return r;
 }
@@ -3610,7 +3624,8 @@ function meFix(t) {
   try { const m = S.entry && S.entry.m; if (!t || !m || !m.me || !ME_W[m.me] || m.top !== 'グループ') return t;
     const rx = new RegExp('(' + ME_W[m.me].join('|') + ')(?=(が|は|も|と|に|の[^音弦]|担当|のやつ))', 'g'); if (!rx.test(t)) return t; rx.lastIndex = 0;
     const alt = (S.mem || []).map((x) => partOf(x.r)).find((p) => p && p !== m.me && p !== 'Vo' && PART_W[p]); if (!alt) return t;
-    return String(t).replace(rx, PART_W[alt]); } catch (_) { return t; }
+    // 置き換え先のパートが同じ文にもう出ている(「ギターとキーボードに」)なら、「ギターとギターに」にせず「自分」にする
+    return String(t).replace(rx, String(t).indexOf(PART_W[alt]) >= 0 ? '自分' : PART_W[alt]); } catch (_) { return t; }
 }
 /* ==== 整合エンジン: 人生の状態を S.state で一元管理し、表示する前に文を検査・補正する ====
    文の書き直しに頼らず、「その時点の年齢・実績・終わり方・規模」と食い違う文は出さない(削る/言い換える) */
@@ -3634,8 +3649,21 @@ const CO = {
   ONE: /ヒットは一曲|一曲で終わ|一曲だけ|一発屋|一発で|玄人に|通好み|知る人ぞ知る|小さく終わ|ひっそり/,
   OLD: [-2, -3, 15, 16, 17, 18, 19, 20, 21, 23],
   MOD2: /観客席|客席|でしょ|じゃん|マジで|ヤバ|めっちゃ|ウケ|テンション|リハ|セットリスト|アンコール|スマホ|オファー|ギャラ|動画|配信|楽屋|ファンが|ファンの/,
+  // 選んだ道の履歴(休止した・解散した・裏方に回った)と、それを前提にする問い文の言い回し
+  HIAT: /休止|休む|休ん|休み(?:に入|を取)|立ち止ま|充電期間|活動を止め|一度止め|いったん止め|活動を一度/, HIATN: /休まず|休止せず|休まない|休みなし|休止しない|取りやめ/,
+  DISB: /解散|区切りをつけ|区切りをつける|それぞれの道|別々の道|終わりにする|終える|終わらせ|幕を(?:引|下ろ)|活動を終|名前を畳|看板を下ろ/, DISBN: /しない|せず|ずに|引き留め|続ける|続けて/,
+  BSTG: /裏方|他の歌い手(?:にも|に)曲|曲を提供|提供曲|作家(?:に|として)|プロデュース(?:業|に回|側)/,
+  REUN: /集ま(?:る|って)|舞台に立つ|ステージに立つ|(?:歌|音楽|ステージ|舞台)に戻る|戻ってくる|再び/,
+  P_HIAT: /休止から|休止して(?:から|数|何|十|一)|活動休止中|休止中|再始動の準備|長い休みの(?:あと|後)|長い休止|休んで(?:から|いる間|数|何)|止まっていた時間|休みに入って(?:から|数|何)/,
+  P_DISB: /解散から|解散して(?:から|数|何|十|一)|解散後|解散した(?:後|あと)|解散以来/,
+  P_BSTG: /裏方(?:の仕事)?が続いて|裏方に回って|裏方(?:として|の仕事)を続け/,
+  P_QUIT: /引退から|引退して(?:から|数|何|十)|(?:音楽|ステージ|舞台)を離れて(?:から|数|何|十)|やめてから(?:数|何|十)|表舞台を去って/,
+  P_JOB: /就職して(?:から|数|何|十)|会社員になって(?:から|数|何|十)|勤めて(?:から|数|何|十)|勤め始めて/,
+  // 年齢で外す語(学校・家族)。[語, 下限, 上限]
+  AGEW: [[/部室|制服(?:のまま|姿|で)|放課後の|校舎|進路指導|ホームルーム|高校生|中学生/, 12, 19], [/文化祭|学園祭|学食|サークル棟/, 12, 24], [/卒業を前に|卒業を控え|卒業まで|卒業したら|卒業間近/, 12, 24],
+    [/(?:^|[、。]|うちの|自分の)(?:子ども|娘|息子)(?:が|は|と|に|を|も)/, 26, 200], [/(?:子ども|娘|息子)が.{0,14}(?:物販|手伝|ライブに来|楽器を|ギターを|客席)/, 32, 200], [/孫(?:が|に|と|の|を)/, 50, 200]],
 };
-function coInit() { S.state = { age: null, hits: 0, big: 0, best: 0, streak: 0, lives: 0, tour: false, quit: false, hobby: false, lastChoice: '', signed: false, fes: new Set() }; }
+function coInit() { S.state = { age: null, hits: 0, big: 0, best: 0, streak: 0, lives: 0, tour: false, quit: false, hobby: false, hiatus: false, disbanded: false, backstage: false, lastChoice: '', signed: false, fes: new Set() }; }
 function coAge() { try { return curAge(); } catch (_) { return null; } }
 // 平安・戦国などの評判ラベル(「院の御所まで届き」「宿場で評判に」)を、文の述語として言い切る形にする
 function tierPred(l) { l = String(l || ''); if (/た$/.test(l)) return l; if (/ず$/.test(l)) return l.replace(/ず$/, 'なかった'); if (/でき$/.test(l)) return l + 'た'; if (/(届|響|聴|書|歩|開|招|続|轟)き$/.test(l)) return l.replace(/き$/, 'いた'); if (/り$/.test(l)) return l.replace(/り$/, 'った'); if (/[れけびえめ]$/.test(l)) return l + 'た'; if (/るまで$/.test(l)) return l + '聴かれた'; if (/(まで|へ)$/.test(l)) return l + '届いた'; if (/に$/.test(l)) return l + 'なった'; if (/で$/.test(l)) return l + '広まった'; if (/ヒット$/.test(l)) return l + 'した'; return '「' + l + '」と評された'; }
@@ -3643,7 +3671,7 @@ function tierPred(l) { l = String(l || ''); if (/た$/.test(l)) return l; if (/�
 function coTx(t) {
   try { if (!t || typeof t !== 'string') return t; let s = t;
     s = s.replace(/の評判は「([^「」]*)」/g, (_, l) => 'は' + tierPred(l)).replace(/は「([^「」]*?(?:評判に|届き|噂に|で))」(?=。|$)/g, (_, l) => 'は' + tierPred(l));
-    s = s.replace(/曲のない曲/g, '歌のない曲').replace(/が([ァ-ヶー一-龠]{1,6})が/g, 'の$1が').replace(/。。/g, '。').replace(/、。/g, '。');
+    s = s.replace(/曲のない曲/g, '歌のない曲').replace(/が([ァ-ヶー一-龠]{1,6})が(?![っらりるれろ])/g, 'の$1が').replace(/。。/g, '。').replace(/、。/g, '。');
     const m = S.entry && S.entry.m;
     if (m && m.rare && CO.OLD.indexOf(m.era) >= 0) s = s.replace(/観客席/g, '見物の席').replace(/客席/g, '見物の衆').replace(/てるんでしょ/g, 'ているのだろう').replace(/んでしょ/g, 'のだろう').replace(/でしょ/g, 'であろう').replace(/じゃん/g, 'ではないか');
     const a = coAge(); if (a != null && a >= 20) s = s.replace(/高校の先生/g, '高校時代の恩師');
@@ -3651,17 +3679,22 @@ function coTx(t) {
 }
 // 年齢に合わない学年語を含む節を削る(「34歳。大学四年の秋。」→「34歳の秋。」)。全部削れたら null
 function coAgeCut(t, a) {
-  if (a == null || !t) return t; const bad = (x) => !CO.PAST.test(x) && CO.SCH.some(([rx, lo, hi]) => rx.test(x) && (a > hi || a < lo));
+  if (a == null || !t) return t; const bad = (x) => !CO.PAST.test(x) && CO.SCH.concat(CO.AGEW).some(([rx, lo, hi]) => rx.test(x) && (a > hi || a < lo));
   if (!bad(t)) return t;
-  const ss = String(t).split(/(?<=[。!?])/); const out = [];
+  // 文に分ける(台詞『…。…』の中の句点では切らない)
+  const ss = []; { let cur = '', dp = 0; for (const ch of String(t)) { cur += ch; if (/[『「]/.test(ch)) dp++; else if (/[』」]/.test(ch)) dp = Math.max(0, dp - 1); else if (/[。!?]/.test(ch) && !dp) { ss.push(cur); cur = ''; } } if (cur) ss.push(cur); }
+  const out = []; let qcut = false;
   ss.forEach((sn) => {
     if (!bad(sn)) { out.push(sn); return; }
+    if (/[『「]/.test(sn)) qcut = true;
     const sea = sn.match(/^[^、。「『]*(春|夏|秋|冬|終わり|はじめ)[。]?$/); if (sea && out.length && /\d+歳。$/.test(out[out.length - 1])) { out[out.length - 1] = out[out.length - 1].replace(/。$/, 'の' + sea[1] + '。'); return; }
     if (/[「『]/.test(sn)) return; // 台詞の中は節で切らない(まるごと削る)
     // 先頭の節(主語を含む)が残る場合だけ、後ろの合わない節を落とす。主語ごと消えるなら文ごと削る
     const ps = sn.replace(/[。!?]$/, '').split('、'), end = (sn.match(/[。!?]$/) || ['。'])[0]; const keep = ps.filter((p) => !bad(p));
-    if (keep.length && keep.length < ps.length && keep[0] === ps[0] && keep[keep.length - 1] === ps[ps.length - 1]) out.push(keep.join('、') + end);
+    if (keep.length && keep.length < ps.length && (keep[0] === ps[0] || /[がは]/.test(keep[0])) && keep[keep.length - 1] === ps[ps.length - 1]) out.push(keep.join('、') + end);
   });
+  // 台詞を削って「母が言った。」だけが残るなら、それも外す
+  if (qcut) { for (let i = out.length - 1; i >= 0; i--) if (/(?:言った|聞いた|尋ねた|言う|笑った|口を開いた)。$/.test(out[i]) && !/[『「]/.test(out[i]) && !(out[i + 1] && /^[『「]/.test(out[i + 1]))) out.splice(i, 1); }
   const r = out.join(''); return r.replace(/^\d+歳。$/, '').trim() ? r : null;
 }
 // 文がいまの人生の状態と食い違わないか(k: e=転機 side=寄り道 epi=エピローグ end=結末)
@@ -3675,8 +3708,41 @@ function coOk(t, k, age) {
     if (s.signed && CO.SIGN.test(t)) return false;
     if ((s.best >= 5 || s.big >= 2) && CO.ONE.test(t)) return false;
     if (m.rare && CO.OLD.indexOf(m.era) >= 0 && (CO.MOD2.test(t) || LF_MODERN.test(t))) return false;
+    if ((s.quit || s.disbanded) && k === 'epi' && CO.BIGX.test(t)) return false;
+    if (!famOk(t)) return false;
+    if (coPrem(t) !== t) return false;
     return true; } catch (_) { return true; }
 }
+// 問い文・結果文の「休止から数年」「解散から」「裏方の仕事が続いて」などの前提が、実際に選んだ道と合うか。
+// 合わない前提の文(節)は、状態に合う言い方に替えるか外す。台詞(『』「」)の中は触らない
+function coPrem(t) {
+  try { const s = S.state; if (!t || !s || typeof t !== 'string') return t; const grp = S.entry && S.entry.m.top === 'グループ';
+    const okH = s.hiatus || s.quit || s.disbanded, okD = s.disbanded || (s.quit && grp), okB = !!s.backstage, okQ = !!s.quit, okJ = s.hobby || s.quitJob;
+    const fix = (x) => {
+      if (CO.P_DISB.test(x) && !okD) { if (okH) x = x.replace(/解散/g, '休止'); else return null; }
+      if (CO.P_HIAT.test(x) && !okH) return null;
+      if (CO.P_BSTG.test(x) && !okB) return null;
+      if (CO.P_QUIT.test(x) && !okQ) { if (s.hiatus) x = x.replace(/引退/g, '休止').replace(/(?:音楽|ステージ|舞台)を離れて/g, '休んで'); else return null; }
+      if (CO.P_JOB.test(x) && !okJ) return null;
+      return x; };
+    // 文ごとに見て、合わない前提は言い換え、無理なら節ごと(主語が残るときだけ)外す。外した結果が空なら ''
+    const ss = t.split(/(?<=[。!?])/); const out = [];
+    ss.forEach((sn) => { if (/[『「]/.test(sn)) { out.push(sn); return; } const f = fix(sn); if (f === sn) { out.push(sn); return; } if (f) { out.push(f); return; }
+      const ps = sn.replace(/[。!?]$/, '').split('、'), end = (sn.match(/[。!?]$/) || ['。'])[0]; const keep = []; ps.forEach((p) => { const g = fix(p); if (g) keep.push(g); });
+      if (keep.length && keep.length < ps.length && /[がはを]/.test(keep[0])) out.push(keep.join('、') + end); });
+    const r = out.join(''); return r === t ? t : r; } catch (_) { return t; }
+}
+// 家族の語(妹・姉・兄・弟・従姉妹)を、設定の家族構成に合うものだけにする
+function famSet() { try { const fm = String((S.entry.m.bio || {}).fm || ''); if (!fm) return null; const z = new Set();
+  if (/一人っ子|ひとりっ子|兄弟はいない|きょうだいは(?:いない|一人も)|兄弟姉妹はいない/.test(fm)) return z;
+  if (/きょうだい|兄弟が/.test(fm)) { ['妹', '姉', '兄', '弟'].forEach((k) => z.add(k)); return z; }
+  ['妹', '姉', '兄', '弟'].forEach((k) => { if (fm.indexOf(k) >= 0) z.add(k); }); return z.size ? z : null; } catch (_) { return null; } }
+function famOk(t) { try { const z = famSet(); if (!z || !t) return true; const T = String(t);
+  if (/従姉妹|従兄弟|いとこ/.test(T) && z.size) return false;
+  const rx = /(?<![従姉兄義])(妹|姉|兄|弟)(?![妹弟子貴分])/g; let mm; while ((mm = rx.exec(T))) { if (!z.has(mm[1])) return false; } return true; } catch (_) { return true; } }
+// 「他の五人」「四人で」など人数の語を、いまのメンバー数に合わせる
+function numFix(t) { try { const m = S.entry && S.entry.m; if (!t || !m || m.top !== 'グループ' || typeof t !== 'string') return t; const n = (S.mem || []).length; if (n < 2 || n > 9) return t; const KN = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  return t.replace(/(他の|ほかの|残りの|残る)([二三四五六七八])人/g, (x, a, b) => a + (n - 1 >= 2 ? KN[n - 1] + '人' : '一人')).replace(/(?<![は客席がも0-9一二三四五六七八九十百千])(?<!他の|ほかの|残りの|残る)([三四五六七八])人(?=で|の|は|が|とも|全員|そろって|揃って|それぞれ)/g, (x, b) => (n >= 3 ? KN[n] : '二') + '人'); } catch (_) { return t; } }
 // 表示した項目で状態を進める(各項目の表示前に呼ぶ: 先に検査、そのあと反映)
 function coUpd(it) {
   const s = S.state; if (!s || !it) return;
@@ -3687,22 +3753,37 @@ function coUpd(it) {
   if (/ツアー/.test(c + tx) && !/やめ|休|断|見送|中止|取りやめ|せず/.test(c) && it.ok !== false) s.tour = true;
   if (/メジャー(?:契約|デビュー|へ移籍|に移籍)|メジャーレーベルと契約/.test(c + tx) && !/断|見送|残る|せず/.test(c)) s.signed = true;
   if (it.t === 'x' && !it.rt) { s.lastChoice = c;
-    if (CO.HOBBY.test(c)) s.hobby = true; else if (s.hobby && CO.PRO.test(c)) s.hobby = false;
+    // 「いったん働きながら」の趣味は仮のもの: 次に攻めの選択(主題歌を引き受ける等)をしたら本業に戻ったとみなす
+    if (CO.HOBBY.test(c)) { s.hobby = true; s.hobbyTmp = /いったん|一旦|しばらく|ひとまず/.test(c); } else if (s.hobby && (CO.PRO.test(c) || (s.hobbyTmp && choiceKind(c) === 'a'))) s.hobby = false;
     if ((CO.QUIT.test(c) && !CO.NOTQ.test(c)) || (CO.QUITX.test(tx) && !CO.NOTQ.test(tx) && choiceKind(c) === 'q')) { s.quit = true; s.quitJob = CO.JOB.test(c + ' ' + tx); }
-    if (CO.BACK.test(c)) { s.quit = false; } }
+    // 休止した・解散した(区切りをつけてそれぞれの道へ も含む)・裏方に回った。再結成・再び集まる選択で解散は解除
+    const grp = S.entry && S.entry.m.top === 'グループ';
+    if (CO.HIAT.test(c) && !CO.HIATN.test(c)) s.hiatus = true;
+    if (CO.DISB.test(c) && !CO.DISBN.test(c)) { s.quit = true; if (grp) s.disbanded = true; if (s.quitJob == null || !s.quitJob) s.quitJob = CO.JOB.test(c + ' ' + tx); }
+    if (CO.BSTG.test(c)) s.backstage = true;
+    if (/進学を優先|学業を優先|趣味として/.test(c)) s.hobby = true;
+    if (CO.BACK.test(c) || ((s.quit || s.disbanded || s.hiatus) && CO.REUN.test(c))) { s.quit = false; s.disbanded = false; } }
 }
 // 進行中の項目を検査・補正する。出さない項目は null
 function coItem(it) {
   try { if (!it || !S.state) return it;
-    if ((it.t === 'e' || it.t === 'x') && it.tx) { const f = coTx(it.tx); if (f !== it.tx) it = Object.assign({}, it, { tx: f }); }
+    if ((it.t === 'e' || it.t === 'x') && it.tx) { const f = numFix(coTx(it.tx)); if (f !== it.tx) it = Object.assign({}, it, { tx: f }); }
     if (it.t === 'x' && it.c) { const f = coLab(it.c); if (f !== it.c) it = Object.assign({}, it, { c: f }); }
+    // 前提(休止から・解散から・裏方が続いて)が合わない節は外す。分かれ道の結果文・メンバーの出入りの文は消せないので言い換えだけ
+    if ((it.t === 'x' || (it.t === 'e' && it.mb)) && it.tx) { const f = coPrem(it.tx); if (f !== it.tx) it = Object.assign({}, it, { tx: f || '' }); }
+    // やめた・解散した・趣味で続ける道のあとに出る作品は、メジャーの看板を外し、当たり方を抑える
+    if (it.t === 'r') { const s = S.state; if (s.quit || s.hobby) { const cap = s.quit ? 2 : 3; const o = {}; if (it.tr > cap) o.tr = cap; if (/メジャー/.test(it.lb || '')) o.lb = s.disbanded ? '解散後の発表' : s.quit ? '自主制作' : 'インディーズ'; if (Object.keys(o).length) it = Object.assign({}, it, o); } }
+    // ヒットした理由・ヒットの形が、編成にいない楽器(ギターのいない3人組の「ギターの音色」など)を語らないようにする
+    if (it.t === 'r' && S.entry.m.top === 'グループ' && !S.entry.m.rare) { const ps = new Set(); (S.mem || []).forEach((x) => String(x.r || '').split('/').forEach((r) => { const p = partOf(r); if (p) ps.add(p); }));
+      const IW = [[/ギター/, 'Gt'], [/ベース/, 'Ba'], [/ドラム/, 'Dr'], [/鍵盤|ピアノ|キーボード/, 'Key']]; const miss = (t) => t && IW.some(([rx, p]) => rx.test(t) && !ps.has(p));
+      if (ps.size && (miss(it.rs) || miss(it.fm))) { const RS = ['サビの一行が、そのまま合言葉になった', 'ライブで客席が一緒に歌えるようになり、そこから広がった', '同世代の気持ちを言い当てたと、口コミで広がった', '映像や番組で使われ、曲が先に知られた']; const o = {}; if (miss(it.rs)) o.rs = it.tr >= 2 ? RS[hash(String(it.ti)) % RS.length] : '耳に残る前に、次の曲が流れていった'; if (miss(it.fm)) o.fm = ''; it = Object.assign({}, it, o); } }
     if (it.t === 'e' && !it.mb) { const s = S.state; let ok = coOk(it.tx, 'e'); if (ok && s.quit && it.life && CO.ACT.test(it.tx)) ok = false; if (!ok) { coUpd(Object.assign({}, it, { tx: '' })); return null; } }
     if (it.t === 'e' && it.mb && it.tx) { const a = coAge(); const f = coAgeCut(it.tx, a); if (f && f !== it.tx) it = Object.assign({}, it, { tx: f }); }
     if (it.t === 'x' && it.tx) { const a = coAge(); const f = coAgeCut(it.tx, a); if (f !== it.tx) it = Object.assign({}, it, { tx: f || '' }); }
     coUpd(it); return it; } catch (_) { return it; }
 }
 // 分かれ道の問い・選択肢の文(出さないことはできないので、言い換え・節の削除だけ)
-function coQ(p) { try { const a = coAge(); let s = coTx(p); const f = coAgeCut(s, a); if (f === null) { const mm = String(s).match(/^(\d+歳)。/); s = (mm ? mm[1] + '。' : '') + 'このまま音楽を続けていくか、考える時期が来た。'; } else s = f; if (/^\d+歳(?:の(?:春|夏|秋|冬|終わり|はじめ))?。$/.test(s)) s += 'このまま音楽を続けていくか、考える時期が来た。'; return s; } catch (_) { return p; } }
+function coQ(p) { try { const a = coAge(); let s = numFix(coTx(p)); { const pr = coPrem(s); if (pr !== s) s = pr || (String(s).match(/^\d+歳。/) || [''])[0]; } const f = coAgeCut(s, a); if (f === null) { const mm = String(s).match(/^(\d+歳)。/); s = (mm ? mm[1] + '。' : '') + 'このまま音楽を続けていくか、考える時期が来た。'; } else s = f; if (/^\d+歳(?:の(?:春|夏|秋|冬|終わり|はじめ))?。$/.test(s)) s += 'このまま音楽を続けていくか、考える時期が来た。'; return s; } catch (_) { return p; } }
 function coLab(l) { try { const a = coAge(); let s = coTx(l); const f = coAgeCut(s, a); if (f && f !== s) s = f; else if (f === null) { const mm = String(s).match(/^(.*?(?:、|て|で))([^、]{3,})$/); if (mm && coAgeCut(mm[2], a) === mm[2]) s = mm[2]; } if (S.state && (S.state.hits >= 2 || S.state.tour)) s = s.replace(/初めてのライブ/, 'ライブ'); return s || l; } catch (_) { return l; } }
 // 結末文を、終わり方(やめた・趣味で続ける)と規模に合わせる
 function coEnd(tx) {
@@ -3870,7 +3951,7 @@ function makeCard(dr, m, topTitle) {
   g.fillStyle = '#14181F'; g.fillRect(0, 0, W, H); g.fillStyle = '#FFD21F'; g.fillRect(0, 0, W, 14); g.fillRect(0, H - 14, W, 14);
   g.fillStyle = '#9aa4b2'; g.font = F(700, 26); g.textBaseline = 'alphabetic'; g.fillText('ぼくらのミリオンメロディ', 48, 74);
   g.fillStyle = '#fff'; g.font = F(900, 54); let nm = m.a; while (g.measureText(nm).width > W - 96 && nm.length > 3) nm = nm.slice(0, -1); g.fillText(nm + (nm !== m.a ? '…' : ''), 48, 150);
-  g.fillStyle = '#c8cfda'; g.font = F(500, 28); g.fillText(m.es + ' ・ ' + m.sn + ' ・ レア ' + dr.rl, 48, 196);
+  g.fillStyle = '#c8cfda'; g.font = F(500, 28); g.fillText(eraLab(S.entry).es + ' ・ ' + m.sn + ' ・ レア ' + dr.rl, 48, 196);
   const cx = W / 2, cy = 385, R = 118; const ax = [['レア', dr.rare, dr.rl], ['ドラマチック', dr.sc], ['愛され', dr.love], ['売れ度', dr.ure]];
   const pt = (k, v) => { const an = -Math.PI / 2 + k * Math.PI / 2; return [cx + Math.cos(an) * R * v / 100, cy + Math.sin(an) * R * v / 100]; };
   g.strokeStyle = '#3a4352'; g.lineWidth = 2; [25, 50, 75, 100].forEach((lv) => { g.beginPath(); [0, 1, 2, 3].forEach((k, i) => { const q = pt(k, lv); i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); g.closePath(); g.stroke(); });
@@ -3900,11 +3981,11 @@ function makeCards(dr, m, e, topW) {
   const out = [];
   // 1 表紙
   { const [cv, g] = base('表紙', 1);
-    g.fillStyle = '#c8cfda'; g.font = F(500, 28); g.fillText(fit(g, m.es + ' ・ ' + m.sn, W - 96), 48, 122);
+    g.fillStyle = '#c8cfda'; g.font = F(500, 28); g.fillText(fit(g, eraLab(S.entry).es + ' ・ ' + m.sn, W - 96), 48, 122);
     // 名前は英単語の途中で切らず単語単位で改行し、2行に収まらなければ文字を縮める(最後の手段だけ単語内で折る)
     g.fillStyle = '#fff'; let nz = 64, lines = []; const TK = String(m.a).match(/[A-Za-z0-9'’&.\-!?]+|\s+|[\s\S]/g) || [];
     const lay = () => { const L = []; let cur = ''; TK.forEach((t) => { if (/^\s+$/.test(t)) { if (cur) cur += ' '; return; } const nx = cur + t; if (!cur || g.measureText(nx).width <= W - 96) { cur = nx; return; } L.push(cur.trimEnd()); cur = t; }); if (cur) L.push(cur.trimEnd()); return L; };
-    for (;;) { g.font = F(900, nz); lines = lay(); const wide = lines.some((l) => g.measureText(l).width > W - 96); if ((lines.length <= 2 && !wide) || nz <= 34) break; nz -= 2; }
+    for (;;) { g.font = F(900, nz); lines = lay(); const wide = lines.some((l) => g.measureText(l).width > W - 96); const orphan = lines.length === 2 && lines[1].replace(/\s/g, '').length <= 2; if ((lines.length <= 2 && !wide && !(orphan && nz > 34)) || nz <= 34) break; nz -= 2; }
     if (lines.some((l) => g.measureText(l).width > W - 96) || lines.length > 2) { let nm = lines.join(' '); const L2 = []; while (nm.length && L2.length < 2) { let k = nm.length; while (g.measureText(nm.slice(0, k)).width > W - 96 && k > 1) k--; L2.push(nm.slice(0, k).trim()); nm = nm.slice(k); } if (nm.trim()) L2[1] = fit(g, L2[1] + nm, W - 96); lines = L2; }
     lines.forEach((l, i) => g.fillText(l, 48, 122 + nz + 6 + i * (nz + 10))); const nb = 122 + 6 + lines.length * (nz + 10);
     { const top = nb + 14, sh = Math.max(150, 520 - top), sw = Math.min(W - 96, Math.round(sh * 256 / 112)), h2 = Math.round(sw * 112 / 256), sx = Math.round((W - sw) / 2);
@@ -3933,7 +4014,8 @@ function makeCards(dr, m, e, topW) {
     g.fillStyle = '#FFD21F'; g.font = F(900, 64); g.fillText(dr.total + ' / 400', 48, 600); g.fillStyle = '#fff'; g.font = F(700, 30); wrap(g, e.tx, 48, 664, W - 96, 44, 4); out.push(cv); }
   // 4 ディスコグラフィー
   { const [cv, g] = base('ディスコグラフィー', 4); g.fillStyle = '#fff'; g.font = F(900, 40); g.fillText(fit(g, m.a, W - 96), 48, 126);
-    const EW = relW(e), ws = EW.slice(0, 14), lh = Math.min(52, Math.floor((H - 300) / Math.max(1, ws.length)));
+    // 近未来の時代・レア時代以外は、いまの年(2026)より先の作品をシェア画像に載せない
+    const NOWY = 2026, EW = relW(e).filter((w) => m.rare || m.era >= 5 || w.y == null || w.y <= NOWY), ws = EW.slice(0, 14), lh = Math.min(52, Math.floor((H - 300) / Math.max(1, ws.length)));
     ws.forEach((w, i) => { const y = 190 + i * lh; g.fillStyle = '#9aa4b2'; g.font = F(700, 22); g.fillText(String(w.y), 48, y); g.fillStyle = '#fff'; g.font = F(700, 28); g.fillText(fit(g, '「' + w.ti + '」', 360), 124, y);
       g.fillStyle = w.tr >= 3 ? '#FFD21F' : '#7d8696'; g.font = F(700, 22); g.textAlign = 'right'; g.fillText((TIER[w.tr] || ''), W - 48, y); g.textAlign = 'left'; });
     if (EW.length > ws.length) { g.fillStyle = '#9aa4b2'; g.font = F(500, 22); g.fillText('ほか ' + (EW.length - ws.length) + '作', 48, H - 100); } out.push(cv); }
@@ -4189,7 +4271,9 @@ function coherentEnding0(tx, w, nm) {
   const NEG = /広がりは限られ|限られた|ヒットはなく|大きなヒットはなく|看板にはならな|華やかさはなく|縁は薄|知れ渡ることはなかった|広がりが小さかった|広がりは小さかった|生まれなかった|届かなかった|届かず|届きにく|広がりには限界|までは遠|客席が遠|大きな名前にはならな|売れなかった|伸び悩|残らなかった|ならなかった|育たなかった|大きくはなれ|大きくはならな|知られないまま|広がらなかった|誰にも知られ|ひっそり|日の目を見|鳴かず飛ばず|少数|通好み|内輪|小さな箱|通の客|静かに愛|濃いファン|埋もれ|小さな場所|小さな会場|小さなハコ|小さな店|知る人ぞ知る|細々|ささやか|一部の|身内|常連だけ|地元だけ|地元の小さな|片隅|玄人にだけ|玄人だけ|一握り|静かな活動|熱心な聴き手|熱心なファン|公演を絞/;
   const POS = rare ? /全国|国じゅう|日本じゅう|百年|千年|世界|神話|語り継|歌い継|唄い継|大陸|銀河|諸国|時代の歌|伝説|社会現象/ : null;
   const POS5 = /国民的|社会現象|時代を代表|時代の顔|伝説|日本中|日本じゅう|ミリオン|頂点/, POS3 = /ドーム|紅白|大ヒット|国じゅう|語り継|歌い継|全国に|世界中|世界じゅう/;
-  const under = (s) => (top >= 4 && NEG.test(s)) || ((top >= 5 || big >= 2) && CO.ONE.test(s));
+  // 大きく当たった人生(社会現象・大ヒット2作以上)に「音楽は脇に置かれた」「音楽を離れた」は言わない
+  const SIDE = /音楽は脇|脇に置|片手間|音楽から離れ|音楽を離れ|音楽は趣味/;
+  const under = (s) => (top >= 4 && NEG.test(s)) || ((top >= 5 || big >= 2) && (CO.ONE.test(s) || (SIDE.test(s) && !st0.quit && !st0.hobby)));
   const over = (s) => rare ? (top <= 3 && POS.test(s)) : ((top <= 3 && POS5.test(s)) || (top <= 2 && POS3.test(s)));
   const bad = (s) => under(s) || over(s);
   const upTx = () => rare ? 'やがて歌は' + tierPred(TN[top]) : top === 5 ? pick(['社会現象と呼ばれる一曲まで生まれた', '時代を代表する一曲を世に送り出した', '曲は街じゅうで口ずさまれるほどになった']) : pick(['大きなヒットにも手が届いた', 'チャートの上位にも名前を刻んだ', '代表曲と呼べる大きな一曲が生まれた']);
@@ -4266,6 +4350,9 @@ function voicesOf(e, dr) {
 function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   document.documentElement.style.setProperty('--dockh', '0px');
   const tail = $('#tail'); $('#gcols').classList.add('done');
+  // 結末データの作品の当たり具合を、実際に表示した作品(やめた・解散した後に抑えた分を含む)に合わせる
+  try { if (e._w0 == null) e._w0 = e.w; const L = (S.log || []).filter((x) => x.t === 'r'); const byK = new Map(L.map((x) => [x.y + '|' + x.ti, x]));
+    e.w = e._w0.map((w, i) => { const x = byK.get(w.y + '|' + w.ti) || (L.length === e._w0.length ? L[i] : null); return x && x.tr !== w.tr ? Object.assign({}, w, { tr: x.tr }) : w; }); } catch (_) {}
   const end = el('div', 'end in'); end.append(el('span', 'lab', '結末')); if (e._tx0 == null) e._tx0 = e.tx; e.tx = coEnd(coherentEnding(String(e._tx0).replace(/。$/, ''), e.w, S.entry.m.a)); end.append(el('p', 'tx', e.tx + '。'));
   try { const ep = epilogueOf(e); ep.forEach((t, i) => end.append(el('p', 'epi' + (i === ep.length - 1 && ep.length >= 2 ? ' last' : ''), t))); } catch (_) {}
   tail.append(end);
@@ -4326,7 +4413,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const mojiLine = (() => { try { const PTS = new Set(BANK.pt || []); const tiS = new Set(), relS = new Set(); S.log.filter((x) => x.t === 'r').forEach((w) => { tiS.add(w.ti); relS.add(w.ti); (w.tk || []).forEach((t) => { const b = String(t.t || '').replace(/\s*[\((].*$/, ''); if (b) tiS.add(b); }); });
     const n = S.entry.m.real ? relS.size : [...tiS].filter((t) => PTS.has(t)).length; return ''; } catch (_) { return ''; } })();
   const bars = (v) => '★'.repeat(Math.max(1, Math.round(v / 20))) + '☆'.repeat(5 - Math.max(1, Math.round(v / 20)));
-  const xt = ['『' + S.entry.m.a + '』(' + S.entry.m.es + '・' + S.entry.m.sn + ')', '総合' + dr.total + '/400「' + dr.tl + '」 ' + dr.cm, 'レア' + dr.rl + ' ドラマチック' + dr.sc + ' 愛され' + dr.love + ' 売れ度' + dr.ure, '代表曲「' + topW.ti + '」', mojiLine, '#ぼくらのミリオンメロディ'].filter(Boolean).join('\n');
+  const xt = ['『' + S.entry.m.a + '』(' + eraLab(S.entry).es + '・' + S.entry.m.sn + ')', '総合' + dr.total + '/400「' + dr.tl + '」 ' + dr.cm, 'レア' + dr.rl + ' ドラマチック' + dr.sc + ' 愛され' + dr.love + ' 売れ度' + dr.ure, '代表曲「' + topW.ti + '」', mojiLine, '#ぼくらのミリオンメロディ'].filter(Boolean).join('\n');
   const bx = el('a', 'btn line', 'Xに文章だけポスト'); bx.target = '_blank'; bx.rel = 'noopener noreferrer'; bx.href = 'https://x.com/intent/post?text=' + encodeURIComponent(xt) + '&url=' + encodeURIComponent(SHARE_URL); bx.style.textAlign = 'center'; bx.style.textDecoration = 'none';
   const note = el('p', 'xnote'); note.hidden = true; note.style.cssText = 'grid-column:1/-1;margin:0;font-size:12px;line-height:1.6;color:var(--muted)';
   bx.addEventListener('click', () => { const full = xt + '\n' + SHARE_URL; try { navigator.clipboard.writeText(full).catch(() => {}); } catch (_) {} note.textContent = 'Xが開かないときは、文面をコピーしたので、Xの投稿画面に貼り付けてください。'; note.hidden = false; });
@@ -4349,7 +4436,7 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const qGo = (t, cls) => { const b = el('button', 'btn ' + (cls || 'line'), t); b.type = 'button'; b.onclick = () => { clearTimers(); S.auto = false; S.force = null; quickNow(); }; return b; };
   const mGo = (t) => { const b = el('button', 'btn line', t); b.type = 'button'; b.onclick = () => { clearTimers(); S.auto = false; S.force = null; S.quick = false; show('s-top'); }; return b; };
   a.append(qGo('もう1回(おまかせ)'), mGo('自分で選んで始める'), b4, b5, bx, b3, note, fic); tail.append(a);
-  { const sm = el('div', 'sumc'); const m = S.entry.m; sm.append(el('div', 'sk', m.es + ' ・ ' + m.sn), el('div', 'sa', m.a));
+  { const sm = el('div', 'sumc'); const m = S.entry.m; sm.append(el('div', 'sk', eraLab(S.entry).es + ' ・ ' + m.sn), el('div', 'sa', m.a));
     const ss = el('div', 'ss'); ss.append(el('b', null, String(dr.total)), el('span', null, '/ 400'), el('em', null, '「' + dr.tl + '」')); sm.append(ss);
     const r1 = el('div', 'sr'); r1.append(el('span', 'k', '称号'), el('span', 'v', cr[0])); const r2 = el('div', 'sr'); r2.append(el('span', 'k', '代表曲'), el('span', 'v', '「' + topW.ti + '」 ' + TIER[topW.tr])); sm.append(r1, r2);
     if (bestAlt) { const f = el('button', 'sif'); f.type = 'button'; f.append(el('span', null, 'もし「' + cut(qIn(bestAlt.lab), 26) + '」を選んでいたら──'), el('b', null, bestAlt.sc), el('small', null, 'タップで、この道を選び直す ▶')); f.onclick = () => replay(bestAlt); sm.append(f); }

@@ -13,6 +13,11 @@ try:
     REALFIX = json.load(open('/home/claude/rosters/realfix.json'))
 except Exception as _e:
     REALFIX = {}; print('REALFIX SKIP', _e)
+# 元ネタの結成時メンバーと後年のメンバー交代 {k: {start, mc}}(lineup / lineup_tree)
+try:
+    LINEUP = {k: v for k, v in json.load(open('/home/claude/rosters/lineup.json')).items() if not k.startswith('_')}
+except Exception as _e:
+    LINEUP = {}; print('LINEUP SKIP', _e)
 
 _INST = re.compile(r'ギター|ベース|ドラム|キーボード|鍵盤|ピアノ|スティック|弦|ピック|サックス|ラッパ|歌|声|マイク|ターンテーブル|リリック|ラップ|ビート|譜面')
 
@@ -120,3 +125,50 @@ def trait(t):
     """メンバーの癖(その人の名前の下に出る)。「ドラムが叩きながら喋る」のように担当名が主語の文は、担当名を外す(楽器の音の話はそのまま)"""
     if not isinstance(t, str) or _TR_SND.search(t): return t
     return _TR_HEAD.sub('', t, count=1) or t
+
+
+def lineup(a, mm):
+    """名簿(後年の顔ぶれ)を元ネタの結成時メンバーに組み替える(mm をその場で書き換え。出身地などはその席の人を引き継ぐ)。
+    返り値: 後年の交代 [(年, 'out'|'in', メンバー, 文 or None)](rosters/lineup.json の mc の順)"""
+    L = LINEUP.get(a.get('k'))
+    if not L or not mm: return []
+    fx = REALFIX.get(a.get('k')) or {}
+    held = {}
+    for raw, fm in (L.get('start') or {}).items():
+        fn = fx.get(raw, raw); j = next((i for i, m in enumerate(mm) if m and m.get('n') == fn), None)
+        if j is None: continue
+        held[raw] = mm[j]
+        mm[j] = dict(mm[j], n=fm['n'], r=fm.get('r', mm[j].get('r', '')), g=fm.get('g', mm[j].get('g', 'm'))) if fm else None
+    mm[:] = [m for m in mm if m]
+    cur = {m['n']: m for m in mm}; out = []
+    for c in L.get('mc') or []:
+        o = cur.pop(c['out'], None) if c.get('out') else None
+        if o: out.append((c['y'], 'out', o, c.get('tx_out')))
+        i_ = c.get('in')
+        nw = held.get(i_) if isinstance(i_, str) else (dict(o or {}, n=i_['n'], r=i_.get('r', (o or {}).get('r', '')), g=i_.get('g', 'm')) if i_ else None)
+        if nw: cur[nw['n']] = nw; out.append((c['y'], 'in', nw, c.get('tx_in')))
+    return out
+
+
+_RW = {'Vo': 'ボーカル', 'Gt': 'ギター', 'Ba': 'ベース', 'Dr': 'ドラム', 'Key': 'キーボード', 'Pf': 'ピアノ', 'Sax': 'サックス'}
+
+
+def lineup_tree(tree, mm, ch):
+    """人生の木に、後年の交代を「転機」として差し込む(その年以降の最初の作品の前)。各結末の mm はその道の最後の顔ぶれに"""
+    ch = sorted(ch, key=lambda c: c[0])
+
+    def ev(c):
+        y, kd, m, tx = c; w = _RW.get(re.split(r'[/・]', str(m.get('r') or ''))[0], 'メンバー')
+        return {'t': 'e', 'tx': tx or (('%s担当のメンバーが、バンドを離れた。' if kd == 'out' else '新しい%s担当が加わり、顔ぶれが変わった。') % w), 'mb': {kd: m}}
+
+    def walk(n, cur, i):
+        s = []
+        for it in n.get('s', []):
+            while i < len(ch) and it.get('t') == 'r' and it.get('y', 0) >= ch[i][0]:
+                c = ch[i]; s.append(ev(c)); cur = [x for x in cur if x['n'] != c[2]['n']] + ([c[2]] if c[1] == 'in' else []); i += 1
+            s.append(it)
+        n['s'] = s
+        if 'e' in n: n['e']['mm'] = cur
+        for k in n.get('n', []): walk(k, list(cur), i)
+    walk(tree, list(mm), 0)
+    return tree
