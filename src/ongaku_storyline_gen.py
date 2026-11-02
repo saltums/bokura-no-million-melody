@@ -270,6 +270,12 @@ def mk_artist(r, style, ai_mode):
         if x < 0.25: return r.choice(duo)
         if x < 0.7: return r.choice(NOUN2) + r.choice(["と", "&", "×", "とその"]) + r.choice(NOUN2)
         return r.choice(EADJ).title() + " & " + r.choice(ENOUN).title()[:-1]
+    if style == "ai_collab":  # 共作は人間の歌い手の名前(AIらしい型番名にしない)
+        x = r.random()
+        if x < 0.35: return r.choice(SUR2) + r.choice(GIV2)
+        if x < 0.6: return r.choice(GIV2)
+        if x < 0.8: return r.choice(GIV2) + r.choice([" with AI", " × AI", "とAI"])
+        return r.choice(ROMA) + r.choice(["", "_", "."]) + r.choice(["", "k", "o", "ne"])
     if ai_mode == "公表":
         x = r.random()
         if x < 0.25: return r.choice(ai_open)
@@ -300,9 +306,9 @@ PUNS_RAW = [
     ("Parfait", "Perfume", "dej", 2), ("RADSHRIMPS", "RADWIMPS", "b", 2),
     ("ELLEGARLIC", "ELLEGARDEN", "b", 1), ("L'Arc~en~Sel", "L'Arc~en~Ciel", "b", 0),
     ("サンマスター", "サンボマスター", "b", 2), ("Sleepy Nuts", "Creepy Nuts", "dr", 3),
-    ("RHYMESTEAK", "RHYMESTER", "r", 1), ("THE BLUE HEATERS", "THE BLUE HEARTS", "b", 0),
+    ("RHYME STEAKHOUSE", "RHYMESTER", "r", 1), ("THE BLUE HEATERS", "THE BLUE HEARTS", "b", 0),
     ("GLAZE", "GLAY", "b", 1), ("TUNA SEA", "LUNA SEA", "b", 1), ("DREAM COME TRUCK", "DREAMS COME TRUE", "db", 1),
-    ("スキマスイーツ", "スキマスイッチ", "d", 2), ("andymochi", "andymori", "b", 2),
+    ("スキマスイーツ", "スキマスイッチ", "d", 2), ("andymochitsuki", "andymori", "b", 2),
     ("C'z", "B'z", "bd", 1), ("Y JAPAN", "X JAPAN", "b", 0), ("THE ALFALFA", "THE ALFEE", "b", -1),
     ("東京自慢", "東京事変", "b", 2), ("RIP SLIPPERS", "RIP SLYME", "r", 1), ("ORANGE RANCH", "ORANGE RANGE", "b", 2),
     ("Aqua Tights", "Aqua Timez", "b", 2), ("flumpurin", "flumpool", "b", 2), ("UVERwood", "UVERworld", "b", 2),
@@ -395,17 +401,17 @@ PUNS_RAW += [
     # 70年代
     ("ザ・チーターズ", "ザ・タイガース", "b", -1), ("ザ・スパゲッティーズ", "ザ・スパイダース", "b", -1), ("ザ・テンプラーズ", "ザ・テンプターズ", "b", -1), ("ブルー・ココアーズ", "ブルー・コメッツ", "b", -1),
     ("ゴールデン・カップめん", "ゴールデン・カップス", "b", -1), ("フラワー・ガーデニング・バンド", "フラワー・トラヴェリン・バンド", "bi", -1), ("ジャッキーズ", "ジャックス", "b", -1),
-    ("はちみつぱん", "はちみつぱい", "b", -1), ("ソルト・ベイブ", "シュガー・ベイブ", "b", -1), ("薄紫", "紫", "b", -1), ("ツイスター", "ツイスト", "b", -1), ("貝バンド", "甲斐バンド", "b", -1),
+    ("はちみつぱん", "はちみつぱい", "b", -1), ("ソルト・ベイブ", "シュガー・ベイブ", "b", -1), ("薄紫", "紫", "b", -1), ("ツイスター", "ツイスト", "b", -1), ("貝柱バンド", "甲斐バンド", "b", -1),
     ("海老隊", "海援隊", "b", -1), ("チューリッヒ", "チューリップ", "b", -1), ("四川囃子はやし", "四人囃子", "bi", -1),
     # 80年代
     ("ザ・ブースターズ", "ザ・ルースターズ", "b", 0), ("RED WORRIERS", "RED WARRIORS", "b", 0), ("ウィザード", "ウィラード", "b", 0), ("じゃがバター", "じゃがたら", "b", 0),
-    ("チェックメイツ", "チェッカーズ", "b", 0), ("BARBEQUE BOYS", "BARBEE BOYS", "b", 0), ("ラ・メーン", "ラ・ムー", "d", 0), ("正義魔Ⅲ", "聖飢魔Ⅱ", "b", 0),
+    ("チェックメイツ", "チェッカーズ", "b", 0), ("BARBEQUE TONGS", "BARBEE BOYS", "b", 0), ("ラ・メーン", "ラ・ムー", "d", 0), ("正義魔Ⅲ", "聖飢魔Ⅱ", "b", 0),
     ("EARTHSHAVER", "EARTHSHAKER", "b", 0), ("LOUDNICE", "LOUDNESS", "b", 0), ("SHOW-YOU", "SHOW-YA", "b", 0), ("たまご", "たま", "bd", 0), ("たまねぎ", "たま", "bd", 0),
     ("サンライダーズ", "ムーンライダーズ", "b", 0), ("人間マッサージ椅子", "人間椅子", "b", 0), ("人間座布団", "人間椅子", "b", 0), ("ノイバウムクーヘン", "アインシュテュルツェンデ・ノイバウテン", "bi", 0),
     ("ザ・スターリン", "ザ・スターリン", "b", 0) if False else ("ザ・スターチン", "ザ・スターリン", "b", 0),
     # 90年代
     ("CABBAGE and ASPARA", "CHAGE and ASKA", "d", 1), ("白夢", "黒夢", "b", 1), ("SOFA", "SOPHIA", "b", 1), ("PALACE MIXER", "MALICE MIZER", "b", 1), ("DIR EN GREEN", "DIR EN GREY", "b", 1),
-    ("T-BONE", "T-BOLAN", "b", 1), ("176R", "175R", "b", 2), ("レミオラーメン", "レミオロメン", "b", 2), ("チャットモンチッチ", "チャットモンチー", "b", 2), ("チャットモンブラン", "チャットモンチー", "b", 2),
+    ("T-BONE", "T-BOLAN", "b", 1), ("176R", "175R", "b", 2), ("レミオつけ麺", "レミオロメン", "b", 2), ("チャットモンチッチ", "チャットモンチー", "b", 2), ("チャットモンブラン", "チャットモンチー", "b", 2),
     ("ACIDWOMAN", "ACIDMAN", "b", 2), ("BEGONIA", "BEGIN", "b", 1), ("かりゆし59", "かりゆし58", "b", 2), ("SOUL'd IN", "SOUL'd OUT", "r", 1), ("somebodyknows+", "nobodyknows+", "r", 2),
     ("ZIGGURAT", "ZIGGY", "b", 0), ("ザ・アニバーサリー", "The Birthday", "b", 2), ("The Deathday", "The Birthday", "b", 2), ("ミシュラン", "ミッシェル・ガン・エレファント", "b", 1),
     # 00〜10年代
@@ -632,12 +638,13 @@ def _(c):
     return "飲料CMに%sが起用された。制作会社が、%sの空気が商品の世界観に合うと判断したため。" % (T(c), c['genre'])
 
 
-@ev("viral_old", 1.5, lambda c: c['era'] >= 3 and any(h['tier'] == 0 and h is not c['last'] and not h.get('revived') for h in c['hist']))
+# QA8: 再評価は「本当に不発(圏外)で、2年以上前の曲」だけ、1人生に1回。文は年表に収まる長さにする(ゲーム側 coItem が実際の順位も上げる)
+@ev("viral_old", 1.5, lambda c: c['era'] >= 3 and 'viral_old' not in tags(c) and any(h['tier'] == 0 and h is not c['last'] and not h.get('revived') and c['year'] - h['year'] >= 2 for h in c['hist']))
 def _(c):
-    old = [h for h in c['hist'] if h['tier'] == 0 and h is not c['last'] and not h.get('revived')]
-    h = c['r'].choice(old); h['revived'] = True; h['tier'] = min(5, h['tier'] + 2)
+    old = [h for h in c['hist'] if h['tier'] == 0 and h is not c['last'] and not h.get('revived') and c['year'] - h['year'] >= 2]
+    h = c['r'].choice(old); h['revived'] = True; h['tier'] = min(5, h['tier'] + 2); tags(c).add('viral_old')
     fx(c, fame=10, mom=0.6)
-    return "数年前に不発だった「%s」が、ダンス動画のBGMとして突然広まる。ある配信者が曲の一部を気に入って使い続けたのがきっかけで、この曲は『のちに再評価された』作品になった。" % h['title']
+    return "数年前に不発だった「%s」が、ダンス動画のBGMとして突然広まった。ある配信者が気に入って使い続けたのがきっかけで、のちに再評価された。" % h['title']
 
 
 @ev("overseas_buzz", 2, lambda c: c['era'] >= 3 and lt(c) >= 1 and 'overseas_buzz' not in tags(c))
@@ -1326,7 +1333,7 @@ def age_now(c):
         return None
     if 'age0' not in c:
         import bio
-        c['age0'] = bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ").get('ag')
+        c['age0'] = bio.make(c['seed'], c['style'], c['era'], None if c['style'] == 'ai_collab' else c['ai_mode'], c['start_choice']['top'] == "グループ").get('ag')
     if not isinstance(c['age0'], int):
         return None
     return c['age0'] + c['last']['year'] - c['hist'][0]['year']
@@ -1686,6 +1693,17 @@ AI_START = {
     "途中で告白": "運営が生成AIで曲を作り、最初は伏せつつ、機を見て明かす予定で活動を始めた",
     "一部だけ隠す": "人間が詞とメロディの一部を作り、残りを生成AIで補う。AIの関与は一部だけ明かして活動を始めた",
 }
+# 人間+AIの共作(ai_collab): 主人公は人間の歌い手。AIは作曲・編曲の相棒(QA7: 共作の紹介文が完全生成AIの文になっていた)
+AI_START_COLLAB = {
+    "公表": "自分で詞を書いて歌う人間の歌い手が、生成AIを作曲と編曲の相棒にしていると最初から明かして活動を始めた",
+    "隠す": "自分で歌う人間の歌い手が、生成AIで作った伴奏に自分の声をのせて活動を始めた。AIを使っていることは、まだ伏せていた",
+    "途中で告白": "自分で歌う人間の歌い手が、生成AIと曲を作り、AIを使っていることは機を見て明かすつもりで活動を始めた",
+    "一部だけ隠す": "人間の歌い手が詞とメロディの一部を作り、残りを生成AIで補う。AIの関与は一部だけ明かして活動を始めた",
+}
+
+
+def start_text(style, ai_mode):
+    return (AI_START_COLLAB if style == "ai_collab" else AI_START)[ai_mode]
 
 
 def generate(seed, script=None, maxdec=None):
@@ -1784,7 +1802,7 @@ def story_text(c):
         nm += "(旧名「%s」=「%s」のもじり)" % (c['artist0'], c['pun_src'])
     L.append("【ID %d】%s / %s%s" % (c['seed'], nm, style_name(c), mode))
     L.append("性格:%s / 系統:%s / 時代:%s / 開始:%s" % (c['P']['n'], c['genre'] if not any(d['id'] == 'style_change' for d in c['decs']) else '(途中で変化あり)', ERAS[c['era']]['name'], c['start']))
-    st0 = AI_START[c['ai_mode']] if c['ai_mode'] else START[(c['start'], c['era'])]
+    st0 = start_text(c['style'], c['ai_mode']) if c['ai_mode'] else START[(c['start'], c['era'])]
     sc = c['start_choice']
     L.append("⚖ 最初の選択: グループで活動するか、ソロで活動するか")
     L.append("   A. グループ%s  B. ソロ%s" % ("  ←選択" if sc['top'] == "グループ" else "", "  ←選択" if sc['top'] == "ソロ" else ""))

@@ -57,7 +57,7 @@ ARCS = [
   eh="地元の言葉のまま全国の画面に出て、ラップも絵も文章も、自分の名前で続けている。",
   ea=["ラップ一本に絞り、現場の客席に愛される存在として続いている。","画面の仕事に呑まれず、曲を出し続けた。","東京の波に揉まれながら、地元の訛りだけは手放さなかった。"],
   ex=["控室で、対戦相手のノートを見て笑ってしまった。","新幹線の窓から、見慣れた街を見て黙った。","番組のスタッフに、台本を渡された日。","描いた絵を、意外な人が買ってくれた。","地元のラーメン屋で、サインを求められて困った。","初めて辛口の批評が載った夜、眠れなかった。"],
-  cp=["バトル出身","地方拠点","テレビの顔","多才"], eras=[3,4,2], alt=["呂布カルパ","呂布のカルボ"]),
+  cp=["バトル出身","地方拠点","テレビの顔","多才"], eras=[3,4,2], alt=["呂布カルビ丼","呂布のカルボ"]),
 
  dict(k="a10_creepy", nm="Creepy 納豆", st="duo", y0=2013, ge="ヒップホップ", vg="m", th=["自己否定と肯定","孤独と夜","日常のぼやき"], sa="ライブハウスのバトルとDJブース",
   tx="バトルで名を上げたラッパーと、ターンテーブルで世界を狙うDJが、組もうと決めたのが始まりだった", roles=["MC","DJ"], tr=["寝癖を直さない","機材の話になると早口"], par="a10_creepy",
@@ -102,7 +102,7 @@ ARCS = [
   eh="歩道橋の輪からメジャーまで。人が出入りしながら、輪は続いている。いまも誰かが、街で韻を踏んでいる。",
   ea=["輪は小さくなったが、仲間の名前は街角で語り継がれている。","形を変え、名前を変えても、毎週末の輪は途切れなかった。","大きな舞台とは縁が薄くても、街の人に愛される存在になった。"],
   ex=["輪の外で、見知らぬ子がこっそり韻を踏んでいた。","警備員に注意されて、場所を一本隣に移した。","全員の予定が合わず、収録が三回延びた。","ラップとは無縁の人が、輪の中に混ざってきた。","メンバーの一人が、遠い街で独立した。","地元のスポーツチームの勝利の夜、曲が流れた。"],
-  cp=["路上発","クルー","メンバー入れ替え","大舞台の主題歌"], eras=[2,3,4], alt=["梅田サイフォン・ライト","梅田ライファー"]),
+  cp=["路上発","クルー","メンバー入れ替え","大舞台の主題歌"], eras=[2,3,4], alt=["梅田サイフォン・ライト","梅田ドリッパー"]),
 
  dict(k="a10_slack", nm="スナック5PACK", st="rap", y0=2007, ge="メロウ・ヒップホップ", vg="m", th=["孤独と夜","喪失と再生","日常のぼやき"], sa="自宅の部屋とクラブ",
   tx="自宅の部屋でビートの上に言葉を重ねていた人が、仲間のクルーに加わったのが始まりだった", roles=[], tr=[], par="a10_slack",
@@ -159,6 +159,6 @@ PT = {
     'a10_badhop': ['Kawasaki Drive-in', 'Mop Life', 'Chain Gym', 'IKEGAMI Boiled', 'Round Onion', 'I Feel Like Goma', 'South Side Nightcap', 'Super Cup', '2DK(風呂なし)', 'White T-Shirt(洗濯中)', 'Shoot My Shoe', "Chop Sukiyaki", 'Hell Yam', 'Foreign Fries', 'Day N Nap', 'Final Roll', 'Life Goes Onion', '手売りの夏', '始発の駅前'],
     'a10_umeda': ['YDK(やかん)', 'スイッチョ', 'Radio13', '韋駄天シュークリーム', 'iya-saka-zucchini', "Rollin' Scone", 'CONTINU-UDON', 'BOWL WOW', 'COOKING PAPA', 'Odd Noodles', 'Dots and Limes', 'ハイビーム(ロー)', '他人丼', 'BE THE MONSTERA', 'KONBU', 'RAPNABI', '帰りが一番最後', '全員が声が大きい'],
     'a10_slack': ['My Spice', 'Whaleabout?', 'SICK TEA', '5 scents', '夢から冷めん', 'KESHIGOMA', 'この景色も越へず', 'Sub-tile', 'White Beef', 'Feelin39', 'Underfed', '真犯人は夕飯', "But Wifi", 'この島の上で(定休日)', 'Both Snacks', 'Sickstrumental Pudding', '窓の外の雨音', '静かな声'],
-    'a10_sucha': ['今夜はブギー・バッグ', "サマージャム'95(ジャム入り)", '帰ろうチャンプルー', 'ドゥビドゥWhale?', 'ドリジナル・コンビニ', 'ポンキッキーズ〜お菓子になっても〜', '中庸平凡パンツ', 'アーバン文庫', '6W2H', 'Hey! Hey! Allwrite', 'GET UP AND DANISH', '春マゲドンキ', 'セブンイレブン・ブギ', 'ヒマの過ごし方(昼寝)', 'MOONLIGHT DISTRICT(月極)', 'DISCO SYSTEM(ディスコン)', 'TT2オワリの味噌汁', 'Boo-Wee Dunce'],
+    'a10_sucha': ['今夜はブギウギ・バーベキュー', "サマージャム'95(ジャム入り)", '帰ろうチャンプルー', 'ドゥビドゥWhale?', 'ドリジナル・コンビニ', 'ポンキッキーズ〜お菓子になっても〜', '中庸平凡パンツ', 'アーバン文庫', '6W2H', 'Hey! Hey! Allwrite', 'GET UP AND DANISH', '春マゲドンキ', 'セブンイレブン・ブギ', 'ヒマの過ごし方(昼寝)', 'MOONLIGHT DISTRICT(月極)', 'DISCO SYSTEM(ディスコン)', 'TT2オワリの味噌汁', 'Boo-Wee Dunce'],
     'a10_tha': ['会釈', '吉兆序曲', '一切空席', 'スーパーヒーロー番組表', '今日無料', 'LOYALTY CARD', 'THE BEEF IS YET TO COME', 'SMALL TOWN, BIG HEAT', 'LOSER AND STILL CHAMPAGNE', 'TWILIGHT EXPRESS', 'HIGHER ON THE STOVE', "KEEP ON AND YOU DON'T SHOP", 'HEARTBURN TRAIN', 'UP THAT GRILL', 'AGED BEEF JERKY', 'WE WANT IT TO BE REAL ESTATE', "LIKE THE DEAD END KIDS' MEAL", '阿吽の呼吸(息切れ)'],
 }

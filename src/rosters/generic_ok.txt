@@ -1,0 +1,125 @@
+# 実在曲名と同じでも「ありふれた言葉」として一般の曲名プール(namebank の t)に残してよい語(1行1語。記号・末尾の(…)は無視して比べる)
+ありがとう
+おかえり
+ただいま
+ときめき
+ひかり
+ひとりぼっち
+ふるさと
+ほたる
+まほろば
+アイリス
+ウィークエンド
+エール
+ジャンプ
+ステップ
+ダイヤモンド
+ツバメ
+トワイライト
+ハッピーデイ
+ハロー
+バタフライ
+バラード
+パール
+ヒーロー
+ファンファーレ
+ミルク
+ルーキー
+ワルツ
+友よ
+夏の終わり
+夏のおわり
+夜行
+夜行バス
+夜行バスの窓
+夢のつづき
+家に帰ろう
+帰郷
+恋文
+手紙
+旅の途中
+旅路
+日曜日
+明日へ
+春風
+残像
+笑顔
+若葉
+追憶
+逆光
+陽炎
+月明かり
+雨
+傘
+すずめ
+シルエット
+フィルム
+ドミノ
+パレード
+モンスーン
+ノスタルジア
+ギター
+ハートビート
+カメレオン
+最終電車
+終電のあとで
+afterglow
+after-glow
+butterfly
+season
+spring
+sky
+moment
+tempo
+burn
+roar
+shiver
+glow
+island
+jasmine
+mirror
+daylight
+hold my hand
+wait for me
+hey, you
+holding on
+wake up
+undone
+lipgloss
+nib
+jasper
+vermilion
+emerald
+lily
+moonlight
+thunder
+hydrangea
+green
+umbrella
+ocean
+decade
+pepper
+fever
+beat
+loading
+fracture
+ratchet
+fairway
+holler
+locked in
+overdrive
+starlight
+raindrop
+summit
+lightning
+yesterday
+untitled
+alone together
+alone, together
+maybe, tomorrow
+maybe tomorrow
+rain, forever
+stay together
+mistletoe
+mirrorball
+september

@@ -431,6 +431,82 @@ Don't Stop Me Now
 世界でいちばん熱い夏
 サマーヌード
 HELLO,Again
+BABY BABY
+SKOOL KILL
+NO FUTURE NO CRY
+微かなカオリ
+Thunderclap
+Viva La Revolution
+バスルームで髪を切る100の方法
+偶然のナイフ・エッジ・カレス
+Star Fruits Surf Rider
+花になれ
+Over the rain
+Over the rain〜ひかりの橋〜
+青春狂騒曲
+さよならのめまい
+咲き誇れ愛しさよ
+言葉より大切なもの
+果てしない空
+サクラ咲ケ
+哀しみ本線日本海
+傘がある
+犬と猫
+永遠なるもの
+ここにいる
+ジュビリー
+キャノンボール
+ハレルヤ
+セブンスター
+=主題歌
+=笑顔
+=新世界
+天才とは
+ロザリオ
+いつも
+1,2,3
+=光
+=空
+=魂
+=生きる
+=海
+=花
+ウソを暴け
+愛のテーマ
+ワールドワイド
+HIT IN THE USA
+=GHOST
+DAY AFTER DAY
+=FEEL
+TONIGHT,TONIGHT,TONIGHT
+LOVE DISCHORD
+SOLITAIRE
+BLOCK KINGDOM
+E.C.D.T.
+HEY×2 LOOK×2
+SENSATION
+LAST EXIT
+PHANTOM PLANET
+CAPSULE
+WINTERLONG
+ANOTHER DAY
+STARDUST
+MOON ON THE WATER
+HOWLING SYMPHONY OF
+JAPANESE GIRL
+CLIMBING
+ARE YOU EXPERIENCED?
+SNOWBERRY
+HIP TEEN BOPPERS
+PEPPER
+JUMP
+SPECIAL DELIVERY
+SKYROCKETS
+=FEELS LIKE HEAVEN
+MUSICRUSADERS
+LET IT GO
+GREEN
+TUNE OUT
 
 [a01_chr]
 ミルク
@@ -996,6 +1072,40 @@ Grateful Days
 Fantasy
 天気予報の恋人
 Under Lights
+Viva La Revolution
+Let yourself go,Let myself go
+Fantasia
+Deep Impact
+静かな日々の階段を
+陽はまたのぼりくりかえす
+Summer Tribe
+百合の咲く場所で
+Crush The Window
+Lily
+Mustang!
+Run to the Sun
+Episode 4
+Sunset Beach
+La Bamba
+Morrow
+Harvest
+Rainy Day And Day
+Velvet Touch
+Cowboy Fuck!
+Dear Jonah
+Bring It
+Ambitious
+Beautiful
+Jump
+Trigger
+Fly Over
+Hikari
+Tiny World
+Walk with Dreams
+Mix it Up
+Entertain
+Curtain Call
+Mixture
 
 [a04_glay]
 紅と黒のMATADORA
@@ -1244,6 +1354,49 @@ Mic Check
 I Hate Hate
 Breezin'
 Beautiful Life
+FREE FALL
+Chapter 8
+=E
+Beep It
+The Micro Disneycal World Tour
+Clash
+太陽は僕の敵
+Moon Walk
+Magoo Opening
+New Music Machine
+Tone Twilight Zone
+=Smoke
+Wataridori
+Another View Point
+=Music
+=Gum
+Fantasma
+Sleep Warm
+=2010
+Toner
+Omstart
+Thatness and Thereness
+=Brazil
+Holidays in the Sun
+Rolling Down the Hill
+The Sun Is My Enemy
+愛のおそれ
+あなたがいるなら
+いつか / どこか
+夢の中で
+環境と心理
+変わる消える
+Mellow Waves
+Dear Future Person
+Helix / Spiral
+Surfing on Mind Wave pt 2
+Monkey
+Scum
+69/96
+Brand New Season
+Bird Watching At Inner Forest
+Wataridori 2
+Like a Rolling Stone
 
 [a05_glv]
 パフューム・オブ・ラブ
@@ -1275,6 +1428,43 @@ Friends Again
 海へ行くつもりじゃなかった
 ヘッド博士の世界塔
 Winter Fall
+偶然のナイフ・エッジ・カレス
+バスルームで髪を切る100の方法
+星の彼方へ
+Groove Tube
+午前3時のオプ
+ゴロワーズを吸ったことがあるかい
+友達の唄
+Hello
+Young Marble Giants
+ドルフィン・ソング
+ラテンでレッツ・ラブ
+世界塔よ永遠に
+奈落のクイズマスター
+南へ急ごう
+全身ずぶ濡れカラー・フィールド
+サマー・ビューティー
+Exotic Lollipop
+Coffee-milk Crazy
+Boys Fire the Tricot
+Joyride
+Samba Parade
+The Chime Will Ring
+Haircut 100
+Goodbye, our Pastels Badges
+Colour Field
+Big Bad Bingo
+Love Train
+Singalong
+Cool Spy on a Hot Car
+Slide
+Blue Shinin' Quick Star
+Wild Wild Summer
+Trash
+The World Tower
+Love and Dreams Are Back
+Camera Talk
+Doctor Head's World Tower
 
 [a05_ozw]
 東京恋愛専科
@@ -1645,6 +1835,44 @@ BABY BABY
 夢で逢えたらいいのに
 トラッシュ
 恋は永遠
+SKOOL KILL
+NO FUTURE NO CRY
+人間
+あいどんわなだい
+童貞ソー・ヤング
+大人全滅
+少年少女
+東京
+青春時代
+僕たちは世界を変えることができない
+日本発狂
+ぽあだむ
+円山町
+死ぬまで一生愛されてると思ってたよ
+I DON'T WANNA DIE FOREVER
+金輪際
+愛してるってゆってよ
+生きたい
+エンジェルベイビー
+鉄矢の墓
+援助交際
+佳代
+東京少年
+愛しておくれ
+さくらの唄
+ジェニー
+夜王子と月の姫
+アホンダラ行進曲
+新訳 銀河鉄道の夜
+蒲公英
+STAND BY ME
+夏の夜のハイウェイ
+ボーイズ・オン・ザ・ラン
+やさしい人
+ベロチュー
+DO YOU LIKE ME
+ナイトライダー
+GOING STEADY
 
 [a07_hor]
 絶望ビリー
@@ -4457,6 +4685,66 @@ High Tension
 Face Down
 夏まつり
 ドキッ!
+A・RA・SHI
+SUNRISE日本
+台風ジェネレーション
+感謝カンゲキ雨嵐
+言葉より大切なもの
+サクラ咲ケ
+Love so sweet
+Happiness
+One Love
+truth
+Beautiful days
+Believe
+Monster
+Troublemaker
+Love Rainbow
+果てしない空
+迷宮ラブソング
+Calling
+Breathless
+GUTS!
+誰も知らない
+Sakura
+愛を叫べ
+青春ブギ
+復活LOVE
+I seek
+Daylight
+Doors〜勇気の軌跡〜
+Find The Answer
+夏疾風
+君のうた
+BRAVE
+Turning Up
+カイト
+Whenever You Call
+咲き誇れ愛しさよ
+ハダシの未来
+PIKA☆NCHI
+きっと大丈夫
+アオゾラペダル
+We can make it!
+Step and Go
+Everything
+マイガール
+To be free
+Dear Snow
+Lotus
+ワイルド アット ハート
+Your Eyes
+Endless Game
+Bittersweet
+青空の下、キミのとなり
+Power of the Paradise
+I'll be there
+つなぐ
+IN THE SUMMER
+Party Starters
+曇りのち、快晴
+明日の記憶
+五里霧中
 
 [a23_bp]
 Playing With Fire
@@ -7697,6 +7985,44 @@ YOUNG MAN (Y.M.C.A.)
 かもめはかもめ
 おまえに
 君こそわが命
+長崎から船に乗って
+千曲川
+=契り
+細雪
+浪花盃
+=居酒屋
+おまえとふたり
+=山河
+=暖簾
+待っている女
+=追憶
+夜明けのブルース
+そして…めぐり逢い
+港の五番町
+=汽笛
+凍て鶴
+浜昼顔
+=夜の雪
+哀しみ本線日本海
+りんご追分
+ふたりの夜明け
+博多ア・ラ・モード
+=雪燃えて
+みれん
+=霧
+灯りが欲しい
+逢わずに愛して
+=別れ
+紅い花
+長良川艶歌
+ふたりの大阪
+=道
+おふくろの子守唄
+人生かくれんぼ
+倖せさがして
+ふりむけば日本海
+=望郷
+=宴
 
 [a42_kym]
 夜空をあおいで
@@ -8194,6 +8520,28 @@ Rose
 接近
 吐息でネット
 秋からも、そばにいて
+さよならのめまい
+楽園のDoor
+悲しみモニュメント
+風のマドリガル
+トラブル・メーカー
+涙はどこへいったの
+あなたを愛したい
+耳をすましてごらん
+フィルムの向こう側
+ダブル・キック
+パンドラの恋人
+=春景色
+=何処へ
+君を知らない
+=ヒロイン
+ロックンロール・ファンタジー
+恥ずかしすぎて
+=夏のおわり
+秋のIndication
+ふたりだけのホリデイ
+あなたに会えてよかった
+=いつか
 
 [b02_msi]
 チャンス
@@ -9068,6 +9416,74 @@ Turning Up
 夏疾風
 Whenever You Call
 カイト
+SUNRISE日本
+台風ジェネレーション
+=時代
+a Day in Our Life
+ナイスな心意気
+とまどいながら
+ハダシの未来
+言葉より大切なもの
+PIKA☆☆NCHI DOUBLE
+瞳の中のGalaxy
+=Hero
+アオゾラペダル
+We can make it!
+風の向こうへ
+Beautiful days
+曇りのち、快晴
+Crazy Moon〜キミ・ハ・ムテキ〜
+=Everything
+マイガール
+Love Rainbow
+Dear Snow
+ハテナ
+果てしない空
+=Lotus
+ワイルド アット ハート
+Your Eyes
+Breathless
+Endless Game
+Bittersweet
+GUTS!
+誰も知らない
+青空の下、キミのとなり
+=Sakura
+愛を叫べ
+青春ブギ
+復活LOVE
+I seek
+Daylight
+Power of the Paradise
+I'll be there
+=つなぐ
+Doors〜勇気の軌跡〜
+Find The Answer
+君のうた
+=BRAVE
+A-RA-SHI : Reborn
+IN THE SUMMER
+Party Starters
+咲き誇れ愛しさよ
+五里霧中
+Still...
+ファイトソング
+Hey Yeah Yeah
+Don't You Get It
+Love Situation
+Disco Star
+夜空への手紙
+Season
+Oh Yeah!
+Summer Splash!
+Re(mark)able
+Boom Boom
+素晴らしき世界
+Dream"A"live
+Cool & Soul
+夏の名前
+Lucky Man
+Up to you
 
 [b06_rvv]
 Psycho
@@ -10190,6 +10606,52 @@ Smile Again
 ヤ・ク・ソ・ク
 One
 君を守りたい
+花になれ
+Over the rain〜ひかりの橋〜
+Over the rain
+星に願いを
+labo
+春風
+=証
+MW〜Dear Mr. & Ms. ピカレスク〜
+大切なものは君以外に見当たらなくて
+どんな未来にも愛はある
+Because... I am
+夜は眠れるかい?
+大体の仮定、変わらない青
+強く儚く
+君想ふ道
+=残像
+=Touch
+Hydrangea
+フレイム
+両手を広げて
+ちいさな日々
+=大丈夫
+夏Dive
+君の中の「僕」が嫌いで
+素晴らしき嘘
+夏よ止めないで 〜You're Romantic〜
+=流れ星
+36℃
+ワタシノセカイ
+Belief 〜春を待つ君へ〜
+HELP!!
+Unreal
+白い森
+世界は目を覚ます
+=雪 (Full Ver.)
+FREE YOUR MIND
+Line
+Flower of life
+Fin
+present
+ネバーマインド
+DYING SOUL
+Flight
+HIKARI
+Answer
+ラストコール
 
 [c05_sfy]
 My Love Is Like a Red, Red Rose
@@ -11697,3 +12159,48 @@ ICONOCLAST
 =雨のち晴れ
 =青い春
 =風になれ
+
+[b01_smb]
+世界はそれを愛と呼ぶんだぜ
+青春狂騒曲
+美しき人間の日々
+そのぬくもりに用がある
+光のロック
+月に咲く花のようになるの
+歌声よおこれ
+できっこないを やらなくちゃ
+ミラクルをキミとおこしたいんです
+=ラブソング
+輝きだして走ってく
+=可能性
+愛しさと心の壁
+二人ぼっちの世界
+=手紙
+君を守って 君を愛して
+=熱帯夜
+さよならベイビー
+=YES
+忘れないで 忘れないで
+=向日葵
+ヒューマニティ!
+=花
+愛と平和
+全か無か
+I LOVE YOU
+ロックンロール イズ ノットデッド
+ぼくらの街で
+イヤー ヘイ
+復活のロックンロール
+Sweet Home Sweet
+=夜汽車
+=戦争と平和
+ファジーな痛み
+オレを好きにさせてくれよ
+ホントウノオワリニカワル
+ラブ&ピース
+世界をかえさせておくれよ
+ちからをちょうだい
+=花束
+=愛
+手を抜くなよ
+涙でいっぱいのハートで

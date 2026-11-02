@@ -18,6 +18,17 @@ for f in sorted(glob.glob('/home/claude/add_t/t_*.json')):
     ps = set(b['pt']); b['pt'] += [x for x in dict.fromkeys(d.get('pt', [])) if x not in ps]
     for e in ('old', 'mid', 'new'):
         s = set(b['t'][e]); b['t'][e] += [x for x in dict.fromkeys(d.get(e, [])) if x not in s and 1 < len(x) <= 24]
+# QA8: 一般の曲名プールに実在の有名曲名そのまま(マリーゴールド・秋桜・赤ちょうちん…)を残さない。ありふれた言葉(rosters/generic_ok.txt)だけ残す
+import realtitles as _rt, re as _re
+_ok = {_rt.tnorm(l) for l in open('/home/claude/rosters/generic_ok.txt', encoding='utf-8') if l.strip() and not l.startswith('#')}
+def _gen_ok(t):
+    if not _rt.hit(t, None, 'parody'): return True
+    x = _rt.tnorm(t)
+    return x in _ok
+_rm = 0
+for e in ('old', 'mid', 'new'):
+    v2 = [x for x in b['t'][e] if _gen_ok(x)]; _rm += len(b['t'][e]) - len(v2); b['t'][e] = v2
+print('generic pool: removed real titles', _rm)
 print('pt', len(b['pt']), {e: len(v) for e, v in b['t'].items()})
 # 曲名+サビ(テーマ別)
 b['tt'] = {}
@@ -58,4 +69,10 @@ for f in sorted(_g.glob('/home/claude/add_sd/sd_*.json')):
 b['sd'] = sd; print('sd', len(sd))
 import nb_sanitize; nb_sanitize.sanitize(b)  # 実名に近すぎるもじり・「a:」ラベル・グループ文の人数語
 import bank_fit; bank_fit.tag(b)  # 活動形態に合わない寄り道・出来事に ns(出さない st)を付ける
+# sanitize で文が変わると次回の実行で同じ元文がまた追加されるので、整えた後の文で重複を落とす
+_s = set(); _ev = []
+for e in b['ev']:
+    if e['t'] in _s: continue
+    _s.add(e['t']); _ev.append(e)
+print('ev dedup', len(b['ev']), '->', len(_ev)); b['ev'] = _ev
 json.dump(b, open(p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

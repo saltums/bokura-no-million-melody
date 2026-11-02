@@ -65,14 +65,15 @@ def _titles(r, theme, era, n, avoid, extra=None, year=None):
     _bad = ('通知', '既読', 'メッセージ', 'ペンライト')
     pool += [z for z in gen_vocab.titles(theme, r, 24) if era >= 3 or not any(k in z for k in _bad)]
     pool = [z for z in pool if eraword.ok(z, year)]
-    par = [t for t, e in PARODY if era >= e]
+    gen = [z for z in GENERIC if eraword.ok(z, year)] or GENERIC  # QA8: 「令和」などの年号語を発表年より前の作品に出さない
+    par = [t for t, e in PARODY if era >= e and eraword.ok(t, year)]
     tries = 0
     while len(out) < n and tries < 400:
         tries += 1
         x = r.random()
         if x < 0.02 and par and extra is None: t = r.choice(par)  # 実在アーティスト(extraあり)には他人のもじり曲を混ぜない
         elif x < 0.9: t = r.choice(pool)
-        else: t = r.choice(GENERIC)
+        else: t = r.choice(gen)
         if t not in avoid and t not in out: out.append(t)
     return out
 
