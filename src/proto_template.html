@@ -596,6 +596,13 @@ body:has(#s-intro:not([hidden])) #gnav, body:has(#s-custom:not([hidden])) #gnav 
 #s-cand h2 { font-size: 18px !important; }
 #in-cta .btn.line { font-size: 12px; }
 #s-title #unl-title .card { max-height: 128px; overflow: auto; }
+/* 感想・不具合リンクと、フィクション/権利の注意書き(1画面に収めるため小さめ) */
+.fbrow { margin: 0; text-align: center; line-height: 1.2; }
+a.fb { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+a.fb::after { content: " ↗"; font-size: 10px; }
+.fic { font-size: 11px !important; line-height: 1.5 !important; }
+.fic a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+#s-title .fbrow { margin-top: -4px; }
 </style>
 
 <div class="wrap" id="app">
@@ -610,9 +617,10 @@ body:has(#s-intro:not([hidden])) #gnav, body:has(#s-custom:not([hidden])) #gnav 
     <p class="small" id="t-badge" hidden></p>
     <button class="btn primary" id="b-quick" type="button">▶ いますぐ遊ぶ</button>
     <button class="btn line" id="b-start" type="button">自分で選んで始める</button>
-    <p class="small fic">※実在の人物・団体とは関係のないフィクションです。</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn" id="b-zk" type="button">図鑑・殿堂</button><button class="btn" id="b-tell" type="button">友だちに教える</button></div>
     <p class="small" id="tell-note" hidden></p>
+    <p class="fbrow"><a class="fb" id="b-fb" href="#" target="_blank" rel="noopener">感想・不具合を送る</a></p>
+    <p class="small fic" id="fic-title"></p>
     <div class="unl-box" id="unl-title"></div>
     <div id="dbg" hidden style="display:none;flex-direction:column;gap:8px">
       <div class="erow" id="dtabs"></div>
@@ -721,6 +729,18 @@ body:has(#s-intro:not([hidden])) #gnav, body:has(#s-custom:not([hidden])) #gnav 
 
 <div id="boot" style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:#111;color:#fff;font:700 15px sans-serif">読み込み中…</div>
 <script>
+// ---- 設定(編集しやすいように先頭に置く) ----
+// 感想・不具合の窓口。GoogleフォームのURLに差し替えてもよい(例: 'https://docs.google.com/forms/d/e/xxxx/viewform')
+const FEEDBACK_URL = 'https://github.com/saltums/bokura-no-million-melody/issues';
+// はじめての「おまかせ」で選ばれる人生(data.json の m.a = 表示名)。完成度の高い現代バンドの人生だけに絞る。2回目以降は通常どおり全体からランダム
+const FIRST_LIVES = ['ハモリ五人衆', 'REBECATSU', 'Dir en grape', '交通安心地帯', 'ギターノラ犬', 'ゴールデンボンボン', 'サザンカ・オールナイツ', '地獄の学園祭'];
+const isFirstPlay = () => { try { if (parseInt(localStorage.getItem('hit30000_plays'), 10) > 0) return false; const z = JSON.parse(localStorage.getItem('hit30000_zukan') || 'null'); return !(z && Array.isArray(z.lives) && z.lives.length); } catch (_) { return false; } };
+// 「感想・不具合を送る」リンク(新しいタブで FEEDBACK_URL を開く)
+const fbLink = (cls) => { const a = document.createElement('a'); a.className = cls || 'fb'; a.href = FEEDBACK_URL; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '感想・不具合を送る'; return a; };
+// フィクション/権利の注意書き(タイトルと結果画面で共通)。「上記の窓口」は FEEDBACK_URL へのリンク
+const FIC_TX = '※実在の人物・団体とは関係のないフィクションです。';
+const fillFic = (p) => { if (!p) return; p.textContent = FIC_TX + 'このゲームは非営利で、広告・課金はありません。実在の方に関する掲載の取り下げ依頼は'; const a = fbLink('ficlink'); a.textContent = '上記の窓口'; p.append(a, 'へ。'); return p; };
+try { fillFic(document.getElementById('fic-title')); const fb = document.getElementById('b-fb'); if (fb) fb.href = FEEDBACK_URL; } catch (_) {}
 // DATA(人生の一覧)と BANK(名前・曲名の素材)は data.json / bank.json から後で読む(初回表示を軽くするため)。
 // 読み終わってから走らせる初期化は onReady(f) に、ボタンは needData(f) で包む(読み終わる前に押されたら「読み込み中…」で待つ)
 let DATA = [], BANK = {}, READY = false; const _RQ = []; let _LD = null;
@@ -1113,7 +1133,10 @@ let S = { top: null, style: null, entry: null, node: null, works: 0, best: 999, 
 $('#b-start').onclick = needData(() => { S.auto = false; S.quick = false; show('s-top'); });
 function quickNow() {
   S.quick = true; S.auto = false; S.eraPick = null; S.eraF = null; S.sz = null;
-  let L = DATA.filter((d) => !d.m.rare && d.m.st); const R = L.filter((d) => d.m.real); if (R.length && Math.random() < 0.55) L = R;
+  let L = DATA.filter((d) => !d.m.rare && d.m.st);
+  // はじめての1回だけ、完成度の高い人生(FIRST_LIVES)に絞る。見つからなければ通常の抽選へ
+  if (isFirstPlay() && DBG_ERA == null) { const F = L.filter((d) => FIRST_LIVES.includes(d.m.a)); if (F.length) { const d = F[Math.floor(Math.random() * F.length)]; S.top = d.m.top; S.style = d.m.st; startTree(d); return; } }
+  const R = L.filter((d) => d.m.real); if (R.length && Math.random() < 0.55) L = R;
   // 邦楽・ライブハウス出身の人生を出やすく(洋楽パロディに偏らないように)
   const qw = (d) => { const m = d.m; let w = /[都道府県]/.test((m.bio && m.bio.hm) || '') ? 1 : 0.3; if (/ライブハウス|対バン|路上|貸しスタジオ|練習スタジオ|軽音|サークル|ハコ/.test((m.sa || '') + (m.tx || ''))) w *= 2.2; if (m.st === 'band') w *= 1.3; return w; };
   const ws = L.map(qw); let r = Math.random() * ws.reduce((a, b) => a + b, 0), qi = 0; while (qi < L.length - 1 && (r -= ws[qi]) > 0) qi++;
@@ -3296,10 +3319,11 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
     imgBox.append(nt); try { navigator.clipboard.writeText(text).catch(() => {}); } catch (_) {} };
   const b4 = el('button', 'btn line', 'ホームに戻る'); b4.type = 'button'; b4.onclick = () => { clearTimers(); S.auto = false; show('s-title'); window.scrollTo(0, 0); };
   const b5 = el('button', 'btn line', '図鑑・殿堂を見る'); b5.type = 'button'; b5.onclick = () => { clearTimers(); S.auto = false; ZK.render(); show('s-zukan'); };
-  const fic = el('p', 'small fic', '※実在の人物・団体とは関係のないフィクションです。');
+  const fbp = el('p', 'fbrow'); fbp.style.cssText = 'flex:1 1 100%;margin-top:4px'; fbp.append(fbLink());
+  const fic = fillFic(el('p', 'small fic')); fic.style.cssText = 'flex:1 1 100%';
   const qGo = (t, cls) => { const b = el('button', 'btn ' + (cls || 'line'), t); b.type = 'button'; b.onclick = () => { clearTimers(); S.auto = false; S.force = null; quickNow(); }; return b; };
   const mGo = (t) => { const b = el('button', 'btn line', t); b.type = 'button'; b.onclick = () => { clearTimers(); S.auto = false; S.force = null; S.quick = false; show('s-top'); }; return b; };
-  a.append(qGo('もう1回(おまかせ)'), mGo('自分で選んで始める'), b4, b5, bx, b3, note, fic); tail.append(a);
+  a.append(qGo('もう1回(おまかせ)'), mGo('自分で選んで始める'), b4, b5, bx, b3, note, fbp, fic); tail.append(a);
   { const sm = el('div', 'sumc'); const m = S.entry.m; sm.append(el('div', 'sk', eraLab(S.entry).es + ' ・ ' + m.sn), el('div', 'sa', m.a));
     const ss = el('div', 'ss'); ss.append(el('b', null, String(dr.total)), el('span', null, '/ 400'), el('em', null, '「' + dr.tl + '」')); sm.append(ss);
     const r1 = el('div', 'sr'); r1.append(el('span', 'k', '称号'), el('span', 'v', cr[0])); const r2 = el('div', 'sr'); r2.append(el('span', 'k', '代表曲'), el('span', 'v', '「' + topW.ti + '」 ' + TIER[topW.tr])); sm.append(r1, r2);

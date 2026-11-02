@@ -10,6 +10,7 @@ QA7 で追加:
            同じ読みの名で字も大半が同じ+姓も字を共有(坂口幸之介/坂崎幸之助)を不可
   artist~  artist_close: 実在アーティスト名(ART + rosters/realartists.txt)の1字違い・同じ読み・語の切れ目までほぼそのまま(EGG-WRAPPIN' SANDWICH)
   nb.a~    namebank のアーティスト名が実在名と同じ綴り/読み
+  rtitle~  曲名のもじりが実在曲名に近すぎる(realtitles.close: 1字違い・同じ長さで2字差し替え・同じ読み・読み1音違い。Let It Bee / 涙のリクルート 水準は不可)
   built-ng ビルド済みデータ(proto_data/namebank、/tmp/site の data・bank・d/*.json)に QA 指摘の旧表記(rosters/ngstrings.txt)が残っていないか
 """
 import sys, re, json, ast, unicodedata
@@ -432,6 +433,23 @@ if ONLY in ('', 'titles'):
     for th, v in nb.get('tt', {}).items():
         for x in v:
             if title_hits(x[0]): hits.append(('rtitle:nb.tt', th, x[0], tnorm(x[0])))
+    # --- 2c) 実在曲名に近すぎるもじり(QA: 「Let It Bee」「涙のリクルート」は甘い。realtitles.close)
+    #   1字違い / 同じ長さで2字だけ差し替え / 長い曲名(10字以上)の2字違い / 同じ読み(字・濁点・長音だけ替えた)/ 読みが1音だけ違う。
+    #   PT は元ネタ本人の曲([キー])と [*]、キーのないもじり曲名プールは全曲名(ありふれた言葉を除く)と照合
+    for k, v in PT.items():
+        for t in v:
+            c = RTM.close(t, k)
+            if c: hits.append(('rtitle~:PT', k, t, c))
+    for k, v in parody_titles.PT.items():
+        for t in v:
+            c = RTM.close(t)
+            if c: hits.append(('rtitle~:parody_titles', k, t, c))
+    for t, _e in tracks.PARODY:
+        c = RTM.close(t)
+        if c: hits.append(('rtitle~:tracks.PARODY', '', t, c))
+    for t in nb.get('pt', []):
+        c = RTM.close(t)
+        if c: hits.append(('rtitle~:nb.pt', '', t, c))
 
 # --- 3) 人数語(arcs 本文 vs 人数)
 CNT = {'二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8}
