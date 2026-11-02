@@ -29,6 +29,8 @@ _rm = 0
 for e in ('old', 'mid', 'new'):
     v2 = [x for x in b['t'][e] if _gen_ok(x)]; _rm += len(b['t'][e]) - len(v2); b['t'][e] = v2
 print('generic pool: removed real titles', _rm)
+# QA9: もじり曲名プールの実在曲名そのまま・近すぎるもじり(realtitles.close)を外す
+_p0 = len(b['pt']); b['pt'] = [x for x in b['pt'] if not _rt.hit(x, None, 'parody') and not _rt.close(x, None, 'parody')]; print('parody pool: removed', _p0 - len(b['pt']))
 print('pt', len(b['pt']), {e: len(v) for e, v in b['t'].items()})
 # 曲名+サビ(テーマ別)
 b['tt'] = {}
@@ -40,6 +42,7 @@ for f in sorted(glob.glob('/home/claude/add_tt/tt_*.json')):
         try:
             t = x['t'].strip(); h1 = x['h1'].strip(); h2 = x.get('h2', '').strip(); e = x.get('e', 'all')
             if not t or t in seen or len(t) > 24 or e not in ('all', 'old', 'mid', 'new') or not (4 <= len(h1) <= 34): continue
+            if not _gen_ok(t): continue  # QA9: 実在曲名そのまま(ありふれた言葉を除く)はテーマ別の曲名にも出さない
             seen.add(t); L.append([t, e, h1, h2])
         except Exception: continue
 print('tt', {k: len(v) for k, v in b['tt'].items()})

@@ -49,11 +49,12 @@ def fix(t):
     return FIX.get(t, t)
 
 
-def fix_list(v, key=None, pool='wide'):
+def fix_list(v, key=None, pool='wide', near=True):
+    """差し替えたあと、実在曲名そのまま(hit)と、近すぎるもじり(close: QA9)を外す"""
     out = []
     for t in v:
         t = fix(t)
-        if t and not hit(t, key, pool) and t not in out: out.append(t)
+        if t and not hit(t, key, pool) and t not in out and not (near and close(t, key, pool)): out.append(t)
     return out
 
 
@@ -108,6 +109,8 @@ def _too_close(x, y):
     """x(もじり)と y(実曲名)が近すぎるか。どちらも tnorm 済み・x != y"""
     ly = len(y)
     if ly < 2: return False
+    # QA9: 実曲名(5字以上)をそのまま頭か尻に含む(サイレントマジョリティー・ミール / Shout Baby Corn / IGNITE ME / MEMORIA 2)
+    if ly >= 5 and len(x) > ly and (x.startswith(y) or x.endswith(y)): return True
     cap = 2
     sx = set(x)
     if sum(c not in sx for c in y) <= cap: d = _lev(x, y, cap)
@@ -148,4 +151,8 @@ def close(t, key=None, pool='wide'):
         for n in range(max(1, len(x) - 3), len(x) + 4): cands += bl.get(n, [])
     for y in cands:
         if y != x and abs(len(y) - len(x)) <= 3 and _too_close(x, y): return y
+    # QA9: 実曲名(5字以上・ありふれた言葉を除く)をそのまま頭か尻に含む(長さの差は問わない)
+    pool_ = (set(RT_SEC.get(key, ())) | set(RT_SEC.get('*', ()))) if key else RT_ALL
+    for y in pool_:
+        if 5 <= len(y) < len(x) and y not in RT_GEN and (x.startswith(y) or x.endswith(y)): return y
     return None

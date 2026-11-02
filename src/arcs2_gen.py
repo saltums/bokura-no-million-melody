@@ -164,6 +164,17 @@ def end_text(a, path):
     i = alts[-1]; return D[i][3] if real_of(a, i) else D[i][4]
 
 
+NEWVO = re.compile(r'新しい(?:声|ボーカル|歌い手|歌姫)を(?:迎え|入れ|探)|ボーカルを(?:替え|交代|入れ替え)|新ボーカル')
+NEWVO_N = re.compile(r'守る|せず|しない|断')
+# QA9: 担当の入れ替え・脱退を顔ぶれに反映するための語
+PART_OF = {"ドラマー": "Dr", "ドラム": "Dr", "太鼓": "Dr", "打ち手": "Dr", "ギタリスト": "Gt", "ギター": "Gt", "ベーシスト": "Ba", "ベース": "Ba", "低音": "Ba", "キーボーディスト": "Key", "キーボード": "Key", "鍵盤": "Key", "ピアノ": "Key", "サックス": "Sax", "トランペット": "Tp", "DJ": "DJ", "ラッパー": "MC", "MC": "MC"}
+PART_RX = {"Dr": re.compile(r"Dr|Per|太鼓"), "Gt": re.compile(r"Gt|ギター"), "Ba": re.compile(r"Ba|ベース"), "Key": re.compile(r"Key|Pf|Syn|鍵盤|ピアノ"), "Sax": re.compile(r"Sax"), "Tp": re.compile(r"Tp"), "DJ": re.compile(r"DJ"), "MC": re.compile(r"MC|Rap")}
+NEWPART = re.compile(r"(?:新しい|若い|新たな|別の|次の)(" + "|".join(sorted(PART_OF, key=len, reverse=True)) + r")を(?:迎え|入れ|探|誘|呼)|(" + "|".join(sorted(PART_OF, key=len, reverse=True)) + r")を(?:替え|交代|入れ替え)")
+LEAVE = re.compile(r"抜け|降り|離れ|辞め|やめる|やめたい|帰ってこい|帰れ|裏方|移りたい|終わりだ|専念したい|やれない|継ぐ|就職|出ていく|去る|もうできない|もう無理|限界だ|他の道|別の道|別の仕事|家業")
+KEEPGO = re.compile(r"[二三四五六七八九]人(?:で|のまま|になって|に戻)|なしで続け|抜きで続け|いない(?:まま|形)で|欠けたまま|埋めずに|送り出す|見送る|引き留めない|引き止めない|残った(?:メンバー|仲間|者)で|穴を埋めず|そのまま続け")
+KEEPGO_N = re.compile(r"新しい|迎え|探し|代わり|補充|入れ|引き留め(?!ない)|引き止め(?!ない)|止める|やめる|解散|幕|区切り|終わ")
+
+
 def build(a, i, pool, era=None, nm=None):
     st = a["st"]; real_era = era_of(a["y0"]); era = real_era if era is None else era
     y0 = a["y0"] if era == real_era else ERA_Y[era] - 2 + (a["y0"] % 3)
@@ -202,7 +213,7 @@ def build(a, i, pool, era=None, nm=None):
         top = "ソロ"
     E = g.ERAS[era]
     name = nm or a["nm"]
-    meta = {"id": seed, "a": name, "pun": None, "top": top, "st": st if st != "dj" else "solo", "sn": STN.get(st, "シンガーソングライター"), "pe": "まじめ", "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
+    meta = {"id": seed, "a": name, "pun": None, "top": top, "st": st if st != "dj" else "solo", "sn": STN.get(st, "シンガーソングライター"), "pe": ["まじめ", "明るい", "頑固", "気分屋", "人たらし", "繊細", "天然", "野心家", "まじめ", "暗い"][H(a["k"], "pe") % 10], "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
             "tx": a["tx"], "ai": None, "mm": mm, "vg": "inst" if st == "inst" else a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
     bio.localize(a, meta["bio"], mm, seed)  # 出身地・結成地を国と「始まりの場所」に合わせる
     _mc = _ro.lineup(a, mm) if top == "グループ" else []  # 元ネタの結成時メンバーに。後年の加入・脱退は年で転機に差し込む(下の lineup_tree)
@@ -243,8 +254,42 @@ def build(a, i, pool, era=None, nm=None):
         if xs and si >= 1: o.append({"t": "e", "tx": xs[(si - 1) % len(xs)]})
         return o, ([e0] if off else [])
 
-    def X(d, alt):
-        return {"t": "x", "c": d[2] if alt else d[1], "ok": (d[6] if alt else d[5]) >= 0, "tx": d[4] if alt else d[3]}
+    def X(d, alt, gone=()):
+        o = {"t": "x", "c": d[2] if alt else d[1], "ok": (d[6] if alt else d[5]) >= 0, "tx": d[4] if alt else d[3]}
+        # QA7: 「新しい声を迎える」を選んだら、顔ぶれのボーカルを入れ替える(画面のメンバー表示に反映)
+        if top == "グループ" and NEWVO.search(o["c"]) and not NEWVO_N.search(o["c"]):
+            vo = next((m_ for m_ in mm if str(m_.get("r", "")).startswith("Vo") and m_["n"] not in gone), None)
+            if vo:
+                nw = tracks.newcomer(seed + 77, vo["r"], {m_["n"] for m_ in mm}); nw["r"] = vo["r"]
+                o["mb"] = {"out": vo, "in": nw}
+            return o
+        # QA9: 「新しいドラマーを迎える」→ その担当を入れ替える。「三人で続ける」「ギタリストなしで続ける」「送り出す」→ 抜けた人を顔ぶれから外す
+        if top == "グループ" and "mb" not in o:
+            lab = o["c"]; pr = d[0]
+            cur = [m_ for m_ in mm if m_["n"] not in gone]
+            def _find(part):
+                rx = PART_RX.get(part)
+                if not rx: return None
+                return next((m_ for m_ in cur if rx.search(str(m_.get("r", ""))) and not str(m_.get("r", "")).startswith("Vo")), None) or next((m_ for m_ in cur if rx.search(str(m_.get("r", "")))), None)
+            def _any():
+                return next((m_ for m_ in cur if not str(m_.get("r", "")).startswith("Vo")), None) or (cur[-1] if cur else None)
+            mi = NEWPART.search(lab)
+            if mi and not NEWVO_N.search(lab):
+                part = PART_OF.get(mi.group(1)); old = _find(part) if part else None
+                if old is None and LEAVE.search(pr): old = _any()
+                if old is not None:
+                    nw = tracks.newcomer(seed + 91 + len(gone), old["r"], {m_["n"] for m_ in mm}); nw["r"] = old["r"]
+                    o["mb"] = {"out": old, "in": nw}
+            elif len(cur) >= 3 and LEAVE.search(pr) and KEEPGO.search(lab) and not KEEPGO_N.search(lab):
+                hits_ = sorted(((pr.find(w), w) for w in PART_OF if w in pr), key=lambda z: (z[0], -len(z[1])))
+                part = PART_OF[hits_[0][1]] if hits_ else None
+                old = _find(part) if part else None
+                if old is None: old = _any()
+                if old is not None:
+                    o["mb"] = {"out": old}
+                    n2 = len(cur) - 1
+                    o["c"] = re.sub(r"(?<![一-龥])[二三四五六七八九]人(?=で|のまま|になって|に戻)", _KN[n2 - 1] + "人", lab)
+        return o
 
     ag0 = start_age(meta, a["k"])
 
@@ -254,7 +299,7 @@ def build(a, i, pool, era=None, nm=None):
         fy = works[0]["y"] if works else y0
         return {"prompt": "%d歳。" % (ag0 + max(0, y - fy)) + d[0], "labels": [d[1], d[2]], "h": 0}
 
-    def node(si, eff, dv, seen, pos0, prior_works, path=(), off=False, hon=(), hc=()):
+    def node(si, eff, dv, seen, pos0, prior_works, path=(), off=False, hon=(), hc=(), gone=()):
         # si: 次に控える分かれ道の番号。この関数が返すのは「分かれ道siの子ノード群」
         kids = []
         for x in (0, 1):
@@ -264,12 +309,13 @@ def build(a, i, pool, era=None, nm=None):
             dev = x != real_of(a, si); off2 = off or dev
             hc2 = hc + ((D[si][2 if real_of(a, si) else 1],) if dev else ())
             ev_, miss = evs(si + 1, off2, path + (x,))
-            seg = [X(D[si], x)] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + ev_ + stage(si + 1, e2, dv2, sn)
+            x0 = X(D[si], x, gone); gone2 = gone + ((x0["mb"]["out"]["n"],) if x0.get("mb") and x0["mb"].get("out") else ())
+            seg = [x0] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + ev_ + stage(si + 1, e2, dv2, sn)
             hon2 = hon + tuple(miss)
             pos1 = pos0 + len(cv[min(si + 1, len(cv) - 1)])
             works = prior_works + [w for w in seg if w["t"] == "r"]
             if si + 1 < N:
-                kids.append({"s": seg, "q": q(D[si + 1], works), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,), off2, hon2, hc2)})
+                kids.append({"s": seg, "q": q(D[si + 1], works), "n": node(si + 1, e2, dv2, sn, pos1, works, path + (x,), off2, hon2, hc2, gone2)})
             else:
                 tx = end_text(a, path + (x,))
                 if top == "グループ": tx = fix_count(tx, len(mm), [x.get("r") for x in mm])

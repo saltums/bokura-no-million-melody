@@ -299,10 +299,29 @@ def _ev_texts(a):
     return out
 
 
+_DIR_N = ("北海道", "青森", "岩手", "宮城", "秋田", "山形", "福島", "新潟", "富山", "石川", "福井")
+_DIR_S = ("福岡", "佐賀", "長崎", "熊本", "大分", "宮崎", "鹿児島", "沖縄", "高知", "愛媛", "徳島", "香川")
+_DIR_W = ("鳥取", "島根", "岡山", "広島", "山口", "兵庫", "大阪", "京都", "奈良", "和歌山", "滋賀")
+_DIR_E = ("茨城", "栃木", "群馬", "埼玉", "千葉", "東京", "神奈川", "静岡")
+_DIR_RX = re.compile(r"(北|南|西|東|南西|南東|北西|北東)の(港町|街|町|海辺|海|空|空港|小さな町|田舎町|城下町)")
+
+
+def dir_fix(s, hs):
+    """「南西の港町」などの方角を、出身・結成の県に合わせる(山形県酒田市 → 北の港町)。QA9"""
+    if not isinstance(s, str) or not _DIR_RX.search(s): return s
+    pf = next((h for h in hs if h), None)
+    if not pf: return s
+    d = "北" if pf.startswith(_DIR_N) else "南" if pf.startswith(_DIR_S) else "西" if pf.startswith(_DIR_W) else "東" if pf.startswith(_DIR_E) else None
+    if not d: return _DIR_RX.sub(lambda m: m.group(2), s)
+    return _DIR_RX.sub(lambda m: d + "の" + m.group(2), s)
+
+
 def fit_text(s, b):
     """出来事・結末の文の地名語(古都・津軽・港町など)が、出身・結成地に合わなければ地名を外す(「地元」にする)"""
-    if not isinstance(s, str) or not isinstance(b, dict) or b.get("ai") or not _LOCAL.search(s): return s
+    if not isinstance(s, str) or not isinstance(b, dict) or b.get("ai"): return s
     hs = [x for x in (b.get("hm"), b.get("fd")) if x]
+    if hs and not any("・" in x for x in hs): s = dir_fix(s, hs)
+    if not _LOCAL.search(s): return s
     if not hs or any("・" in x for x in hs): return s  # 海外の人は対象外
     bad = False
     for m in _LOCAL.finditer(s):

@@ -185,7 +185,7 @@ def sanitize(b):
     try:
         import realtitles as _rt
         b['pt'] = _rt.fix_list(b.get('pt', []), None, 'parody')
-        b['t'] = {e: _rt.fix_list(v) for e, v in b.get('t', {}).items()}
+        b['t'] = {e: _rt.fix_list(v, near=False) for e, v in b.get('t', {}).items()}  # 一般の曲名は「近すぎるもじり」の検査対象外(QA9: 検査が重い・もじりではない)
         b['tt'] = {th: [[_rt.fix(x[0])] + list(x[1:]) for x in v if not _rt.hit(_rt.fix(x[0]))] for th, v in b.get('tt', {}).items()}
     except Exception as _e:
         print('realtitles skip', _e)

@@ -58,7 +58,9 @@ def ser(item, c=None, st=None):
     if st is not None and c['style'] in ('band', 'inst', 'duo'):
         tx = item[2]
         if tx.startswith("メンバーが脱退") and len(st['mem']) >= 2:
-            k = (c['seed'] + len(st['seen'])) % len(st['mem']); gone = st['mem'].pop(k); st['vac'].append(gone['r']); out['mb'] = {"out": gone}
+            # QA9: ボーカルが抜けると歌のある作品が出せないので、ボーカル以外から選ぶ
+            _cand = [i for i, m_ in enumerate(st['mem']) if not str(m_.get('r', '')).startswith('Vo')] or list(range(len(st['mem'])))
+            k = _cand[(c['seed'] + len(st['seen'])) % len(_cand)]; gone = st['mem'].pop(k); st['vac'].append(gone['r']); out['mb'] = {"out": gone}
         elif (tx.startswith("新しく入ったメンバー") or tx.startswith("新メンバーとの呼吸")) and st['vac']:
             role = st['vac'].pop(0); nw = tracks.newcomer(c['seed'], role, {m['n'] for m in st['mem']}, {m.get('t') for m in st['mem']}); st['mem'].append(nw); out['mb'] = {"in": nw}
     return out
@@ -97,11 +99,11 @@ def solo_ng(c):
 
 def meta(c):
     sc = c['start_choice']
-    start_txt = g.AI_START[c['ai_mode']] if c['ai_mode'] else g.START[(c['start'], c['era'])]
+    start_txt = g.start_text(c['style'], c['ai_mode']) if c['ai_mode'] else g.START[(c['start'], c['era'])]
     return bio.fit({"id": c['seed'], "a": c['artist'], "pun": c['pun_src'], "top": "ソロ" if c['style'] in SOLO_ST else "グループ", "st": c['style'],
             "sn": g.style_name(c), "pe": c['P']['n'], "era": c['era'], "en": g.ERAS[c['era']]['name'],
             "es": g.ERAS[c['era']]['short'], "sa": c['start'], "ge": c['genre'], "tx": start_txt, "ai": c['ai_mode'],
-            "mm": tracks.people(c['seed'], c['style']), "vg": gender.vocal(c, tracks.people(c['seed'], c['style'])), "bio": bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ")})  # 出身・結成地を紹介文の地名に合わせる
+            "mm": tracks.people(c['seed'], c['style']), "vg": gender.vocal(c, tracks.people(c['seed'], c['style'])), "bio": bio.make(c['seed'], c['style'], c['era'], None if c['style'] == 'ai_collab' else c['ai_mode'], c['start_choice']['top'] == "グループ")})  # 出身・結成地を紹介文の地名に合わせる
 
 
 def main():

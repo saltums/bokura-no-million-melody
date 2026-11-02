@@ -1,3 +1,4 @@
+import re
 # -*- coding: utf-8 -*-
 """収録曲(トラックリスト)とメンバーの生成。すべて決定的(作品名と年から決まる)。"""
 import random
@@ -30,8 +31,8 @@ TT = {
 # 曲名のもじり(作品名のみ・時代で解禁)
 PARODY = [("天体観察", -1), ("世界に一つだけの傘", 2), ("終わりなき残業", 1), ("木綿のティッシュ", -1), ("春よ、遅れて来い", 1),
           ("なごり飴", -1), ("チェリーパイ", 1), ("Tomorrow never comes", 1), ("夜に駆けたい", 4), ("ぬるいレモン", 3), ("さくらぼん", 2), ("ハナミズ", 2),
-          ("守ってあげたいけど", 0), ("勝手にシンドバッド屋", 0), ("世界でいちばん暑い夏", 0), ("君がいない夏の終わりに", 0), ("乾杯と見せかけて", 2),
-          ("めざせポケット", 1), ("涙そうそうそう", 2), ("負けないで、とは言えない", 1), ("アジアの純真さ", 1), ("粉雪と砂利", 2), ("糸くず", 3)]
+          ("守りたいが寝たい", 0), ("勝手にシンドバッド屋", 0), ("世界でいちばん暑い夏", 0), ("君がいなくて助かった夏", 0), ("乾杯と見せかけて", 2),
+          ("めざせポケット", 1), ("涙がそうでもない", 2), ("負けるなとは言えない", 1), ("アジアの純真さ", 1), ("粉雪と砂利", 2), ("糸くず", 3)]
 GENERIC = ["夜行バス", "週末の遠回り", "冷たい炭酸", "三日月の下", "言い訳の天才", "ひとりぼっちの合唱", "電柱の影", "雨宿り", "窓際の席", "残り香", "うたかた", "遠雷"]
 
 try:
@@ -47,8 +48,8 @@ except Exception as _e:
     print('gen_titles skip', _e)
 try:  # 実在曲名そのまま(rosters/realtitles.txt)は外す
     import realtitles as _rt
-    TT = {_k: _rt.fix_list(_v) for _k, _v in TT.items()}; GENERIC = _rt.fix_list(GENERIC)
-    PARODY = [(_rt.fix(_t), _e) for _t, _e in PARODY if not _rt.hit(_rt.fix(_t), None, 'parody')]
+    TT = {_k: _rt.fix_list(_v, near=False) for _k, _v in TT.items()}; GENERIC = _rt.fix_list(GENERIC, near=False)
+    PARODY = [(_rt.fix(_t), _e) for _t, _e in PARODY if not _rt.hit(_rt.fix(_t), None, 'parody') and not _rt.close(_rt.fix(_t), None, 'parody')]
 except Exception as _e:
     print('realtitles skip', _e)
 
@@ -160,13 +161,23 @@ def people(seed, style, n=None):
     import roster as _ro  # 同じ下の名前・同じ癖が重ならないように(重なりが無ければそのまま)
     return _ro.dedupe(out, (seed, style))
 
+X_M = ["トビー", "ルーカス", "オスカー", "ネイト", "ハリソン", "エズラ", "ギデオン", "ローワン", "サイラス", "ダミアン", "フィンリー", "ウォーレン", "マイロ", "ジャスパー"]
+X_F = ["ミラ", "ノーラ", "ヘイゼル", "アイリス", "ルーシー", "エルサ", "ジューン", "ベラ", "ソフィ", "ヴェラ", "アデル", "クララ", "イモージェン", "テッサ"]
+X_L = ["ブラムウェル", "カーディフ", "ハロウェイ", "ペンブルック", "ウィンスロー", "オークリー", "フェアチャイルド", "ラングレー", "ソーントン", "ホイットモア", "ケンドリック", "アシュクロフト", "ギャロウェイ", "ハートリー"]
+
+
 def newcomer(seed, role, taken, traits=()):
     r = random.Random(_seed(seed, role, "new", len(taken)))
     g = "m" if r.random() < 0.5 else "f"
     gv = {str(x).replace("　", " ").rsplit(" ", 1)[-1] for x in taken}  # 今いるメンバーと同じ下の名前は避ける
+    west = bool(taken) and sum(1 for x in taken if re.search(r"[・=]|^[A-Za-z]", str(x))) * 2 >= len(taken)  # QA9: 海外のバンドには海外風の名前で
     for _ in range(200):
-        nm = r.choice(FAM) + " " + r.choice(GIV_M if g == "m" else GIV_F)
-        if nm not in taken and nm.rsplit(" ", 1)[-1] not in gv: break
+        if west:
+            nm = r.choice(X_M if g == "m" else X_F) + "・" + r.choice(X_L)
+            if nm not in taken and nm.split("・")[0] not in {str(x).split("・")[0] for x in taken}: break
+        else:
+            nm = r.choice(FAM) + " " + r.choice(GIV_M if g == "m" else GIV_F)
+            if nm not in taken and nm.rsplit(" ", 1)[-1] not in gv: break
     t = r.choice(TRAIT)
     if t in traits: t = next((x for x in TRAIT[TRAIT.index(t):] + TRAIT if x not in traits), "")
     return {"g": g, "n": nm, "r": role, "k": "", "t": t, **bio.member_extra(seed, role, len(taken) + 50)}

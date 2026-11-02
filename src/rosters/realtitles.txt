@@ -3077,6 +3077,26 @@ KING
 うたたね
 
 [a15_akina]
+1/2の神話
+トワイライト -夕暮れ便り-
+SAND BEIGE -砂漠へ-
+SOLITUDE
+TANGO NOIR
+LIAR
+Dear Friend
+二人静
+愛撫
+夜のどこかで
+月華
+水に挿した花
+歌姫
+駅
+Everlasting Love
+NOT CRAZY TO ME
+バビロン
+Rojo -Tierra-
+FIXER
+Blue On Pink
 スロー・モーション
 セカンド・ラヴ
 DESIRE
@@ -3092,8 +3112,7 @@ TATTOO
 難破船
 禁区
 サザン・ウインド
-1
-2の神話
+1/2の神話
 十戒 (1984)
 ジプシー・クイーン
 BLONDE
@@ -5692,6 +5711,25 @@ Distance
 GIRLS
 
 [a28_ryk]
+Landscape
+リトルシップ
+Alice
+Party!!
+サマータイムシンデレラ
+LITMUS
+LADYBUG
+Starry Drama
+寒い夜
+想い人
+Merry-go-round
+ミチヲユケ
+たとえたとえ
+風の鳴る方へ
+Actor
+幸せ
+結証
+またね
+ブレス
 Melon!
 陽はまた昇る
 ずっとここにいたい
@@ -6864,8 +6902,7 @@ Never End
 Why Knot?
 Time's
 Dreams
-1
-3の純情な感情
+1/3の純情な感情
 切なさよりも遠くへ
 Why Not?
 月の雫
@@ -8402,6 +8439,41 @@ I'm Here
 Rock 'n' Roll Train
 
 [b01_bwd]
+IT'S TOO LATE
+HOT DOG
+EMOTION POTION
+I BEG YOU
+KEEP ON ROCKIN'
+JUST BE COOL
+RED ROCKET SHIP
+LEMONADE
+LOVE YOU NEED YOU
+SING YOUR SONG
+NO WAY
+YOU GOTTA DANCE
+I'M IN LOVE WITH YOU
+LET'S GO BACK
+A NEW DAY
+SAD SONG
+NEW LIGHTS
+1-2-3
+SKIPPIN' STONES
+ROCK ME BABY
+COME ON
+SHAKE A TAIL FEATHER
+THE EDGE
+I WANT TO DIE
+HAPPY RAYS
+DANCING SHOES
+NICE AND SLOW
+JUMP!
+KICKS!
+SEVEN SEAS
+T.Y.I.A.
+ROCK ME BABY!!!
+SIX STRING BASS
+SUNSHINE
+Tea Time
 Never Mind
 Pictures of Home
 Blue Mind
@@ -8628,6 +8700,26 @@ Escape
 Hollow
 
 [b03_aoi]
+MEMORIA
+AURORA
+ラピスラズリ
+約束
+翼
+星が降るユメ
+月を追う真夜中
+虹の彼方に
+心臓
+GENESIS
+I will...
+悲しみはオーロラに
+月に恋
+サンビカ
+蒼 -blue-
+朝が来るまで
+Cobalt Sky
+Hundred
+流星/約束
+AURORA SKY
 シリウス
 IGNITE
 INNOCENCE
@@ -9363,6 +9455,32 @@ Anniversary
 To be continued...
 
 [b06_kyz]
+語るなら未来を…
+手を繋いで帰ろうか
+避雷針
+月曜日の朝、スカートを切られた
+エキセントリック
+危なっかしい計画
+大人は信じてくれない
+キミガイナイ
+渋谷からPARCOが消えた日
+僕たちは付き合っている
+角を曲がる
+Student Dance
+砂塵
+AM1:27
+もう森へ帰ろうか?
+割れたスマホ
+東京タワーはどこから見える?
+太陽は見上げる人を選ばない
+制服と太陽
+バスルームトラベル
+ヒールの高さ
+少女には戻れない
+ゼンマイ仕掛けの夢
+I'm out
+Nobody
+コンセントレーション
 サイレントマジョリティー
 不協和音
 二人セゾン
@@ -9612,6 +9730,37 @@ Lost Voices
 Tsuyoi
 
 [b07_ksm]
+Girl in the Box
+Sea Is a Lady
+WEEKEND FLY TO THE SUN
+YOKOHAMA Twilight Time
+After 5 Crash
+Tokyo Tower
+If You...
+I CAN'T STOP THE LONELINESS
+NO END SUMMER
+ILE AIYE
+Lucky Lady Feel So Good
+Remember Me
+On the City Shore
+Summer Emotions
+OSHI-TAO-SHITAI
+Can't You See
+Dream Rush
+Airport Lady
+Rainy Night Lady
+Sea Song
+Fly-by-day
+52nd Street
+Before The Daylight
+Legacy Of You
+Rising Sun
+Agharta
+Mile Stone
+Summer Babe
+Sun Shine
+Hana
+Wonderful Days
 SEA LINE
 SHAKE IT
 Take You To The Sky High
@@ -9912,6 +10061,16 @@ Run Rudolph Run
 ショボクレ人生
 
 [c01_fkc]
+青年は荒野をめざす
+戦争は知らない
+水虫の唄
+何のために
+コブのない駱駝
+紀元弐阡年
+オーブリー
+花のかおりに
+大蛇の唄
+感謝
 帰って来たヨッパライ
 イムジン河
 悲しくてやりきれない
