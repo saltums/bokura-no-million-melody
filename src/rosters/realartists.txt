@@ -1,0 +1,626 @@
+# 実在アーティスト名(PUNS_RAW・gender.SRC_G に無いもの)。realname_scan.py がアーティスト名の1字違い・同じ読み・ほぼそのまま含むものを検出する。1行1名。
+EGO-WRAPPIN'
+呂布カルマ
+OASIS
+METALLICA
+山口百恵
+中森明菜
+小泉今日子
+松田聖子
+渡辺貞夫
+夏川りみ
+千昌夫
+五輪真弓
+長渕剛
+テレサ・テン
+PSY
+光GENJI
+ClariS
+少年隊
+NewJeans
+BLACKPINK
+荒井由実
+吉田拓郎
+大滝詠一
+矢沢永吉
+佐野元春
+浜田省吾
+麦麦CLUB
+戸川純
+小沢健二
+TM NETWORK
+GLAY
+globe
+B'z
+THE YELLOW MONKEY
+浜崎あゆみ
+絢香
+木村カエラ
+大塚愛
+鬼束ちひろ
+一青窈
+ストレイテナー
+ZAZEN BOYS
+ONE OK ROCK
+岡崎体育
+King Gnu
+藤井風
+優里
+あの
+KREVA
+水曜日のカンパネラ
+梅田サイファー
+SLACK
+THA BLUE HERB
+中田ヤスタカ
+ハチ
+wowaka
+livetune
+Daft Punk
+Avicii
+Skrillex
+THE BEATLES
+Radiohead
+Coldplay
+Arctic Monkeys
+Fleetwood Mac
+ABBA
+Taylor Swift
+Bob Dylan
+David Bowie
+Billie Eilish
+Kendrick Lamar
+Beyonce
+Björk
+Gorillaz
+Red Hot Chili Peppers
+Green Day
+Linkin Park
+Foo Fighters
+Lady Gaga
+一発屋
+北島三郎
+美空ひばり
+ザ・ピーナッツ
+松山千春
+チューリップ
+カシオペア
+上原ひろみ
+葉加瀬太郎
+吉幾三
+ピンク・レディー
+キャンディーズ
+SPEED
+安室奈美恵
+SHAZNA
+Gackt
+GACKT
+the GazettE
+MUCC
+人間椅子
+ギターウルフ
+Mr.Children
+スピッツ
+くるり
+ポルノグラフィティ
+andymori
+sumika
+あいみょん
+星野源
+RADWIMPS
+Perfume
+電気グルーヴ
+m-flo
+坂本龍一
+久石譲
+菅野よう子
+竹内まりや
+T-SQUARE
+Queen
+Led Zeppelin
+Pink Floyd
+Nirvana
+Blur
+AC/DC
+U2
+Weezer
+The Strokes
+Michael Jackson
+Madonna
+Prince
+Mariah Carey
+Eminem
+Rihanna
+Ed Sheeran
+BTS
+Shakira
+Adele
+さだまさし
+小田和正
+オフコース
+BEGIN
+喜納昌吉&チャンプルーズ
+坂本冬美
+氷川きよし
+Eve
+水樹奈々
+LiSA
+fripSide
+ももいろクローバーZ
+BABYMETAL
+星街すいせい
+アラジン
+関ジャニ∞
+AKB48
+乃木坂46
+JAM Project
+THE BLACK MAGES
+LIVE TUNE
+ピノキオピー
+Kalafina
+浦島坂田船
+すとぷり
+上海アリス幻樂団
+すぎやまこういち
+SEX PISTOLS
+THE CLASH
+RAMONES
+BLACK SABBATH
+DEEP PURPLE
+IRON MAIDEN
+MOTÖRHEAD
+SONIC YOUTH
+PIXIES
+北島三郎
+美空ひばり
+松山千春
+上原多香子
+葉加瀬太郎
+THE ROLLING STONES
+Elton John
+Bee Gees
+Bon Jovi
+Whitney Houston
+Beastie Boys
+Calvin Harris
+Dolly Parton
+Bob Marley & The Wailers
+Spice Girls
+いきものがかり
+ゴスペラーズ
+ブラックビスケッツ
+GLAY
+TLC
+SPYAIR
+福山雅治
+西野カナ
+SUPERCAR
+THE BACK HORN
+キセル
+syrup16g
+The Birthday
+チャットモンチー
+ビーチサンダルズ
+ヤバイTシャツ屋さん
+SHISHAMO
+Saucy Dog
+WANIMA
+My Hair is Bad
+マカロニえんぴつ
+SOPHIA
+JUDY AND MARY
+ザ・ブーム
+DREAMS COME TRUE
+Every Little Thing
+Spitz
+BRAHMAN
+locofrank
+HAWAIIAN6
+HEY-SMITH
+dustbox
+ROTTENGRAFFTY
+coldrain
+MAN WITH A MISSION
+SiM
+KEMURI
+The Beach Boys
+Muse
+The Killers
+Aerosmith
+Guns N' Roses
+Pearl Jam
+Smashing Pumpkins
+Maroon 5
+Imagine Dragons
+Fall Out Boy
+Paramore
+My Chemical Romance
+THE ALFEE
+REBECCA
+プリンセス プリンセス
+爆風スランプ
+ZIGGY
+JUN SKY WALKER(S)
+ラッツ&スター
+SHOW-YA
+筋肉少女帯
+ザ・ブルーハーツ
+甲斐バンド
+世良公政&ツイスト
+ゴダイゴ
+サザンオールスターズ
+BOØWY
+アリス
+海援隊
+ふきのとう
+沢田研二
+PIERROT
+MERRY
+ALI PROJECT
+LUNA SEA
+La'cryma Christi
+SIAM SHADE
+D'ERLANGER
+BUCK-TICK
+己龍
+ZARD
+WANDS
+DEEN
+T-BOLAN
+大黒摩季
+access
+GLOBE
+CHEMISTRY
+ORANGE RANGE
+湘南乃風
+レミオロメン
+GRe4N BOYZ
+EXILE
+三代目 J SOUL BROTHERS
+倖田來未
+Nissy
+DA PUMP
+w-inds.
+AAA
+E-girls
+Little Glee Monster
+東方神起
+MONGOL800
+HY
+Elvis Presley
+Frank Sinatra
+Aretha Franklin
+Ray Charles
+Stevie Wonder
+Celine Dion
+Bruno Mars
+Justin Bieber
+Ariana Grande
+Katy Perry
+Eric Clapton
+Phil Collins
+Eagles
+Genesis
+Van Halen
+KISS
+The Cure
+R.E.M.
+Depeche Mode
+The Police
+Talking Heads
+Def Leppard
+BIGBANG
+SHINee
+少女時代
+TWICE
+SEVENTEEN
+Stray Kids
+Jay Chou
+Roxette
+Ace of Base
+Rammstein
+石原裕次郎
+都はるみ
+森進一
+五木ひろし
+石川さゆり
+西城秀樹
+加山雄三
+ザ・タイガース
+ザ・スパイダース
+ジャッキー吉川とブルー・コメッツ
+ハナ肇とクレージーキャッツ
+ザ・ドリフターズ
+the telephones
+パスピエ
+Hump Back
+キュウソネコカミ
+THE ORAL CIGARETTES
+夜の本気ダンス
+KEYTALK
+SUPER BEAVER
+フレデリック
+BLUE ENCOUNT
+ハルカミライ
+東京スカパラダイスオーケストラ
+細野晴臣
+森高千里
+岡村靖幸
+山崎まさよし
+はちみつぱい
+ムーンライダーズ
+サニーデイ・サービス
+ゆらゆら帝国
+相対性理論
+キリンジ
+ハンバート ハンバート
+Base Ball Bear
+OKAMOTO'S
+the band apart
+怒髪天
+ザ・クロマニヨンズ
+ACIDMAN
+スキマスイッチ
+never young beach
+the HIATUS
+シャムキャッツ
+Galileo Galilei
+フラワーカンパニーズ
+THE BAWDIES
+FLOW
+サンボマスター
+久保田利伸
+ウィンク
+憂歌団
+角松敏生
+吉幾三
+小林幸子
+郷ひろみ
+近藤真彦
+工藤静香
+南野陽子
+斉藤由貴
+MISIA
+薬師丸ひろ子
+荻野目洋子
+平井堅
+T.M.Revolution
+WANDS
+倉木麻衣
+坂本真綾
+MAY'S
+GRANRODEO
+Aimer
+SPHERE
+中川翔子
+Do As Infinity
+高橋洋子
+初音ミク
+Crush 40
+藍井エイル
+GARNET CROW
+The Who
+The Doors
+RUSH
+Judas Priest
+Megadeth
+blink-182
+The Offspring
+Rage Against the Machine
+Radiohead
+Muse
+Cheap Trick
+Mötley Crüe
+Kings of Leon
+System of a Down
+The Black Keys
+Destiny's Child
+Backstreet Boys
+NSYNC
+Take That
+Pet Shop Boys
+Eurythmics
+Hall & Oates
+Simon & Garfunkel
+Carpenters
+Donna Summer
+Dreams Come True
+Marvin Gaye
+Dua Lipa
+The Weeknd
+SMAP
+嵐
+光GENJI
+V6
+TOKIO
+シブがき隊
+少年隊
+欅坂46
+EXO
+ALFEE
+Kep1er
+NiziU
+2NE1
+Red Velvet
+ITZY
+aespa
+角松敏生
+松原みき
+SING LIKE TALKING
+DJ KRUSH
+Nujabes
+藤原ヒロシ
+Nulbarich
+森山直太朗
+ハナレグミ
+山下洋輔
+日野皓正
+渡辺香津美
+高中正義
+SKY-HI
+いとうせいこう
+SOPHIA
+hide with Spread Beaver
+怒髪天
+小林旭
+八代亜紀
+細川たかし
+橋幸夫
+ちあきなおみ
+美川憲一
+小田和正
+稲垣潤一
+玉置浩二
+槇原敬之
+平井堅
+森山良子
+ザ・テンプターズ
+ザ・ゴールデン・カップス
+クレイジーケンバンド
+坂本九
+ザ・ベンチャーズ
+岡林信康
+Simon & Garfunkel
+The Monkees
+The Kinks
+The Supremes
+Chuck Berry
+Dave Brubeck Quartet
+Kraftwerk
+Roxy Music
+T. Rex
+Earth, Wind & Fire
+Blondie
+Thin Lizzy
+Bay City Rollers
+King Crimson
+Duran Duran
+The Smiths
+Pet Shop Boys
+Wham!
+Run-D.M.C.
+The Police
+Culture Club
+Orange Juice
+Original Love
+The High-Lows
+The Brilliant Green
+Green Day
+Mr. Big
+Hanson
+Pulp
+Suede
+Fugees
+Bee Gees
+The Cranberries
+Boyz II Men
+Alanis Morissette
+Franz Ferdinand
+Bloc Party
+Kaiser Chiefs
+The White Stripes
+Muse
+Black Eyed Peas
+Keane
+Simple Plan
+Lostprophets
+Funky Monkey Babys
+FLOW
+SUPERFLY
+mihimaru GT
+Aqua Timez
+ONE OK ROCK
+Kana-Boon
+never young beach
+SUPER BEAVER
+Thrice
+Lord of the Rings
+Bruno Mars
+The Chainsmokers
+Tame Impala
+Twenty One Pilots
+Sam Smith
+The 1975
+Peking Duk
+NewJeans
+LE SSERAFIM
+Måneskin
+Olivia Rodrigo
+Sabrina Carpenter
+Chappell Roan
+Doja Cat
+Lil Nas X
+新しい学校のリーダーズ
+Kraftwerk
+a-ha
+Scorpions
+Sugar Ray
+Clannad
+Enya
+Édith Piaf
+Andrea Bocelli
+Antonio Carlos Jobim
+Fela Kuti
+Youssou N'Dour
+Jimmy Cliff
+Miles Davis
+Johnny Cash
+B.B. King
+シュガー・ベイブ
+四人囃子
+サディスティック・ミカ・バンド
+ダウンタウン・ブギウギ・バンド
+カルメン・マキ
+風
+ふきのとう
+アリス
+杉山清貴&オメガトライブ
+EARTHSHAKER
+C-C-B
+吉川晃司
+渡辺美里
+レベッカ
+TUBE
+BARBEE BOYS
+新しい学校のリーダーズ
+imase
+Eve
+Awesome City Club
+Omoinotake
+Tani Yuuki
+なとり
+Saucy Dog
+吹奏楽
+シャ乱Q
+エレファントカシマシ
+DEEN
+グリム・スパンキー
+Hi-Fi CAMP
+FLOW
+シド
+ケツメイシ
+a flood of circle
+ART-SCHOOL
+SUPER BEAVER
+ハンバート ハンバート
+cinema staff
+the pillows
+Nothing's Carved In Stone
+ELLEGARDEN
+ヤバイTシャツ屋さん
+ハルカミライ
+ヒトリエ
+アンドロップ
+忘れらんねえよ
+Czecho No Republic
+BIGMAMA
+Hello Sleepwalkers
+tacica
+ビレッジマンズストア
+LAMP IN TERREN
+People In The Box
+Brian the Sun
+ランクヘッド
+ハンブレッダーズ
+CHEESE CHEESE
+Age Factory

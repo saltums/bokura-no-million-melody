@@ -4,6 +4,13 @@
   python3 realname_scan.py names      メンバー名・アーティスト名だけ
 対象: arcs_new の nm/alt/members/本文、rosters(realfix 適用後)、PT 曲名、namebank.json
 ブラックリスト: ongaku_storyline_gen.PUNS_RAW の元ネタ名, gender.SRC_G, rosters/realnames.txt(1行1名。手で足す)
+QA7 で追加:
+  member~  strict_close: 「藤原基央→藤川基夫」水準。姓名の読みが同じ(濁点・ノ/之ゆれ込み)/ 全体が1音の母音・濁点違い /
+           姓・名のどちらかがかな・英字で1音の母音・濁点・長音違い(トーテス/トータス・サンゴン/サンコン・ジョニ/ジョン・イッキョウ/イッキュウ)/
+           同じ読みの名で字も大半が同じ+姓も字を共有(坂口幸之介/坂崎幸之助)を不可
+  artist~  artist_close: 実在アーティスト名(ART + rosters/realartists.txt)の1字違い・同じ読み・語の切れ目までほぼそのまま(EGG-WRAPPIN' SANDWICH)
+  nb.a~    namebank のアーティスト名が実在名と同じ綴り/読み
+  built-ng ビルド済みデータ(proto_data/namebank、/tmp/site の data・bank・d/*.json)に QA 指摘の旧表記(rosters/ngstrings.txt)が残っていないか
 """
 import sys, re, json, ast, unicodedata
 sys.path.insert(0, '/home/claude')
@@ -68,11 +75,14 @@ _SMALL = str.maketrans('ぁぃぅぇぉっゃゅょゎ', 'あいうえおつや�
 
 
 def rd(s):
+    s = re.sub(r'(?<=[一-鿿々])[ノの](?=[一-鿿々])', '之', unicodedata.normalize('NFKC', s))  # 堀ノ内/堀之内
+    s = re.sub(r'(?<=[一-鿿々])[ケヶが](?=[一-鿿々])', 'ヶ', s)
     s = re.sub(r"[\s・\.\-'’=＝_*()()0-9]", '', unicodedata.normalize('NFKC', s).lower())
     if _jc and re.fullmatch(r'[a-z]+', s or '-'): s = _jc.alphabet2kana(s)
     h = ''.join(x['hira'] for x in _KK.convert(s)) if _KK else s
     h = ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in h).translate(_SMALL)
     h = re.sub(r'([おこそとのほもよろごぞどぼぽ])[うお]', r'\1', re.sub(r'[ーぅ]', '', h))
+    h = re.sub(r'([うくすつぬふむゆるぐずづぶぷ])う', r'\1', h)  # きゅう/きゅ・ゆうすけ/ゆすけ の長音ゆれ(QA7 イッキュウ/イッキョウ)
     return re.sub(r'[^ぁ-ゔ]', '', h)  # ゔ(ヴ)も読みに残す
 
 
@@ -180,6 +190,89 @@ def near_real(fake, real):
     return a[0].lower() == b[0].lower() or a[-1].lower() == b[-1].lower()
 
 
+def _vn(s):
+    """読みの母音・濁点ゆれをならさず、濁点・半濁点だけ外した読み"""
+    return _nd(_rdc(s))
+
+
+_ROWS = ['あいうえおぁぃぅぇぉ', 'かきくけこ', 'さしすせそ', 'たちつてと', 'なにぬねのん', 'はひふへほ', 'まみむめも', 'やゆよゃゅょ', 'らりるれろ', 'わをゐゑ']
+_ROW = {c: i for i, r in enumerate(_ROWS) for c in r}
+_SOFT = set('あいうえおんつー')  # 母音・撥音・促音(長音や詰まりの有無だけの違い)
+
+
+def _minor(a, b):
+    """読みの違いが「1音の母音違い・濁点違い・長音/撥音/促音の有無」だけ(トータス/トーテス サンコン/サンゴン ケイスケ/ケンスケ イッキュウ/イッキョウ)"""
+    a, b = _nd(a), _nd(b)
+    if a == b: return True
+    if lev(a, b, 2) != 1: return False
+    if len(a) == len(b):
+        i = next(i for i in range(len(a)) if a[i] != b[i]); x, y = a[i], b[i]
+        return _ROW.get(x, -1) == _ROW.get(y, -2) or (x in _SOFT and y in _SOFT)
+    s_, l_ = (a, b) if len(a) < len(b) else (b, a)
+    i = next((i for i in range(len(s_)) if s_[i] != l_[i]), len(s_))
+    return l_[i] in _SOFT
+
+
+def _part_same(x, y):
+    """名前の一語が「変わっていない」(QA7 基準)。
+    同じ字 / かな・英字の語は 読みの違いが1音の母音違い・濁点違い・長音/撥音/促音の有無だけ(_minor)。
+    漢字どうしは同じ読みの別の字は「変えた」とみなす(基央→基夫 は可)。姓名を通した読みが同じなら別で不可。"""
+    if norm(x) == norm(y): return True
+    if _kanji(x) and _kanji(y): return False
+    if _isl(x) and _isl(y):
+        lx, ly = _lat(x), _lat(y)
+        return min(len(lx), len(ly)) >= 3 and lev(lx, ly, 2) <= 1 and _minor(_rdc(x), _rdc(y))
+    a, b = _rdc(x), _rdc(y)
+    if not a or not b or min(len(a), len(b)) < 2: return False
+    return _minor(a, b)
+
+
+def strict_close(fake, real):
+    """QA7: 「藤原基央→藤川基夫」の水準に届かない(近すぎる)メンバー名。
+    不可: 姓名を通した読みが同じ(濁点ゆれ込み) / 全体の読みが1音違い / 姓・名のどちらかが変わっていない(_part_same)。"""
+    if near_real(fake, real): return True
+    rf, rr = _vn(fake), _vn(real)
+    if rf and rf == rr: return True
+    if rf and rr and min(len(rf), len(rr)) >= 3 and _minor(_rdc(fake), _rdc(real)): return True
+    a, b = _np(fake), _np(real)
+    if len(a) < 2 or len(b) < 2:
+        a2, b2 = _cspl(fake), _cspl(real)
+        if len(a2) >= 2 and len(b2) >= 2: a, b = a2, b2
+    if len(a) >= 2 and len(b) >= 2:
+        if _part_same(a[0], b[0]) or _part_same(a[-1], b[-1]): return True
+        # 一方の語が同じ読みで字も大半が同じ(幸之介/幸之助)、もう一方も字を共有(坂口/坂崎) → 1字ずつ替えただけ(QA7)
+        for i, j in ((0, -1), (-1, 0)):
+            x, y = a[i], b[i]
+            if _kanji(x) and _kanji(y) and _rdc(x) == _rdc(y) and len(set(x) & set(y)) * 2 > max(len(x), len(y)) and set(a[j]) & set(b[j]): return True
+        return False
+    if len(a) == 1 and len(b) == 1: return _part_same(a[0], b[0])
+    return False
+
+
+# 実在アーティスト名(ART + rosters/realartists.txt)
+ART2 = set(ART)
+try:
+    for _l in open('/home/claude/rosters/realartists.txt', encoding='utf-8'):
+        _l = _l.strip()
+        if _l and not _l.startswith('#'): ART2.add(_l)
+except OSError:
+    pass
+_A2 = [(x, norm(x), _vn(x)) for x in ART2 if len(norm(x)) >= 3]
+
+
+def artist_close(nm):
+    """アーティスト名が実在名に近すぎる: 1字違い(綴り/読み) or 実在名(5字以上)が1字違い以内でほぼそのまま含まれる(EGG-WRAPPIN' SANDWICH)"""
+    n = norm(re.sub(r'[((][^))]*[))]$', '', nm)); r = _vn(nm); out = []; ln = _lat(nm)
+    for a, q, ra in _A2:
+        rok = ra and len(ra) >= 4 and _lat(a) == ln  # 読みで比べるのは英字部分が同じときだけ(英字の読みは粗い)
+        if n == q or (len(q) >= 5 and lev(n, q, 1) <= 1) or (rok and r == ra) or (rok and len(ra) >= 6 and lev(r, ra, 1) <= 1):
+            out.append(a); continue
+        if len(q) >= 6 and re.fullmatch(r'[a-z\'’!&.,/]+', q):  # 語の切れ目で切った頭の部分が実在名の1字違い(EGG-WRAPPIN' SANDWICH)
+            w = [norm(x) for x in re.split(r'\s+', unicodedata.normalize('NFKC', nm)) if norm(x)]
+            if any(lev(''.join(w[:j]), q, 1) <= 1 for j in range(1, len(w))): out.append(a)
+    return out
+
+
 def _akin(x, y):
     """もう片方の語が元ネタの語らしい(似ている・読みの頭が同じ)"""
     return _sim(x, y) or (bool(_rdc(x)) and _rdc(x)[:1] == _rdc(y)[:1]) or (_lat(x)[:1] != '' and _lat(x)[:1] == _lat(y)[:1])
@@ -268,10 +361,18 @@ for a in list(G1.ARCS) + arcs:
         mh = member_hits(n)
         for p in mh: hits.append(('member', k, n, p))
         for p in SECN.get(k, []):
-            if near_real(n, p) and p not in mh: hits.append(('member~', k, n, p))
+            if strict_close(n, p) and p not in mh: hits.append(('member~', k, n, p))
     for nm in [a['nm']] + list(L(a.get('alt')) or []):
         for p in [x for x in ART if norm(x) == norm(nm)] + [x for x in PERSON if x in nm] + name_hits(nm):
             hits.append(('artist', k, nm, p))
+        for p in artist_close(nm): hits.append(('artist~', k, nm, p))
+try:  # 実話モード(real_gen)の名前も元ネタ(b01_bbb)と照らす
+    import real_gen as _RG
+    for n in _RG.NMS:
+        for p in SECN.get('b01_bbb', []):
+            if strict_close(n, p): hits.append(('member~', 'real_gen', n, p))
+except Exception as _e:
+    print('real_gen skip', _e, file=sys.stderr)
 for _n, _ks in _MEMB.items():
     if len(_ks) > 1: hits.append(('member-dup', ','.join(_ks), _n, ''))
 
@@ -285,10 +386,13 @@ if ONLY != 'names':
         for t in PT.get(k, []):
             for p in text_hits(t): hits.append(('title', k, t, p))
     nb = json.load(open('/home/claude/namebank.json', encoding='utf-8'))
+    _A2N = {q: a for a, q, ra in _A2}; _A2R = {ra: a for a, q, ra in _A2 if ra and len(ra) >= 4 and not _lat(a)}
     for st, d in nb['a'].items():
         for e, v in d.items():
             for n in v:
                 for p in [a for a, rx in _ART_RX if norm(a) == norm(n)] + name_hits(n): hits.append(('nb.a', st, n, p))
+                p2 = _A2N.get(norm(n)) or (None if _lat(n) else _A2R.get(_vn(n)))
+                if p2: hits.append(('nb.a~', st, n, p2))
     for e in nb['ev']:
         for p in text_hits(e['t']): hits.append(('nb.ev', e.get('f', ''), e['t'][:40], p))
         if re.match(r'^[a-z]{1,3}:', e['t']): hits.append(('nb.ev-label', e.get('f', ''), e['t'][:40], 'a:'))
@@ -345,6 +449,22 @@ if ONLY != 'names':
                     if c != n and not re.search(r'客|観客|子|姉妹|兄弟|娘|息子|孫', s[max(0, m.start() - 6):m.end()]):
                         cnt_bad.append((k, n, f, s[:50]))
 
+# --- 4) QA で指摘された近すぎる名前・曲名(旧表記)が、ビルド済みのデータに残っていないか(rosters/ngstrings.txt。1行1語)
+if ONLY in ('', 'built'):
+    import glob as _gl, os as _os
+    try:
+        NGS = [l.strip() for l in open('/home/claude/rosters/ngstrings.txt', encoding='utf-8') if l.strip() and not l.startswith('#')]
+    except OSError:
+        NGS = []
+    _BF = ['/home/claude/proto_data.json', '/home/claude/namebank.json'] + [f for f in ['/tmp/site/data.json', '/tmp/site/bank.json'] if _os.path.exists(f)] + sorted(_gl.glob('/tmp/site/d/*.json'))
+    for f in _BF:
+        try: tx = open(f, encoding='utf-8').read()
+        except OSError: continue
+        for w in NGS:
+            c = tx.count(w)
+            if c: hits.append(('built-ng', _os.path.basename(f), w, c))
+
+hits = list(dict.fromkeys(hits))
 for h in hits: print('\t'.join(map(str, h)))
 for c in cnt_bad: print('count\t%s\tmembers=%d\t%s\t%s' % c)
 print('# hits', len(hits), 'count-mismatch', len(cnt_bad), file=sys.stderr)

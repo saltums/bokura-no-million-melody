@@ -1,0 +1,20 @@
+# QA で「近すぎる」と指摘された旧表記。ビルド済みデータ(proto_data.json / namebank.json / /tmp/site の data.json・bank.json・d/*.json)に残っていたら realname_scan.py が数える
+ウルフルケンスケ
+サンゴンJr
+ジョニB
+トーテス松山
+坂口 幸之介
+堀ノ内 太輔
+堀ノ内 大輔
+中島イッキョウ
+イッキョウ
+呂布カルパ
+EGG-WRAPPIN
+Galaxy Expressway
+シンドバッグ
+シンドバット
+いとしのメリー
+涙のキッシュ
+ブギー・バッグ
+シンセンカイ
+計算高いシンバル

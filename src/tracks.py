@@ -137,6 +137,9 @@ ROLES = {"band": ["Vo", "Gt", "Ba", "Dr"], "inst": ["Gt", "Gt", "Ba", "Dr"], "du
 TEAM = {"solo": ["サポートギター", "マネージャー", "録音担当"], "rap": ["DJ", "トラックメイカー", "マネージャー"], "beat": ["ミックス担当", "ジャケット担当"],
         "dj": ["VJ", "マネージャー"], "ai_pure": ["運営", "プロンプト担当"], "ai_collab": ["AI運用担当", "マネージャー"]}
 
+TEAM_TRAIT_FIX = {"曲の八割を書く": "アレンジの相談にいつも乗ってくれる", "元・別バンドのリーダー": "元・別のバンドのサポート"}
+
+
 def people(seed, style, n=None):
     r = random.Random(_seed(seed, style, "mem"))
     roles = ROLES.get(style) or TEAM.get(style, [])
@@ -150,7 +153,9 @@ def people(seed, style, n=None):
         while k and k in nicks: k = NICK[(NICK.index(k) + 1) % len(NICK)]  # 愛称はグループ内で重ならない(「リーダー」が二人いない)
         if k: nicks.add(k)
         k = nick_fit(k, g)
-        out.append({"g": g, "n": nm, "r": role, "k": k, "t": r.choice(TRAIT) if r.random() < 0.7 else "", **bio.member_extra(seed, role, i)})
+        t = r.choice(TRAIT) if r.random() < 0.7 else ""
+        if style in TEAM and t in TEAM_TRAIT_FIX: t = TEAM_TRAIT_FIX[t]  # QA7: ソロを支える人(サポートギター等)が「曲の八割を書く」はおかしい
+        out.append({"g": g, "n": nm, "r": role, "k": k, "t": t, **bio.member_extra(seed, role, i)})
     import roster as _ro  # 同じ下の名前・同じ癖が重ならないように(重なりが無ければそのまま)
     return _ro.dedupe(out, (seed, style))
 

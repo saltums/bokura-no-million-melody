@@ -23,14 +23,14 @@ PUN_FIX = {
     "Unlucky Kilimanjaro": "Unlucky Kilimanju", "ONE OK ROCK STEADY": "ONE OK STEADY", "JUMP OF CHICKEN": "JUMP OF CHIKUWA",
     "かぐや姫路": "かぐや彦根", "サディスティック・ミカン・バンド": "サディスティック・ミカン箱", "スチャダラパパ": "スチャダラママ",
     "スピッツァー": "スピリッツァー", "人間座椅子": "人間マッサージ椅子", "四人囃子はやし": "四川囃子はやし", "松任谷由美子": "松任谷由紀子",
-    "ザ・スターリング": "ザ・スターアニス", "電気グルーヴィー": "電気グルーミー", "東京事案": "東京自慢", "少女ナイフ": "少女バターナイフ",
+    "ザ・スターリング": "ザ・スターアニス", "電気グルーヴィー": "電気グルーミング", "東京事案": "東京自慢", "少女ナイフ": "少女バターナイフ",
     # 2026-11: 元ネタに近すぎる(1字足し・同音・実名をまるごと含む)もじりの見直し(PUNS_RAW と揃える)
     "サザンカオールスターズ": "サザエオールスターズ", "Ms.Children": "Mr.Childish", "スピッツァ": "スプリッツ", "コブクリ": "コンブクロ",
     "ONE OK ROCKET": "ONE NG ROCK", "back numbers": "back lumber", "Mrs. GREEN PINEAPPLE": "Mrs. GREEN PEPPER",
     "サカナアクション": "サカナオークション", "Queen Gnu": "King Gnocchi", "YORUASOBI": "HIRUASOBI", "Official髭女dism": "Official眉毛dism",
     "ASIAN FU-KUNG GENERATION": "ASIAN TAI-CHI GENERATION", "Imperfume": "Parfait", "RADWIMPY": "RADSHRIMPS",
-    "ELLEGARDENER": "ELLEGARLIC", "RHYMESTEAR": "RHYMESTEAK", "LUNA SEE": "TUNA SEA", "スキマスイッチョ": "スキマスイーツ",
-    "andyamori": "andymochi", "THE ARFEE": "THE ALFALFA", "RIP SLIME": "RIP SLIPPERS", "ORANGE RANGER": "ORANGE RANCH",
+    "ELLEGARDENER": "ELLEGARLIC", "RHYMESTEAR": "RHYME STEAKHOUSE", "LUNA SEE": "TUNA SEA", "スキマスイッチョ": "スキマスイーツ",
+    "andyamori": "andymochitsuki", "THE ARFEE": "THE ALFALFA", "RIP SLIME": "RIP SLIPPERS", "ORANGE RANGER": "ORANGE RANCH",
     "Aqua Times": "Aqua Tights", "flumpoo": "flumpurin", "[Alexandoros]": "[Alexandria]", "SPYFAIR": "SPICEAIR",
     "WOMAN WITH A MISSION": "MAN WITH A MITTEN", "ゲスの極みおとめ座": "ゲスの極みおじさん", "フジファブリクス": "フジファブリーズ",
     "フジファブリック工場": "フジテキスタイル", "ストレイトナー": "ストロングテナー", "ストレイト・テナー": "ストレイテナガザル", "ストレイテナーズ": "ストレッチテナー",
@@ -47,7 +47,7 @@ PUN_FIX = {
     "フラワーカンパニーＺ": "フライパンカンパニーズ", "POLYSIXX": "POLYSTICKS", "BEAT CRUSADER": "BEAT CRUSHERS",
     "ザ・ブルーハーツ・ガーデン": "ザ・ブルーベリーハーツ", "BUMP OF CHICKEN NANBAN": "BUMP OF KARAAGE", "ELLE GARDEN": "ELLE GUARDMAN",
     "じゃがたらこ": "じゃがバター", "ラ・ムーン": "ラ・メーン", "ノイバウテン": "ノイバウムクーヘン", "CHANGE and ASKA": "CABBAGE and ASPARA",
-    "レミオロメンタイ": "レミオラーメン", "ZIGGY STARDUSTBOX": "ZIGGURAT", "ミツキ屋": "ミツバ屋", "緑黄色社会人": "緑黄色野菜", "星野源泉": "星野温泉",
+    "レミオロメンタイ": "レミオつけ麺", "ZIGGY STARDUSTBOX": "ZIGGURAT", "ミツキ屋": "ミツバ屋", "緑黄色社会人": "緑黄色野菜", "星野源泉": "星野温泉",
     "LOVE PSYCHEDELICOLA": "LOVE PSYCHEDELICURRY", "斉藤和義理": "斉藤和牛",
     "ASIAN KUNG-FU DEGENERATION": "ASIAN KUNG-PAO GENERATION", "コブクロス": "コブラクロス", "山下達磨": "ヤマシタ達磨", "竹内まりも": "タケウチまりも",
     "WANIMAL": "WANIKAMA", "the band a part": "the band a parfait", "聖飢魔Ⅲ": "正義魔Ⅲ", "氣志團地": "喜寿團", "ねごとば": "ねぞう",
@@ -109,8 +109,66 @@ def _walk(x, f):
     return x
 
 
+_RA = None
+
+
+def _real_like():
+    """実在アーティスト名(PUNS_RAW の元ネタ・gender.SRC_G・rosters/realartists.txt)の 綴り/読み の索引"""
+    global _RA
+    if _RA is not None: return _RA
+    import sys, unicodedata
+    sys.path.insert(0, '/home/claude'); sys.path.insert(0, '/home/claude/_pylib')
+    import ongaku_storyline_gen as OSG, gender
+    names = {t[1] for t in OSG.PUNS_RAW} | set(gender.SRC_G)
+    try:
+        names |= {l.strip() for l in open('/home/claude/rosters/realartists.txt', encoding='utf-8') if l.strip() and not l.startswith('#')}
+    except OSError: pass
+    try:
+        import pykakasi; kk = pykakasi.kakasi()
+    except Exception: kk = None
+    def nm(x): return re.sub(r"[\s・\.\-'’=＝〜~]", '', unicodedata.normalize('NFKC', x).lower())
+    def rd(x):
+        x = unicodedata.normalize('NFKC', x).lower()
+        if re.search(r'[a-z]', x) or not kk: return ''
+        h = ''.join(t['hira'] for t in kk.convert(x)); h = ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in h)
+        h = ''.join(c for c in unicodedata.normalize('NFD', h) if c not in '\u3099\u309a')  # 濁点ゆれ(ヨルジカ/ヨルシカ)
+        return re.sub(r'[^ぁ-ゔ]', '', unicodedata.normalize('NFC', h).replace('ー', '').replace('〜', ''))
+    N = {}; R = {}
+    for x in names:
+        q = nm(x)
+        if len(q) >= 3: N[q] = x
+        r = rd(x)
+        if len(r) >= 4: R[r] = x
+    L = {}
+    for k in N:
+        if len(k) >= 5: L.setdefault(len(k), []).append(k)
+    _RA = (N, R, nm, rd, L)
+    return _RA
+
+
+_DECO = re.compile(r"(\s*(\d+|ii|iii|2号|二号|dj|mc)|\s*[((][^))]*[))])$", re.I)
+
+
+def real_like(n):
+    """名前が実在アーティスト名とほぼ同じ(綴り・読みが同じ / 番号や DJ を足しただけ / 1字違い)"""
+    N, R, nm, rd, L = _real_like()
+    q = nm(n); q2 = nm(_DECO.sub('', re.sub(r'^(dj|mc)\s*', '', n.strip(), flags=re.I)))
+    if q in N or q2 in N: return True
+    r = rd(n)
+    if r and r in R: return True
+    if len(q) >= 5:
+        for k in L.get(len(q) - 1, []) + L.get(len(q), []) + L.get(len(q) + 1, []):
+            if True:
+                d = sum(1 for a, c in zip(k, q) if a != c) + abs(len(k) - len(q))
+                if d <= 1 or (len(k) != len(q) and (k in q or q in k) and len(k) >= 5): return True
+    return False
+
+
 def sanitize(b):
     b['a'] = _walk(b.get('a', {}), pun_name)
+    for st, d in b.get('a', {}).items():  # 実名とほぼ同じ名前は外す(QA7)
+        for e, v in list(d.items()):
+            d[e] = [x for x in v if not real_like(x)]
     for e in b.get('ev', []):
         t = _LABEL.sub('', pun(e['t']))
         e['t'] = count(t) if e.get('k') == 'g' else t
