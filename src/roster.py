@@ -41,6 +41,7 @@ def apply(a, mm, seed):
         else:
             b = dict(tracks.newcomer(seed, r or 'Gt', {m['n'] for m in mm}))
         b['n'] = fx.get(x['n'], x['n']); b['r'] = r or b.get('r', ''); b['g'] = x.get('g') or b.get('g', 'm')
+        b['k'] = tracks.nick_fit(b.get('k'), b['g'])  # 名簿で性別が替わったら愛称も合わせる(女性に「おやっさん」を付けない)
         out.append(b)
     return dedupe(out, seed, keep={b['n'] for b in out})  # 名簿の名前(別担当)は変えない。癖の重なりだけ直す
 
@@ -138,15 +139,16 @@ def lineup(a, mm):
         fn = fx.get(raw, raw); j = next((i for i, m in enumerate(mm) if m and m.get('n') == fn), None)
         if j is None: continue
         held[raw] = mm[j]
-        mm[j] = dict(mm[j], n=fm['n'], r=fm.get('r', mm[j].get('r', '')), g=fm.get('g', mm[j].get('g', 'm'))) if fm else None
+        mm[j] = dict(mm[j], n=fx.get(fm['n'], fm['n']), r=fm.get('r', mm[j].get('r', '')), g=fm.get('g', mm[j].get('g', 'm'))) if fm else None
+        if mm[j]: mm[j]['k'] = tracks.nick_fit(mm[j].get('k'), mm[j].get('g'))
     mm[:] = [m for m in mm if m]
     cur = {m['n']: m for m in mm}; out = []
     for c in L.get('mc') or []:
-        o = cur.pop(c['out'], None) if c.get('out') else None
+        o = cur.pop(fx.get(c['out'], c['out']), None) if c.get('out') else None  # 名簿の元の名前で書いてあるので realfix を当てて探す
         if o: out.append((c['y'], 'out', o, c.get('tx_out')))
         i_ = c.get('in')
-        nw = held.get(i_) if isinstance(i_, str) else (dict(o or {}, n=i_['n'], r=i_.get('r', (o or {}).get('r', '')), g=i_.get('g', 'm')) if i_ else None)
-        if nw: cur[nw['n']] = nw; out.append((c['y'], 'in', nw, c.get('tx_in')))
+        nw = held.get(i_) if isinstance(i_, str) else (dict(o or {}, n=fx.get(i_['n'], i_['n']), r=i_.get('r', (o or {}).get('r', '')), g=i_.get('g', 'm')) if i_ else None)
+        if nw: nw['k'] = tracks.nick_fit(nw.get('k'), nw.get('g')); cur[nw['n']] = nw; out.append((c['y'], 'in', nw, c.get('tx_in')))
     return out
 
 

@@ -82,6 +82,31 @@ def _nd(h): return ''.join(c for c in unicodedata.normalize('NFD', h) if c not i
 def _lv(a, b): return lev(a, b, 99)
 
 
+# カナ表記ゆれをならした読み(海外の名前の「同じ語」判定用)。濁点の有無(ラース/ラーズ・ジェイムス/ジェイムズ・ハメッド/ハメット)、
+# オ段とウ段(ジェイスン/ジェイソン)、ッヒ/ッチ(ウルリッヒ/ウルリッチ)、エイ/エー(ジェイムス/ジェームス)、ヴ/ブ は同じ語とみなす。
+_OU = str.maketrans('おこそとのほもよろ', 'うくすつぬふむゆる')
+
+
+def _canon(s):
+    s = ''.join(c for c in unicodedata.normalize('NFKD', s) if not unicodedata.combining(c)) if re.search(r'[À-ɏ]', s) else s
+    if _isl(s):  # 英字どうし: 重ね字・有声/無声(g/k d/t b/p z/s v/f)・c/k・y/i・子音のあとの h をならす
+        t = re.sub(r'[^a-z]', '', unicodedata.normalize('NFKC', s).lower()).replace('ck', 'k').replace('c', 'k').replace('y', 'i')
+        t = re.sub(r'(?<=[^aeiou])h', '', t).translate(str.maketrans('gdbzv', 'ktpsf'))
+        return re.sub(r'(.)\1+', r'\1', t)
+    h = _nd(_rdc(s)).replace('ゔ', 'ふ')
+    h = re.sub(r'つ[ひち]', 'つち', h).replace('えい', 'え').replace('てい', 'ち')
+    return h.translate(_OU)
+
+
+def _cspl(n):
+    """区切りのない芸名を文字種の切れ目で分ける(ファンキー加藤 → ファンキー / 加藤)"""
+    n = _PFX.sub('', unicodedata.normalize('NFKC', n).strip()).strip() or n
+    return [x for x in re.findall(r'[ァ-ヶー]+|[一-鿿々]+|[ぁ-ゖ]+|[A-Za-z\'’.\-]+', n) if len(x.strip(".-'’")) >= 2 and x.lower().strip('.') not in _STOPT]
+
+
+_STOPT = {'ちゃん', 'くん', 'さん', 'はん', 'jr', 'sr', 'dj', 'mc', 'ザ', 'the', 'ジュニア', 'ii', 'iii'}
+
+
 _PFX = re.compile(r"^(dj|mc|ザ|the)(?=[\s・]|[^a-z]|$)\s*|\s*(sr|jr)\.?$", re.I)
 
 
@@ -136,14 +161,22 @@ def near_real(fake, real):
     可: 姓・名それぞれ1字か読み1音の違い(名は同じ読みの別の字でもよい。姓名の読みが全部同じになるのは不可)。
     海外勢(カタカナ・英字)も同じ基準: 名(最初の語)・姓(最後の語)のどちらかが同じなら不可
     (Mick Jagger→ミック・ジャガム は不可、ミッキ・ジャガム / ニック・ジャガム は可)。
-    海外勢の語どうしは、カナと英字をまたいだ同じ読み・長音だけの違い(チャーリー/チャリー)も「同じ」とみなす。"""
+    海外勢の語どうしは、カナと英字をまたいだ同じ読み・長音だけの違い(チャーリー/チャリー)も「同じ」とみなす。
+    6回目QA: カナの表記ゆれ(濁点 ラース/ラーズ、ッチ/ッヒ、ソン/スン、エイ/エー)も「同じ」(_canon)。同じバンドの別人との名・姓の一致も不可。
+    区切りのない芸名(ファンキー加藤)は文字種で分けて、芸名の語が残るものも不可。"""
     if norm(fake) == norm(real) or same_rd(fake, real) or _xrd(fake, real): return True
     a, b = _np(fake), _np(real)
     if len(a) == 1 and len(b) == 2 and _kanji(a[0]) and len(a[0]) >= 3 and _kanji(b[0]): a = [a[0][:len(b[0])], a[0][len(b[0]):]]
     if len(b) == 1 and len(a) == 2 and _kanji(b[0]) and len(b[0]) >= 3 and _kanji(a[0]): b = [b[0][:len(a[0])], b[0][len(a[0]):]]
+    # 区切りのない芸名(ファンキー加藤)は文字種の切れ目で分ける。芸名の語(ファンキー)が残っていれば不可
+    if len(a) < 2 and len(b) < 2: a, b = _cspl(fake), _cspl(real)
+    elif len(b) < 2 and len(a) >= 2: b = _cspl(real)
+    elif len(a) < 2 and len(b) >= 2: a = _cspl(fake)
     if len(a) < 2 or len(b) < 2: return False
-    if _foreign(real) or _foreign(fake):  # 同じバンドの別人と名だけ同じ(ジョン・ボーナムとジョン・ポール・ジョーンズ)は、もう片方が似ているときだけ
-        return (_fpart(a[0], b[0]) and _akin(a[-1], b[-1])) or (_fpart(a[-1], b[-1]) and _akin(a[0], b[0]))
+    if _foreign(real) or _foreign(fake):
+        # 海外勢: 名(最初の語)か姓(最後の語)のどちらかが、カナの表記ゆれ(濁点・オ/ウ段・ッヒ/ッチ)をならして同じなら不可。
+        # 同じバンドの別人と名だけ同じ(ジョン・○○とジョン・ポール・ジョーンズ)も不可(6回目QA: ラース・ウルリッチ/ジェイスン)
+        return _fpart(a[0], b[0]) or _fpart(a[-1], b[-1]) or _canon(a[0]) == _canon(b[0]) or _canon(a[-1]) == _canon(b[-1])
     return a[0].lower() == b[0].lower() or a[-1].lower() == b[-1].lower()
 
 
