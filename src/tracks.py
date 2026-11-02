@@ -144,12 +144,16 @@ def people(seed, style, n=None):
         while k and k in nicks: k = NICK[(NICK.index(k) + 1) % len(NICK)]  # 愛称はグループ内で重ならない(「リーダー」が二人いない)
         if k: nicks.add(k)
         out.append({"g": g, "n": nm, "r": role, "k": k, "t": r.choice(TRAIT) if r.random() < 0.7 else "", **bio.member_extra(seed, role, i)})
-    return out
+    import roster as _ro  # 同じ下の名前・同じ癖が重ならないように(重なりが無ければそのまま)
+    return _ro.dedupe(out, (seed, style))
 
-def newcomer(seed, role, taken):
+def newcomer(seed, role, taken, traits=()):
     r = random.Random(_seed(seed, role, "new", len(taken)))
     g = "m" if r.random() < 0.5 else "f"
-    while True:
+    gv = {str(x).replace("　", " ").rsplit(" ", 1)[-1] for x in taken}  # 今いるメンバーと同じ下の名前は避ける
+    for _ in range(200):
         nm = r.choice(FAM) + " " + r.choice(GIV_M if g == "m" else GIV_F)
-        if nm not in taken: break
-    return {"g": g, "n": nm, "r": role, "k": "", "t": r.choice(TRAIT), **bio.member_extra(seed, role, len(taken) + 50)}
+        if nm not in taken and nm.rsplit(" ", 1)[-1] not in gv: break
+    t = r.choice(TRAIT)
+    if t in traits: t = next((x for x in TRAIT[TRAIT.index(t):] + TRAIT if x not in traits), "")
+    return {"g": g, "n": nm, "r": role, "k": "", "t": t, **bio.member_extra(seed, role, len(taken) + 50)}

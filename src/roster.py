@@ -20,7 +20,7 @@ _INST = re.compile(r'ギター|ベース|ドラム|キーボード|鍵盤|ピア
 def apply(a, mm, seed):
     R = ROSTER.get(a.get('k')) or a.get('members')
     if not R:
-        return mm
+        return dedupe(mm, seed)
     fx = REALFIX.get(a.get('k')) or {}
     out = []
     # 名簿の並びが roles と違うことがあるので、癖(t)などは同じ担当の元メンバーから引き継ぐ
@@ -37,6 +37,44 @@ def apply(a, mm, seed):
             b = dict(tracks.newcomer(seed, r or 'Gt', {m['n'] for m in mm}))
         b['n'] = fx.get(x['n'], x['n']); b['r'] = r or b.get('r', ''); b['g'] = x.get('g') or b.get('g', 'm')
         out.append(b)
+    return dedupe(out, seed, keep={b['n'] for b in out})  # 名簿の名前(別担当)は変えない。癖の重なりだけ直す
+
+
+def _given(n):
+    n = str(n or '').replace('　', ' ')
+    return n.rsplit(' ', 1)[1] if ' ' in n and n.split(' ', 1)[0] in tracks.FAM else None
+
+
+def dedupe(mm, seed, keep=(), pool=None):
+    """一座・バンドの中で、同じ下の名前(「レン」が三人)・同じ癖(特徴文)が重ならないようにする。
+    生成した名前(姓+カタカナの下の名前)だけ下の名前を差し替える(keep の名前・名簿の名前は変えない)。
+    癖は2人目以降を pool(既定は tracks.TRAIT)の未使用のものに。重なりが無ければ元のまま返す"""
+    if not mm or len(mm) < 2: return mm
+    import random as _rd, hashlib as _hl
+    r = _rd.Random(int(_hl.md5(('dedupe|' + str(seed)).encode()).hexdigest()[:8], 16))
+    out = [dict(m) for m in mm]
+    gv = [_given(m.get('n')) for m in out]
+    seen = set()
+    for i, m in enumerate(out):
+        g0 = gv[i]
+        if not g0: continue
+        if g0 in seen and m.get('n') not in keep:
+            src = tracks.GIV_F if m.get('g') == 'f' else tracks.GIV_M
+            c = [x for x in src if x not in seen and x not in gv]
+            if c:
+                nw = r.choice(c); fam = m['n'].replace('　', ' ').split(' ', 1)[0]
+                if fam + ' ' + nw not in {x.get('n') for x in out}: m['n'] = fam + ' ' + nw; g0 = nw
+        seen.add(g0)
+    tp = list(pool or tracks.TRAIT); ts = set()
+    allt = {m.get('t') for m in out}
+    for m in out:
+        t = m.get('t')
+        if not t: continue
+        if t in ts:
+            c = [x for x in tp if x not in ts and x not in allt]
+            m['t'] = r.choice(c) if c else ''
+            t = m['t']
+        if t: ts.add(t)
     return out
 
 

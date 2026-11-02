@@ -26,7 +26,25 @@ def tag(b):
             if x.get("k") == "s": ns = [s for s in ns if s != "duo"]
             if ns: x["ns"] = ns; n += 1
             else: x.pop("ns", None)
+    tempt(b)
     return n
+
+
+TEMPT = re.compile(r"よからぬ|悪魔がささや|魔が差|出来心|悪い考え|ずるい考え|邪な考え")
+
+
+def tempt(b):
+    """「よからぬ考えが頭をよぎる」などの問い: 危ない選択肢(gs)が必ず出るよう、選択肢を「善良な一つ+危ない一つ」の2つにする
+    (画面側は選択肢が3つ以上のとき gs を間引くため)"""
+    k = 0
+    for x in b.get("sd", []):
+        o = x.get("o") or []
+        if not TEMPT.search(x.get("pr", "")) or len(o) < 3: continue
+        bad = [y for y in o if y.get("gs")]
+        if not bad: continue
+        good = [y for y in o if not y.get("gs")]
+        x["o"] = [good[0], bad[0]] if good else bad[:2]; k += 1
+    return k
 
 
 if __name__ == "__main__":

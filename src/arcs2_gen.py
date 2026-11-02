@@ -117,9 +117,10 @@ def rel(a, pool, seen, pos, y, tier, th, lb, dev, era):
     st = a["st"] if a["st"] in ("band", "duo", "rap", "solo", "beat") else "band"
     tk = tracks.tracklist(h, st, era, th, list(seen), extra=__import__('ptover').deep(a['k'], pool, seen))
     seen.extend(x['t'] for x in tk if x['t'] not in seen)
-    lyrics.VG = a["vg"]
-    ly = lyrics_struct.make_struct(th, a["ge"], pr, ti, y, WORDS, era <= 1, era)
-    if ly: ly["vg"] = a["vg"]
+    _ins = a["st"] == "inst"  # インストは歌詞なし(展開の構成)・ボーカルなし
+    lyrics.VG = "inst" if _ins else a["vg"]
+    ly = lyrics_struct.make_struct(th, a["ge"], pr, ti, y, WORDS, era <= 1, era, inst=_ins)
+    if ly: ly["vg"] = "inst" if _ins else a["vg"]
     t = THEME[th]; rs = r.choice(t["hit"]) if tier >= 2 else r.choice(FLOP)
     return {"t": "r", "y": y, "o": ord_of(pos), "ti": ti, "lb": lb, "tr": tier, "pr": pr, "th": th, "rs": rs if tier < 2 else r.choice(HIT), "fm": r.choice(FORM), "tk": tk, "ly": ly}
 
@@ -202,7 +203,7 @@ def build(a, i, pool, era=None, nm=None):
     E = g.ERAS[era]
     name = nm or a["nm"]
     meta = {"id": seed, "a": name, "pun": None, "top": top, "st": st if st != "dj" else "solo", "sn": STN.get(st, "シンガーソングライター"), "pe": "まじめ", "era": era, "en": E["name"], "es": E["short"], "sa": a["sa"], "ge": a["ge"],
-            "tx": a["tx"], "ai": None, "mm": mm, "vg": a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
+            "tx": a["tx"], "ai": None, "mm": mm, "vg": "inst" if st == "inst" else a["vg"], "bio": bio.make(seed, st if st != "dj" else "solo", era, None, top == "グループ", year=y0), "real": True, "histTx": a["eh"], "cp": a.get("cp", [])}
     bio.localize(a, meta["bio"], mm, seed)  # 出身地・結成地を国と「始まりの場所」に合わせる
     if solo_inst: meta["sn"] = "インスト奏者"
     if st == "rap" and top == "グループ": meta["sn"] = "ヒップホップグループ"

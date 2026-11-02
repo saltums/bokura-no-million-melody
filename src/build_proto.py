@@ -50,7 +50,7 @@ def ser(item, c=None, st=None):
         if st is not None and c['style'] in ('band', 'inst', 'duo'):
             lab = out['c']
             if lab == "新メンバーを探して続ける" and st['vac']:
-                role = st['vac'].pop(0); nw = tracks.newcomer(c['seed'], role, {m['n'] for m in st['mem']}); st['mem'].append(nw); out['mb'] = {"in": nw}
+                role = st['vac'].pop(0); nw = tracks.newcomer(c['seed'], role, {m['n'] for m in st['mem']}, {m.get('t') for m in st['mem']}); st['mem'].append(nw); out['mb'] = {"in": nw}
             elif lab == "少人数で形を変えて続ける":
                 st['vac'] = []; out['mb'] = {"note": "少人数編成に"}
         return out
@@ -60,7 +60,7 @@ def ser(item, c=None, st=None):
         if tx.startswith("メンバーが脱退") and len(st['mem']) >= 2:
             k = (c['seed'] + len(st['seen'])) % len(st['mem']); gone = st['mem'].pop(k); st['vac'].append(gone['r']); out['mb'] = {"out": gone}
         elif (tx.startswith("新しく入ったメンバー") or tx.startswith("新メンバーとの呼吸")) and st['vac']:
-            role = st['vac'].pop(0); nw = tracks.newcomer(c['seed'], role, {m['n'] for m in st['mem']}); st['mem'].append(nw); out['mb'] = {"in": nw}
+            role = st['vac'].pop(0); nw = tracks.newcomer(c['seed'], role, {m['n'] for m in st['mem']}, {m.get('t') for m in st['mem']}); st['mem'].append(nw); out['mb'] = {"in": nw}
     return out
 
 
@@ -81,10 +81,24 @@ def count_leaves(n):
     return 1 if 'e' in n else sum(count_leaves(k) for k in n['n'])
 
 
+# ソロ扱いの形(solo/rap/beat/dj)に、グループのもじり名・グループらしい名前が付いた人は選ばない(ソロのラッパーにヒップホップグループが並ばないように)
+import re as _re
+_GRP_NM = _re.compile(r"組$|組[^a-zA-Z]|一家|連合|兄弟|姉妹|軍団|町内会|会議|オールスターズ|ガールズ|ボーイズ|ズ$|ズ[(・]|CLAN|CREW|SQUAD|GANG|CYPHER|MOB\b|FAMILY|Brothers|Bros\b|Boys\b|Girls\b", _re.I)
+_GRP_SRC = {b for a_, b, cs, e in g.PUNS + g.PUN_VARS if cs & {"band", "duo", "inst"}} | {
+    "RHYMESTER", "RIP SLYME", "KICK THE CAN CREW", "BAD HOP", "SHAKKAZOMBIE", "Scha Dara Parr", "BUDDHA BRAND", "餓鬼レンジャー", "Dos Monos", "SOUL'd OUT", "nobodyknows+", "supercell"}
+SOLO_ST = ("solo", "rap", "beat", "dj", "ai_pure", "ai_collab")
+
+
+def solo_ng(c):
+    """ソロの形なのに、名前がグループ(もじり元がグループ・「〜組」「〜ズ」など)"""
+    if c['style'] not in SOLO_ST: return False
+    return (c.get('pun_src') in _GRP_SRC) or any(_GRP_NM.search(str(c.get(k) or '')) for k in ('artist', 'artist0'))
+
+
 def meta(c):
     sc = c['start_choice']
     start_txt = g.AI_START[c['ai_mode']] if c['ai_mode'] else g.START[(c['start'], c['era'])]
-    return bio.fit({"id": c['seed'], "a": c['artist'], "pun": c['pun_src'], "top": sc['top'], "st": c['style'],
+    return bio.fit({"id": c['seed'], "a": c['artist'], "pun": c['pun_src'], "top": "ソロ" if c['style'] in SOLO_ST else "グループ", "st": c['style'],
             "sn": g.style_name(c), "pe": c['P']['n'], "era": c['era'], "en": g.ERAS[c['era']]['name'],
             "es": g.ERAS[c['era']]['short'], "sa": c['start'], "ge": c['genre'], "tx": start_txt, "ai": c['ai_mode'],
             "mm": tracks.people(c['seed'], c['style']), "vg": gender.vocal(c, tracks.people(c['seed'], c['style'])), "bio": bio.make(c['seed'], c['style'], c['era'], c['ai_mode'], c['start_choice']['top'] == "グループ")})  # 出身・結成地を紹介文の地名に合わせる
@@ -98,7 +112,7 @@ def main():
             if got >= quota:
                 break
             c = g.generate(seed, script=[], maxdec=MAXDEC)
-            if c['style'] != style:
+            if c['style'] != style or solo_ng(c):
                 continue
             key = (c['P']['n'], c['era'])
             if key in used:

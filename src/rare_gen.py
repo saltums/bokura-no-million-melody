@@ -208,6 +208,17 @@ def _fit_place(meta, P, r):
         b["hm"] = place
 
 
+_NUMW = [(r"ふたり|二人|2人|デュオ|コンビ", 2), (r"三人|3人|トリオ|三重奏", 3), (r"四人|4人|カルテット|四重奏", 4), (r"五人|5人|クインテット|五重奏", 5),
+         (r"六人|6人|セクステット", 6), (r"七人|7人", 7), (r"八人|8人", 8)]
+
+
+def _nnum(name):
+    """名前に入った人数(「三人衆」「トリオ」など)。無ければ None"""
+    for rx, n in _NUMW:
+        if re.search(rx, str(name or "")): return n
+    return None
+
+
 def tree(P, seed, group):
     r = random.Random(H(seed, "rare"))
     era = P["era"]; r6 = era == 6
@@ -223,6 +234,9 @@ def tree(P, seed, group):
         cand = [x for x in _pool(P, g) if x not in used] or [x for x in P["mem_names"] if x not in used]
         nm = r.choice(cand); used.add(nm)
         mm.append({"g": g, "n": nm, "r": ro, "k": "", "t": r.choice(P.get("traits") or ["遅刻しない", "いちばん声が通る", "寝言で歌う", "火の番が上手い", "道具を作るのが得意", "笑い声が大きい"]) if not r6 else r.choice(["酸素残量に厳しい", "古い楽器の収集家", "無重力酔いしない", "朝が早い", "よく迷子になる", "生身の最後の世代"]), "h": r.choice(P["bio"]["hms"]), "o": r.choice([-2, -1, 0, 0, 1, 2])})
+    import roster as _ro  # 同じ一座に同じ癖(「茶を点てるのが妙にうまい」が二人)が並ばないように。乱数 r は使わない
+    _tp = ["酸素残量に厳しい", "古い楽器の収集家", "無重力酔いしない", "朝が早い", "よく迷子になる", "生身の最後の世代"] if r6 else (P.get("traits") or ["遅刻しない", "いちばん声が通る", "寝言で歌う", "火の番が上手い", "道具を作るのが得意", "笑い声が大きい"])
+    mm[:] = _ro.dedupe(mm, ("rare", seed, era), pool=_tp)
     vg = (mm[0]["g"] if group else r.choice("mf"))
     g0 = vg
     if r6 and not group and r.random() < 0.5: vg = "a" + vg
@@ -231,7 +245,11 @@ def tree(P, seed, group):
     used_t = set()
     bio = {"hm": r.choice(b["hms"]), "ag": r.choice([17, 19, 21, 24, 28, 33]), "fm": r.choice(b["fms"]), "st": r.choice(b["sts"]), "gr": r.choice(b["grs"]), "jb": r.choice(b["jbs"]), "hb": r.choice(b["hbs"]), "fv": r.choice(b["fvs"]), "hy": r.choice(b["hys"])}
     if group: bio["fd"] = r.choice(b["hms"])
-    if group: name = r.choice(P["names_g"])
+    if group:
+        name = r.choice(P["names_g"])
+        if _nnum(name) not in (None, len(mm)):  # 「谷の三人衆」なのに四人: 人数の合う名前(なければ人数語のない名前)に
+            ok = [x for x in P["names_g"] if _nnum(x) == len(mm)] or [x for x in P["names_g"] if _nnum(x) is None]
+            if ok: name = random.Random(H(seed, era, "gname")).choice(ok)
     else:
         ns = P.get("ns_" + g0) or [x for x in P["names_s"] if x in (P.get("nm_" + g0) or P["names_s"])] or P["names_s"]
         name = r.choice([x for x in ns if x not in used] or ns)

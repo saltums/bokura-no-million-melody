@@ -107,15 +107,52 @@ def _sim(x, y):
     return pre >= 2 and pre * 2 >= m and not (_kanji(x) and _kanji(y))
 
 
+_RDC = {}
+
+
+def _rdc(s):
+    if s not in _RDC: _RDC[s] = rd(s)
+    return _RDC[s]
+
+
+def _lat(s): return re.sub(r'[^a-z]', '', unicodedata.normalize('NFKC', s).lower())
+
+
+def _foreign(n):
+    """海外勢(・区切り、または漢字・かなを含まない名前)"""
+    n = unicodedata.normalize('NFKC', n)
+    return '・' in n or '=' in n or not re.search(r'[぀-ヿ㐀-鿿々]', n)
+
+
+def same_rd(x, y):
+    """読みが同じ(英字は jaconv の読みが粗いので、英字部分も同じときだけ同じ読みとみなす)"""
+    rx = _rdc(x)
+    return bool(rx) and rx == _rdc(y) and _lat(x) == _lat(y)
+
+
 def near_real(fake, real):
-    """メンバー名が元ネタの実在メンバーに近すぎるか: 姓が同じ・名が同じ・読みの大半が同じ のどれか。
-    姓名とも別の語にする(曽我部恵一→宗我部恵太、吉田良一郎→吉野良一朗、ファンキー末吉→ファンキー末広がり は不可)"""
+    """メンバー名が元ネタの実在メンバーに近すぎるか(方針: 藤原基央→藤川基夫 の水準の軽いもじり)。
+    不可: 完全一致 / 姓名を通した読みが同じ / 姓だけ・名だけ同じ(片方完全一致)。
+    可: 姓・名それぞれ1字か読み1音の違い(名は同じ読みの別の字でもよい。姓名の読みが全部同じになるのは不可)。
+    海外勢(カタカナ・英字)は姓(最後の語)が同じなら不可(Billie Joe Armstrong→Billie Joe Armstring は可)。"""
+    if norm(fake) == norm(real) or same_rd(fake, real): return True
     a, b = _np(fake), _np(real)
     if len(a) == 1 and len(b) == 2 and _kanji(a[0]) and len(a[0]) >= 3 and _kanji(b[0]): a = [a[0][:len(b[0])], a[0][len(b[0]):]]
     if len(b) == 1 and len(a) == 2 and _kanji(b[0]) and len(b[0]) >= 3 and _kanji(a[0]): b = [b[0][:len(a[0])], b[0][len(a[0]):]]
-    if any(_sim(x, y) for x in a for y in b if len(rd(y)) >= 2 or len(rd(x)) >= 2 or x == y): return True
-    rf, rr = rd(''.join(a)), rd(''.join(b))
-    return bool(rf and rr and min(len(rf), len(rr)) >= 3 and _lv(rf, rr) * 2 <= max(len(rf), len(rr)))
+    if len(a) < 2 or len(b) < 2: return False
+    if _foreign(real): return a[-1].lower() == b[-1].lower()
+    return a[0].lower() == b[0].lower() or a[-1].lower() == b[-1].lower()
+
+
+_PRD = {}
+for _p in PERSON: _PRD.setdefault(_rdc(_p), []).append(_p)
+
+
+def member_hits(n):
+    """メンバー名: 実名(realnames.txt の全員)と一致 or 同じ読み。1字・1音違いは可"""
+    x = norm(n)
+    out = [p for p, q in PN if x == q]
+    return out + [p for p in _PRD.get(_rdc(n), []) if p not in out and same_rd(n, p)]
 
 
 # ---- 実在の曲名(rosters/realtitles.txt。照合の本体は realtitles.py)
@@ -161,17 +198,22 @@ def flat(v):
 
 # --- 1) メンバー名
 import arcs_gen as G1
+_MEMB = {}  # 正規化した名前 -> 使っている arcs(ゲーム内で他のメンバーと同名にしない)
 for a in list(G1.ARCS) + arcs:
     k = a['k']; R = roster.ROSTER.get(k) or L(a.get('members')) or []
     fx = roster.REALFIX.get(k) or {}
     for x in R:
         n = fx.get(x['n'], x['n'])
-        for p in name_hits(n): hits.append(('member', k, n, p))
+        _MEMB.setdefault(norm(n), []).append(k)
+        mh = member_hits(n)
+        for p in mh: hits.append(('member', k, n, p))
         for p in SECN.get(k, []):
-            if near_real(n, p) and p not in name_hits(n): hits.append(('member~', k, n, p))
+            if near_real(n, p) and p not in mh: hits.append(('member~', k, n, p))
     for nm in [a['nm']] + list(L(a.get('alt')) or []):
         for p in [x for x in ART if norm(x) == norm(nm)] + [x for x in PERSON if x in nm] + name_hits(nm):
             hits.append(('artist', k, nm, p))
+for _n, _ks in _MEMB.items():
+    if len(_ks) > 1: hits.append(('member-dup', ','.join(_ks), _n, ''))
 
 # --- 2) 本文・曲名
 if ONLY != 'names':
