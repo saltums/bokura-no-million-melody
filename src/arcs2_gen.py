@@ -89,6 +89,12 @@ def load_specs(dirpath='/home/claude/arcs_new'):
     arcs = _u
     pt = {k: list(dict.fromkeys(t.split('→')[-1].strip() for t in v)) for k, v in pt.items()}
     import ptover; pt = ptover.apply(arcs, dict(pt))
+    try:  # 2026-11: 元ネタ本人の代表曲・アルバム曲を広く押さえる近いもじり(rosters/ptadd.json。arcs_new の PT の後ろに足す=アルバム曲寄り)
+        import json as _j
+        for _k, _v in _j.load(open('/home/claude/rosters/ptadd.json', encoding='utf-8')).items():
+            pt[_k] = list(dict.fromkeys(list(pt.get(_k, [])) + _v))
+    except OSError:
+        pass
     import realtitles; pt = {k: realtitles.fix_list(v, k) for k, v in pt.items()}  # 実在曲名そのまま(末尾の(…)を外して同じも含む)はもじりに差し替え、残りは外す
     return arcs, pt
 

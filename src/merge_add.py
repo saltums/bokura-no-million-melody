@@ -30,7 +30,8 @@ for e in ('old', 'mid', 'new'):
     v2 = [x for x in b['t'][e] if _gen_ok(x)]; _rm += len(b['t'][e]) - len(v2); b['t'][e] = v2
 print('generic pool: removed real titles', _rm)
 # QA9: もじり曲名プールの実在曲名そのまま・近すぎるもじり(realtitles.close)を外す
-_p0 = len(b['pt']); b['pt'] = [x for x in b['pt'] if not _rt.hit(x, None, 'parody') and not _rt.close(x, None, 'parody')]; print('parody pool: removed', _p0 - len(b['pt']))
+_p0 = len(b['pt']); b['pt'] = list(dict.fromkeys(_rt.fix(x) for x in b['pt']))  # 2026-11: 実曲名そのまま・(…)付きは titlefix の近いもじりに差し替えてから検査
+b['pt'] = [x for x in b['pt'] if not _rt.hit(x, None, 'parody') and not _rt.close(x, None, 'parody')]; print('parody pool: removed', _p0 - len(b['pt']))
 print('pt', len(b['pt']), {e: len(v) for e, v in b['t'].items()})
 # 曲名+サビ(テーマ別)
 b['tt'] = {}

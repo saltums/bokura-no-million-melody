@@ -12363,3 +12363,4071 @@ Sweet Home Sweet
 =愛
 手を抜くなよ
 涙でいっぱいのハートで
+
+# ---- 2026-11 ptadd: もじりの元にした実曲名(元ネタ本人の曲) ----
+[a01_hpe]
+風をあつめて
+夏なんです
+相合傘
+抱きしめたい
+しんしんしん
+田舎道
+飛べない空
+あやか市の動物園
+はいから・びゅーちふる
+外はいい天気
+明日あたりはきっと春
+[a01_yum]
+翳りゆく部屋
+中央フリーウェイ
+あの日にかえりたい
+返事はいらない
+リフレインが叫んでる
+ダイアモンドダストが消えぬ間に
+航海日誌
+悲しいほどお天気
+14番目の月
+海を見ていた午後
+真珠のピアス
+ノーサイド
+最後の嘘
+[a01_yos]
+紙飛行機
+海へ来なさい
+リバーサイドホテル
+最後のニュース
+心もよう
+東へ西へ
+Make-up Shadow
+とまどうペリカン
+なぜか上海
+[a01_tkr]
+男達の詩
+祭りのあと
+風を見たか
+元気です
+王様達のハイキング
+イメージの詩
+旅の宿
+人生を語らず
+マークII
+全部だきしめて
+となりの町のお嬢さん
+[a01_kgy]
+星降る夜
+僕の胸でおやすみ
+加茂の流れに
+なごり雨
+うちのお父さん
+夏この頃
+[a01_tty]
+LOVELAND, ISLAND
+DOUGHNUT SONG
+MONDAY BLUES
+Candle
+JUNGLE SWING
+高気圧ガール
+SPARKLE
+さよなら夏の日
+アトムの子
+踊ろよ、フィッシュ
+Endless Game
+SILENT SCREAMER
+[a01_oto]
+雨のウェンズデイ
+風立ちぬ
+空飛ぶくじら
+A LONG VACATION
+幸せな結末
+カナリア諸島にて
+指切り
+スピーチ・バルーン
+ペパーミント・ブルー
+FUN×4
+ハンド・クラッピング・ルンバ
+楽しい夜更し
+[a01_cro]
+レディ・セブンティーン
+コーヒー・ショップの女の娘
+変身
+憧れのラブ・チャンス
+止まらないHa〜Ha
+時間よ止まれ
+黒く塗りつぶせ
+アイ・ラヴ・ユー,OK
+トラベリン・バス
+YES MY LOVE
+チャイナタウン
+[a01_rcs]
+私立探偵
+ぼくの好きな先生
+キモちE
+いい事ばかりはありゃしない
+宝くじは買わない
+わかってもらえるさ
+ヒッピーに捧ぐ
+ベイビー!逃げるんだ。
+[a01_chr]
+愛の自爆装置
+苦くて甘い
+Ice Cream
+Cheek to Cheek
+やさしい気持ち
+気絶するほど悩ましい
+Shinin' you, Shinin' day
+Navy Blue
+[a02_bowhy]
+ハイウェイに乗る前に
+RUNAWAY TRAIN
+WORKING MAN
+BEAT EMOTION
+BEAT SWEET
+BABY ACTION
+PSYCHOPATH
+LIAR GIRL
+MORAL
+[a02_bluehearth]
+チェインギャング
+ロクデナシ
+ラブレター
+1985
+48億のブルース
+少年の詩
+青空
+情熱の薔薇
+1000のバイオリン
+月の爆撃機
+[a02_erb]
+ROCK'N ROLLER
+ディア・ジョージ
+Tokyo Cityは風だらけ
+ユニオン・ロッカー
+BAD NEWS
+淋しい街から
+灰色の水曜日
+Heavy Days
+[a02_mode]
+バラッドをお前に
+ロックをトメルナ
+少年の頃
+ブルースに溢れて
+激しい雨が
+TWO PUNKS
+[a02_sano]
+観覧車の夜
+つまらない大人にはなりたくない
+ナポレオンフィッシュと泳ぐ日
+クリスマス・タイム・イン・ブルー
+SOMEDAY
+ヤングブラッズ
+新しい航海
+[a02_hamabe]
+愛の世代の前に
+MIDNIGHT FLIGHT
+恋は修行
+もうひとつの土曜日
+I am a father
+君がいるところがMy Sweet Home
+[a02_southern]
+神様からの贈り物
+桜、ひらり
+今宵あなたに
+壮年JUMP
+真夏の果実
+チャコの海岸物語
+ミス・ブランニュー・デイ
+HOTEL PACIFIC
+[a02_anshin]
+月に濡れたふたり
+田園
+夢のつづき
+悲しみにさよなら
+[a02_checkers]
+湾岸物語
+24時間のキッス
+渚のDance Hall
+NANA
+OH!PRETTY WOMAN
+I Love you, SAYONARA
+[a02_mugi]
+東京イェイイェイ娘'90
+日本人
+御利益
+芸術家
+Lollipop
+ひとりじゃないだろ
+SUBWAY BLUES
+すべての人の心に花を
+[a03_ymo]
+ファイアークラッカー
+コンピューター・ゲーム
+体操
+ラップ現象
+灰色の階段
+中国女
+増殖
+Tong Poo
+[a03_plas]
+コピー
+デリシャス
+ピース
+パテ
+Top Secret Man
+[a03_pmod]
+ルームランナー
+サンシャイン・シティー
+アート・ブラインド
+IN A MODEL ROOM
+[a03_togawa]
+眼球綺譚
+極東慰安唱歌
+肉屋のように
+怒濤の恋愛
+赤い戦車
+ヒステリア
+電車でGO
+[a03_tama]
+電車かもしれない
+らんちう
+オゾンのダンス
+かなしいずぼん
+日本でよかった
+まちあわせ
+[a03_bogan]
+よろこびのうた
+タイガーマン
+時代を変える旅に出よう
+シャワーの国
+ボロ儲け
+たまにゃあるさ
+[a03_x]
+ENDLESS RAIN
+BLUE BLOOD
+ART OF LIFE
+Miscast
+UNFINISHED
+Say Anything
+DAHLIA
+Scars
+[a03_buck]
+ICONOCLASM
+極東より愛を込めて
+COSMOS
+スピード
+BEAST OF BLOOD
+幻の都
+LOVE ME
+MOONLIGHT
+[a03_stal]
+虫の息
+Allergy
+たまねぎ畑
+ワルシャワの幻想
+下水道のペテン師
+[a04_luna]
+IN MY DREAM
+WISH
+STORM
+SLAVE
+LUNACY
+TRUE BLUE
+DESIRE
+TONIGHT
+IN SILENCE
+Dejavu
+[a04_glay]
+運命論
+氷の翼
+ずっと2人で…
+逢いたい気持ち
+HIGHCOMMUNICATIONS
+誘惑
+彼女のModern…
+HOWEVER
+春を愛する人
+口唇
+[a04_larc]
+夏の憂鬱
+失われた眺め
+Time goes on
+the Fourth Avenue Café
+虹
+flower
+winter fall
+Link
+NEO UNIVERSE
+花葬
+snow drop
+DIVE TO BLUE
+[a04_ym]
+太陽が燃えている
+Hard Rain
+LOVE COMMUNICATION
+WELCOME TO MY DOGHOUSE
+アバンギャルドで行こうよ
+球根
+SPARK
+楽園
+バラ色の日々
+パール
+悲しきASIAN BOY
+[a04_tmge]
+ヴァレンタインデー
+ブラッディー・パンキー・ビキニ
+太陽をつかんでしまった
+武蔵野エレジー
+ランドリー
+マングース
+世界の終わり
+バードメン
+スモーキン・ビリー
+キャンディ・ハウス
+リリィ
+ドロップ
+[a04_bjc]
+ICE CANDY
+RAIN DOG
+いちご水
+螺旋階段
+ペピン
+ディズニーランドへ
+悪いひとたち
+綺麗な首飾り
+BABY BABY
+[a04_wolf]
+バンザイ〜好きでよかった〜
+暴れだす
+それが答えだ!
+泣けてくる
+事件だッ!
+あした、あるさ
+あの娘に会いたい
+あそぼう
+あしたの記憶
+[a04_dragon]
+Life goes on
+Ode to Joy
+Ivory
+Fever
+陽はまた昇る
+静かなる日々の階段
+天気予報の恋人
+Under Lights
+Deep Impact
+[a04_ng]
+鉄風 鋭くなって
+ZEGEN VS UNDERCOVER
+Omoide in my head
+桜のダンス
+IGGY POP FAN CLUB
+TATTOOあり
+[a05_pzf]
+スウィート・ソウル・レビュー
+月の裏で会いましょう
+皆笑った
+大都会交響曲
+ベイビー・ポータブル・ロック
+陽の当たる大通り
+悲しい歌
+ハッピー・サッド
+トゥイギー・トゥイギー
+プレイボーイ・プレイガール
+[a05_hpg]
+青春はいちどだけ
+ピクニックには早すぎる
+いとこの来る日曜日
+Friends Again
+恋とマシンガン
+ゴーゴー・ガール
+カメラ!カメラ!カメラ!
+星の彼方へ
+ゴロワーズを吸ったことがあるかい
+友達の唄
+[a05_ozw]
+東京恋愛専科
+いちょう並木のセレナーデ
+天気読み
+暗闇から手を伸ばせ
+ホテルと嵐
+恋ってやっぱり
+それはちょっと
+ラブリー
+痛快ウキウキ通り
+流れ星ビバップ
+ドアをノックするのは誰だ?
+ある光
+[a05_crn]
+FIT SONG
+蜃気楼
+DRIFTS
+The Love Parade
+Count Five or Six
+Sensuous
+Mic Check
+I Hate Hate
+Beautiful Life
+FREE FALL
+[a05_tmn]
+カモン・レッツ・ダンス
+Dragon the Festival
+Kiss You
+CAROL
+Self Control
+Dive Into Your Body
+My Revolution
+RHYTHM RED BEAT BLACK
+Love Train
+[a05_bzz]
+今夜月の見える丘に
+BAD COMMUNICATION
+juice
+イチブトゼンブ
+ミエナイチカラ
+裸足の女神
+Calling
+IT'S SHOWTIME!!
+[a05_tob]
+夏だね
+お前はマハラジャ
+虹になりたい
+あの夏を探して
+十年先のラブストーリー
+ス・テ・キ・なサタデーナイト
+恋してムーチョ
+LA・LA・LA LOVE SONG
+恋人よ 僕は旅立つ
+[a05_sgk]
+真夜中の貨物列車
+夏祭り
+月とナイフ
+8月のセレナーデ
+世界が終わる5秒前
+大晦日の宇宙船
+獣ノニオイ
+[a05_ccc]
+雨ふらし
+花柄
+夏色
+東京ドリーム
+ニライカナイ
+箱舟
+例えば炎
+Raining
+月の夜
+リクエスト
+あさきゆめみし
+[a06_ringo]
+自由へ道連れ
+公然の秘密
+浴室
+ギブス
+静かなる逆襲
+愛妻家の朝食
+シドと白昼夢
+カプチーノ
+NIPPON
+[a06_aiko]
+ボーイフレンド
+向かいあわせ
+蝶々結び
+明日の歌
+嘆きのキス
+4月の雨
+58cm
+合図
+れんげ畑
+花火
+桜の時
+アンドロメダ
+おやすみなさい
+[a06_miyuki]
+わかれうた
+月夜同舟
+忘れられるものならば
+恋文
+誕生日
+ララバイSINGER
+悪女
+ファイト!
+空と君のあいだに
+銀の龍の背に乗って
+麦の唄
+[a06_hitoao]
+金魚すくい
+ジャングルジム
+ロマンスカー
+ワイヤレス
+シュプール
+愛と誠のファンタジア
+もらい泣き
+大きな古時計
+月天心
+[a06_ayu]
+Dolls
+Voyage
+Too Late
+Independent
+Heaven
+evolution
+A Song is born
+Boys & Girls
+[a06_ayaka]
+I believe
+みんな空の下
+にじいろ
+おかえりなさい
+Real voice
+手をつなごう
+ありがとう
+恋音と雨空
+Why
+Beautiful
+ゆびきり
+[a06_kaela]
+TREE CLIMBERS
+Ring a Bell
+BEAT
+Sunshine
+SCRAP&BUILD
+Sagittarius
+HOLIDAYS
+Magic Music
+[a06_yui]
+Tokyo
+CHE.R.RY
+Rolling star
+I LOVE YOU
+Summer Song
+HELLO~Paradise Kiss~
+Good-bye days
+Life
+LOVE & TRUTH
+SHE SAID...
+fight
+[a06_ai]
+Happy Days
+プラネタリウム
+恋愛写真
+Cherish
+LOVE LETTER
+LOVE PUNCH
+Story
+ハピネス
+Believe
+Voice
+みんながみんな英雄
+アルデバラン
+I Wanna Know
+[a06_chihiro]
+眩暈
+シャイン
+インソムニア
+流星群
+螺旋階段
+私とワルツを
+infection
+眠り姫
+LITTLE BEAT RIFLE
+漂流の羊
+[a07_fuji]
+Sugar!!
+徒然モノクローム
+地平線を超えて
+若者のすべて
+星降る夜になったら
+Light Flight
+銀河
+桜の季節
+陽炎
+Water Lily Flower
+環状七号線
+[a07_9mm]
+Discommunication
+荒野を歩け
+Punishment
+太陽が欲しいだけ
+Talking Machine
+新しい光
+命ノゼンマイ
+[a07_ook]
+完全感覚Dreamer
+Cry out
+アンサイズニア
+Wasted Nights
+20/20
+Nothing Helps
+Renegades
+内秘心書
+Make It Out Alive
+未完成交響曲
+[a07_uvr]
+激動
+君の好きなうた
+IMPACT
+Roar
+一滴の影響
+Touch Off
+7th Trigger
+哀しみはきっと
+7日目の決意
+One stroke for freedom
+[a07_okd]
+雪が降る町
+ペケペケ
+さすらい
+息子
+手紙
+すばらしい日々
+ヒゲとボイン
+デーゲーム
+人にやさしく
+[a07_hor]
+絶望ビリー
+爪爪爪
+ぶっ生き返す!!
+ロック番長
+予襲復讐
+鬼絶望
+ハートフル・ステーション
+[a07_gin]
+夢で会えたらいいのに
+漂流教室
+骨
+若者たち
+銀河鉄道の夜
+もしも君が泣くならば
+トラッシュ
+恋は永遠
+人間
+大人全滅
+少年少女
+[a08_higedan]
+Subtitle
+異端なスター
+ノーダウト
+宿命
+ミックスナッツ
+115万キロのフィルム
+Stand By You
+ラストソング
+コンフュージョン
+[a08_alex]
+ワタリドリ
+Starrrrrrr
+Run Away
+city
+閃光
+月色ホライズン
+Adventure
+ムーンソング
+Mosquito Bite
+SNOW SOUND
+[a08_uchikubi]
+はたらきたくない
+布団の中から出たくない
+ニクタベイコウ!
+カモン諭吉
+[a09_kinggnu]
+逆夢
+小さな惑星
+Hitman
+雨燕
+Vinyl
+Tokyo Rendez-Vous
+Flash!!!
+BOY
+破裂
+どこにもない
+[a09_mrsgreen]
+countless
+愛を知るまでは
+サママ・フェスティバル!
+WanteD! WanteD!
+僕のこと
+Loving
+ビターバカンス
+Soranji
+コロンブス
+アポロドロス
+Magic
+[a09_yoasobi]
+ハルジオン
+三原色
+祝福
+ツバメ
+セブンティーン
+好きだ
+喜劇
+群青
+怪物
+たぶん
+もう少しだけ
+優しい彗星
+[a09_ado]
+ルル
+キラキラ
+私は最強
+逆光
+ウタカタララバイ
+会いたくて
+桜日和とタイムマシン
+Show
+[a09_zutomayo]
+暗く黒く
+勘ぐれい
+馴れ合いサーブ
+残機
+綺羅キラー
+ハゼ馳せる果てるまで
+沼落ち
+勘冴えて悔しいわ
+こんなこと騒動
+海馬成長痛
+低血ボルト
+[a09_yorushika]
+ただ君に晴れ
+夜行バス
+パドドゥ
+盗作
+思想犯
+パレード
+靴の花火
+藍二乗
+チノカテ
+斜陽
+老人と海
+[a09_vaundy]
+東京フラッシュ
+裸の勇者
+花占い
+Lemonade
+不可幸力
+恋風邪にのせて
+CHAINSAW BLOOD
+おもかげ
+走馬灯
+トドメの一撃
+そんなbitterな話
+Tokimeki
+[a09_yuuri]
+レオ
+ピーナッツバター
+シャッター
+ごめんね
+飛行船
+ベテルギウス
+いかないで
+ビリミリオン
+夜凪
+恋人じゃなくなった日
+[a09_fujii]
+燃えよ
+帰ろうか
+それでいいの
+青春病
+優しさ
+ガーデン
+もうええわ
+[a10_hannya]
+余裕だろ?
+覚えてる?
+普通じゃねえ
+[a10_kreva]
+スタートダッシュ
+国民的行事
+イツナロウバ
+[a10_suiyo]
+ウランちゃん
+[a10_creepy]
+2way nice guy
+Who am I
+たりないふたり
+板バサミ
+通常運転
+[a10_badhop]
+2DK
+White T-Shirt
+[a10_umeda]
+YDK
+ハイビーム
+[a10_slack]
+この島の上で
+[a10_sucha]
+サマージャム'95
+ヒマの過ごし方
+MOONLIGHT DISTRICT
+DISCO SYSTEM
+[a10_tha]
+阿吽の呼吸
+[a11_nakata]
+エレクトロ・ワールド
+ワンルーム・ディスコ
+コンピューターシティ
+love the world
+Dream Fighter
+Fan Service
+575
+GAME
+きみに100パーセント
+[a11_hachi]
+パンダヒーロー
+パプリカ
+感電
+Flamingo
+Pale Blue
+ナンバーナイン
+サンタマリア
+[a11_deco]
+愛言葉
+ヒバナ
+Dreamin Chuchu
+サラマンダー
+[a11_wowaka]
+アンノウン・マザーグース
+3分29秒
+[a11_livetune]
+Transfer
+Hello
+Love Letter
+[a11_supercell]
+Departure
+Ghost
+Hearts
+Cloud
+[a11_tofu]
+Stay Away
+ふめつのこころ
+[a12_oats]
+Stop Crying Your Heart Out
+D'You Know What I Mean?
+Don't Look Back in Anger
+Live Forever
+Supersonic
+Some Might Say
+Rock 'n' Roll Star
+Slide Away
+The Masterplan
+Little by Little
+Stand by Me
+Half the World Away
+[a12_radf]
+Street Spirits
+Exit Music
+Fitter Happier
+Paranoid Android
+High and Dry
+Let Down
+There There
+Reckoner
+Nude
+Just
+My Iron Lung
+Lucky
+[a12_cold]
+Yellow
+The Scientist
+My Universe
+Trouble
+Shiver
+Lovers in Japan
+Life in Technicolor
+[a12_fleet]
+Hold Me
+Dreams
+Rhiannon
+Gypsy
+Tusk
+Songbird
+Black Magic Woman
+[a12_abba]
+Voulez-Vous
+One of Us
+Ring Ring
+[a12_dyln]
+Blowin' in the Wind
+Hurricane
+A Hard Rain's a-Gonna Fall
+Maggie's Farm
+[a12_bowl]
+Heroes
+Life on Mars?
+Rebel Rebel
+China Girl
+Blackstar
+Station to Station
+Absolute Beginners
+[a10_ryofu]
+SS+
+[a13_kendrick]
+ELEMENT.
+Swimming Pools
+Money Trees
+N95
+Die Hard
+euphoria
+HUMBLE.
+Alright
+King Kunta
+The Blacker the Berry
+LOVE.
+[a13_gorillaz]
+DARE
+Stylo
+19-2000
+Andromeda
+El Mañana
+Silent Running
+New Gold
+Cracker Island
+Plastic Beach
+[a13_rhcp]
+Scar Tissue
+Give It Away
+Snow (Hey Oh)
+The Zephyr Song
+Tell Me Baby
+Dark Necessities
+Black Summer
+Universally Speaking
+Slow Cheetah
+[a13_greenday]
+Good Riddance
+When I Come Around
+Longview
+Holiday
+Minority
+Know Your Enemy
+Jesus of Suburbia
+Brain Stew
+Oh Love
+Father of All...
+[a13_linkin]
+In the End
+Numb
+Crawling
+Somewhere I Belong
+Bleed It Out
+New Divide
+Burn It Down
+Heavy
+Points of Authority
+Iridescent
+The Emptiness Machine
+Encore
+[a14_citypop]
+悲しみがとまらない
+[a14_ippatsu]
+ポーズ
+フィーバー
+[a14_street]
+うたたね
+[a14_mask]
+うっせぇわ
+正義
+ロマンス
+[a14_net]
+ロキ
+ココロ
+ODDS&ENDS
+メルト
+ワールドイズマイン
+ローリンガール
+カゲロウデイズ
+マトリョシカ
+砂の惑星
+ヴァンパイア
+シャルル
+からくりピエロ
+炉心融解
+[a14_enka]
+ソーラン節
+酒よ
+港町ブルース
+北酒場
+雪國
+与作
+まつり
+[a14_game]
+To Zanarkand
+序曲
+地上BGM
+そして伝説へ
+片翼の天使
+風のとおり道
+Eyes on Me
+ビッグブリッヂの死闘
+[a14_fes]
+fiction
+in out
+monolisp
+swim
+[a14_after]
+人にやさしくなれる
+ハンマー
+TRAIN-TRAIN
+リンダリンダ
+青空
+キスしてほしい
+[a15_pinkrei]
+S・O・S
+ウォンテッド
+ジパング
+ピンク・タイフーン
+UFO
+ペッパー警部
+渚のシンドバッド
+透明人間
+カメレオン・アーミー
+[a15_candiz]
+つばさ
+いつでも夢を
+年下の男の子
+やさしい悪魔
+わな
+その気にさせないで
+アン・ドゥ・トロワ
+[a14_actor]
+SUN
+夢の外へ
+[a15_seiko]
+Rock'n Rouge
+瑠璃色の地球
+ハートのイアリング
+時間の国のアリス
+SWEET MEMORIES
+旅立ちはフリージア
+あなたに逢いたくて
+赤いスイートピー
+青い珊瑚礁
+風立ちぬ
+天国のキッス
+制服
+[a15_momoe]
+青い果実
+いい日旅立ち
+さよならの向こう側へ
+ささやかな欲望
+秋桜
+横須賀ストーリー
+美・サイレント
+愛の嵐
+謝肉祭
+冬の色
+乙女座宮
+[a15_akina]
+トワイライト -夕暮れ便り-
+SAND BEIGE -砂漠へ-
+SOLITUDE
+LIAR
+Dear Friend
+二人静
+愛撫
+夜のどこかで
+月華
+水に挿した花
+歌姫
+駅
+[a15_kyonkyon]
+潮騒のメモリー
+迷宮のアンドローラ
+ヤマトナデシコ七変化
+学園天国
+木枯らしに抱かれて
+魔女
+常夏娘
+Kyon2に好きにして
+ハートブレイカー
+危ない少年
+待ってるわ
+[a15_snapp]
+BEST FRIEND
+Triangle
+どんなときも
+たいせつ
+Dear WOMAN
+$10
+ダイナマイト
+[a15_eveningmusume]
+Do it! Now
+みかん
+サマーナイトタウン
+One・Two・Three
+恋ING
+[a15_zaado]
+運命のルーレット廻して
+あなたを感じていたい
+きっと忘れない
+突然
+Season
+明日を夢見て
+星のかがやきよ
+心を開いて
+[a15_amuro]
+Respect the power of love
+NEVER END
+Baby Don't Cry
+Love Story
+Wishing On The Same Star
+a walk in the park
+Body Feels EXIT
+Try me
+太陽のSEASON
+Stop the music
+Hope
+[a16_direngrape]
+残-ZAN-
+Kisou
+JEALOUS
+Cage
+-I'll-
+理由
+OBSCURE
+DIABOLOS
+THE FINAL
+Merciless Cult
+VINUSHKA
+THE DEEPER
+[a16_gacket]
+Love Letter
+罪の継承
+Vanilla
+Mirror
+君のためにできること
+Last Song
+野に咲く花のように
+Ever
+[a16_mucchi]
+ファズ
+Libra
+謡声
+最期
+空白
+FATE
+蘇生
+Cry
+大嫌い
+パラノイア
+[a16_ningenzaisu]
+なまはげ
+屋根裏の散歩者
+冥土喫茶
+りんごの泪
+人間失格
+地獄のアロハ
+針の山
+赤い夕陽
+芋虫
+無情のスキャット
+天国への階段
+月下美人
+[a16_guitarookami]
+惑星ハツ
+ガソリン子守歌
+恋のレイクタウン
+パラレル・ワールド
+ボーイ・ミーツ・ガール
+世界のフィナーレ
+キック&スネア
+[a16_goldenbonbon]
+今夜も眠れない
+首が痛い
+元カレ殺ス
+ローラの傷だらけ
+Dance My Generation
+暴れだす
+[a17_misuchiru]
+Sigh
+抱きしめたい
+マシンガンをぶっ放せ
+星になれたら
+しるし
+蘇生
+ヒカリノアトリエ
+LOVEはじめました
+足音 〜Be Strong
+Everything (It's you)
+掌
+[a17_supitz]
+楓
+君が思い出になる前に
+運命の人
+俺のすべて
+魔法のコトバ
+正夢
+流れ星
+ヒバリのこころ
+日なたの窓に憧れて
+醒めない
+ウサギのバイク
+ロビンソン
+渚
+[a17_kururi]
+ばらの花
+GOING UNDERGROUND
+How to Go
+宿はなし
+東京
+ハイウェイ
+Remember me
+ロックンロール
+リバー
+琥珀色の街、上海蟹の朝
+京都の大学生
+奇跡
+[a17_ajikan]
+夜の向こう
+遥か彼方
+或る街の群青
+Easter
+復活祭
+荒野を歩け
+ソラニン
+アフターダーク
+君の街まで
+Re:Re:
+転がる岩、君に朝が降る
+新世紀のラブソング
+ブルートレイン
+ソルファ
+[a17_porno]
+メリッサ
+ヴォイス
+東京ランドスケープ
+アポロ
+ヒトリノ夜
+渦
+音のない森
+狼
+オー!リバル
+幸せについて本気出して考えてみた
+ブレス
+THE DAY
+[a17_andy]
+Fireworks
+Sunrise&Sunset
+ゆーれいみマン
+ハッピーエンディング
+愛してやまない音楽を
+グロリアス軽トラ
+君は乙女
+everything sucks
+[a17_sumika]
+雨天決行
+Shake & Shake
+Monday
+ホワイトマーチ
+フィクション
+絶叫セレナーデ
+Jasmine
+春夏秋冬
+言葉と心
+[a17_aimyon]
+ゼンマイ
+ら、のはなし
+愛の花
+猫
+会いに行くのに
+双葉
+さよならの今日に
+ふたりの世界
+おいしいパスタがあると聞いて
+タイムマシーン
+朝陽
+[a17_hoshino]
+ドラえもん
+Pop Virus
+SUN
+夢の外へ
+地獄でなぜ悪い
+桜の森
+くだらないの中に
+化物
+知らない
+喜劇
+不思議
+創造
+日常
+[a17_radwimps]
+ハイパーベンチレーション
+洗脳
+トレモロ
+会心の一撃
+最大公約数
+スパークル
+夢灯籠
+ふたりごと
+me me she
+DADA
+[a18_pfm]
+P.T.A.
+ねえ
+NIGHT FLIGHT
+STAR TRAIN
+タイムワープ
+[a18_dgl]
+N.O.
+Mononoke Dance
+ガリガリ君のテーマ
+[a18_mfl]
+Orbit 3
+ten
+The Way We Were
+[a18_sry]
+Beauty & Beast
+Sheltering Sky
+Rain
+Happy End
+Tong Poo
+[a18_hsi]
+君をのせて
+人生のメリーゴーランド
+Information
+Oriental Wind
+[a18_kyk]
+Diamond Crevasse
+Mushroom Hunting
+Green Bird
+[a18_mry]
+天使のウィンク
+リンダ
+[a18_wsd]
+Autumn Blow
+Nice Shot!
+[a18_cpl]
+Desire
+[a19_queen]
+Bohemian Rhapsody
+Killer Queen
+Under Pressure
+Radio Ga Ga
+Who Wants to Live Forever
+Innuendo
+Princes of the Universe
+Keep Yourself Alive
+手をとりあって
+Flash
+Too Much Love Will Kill You
+Spread Your Wings
+[a19_floyd]
+Money
+Echoes
+Breathe
+Have a Cigar
+Atom Heart Mother
+原子心母
+狂気
+炎
+Dogs
+Pigs
+Sheep
+[a19_nirb]
+Come as You Are
+Lithium
+Breed
+The Man Who Sold the World
+Aneurysm
+[a19_acdec]
+For Those About to Rock
+T.N.T.
+Hells Bells
+Are You Ready
+[a19_v2]
+One
+Pride
+Stay
+With or Without You
+Sunday Bloody Sunday
+Where the Streets Have No Name
+Vertigo
+New Year's Day
+Mysterious Ways
+City of Blinding Lights
+Stuck in a Moment
+[a19_wheez]
+Undone
+Beverly Hills
+El Scorcho
+Pork and Beans
+Africa
+[a20_mj]
+スリラー
+イート・イット
+マン・イン・ザ・ミラー
+リメンバー・ザ・タイム
+ロッキン・ロビン
+ベン
+スクリーム
+ABC
+Billie Jean
+Smooth Criminal
+[a20_mad]
+ヴォーグ
+ラッキー・スター
+ラ・イスラ・ボニート
+フローズン
+レイ・オブ・ライト
+スリー・ミニッツ
+ドレス・ユー・アップ
+Like a Virgin
+Material Girl
+Like a Prayer
+[a20_prn]
+キス
+アイ・ウッド・ダイ・フォー・ユー
+バットダンス
+コントロヴァーシー
+テイク・ミー・ウィズ・ユー
+When Doves Cry
+Little Red Corvette
+Let's Go Crazy
+Raspberry Beret
+[a20_mar]
+ヒーロー
+ウィ・ビロング・トゥゲザー
+エモーションズ
+ドリームラバー
+ハニー
+タッチ・マイ・ボディ
+ラブ・テイクス・タイム
+バタフライ
+スルー・ザ・レイン
+ラバーボーイ
+All I Want for Christmas Is You
+We Belong Together
+[a20_emi]
+スタン
+マザーバード
+ラップ・ゴッド
+シング・フォー・ザ・モーメント
+クリーニン・アウト・マイ・クローゼット
+ジャスト・ルーズ・イット
+スーパーマン
+ライク・トイ・ソルジャーズ
+ギルティ・コンシャンス
+フーディーニ
+ヴェノム
+Lose Yourself
+[a20_sha]
+ヒップス・ドント・ライ
+ワカワカ
+オブジェクション
+ロカ
+チャンタッジュ
+ラ・ビシクレタ
+Whenever, Wherever
+She Wolf
+La Tortura
+Loca
+[a20_ade]
+デイドリーマー
+Hello
+Someone Like You
+Skyfall
+Set Fire to the Rain
+Easy on Me
+When We Were Young
+Chasing Pavements
+Make You Feel My Love
+Rumour Has It
+Send My Love
+Turning Tables
+Water Under the Bridge
+[a21_sdm]
+天までとどけ
+精霊流し
+北の国から
+案山子
+秋桜
+道化師のソネット
+主人公
+飛梅
+檸檬
+まほろば
+驛舎
+[a21_odz]
+愛をとめないで
+言葉にできない
+ダイジョウブ
+さよなら
+Yes-No
+秋の気配
+たしかなこと
+キラキラ
+伝えたいことがあるんだ
+こころ
+YES-YES-YES
+[a21_nbc]
+親知らず
+ろくなもんじゃねえ
+GOOD-BYE 青春
+順子
+しあわせになろうよ
+RUN
+明日をくだせえ
+勇次
+くそったれの人生
+昭和
+[a21_bgm]
+恋しくて
+ヒヤミカチ節
+島人ぬ宝
+三線の花
+ソウセイ
+ひまわり
+島唄
+涙そうそう
+[a21_skm]
+祝い酒
+男の情話
+能登はいらんかいね
+夜桜お七
+あばれ太鼓
+風に立つ
+みちのく一人旅
+ああ人生に涙あり
+[a22_lisa]
+紅蓮華
+炎
+shirushi
+明け星
+白銀
+愛なんてどう？
+Empty MERMAID
+往け
+REALiZE
+topaz
+Shouted Serenade
+QUEEN
+一斉の声
+[a22_frip]
+Black Bullet
+Dear my friend
+Hesitation Snow
+Overfly
+Cookies
+Glorious days
+Flame Up
+[a22_momo]
+労働賛歌
+Chai Max
+ワニとカメレオン
+Z伝説
+ワニとシャンプー
+ピンキージョーンズ
+MOON PRIDE
+Neo STARGATE
+ココ☆ナツ
+GODSPEED
+BLAST!
+ザ・ゴールデン・ヒストリー
+[a22_baby]
+Distortion
+Starlight
+あわだまフィーバー
+Sis. Anger
+紅月-アカツキ-
+ギミチョコ!!
+ド・キ・ド・キ☆モーニング
+Road of Resistance
+THE ONE
+PA PA YA!!
+ヘドバンギャー!!
+RATATATA
+Divine Attack
+[a22_sui]
+NEXT COLOR PLANET
+GHOST
+AWAKE
+3:12
+Bluerose
+Hello, World!
+綺麗事
+天球、彗星は夜を跨いで
+TEMPLATE
+Starry Jet
+ソワレ
+[a23_arare]
+Face Down
+夏まつり
+ドキッ!
+A・RA・SHI
+SUNRISE日本
+台風ジェネレーション
+感謝カンゲキ雨嵐
+言葉より大切なもの
+サクラ咲ケ
+One Love
+truth
+Beautiful days
+Believe
+Monster
+[a23_nogi]
+インフルエンサー
+ぐるぐるカーテン
+シンクロニシティ
+逃げ水
+命は美しい
+夏のFree&Easy
+ジコチューで行こう!
+帰り道は遠回りしたくなる
+Sing Out!
+きっかけ
+おいでシャンプー
+[a23_seinen]
+仮面舞踏会
+君だけに
+デカメロン伝説
+ダイヤモンド・アイズ
+ハッとして!Good
+哀愁でいと
+ギンギラギンにさりげなく
+スニーカーぶる〜す
+蒼い夏
+ふられてBANZAI
+[a23_ivy]
+Accendio
+ELEVEN
+I AM
+After LIKE
+Kitsch
+Baddie
+Off The Record
+HEYA
+REBEL HEART
+ATTITUDE
+Supernova Love
+XOXZ
+[a23_bp]
+Playing With Fire
+DDU-DU DDU-DU
+Pink Venom
+Ice Cream
+Stay
+Jump
+Lisa
+Typa Girl
+[a23_oj]
+Ditto
+Get Up
+How Sweet
+Hype Boy
+ETA
+Cookie
+Supernatural
+Right Now
+Hurt
+Zero
+New Jeans
+[a24_blackmages]
+勝利のファンファーレ
+ビッグブリッヂの死闘
+片翼の天使
+妖星乱舞
+決戦
+Battle at the Big Bridge
+Maybe I'm a Lion
+[a24_livetone]
+DECORATOR
+Re:package
+Hello
+[a24_pinokio]
+ラヴィット
+魔法みたいなミュージック!
+ノンブレス・オブリージュ
+頓珍漢の宴
+腐れ外道とチョコレゐト
+T氏の話を信じるな
+[a24_sugiyama]
+スライムの行進
+導かれし者たち
+序曲
+おおぞらをとぶ
+戦闘のテーマ
+王宮のロンド
+Love Song探して
+世界をまわる
+海を越えて
+ラダトーム城
+恋の抑止力
+[a25_sxp]
+ボディーズ
+EMI
+ノー・フューチャー
+マイ・ウェイ
+God Save the Queen
+Anarchy in the U.K.
+Holidays in the Sun
+No Feelings
+Problems
+Submission
+[a25_clu]
+ガンズ・オブ・ブリクストン
+ルディ・キャン・フェイル
+サンディニスタ!
+ポリス・アンド・シーフ
+London Calling
+Should I Stay or Should I Go
+Rock the Casbah
+White Riot
+Train in Vain
+I Fought the Law
+Spanish Bombs
+Police on My Back
+[a25_rmn]
+ベイビー・アイ・ラブ・ユー
+ハイ・ホー・レッツ・ゴー
+アイ・ウォナ・ビー・シーズンド
+ペット・セメタリー
+Blitzkrieg Bop
+I Wanna Be Sedated
+Sheena Is a Punk Rocker
+Rockaway Beach
+Judy Is a Punk
+Teenage Lobotomy
+Do You Remember Rock 'n' Roll Radio?
+[a25_bsb]
+N.I.B.
+ヘヴン・アンド・ヘル
+シンフォニー・オブ・ザ・ユニバース
+スノーブラインド
+Iron Man
+Black Sabbath
+[a25_dpp]
+ストレンジ・カインド・オブ・ウーマン
+ライヴ・イン・ジャパン
+バーン
+ウーマン・フロム・トーキョー
+Smoke on the Water
+Child in Time
+Black Night
+Space Truckin'
+Lazy
+Speed King
+[a25_imz]
+ナンバー・オブ・ザ・ビースト
+ラン・トゥ・ザ・ヒルズ
+フィア・オブ・ザ・ライト
+フライト・オブ・イカロス
+ウェイステッド・イヤーズ
+ピース・オブ・マインド
+Hallowed Be Thy Name
+Ace
+[a25_mhd]
+エース・オブ・スペーズ
+オーヴァーキル
+Ace of Spades
+Overkill
+Bomber
+Killed by Death
+Iron Fist
+Damage Case
+Stay Clean
+[a25_kmm]
+少年
+ミラー
+Pink Spider
+ロケットダイヴ
+HURRY GO ROUND
+ever free
+Tell Me
+DICE
+LEMONed I Scream
+MISERY
+50%&50%
+FLAME
+[a25_snk]
+ティーン・エイジ・ライオット
+100%
+ブル・イン・ザ・ヒース
+Kool Thing
+Bull in the Heather
+Sugar Kane
+Dirty Boots
+Expressway to Yr Skull
+Silver Rocket
+Death Valley '69
+Superstar
+[a25_pxl]
+デバイザー
+ベント
+ゴージ
+Where Is My Mind?
+Here Comes Your Man
+Debaser
+Monkey Gone to Heaven
+Wave of Mutilation
+Gigantic
+Velouria
+Bone Machine
+[a26_kts]
+まっつり
+ブンガチャ節
+与作
+兄弟船
+北の漁場
+なみだ船
+帰ろかな
+風雪ながれ旅
+年輪
+北の大地
+[a26_mhr]
+愛燦燦
+お祭りマンボ
+真赤な太陽
+東京キッド
+港町十三番地
+みだれ髪
+哀愁波止場
+人生一路
+車屋さん
+一本の鉛筆
+[a26_ptb]
+恋のフーガ
+情熱の花
+恋のバカンス
+スーダラ節
+ウナ・セラ・ディ東京
+銀色の道
+大阪の女
+ローマの雨
+恋する瞳
+こぶしの花
+ブーベの恋人
+[a26_mty]
+ひだまりの詩
+[a26_tlp]
+虹とスニーカーの頃
+ブルー・スカイ
+私の小さな人生
+ふたりがつくった風景
+悲しきレイン・トレイン
+[a26_csp]
+Time Limit
+Tokyo Dreaming
+ASAYAKE
+FIGHTMAN
+MID-MANHATTAN
+朝焼けの彼方へ
+Down Upbeat
+Looking Up
+GYPSY TAXI
+Seventh Avenue
+[a26_uhm]
+Move
+Alive
+Haiku
+Kaleidoscope
+XYZ
+Brand New Day
+Rainbow Fish
+Somewhere
+Ready for Love
+Silver Lining
+[a26_hkd]
+情熱大陸
+Celtic Mail
+Etupirka
+Another Sky
+風と空のキセキ
+ジョーカー
+Wind Ensemble
+[a26_wgd]
+千本桜
+起死回生
+いくさ
+暁ノ糸
+細雪
+天上天下
+Valkyrie
+ブルーメ
+[a26_yos]
+RISING SUN
+津軽じょんがら節
+Nijo
+Swing Stomp
+Blue Moon
+Shooting Star
+Spirit of Fire
+Mabui
+[a27_rls]
+Start Me Up
+Brown Sugar
+Satisfaction
+Sympathy for the Devil
+Angie
+Wild Horses
+Miss You
+As Tears Go By
+It's Only Rock 'n Roll
+Under My Thumb
+Let It Bleed
+Mixed Emotions
+Love Is Strong
+Living in a Ghost Town
+[a27_ejb]
+Honky Cat
+Levon
+Sad Songs
+Your Song
+Tiny Dancer
+I'm Still Standing
+Don't Let the Sun Go Down on Me
+Saturday Night's Alright
+Sorry Seems to Be the Hardest Word
+Nikita
+Philadelphia Freedom
+[a27_bgs]
+Jive Talkin'
+Words
+I Started a Joke
+Run to Me
+Tragedy
+How Can You Mend a Broken Heart
+Holiday
+First of May
+Melody Fair
+Spicks and Specks
+Islands in the Stream
+愛はきらめきの中に
+小さな恋のメロディ
+[a27_bjv]
+Bad Medicine
+Runaway
+Lay Your Hands on Me
+It's My Life
+Always
+Bed of Roses
+Have a Nice Day
+Who Says You Can't Go Home
+Blaze of Glory
+Never Say Goodbye
+In These Arms
+This Ain't a Love Song
+[a27_whp]
+I'm Every Woman
+So Emotional
+Exhale
+I Have Nothing
+Queen of the Night
+Million Dollar Bill
+I Look to You
+[a27_bsb]
+Fight for Your Right
+Sabotage
+Intergalactic
+Sure Shot
+Girls
+Body Movin'
+Root Down
+Make Some Noise
+Shake Your Rump
+[a27_clh]
+I'm Not Alone
+Giant
+Promises
+Feel So Close
+One Kiss
+How Deep Is Your Love
+I Need Your Love
+Under Control
+Feels
+Miracle
+We'll Be Coming Back
+Bounce
+Let's Go
+[a27_dpt]
+9 to 5
+Here You Come Again
+Starting Over Again
+Eagle When She Flies
+Down from Dover
+Jolene
+Joshua
+Heartbreaker
+Applejack
+Light of a Clear Blue Morning
+[a27_bmw]
+Jamming
+Get Up, Stand Up
+Exodus
+Positive Vibration
+No Woman, No Cry
+Is This Love
+I Shot the Sheriff
+Lively Up Yourself
+Natural Mystic
+Africa Unite
+Soul Rebel
+War
+[a27_spg]
+2 Become 1
+Viva Forever
+Mama
+Holler
+Headlines
+Step to Me
+[a28_ikm]
+ジョイフル
+ホタルノヒカリ
+ありがとう
+YELL
+風が吹いている
+うるわしきひと
+キミがいるから
+ノスタルジア
+心の花を咲かせよう
+茜色の約束
+[a28_gsp]
+プラチナ・キス
+Promiso
+永遠に
+ミモザ
+BOO〜おなかが空くほど笑ってみたい〜
+街角-on the corner-
+約束の季節
+[a28_bbs]
+STAY GOLD
+ハロー・ミッドナイト
+今夜はブギー・バック
+Hip Hop Gentleman
+ザ・ベスト・オブ・Lyrics
+[a28_ryk]
+Landscape
+リトルシップ
+Party!!
+サマータイムシンデレラ
+LITMUS
+LADYBUG
+Starry Drama
+寒い夜
+Merry-go-round
+ミチヲユケ
+たとえたとえ
+風の鳴る方へ
+Actor
+[a28_glz]
+HOWEVER
+Winter, again
+誘惑
+BELOVED
+SOUL LOVE
+グロリアス
+口唇
+ずっと2人で…
+[a28_tlp]
+夢をかなえてドラえもん
+空と君のあいだに
+[a28_spa]
+すなおになれたら
+不幸せ
+Can't Stop
+流星
+Let's Get It On
+SPYAIR
+[a28_fms]
+Hello
+虹
+明日の☆SHOW
+最愛
+HEAVEN
+Squall
+fighting pose
+KISSして
+Gang★
+MELODY
+beautiful life
+想望
+少年
+[a28_nkn]
+Darling
+会いたくて 会いたくて
+if
+君って
+Esperanza
+One Day
+My place
+Have a nice day
+Sakura, I love you?
+パズル
+もっと
+たとえどんなに…
+I'm with you
+[a28_tft]
+銀河鉄道999
+トラベリング
+ひとりぼっち
+Prism
+君と夏フェス
+恋をしたら
+パーティ
+[a29_gvn]
+ミスフィッツ
+アナザーワールド
+ナポリタン
+WAX
+Feel
+絶対
+タイムマシン
+[a29_syp]
+明日を落としても
+終電のあとで
+ポラリス
+ひかり
+[a29_trc]
+ハニー・ハニー
+Mirror Ball
+Raspberry
+GOING TO THE MOON
+FEVER
+トランスフォーム
+I GO WILD
+Rainbow Rocket
+ステップ・ステップ
+[a29_plr]
+Funny Bunny
+Little Busters
+ストレンジ カメレオン
+Hybrid Rainbow
+Ride on shooting star
+No Surrender
+Blues Drive Monster
+Thank you, my twilight
+[a29_bkc]
+涙がこぼれたら
+楽園
+世界でいちばん頑張ってる君に
+ブラックホールバースデイ
+ばらの花
+明日は来るのか
+I WILL SURVIVE
+[a29_nic]
+ストラト
+あなたがいることで
+手をたたけ
+ラディ
+ガラスの気持ち
+ビッグフット
+ジャンキー
+[a29_cym]
+Kiss Me
+ポップ・ミュージックは永遠に
+ジャンプ
+[a29_spc]
+星が降る夜に
+Strobolights
+Free Your Mind
+Story Writer
+BGM
+[a29_asl]
+Sunny Day
+FADE TO BLACK
+夜
+君の街まで
+[a29_bdt]
+ハッピー・デイ
+ジェット・ローラー
+ローリング
+ギター
+青空
+ローラーコースター
+[a29_est]
+砂上の夢
+いつもの帰り道
+[a30_ngt]
+ループ
+DOLL
+ドーナツ
+クロール
+[a30_cmm]
+Last Love Letter
+とび魚のバラード
+シャングリラ
+ハナノユメ
+恋の煙
+真夜中遊園地
+とび魚のバタフライ
+8cmのピンヒール
+コンビニエンスハネムーン
+ときめき
+[a30_scd]
+テイクオフ
+Departure
+DREAMER
+ヒーロー
+青い春
+[a30_trc]
+POOL
+Potage
+Burning Ship
+Flame
+Ascend
+Feeling
+バヤオーステップ
+[a30_yty]
+L・O・V・Eタオル
+とりあえず噛む
+ハイテンションの向こう側
+[a30_shs]
+恋を知らない
+宿題が終わらない
+涙の天気予報
+中毒
+タオル
+[a30_scd2]
+優しさに溢れた世界で
+ナイトウォーク
+怪盗
+グッバイ
+いつか
+月に住むマーメイド
+[a30_wnm]
+Everybody!!
+ビッグ・ウェーブ
+CHARM
+Hey Lady
+[a30_usg]
+Phantom Joke
+春が来てぼくら
+徹頭徹尾夜な夜なドライブ
+君の瞳に恋してない
+カオスが極まる
+アトラクションがはじまる
+[a30_mhb]
+熱狂を終えて
+さよならは言わないで
+ヒーロー
+Hey Bitch
+卒業
+[a30_mcr]
+はしりがき
+恋のカーニバル
+夏
+[a30_ggv]
+青いアイデンティティ
+Trouble Trouble Trouble
+青春ハンドクラップ
+[a31_ksy]
+SPECIAL KIOSK
+ドラマチック
+LOVE&WORLD
+夜行バスの窓
+Get Down
+[a31_sph]
+街
+ずっと夢を見ていよう
+[a31_jam]
+ラブリー・ベイビー
+くじら12号
+BLUE TEARS
+Hello! Orange Sunshine
+ドキドキ
+自転車
+イロトリドリノセカイ
+ミュージック・ファイター
+小さな頃から
+RADIO
+[a31_fsm]
+夏のぬけがら
+Fly High
+BOYS ON THE RUN
+ROBOT
+ひらひら
+[a31_boo]
+星のラブレター
+月さえも眠る夜
+真夏の奇蹟
+中央線
+からたち野道
+釣りに行こう
+虹が出たなら
+STOP BLUE
+竹とんぼ
+[a31_dct]
+うれしい!楽しい!大好き!
+決戦は金曜日
+ア・ハッピー・ニュー・イヤー
+何度でも
+晴れたらいいね
+大阪LOVER
+やさしいキスをして
+ア・イ・シ・テ・ルのサイン
+もしも雪なら
+LOVE GOES ON…
+朝がまた来る
+すき
+[a31_elt]
+ふたりの帰り道
+もうすぐ春ですね
+fragile
+Feel My Heart
+For the moment
+Face the change
+NECESSARY
+Grip!
+ソラアイ
+スカイ
+またあした
+[a31_sgt]
+海へ行くつもりじゃなかった
+ぼくらのヒット・チャート
+Joy
+Winter Fall
+[a31_spc]
+FRUITRAMA
+Lucky
+WHITE SURF style 5.
+[a31_jsw]
+全部そのままで
+歩いていこう
+MY GENERATION
+白いクリスマス
+すてきな夜空
+もっと君に近づきたい
+歩き続ける旅人たち
+[a32_brh]
+BASIL
+SLOW DONUTS
+BLOWIN' IN THE WIND
+SEA OF THE TREE
+ARRIVAL
+[a32_lcf]
+ONE LAST TIME
+FADE IN
+[a32_hw9]
+HOLD ON
+STAY WITH ME
+Promise
+RAINBOW
+[a32_hys]
+RISE UP
+Stand By Me
+Stay Gold
+Dive into the Mind
+Hurdle Race
+[a32_dsb]
+Shout it Out
+Count Down
+[a32_rtg]
+STAY ROCK
+ハレルヤ
+STAY TOGETHER
+Fuckin' Day
+Blast
+Rock Your Body
+[a32_cdr]
+Last Ride
+Til the Light Fades
+Nobody
+Fireworks
+[a32_mwm]
+Remember Me
+Evils Fall
+Out of Control
+Dog Days
+Get Off of My Way
+Merry-Go-Round
+[a32_flv]
+Lights Out
+New World Order
+D.T.A
+[a32_sam]
+Reggae Ride
+Run Run Run Away
+[a32_kmr]
+ONE MORE STEP
+OPEN SESAME
+[a32_ksg]
+愛してる
+夢の戦士
+一番星
+[a33_klt]
+Spaceman
+Bones
+Caution
+Boy
+[a33_asl]
+Sweet Emotion
+Lazy
+Dude (Looks Like a Lady)
+Crazy
+Jaded
+Angel
+Pink
+Mama Kin
+Falling in Love
+[a33_gmr]
+Impatience
+You Could Be Mine
+Locomotive
+Welcome to the Jungle
+Estranged
+Nightrain
+Out ta Get Me
+Used to Love Her
+[a33_pjr]
+Jeremy
+Black
+Even Flow
+Daughter
+Last Kiss
+Given to Fly
+Rearviewmirror
+Animal
+Just Breathe
+Dark Matter
+Oceans
+Porch
+[a33_mpk]
+Disarm
+1980
+Hero
+1979
+Zero
+Rhinoceros
+Perfect
+[a33_mrn]
+名前を変えた日
+Sugar
+Memories
+Animals
+Sunday Morning
+Wait
+[a33_iwg]
+Lemons
+Worriers
+Demons
+Enemy
+Natural
+Bad Liar
+Shots
+Wrecked
+Eyes Closed
+[a33_fob]
+Centuries
+My Songs Know What You Did in the Dock
+Alone Together
+Sugar, We're Goin Down
+Thnks fr th Mmrs
+This Ain't a Scene, It's an Arms Race
+Uma Thurman
+Immortals
+The Phoenix
+Light Em Up
+Hold Me Tight or Don't
+Irresistible
+Love from the Other Side
+[a33_pml]
+Ignorance
+Emergency
+Pressure
+Monster
+This Is Why
+[a33_mcm]
+Sink
+Planetarium
+Helena
+Mama
+Sing
+Planetary (GO!)
+Disenchanted
+Cancer
+Summertime
+[a34_alp]
+SWEAT & TEARS
+夏の終わりのコーラス
+メリーアン
+Musician
+明日の瞳
+夢よ急げ
+Rockdom -風に吹かれて-
+君が通り過ぎたあとに
+悲しみの振り子
+シンデレラ・エクスプレス
+BEAT GOES ON
+[a34_rbc]
+フレンズ
+RASPBERRY DREAM
+MOON
+LOVE PASSION
+Cotton Time
+ハート・オブ・ステイト
+Maybe Tomorrow
+One More Kiss
+Love is Cash
+VIRGINITY
+Lonely Butterfly
+76th Star
+[a34_prc]
+ダイヤモンズ
+パパイヤ
+ジュリアン
+Diamonds
+Get Crazy!
+OH YEAH!
+SEVEN YEARS AFTER
+KISS
+CHAMPAGNE
+[a34_bks]
+静かな時間
+無理だ
+Runner
+リゾ・ラバ
+いいわけ
+45歳の地図
+Ki・Bo・Uの光
+たいした問題じゃない
+からっぽの街
+青春の傷跡
+まっくろけ
+ハチャメチャ
+[a34_zgi]
+グロリア
+アイム・ゲッティング・ブルー
+ヘイ!レディ
+I'M GETTING BLUE
+DON'T STOP BELIEVING
+HOW?
+BURNIN' LOVE
+STOP
+シャイニン・オン 君が哀しい
+Loving Shadows
+NAKED
+[a34_jsw]
+歩き続ける旅人たち
+全部このままで
+もっと君に近づきたい
+歩いていこう
+MY GENERATION
+白いクリスマス
+すてきな夜空
+上京列車
+[a34_rtt]
+恋人以上 友だち未満
+夢で逢えたら
+ランナウェイ
+トゥナイト
+悲しき街角
+SEXY BABY
+ハリケーン
+土曜の夜はパラダイス
+トゥ・トゥ・トゥ
+Marie
+[a34_shy]
+限界LOVERS
+なりゆきまかせ
+HOLD ME TIGHT
+Mi Amore
+[a34_kns]
+香菜、頭をよくしてあげよう
+グッバイ前髪
+ボーン・イン・ザ・ジャパン
+日本の米
+くるくる少女
+ノゾミのなかに
+[a34_rst]
+恋をしようよ
+荒いギター
+ベースライン
+ドラム
+ピーナッツ
+ちょっと
+ゴージャス
+[a35_kai]
+HERO
+ブライトン・ロック
+LOVE SONG
+ビートの影
+ポップコーンをほおばって
+Tonight
+嵐の明日
+かりそめのスウィング
+ロックンロール
+ショック
+夜明け
+[a35_ser]
+銃爪
+宿無し
+性
+ライブハウスの階段
+ハートの破片
+燃えろいい女
+あんたのバラード
+[a35_gdc]
+ハピネス
+銀河鉄道999
+O.K.
+[a35_sze]
+ミス・ブランニュー・デイ
+鎌倉物語
+栞のテーマ
+YaYa あの時を忘れない
+夏をあきらめて
+[a35_bmy]
+DREAM ON
+MEMORY
+BABY ACTION
+B・BLUE
+ONLY YOU
+CLOUDY HEART
+NO. NEW YORK
+DREAMIN'
+わがままジュリエット
+[a35_ang]
+オ・ヤ・ス・ミ・ナ・サ・イ
+夏の終わりのハーモニー
+じれったい
+好きさ
+[a35_ars]
+愛しき日々
+走っておいで恋人よ
+帰らざる日々
+それぞれの秋
+君のひとみは10000ボルト
+狂った果実
+[a35_kyt]
+思えば遠くへ来たもんじゃ
+劇場の灯り
+人として
+まっすぐ
+ひとつの火
+[a35_fkn]
+やさしさとして思い出として
+冬の約束
+白い雲のように
+青春の影
+22才の別れ
+[a35_ngb]
+とんぼ
+明日への扉
+乾杯
+順子
+しあわせになろうよ
+RUN
+西新宿の親父の唄
+勇次
+ろくなもんじゃねえ
+STAY DREAM
+桜島
+静かなるアフガン
+[a35_ymt]
+雨の街を
+輪舞曲
+最後の嘘
+中央フリーウェイ
+ルージュの伝言
+恋人がサンタクロース
+やさしさに包まれたなら
+最後の言い訳
+真珠のピアス
+海を見ていた午後
+ひこうき雲
+[a35_jly]
+カサブランカ・ダンディー
+TOKIO
+ストリッパー
+おまえがパラダイス
+許されない愛
+追憶
+コバルトの季節の中で
+[a36_pir]
+Psychedelic Rover
+Cocoa
+クリア・スカイ
+夕闇スーサイド
+Creature
+[a36_ali]
+ひまわりの約束
+WHITE PRAYER
+冬の稲妻
+チャンピオン
+遠くで汽笛を聞きながら
+今はもうだれもいない
+秋止符
+ジョニーの子守唄
+涙の誓い
+[a36_nmy]
+Vermilion
+東京少年
+the WORLD
+Alumina
+ジャイアニズム
+Naked Love
+[a36_lac]
+鳥になる日
+Warm Snow
+南国
+雪になって消えた二人
+情熱の風
+[a36_sia]
+Time's
+Dreams
+1/3の純情な感情
+月の雫
+君に会えたら
+[a36_der]
+Love Anymore
+Everything is Nothing
+Ballad
+[a36_sph]
+旅の途中
+進化論
+ずっと夢を見ていよう
+HARVEST
+まみれた街
+[a36_ant]
+鋼鉄の誓い
+ANTENNA
+[a36_bow]
+Rock Me Now
+Cry No More
+[a36_kir]
+アナザーサイド
+大阪の夜は長い
+白昼夢
+桜花
+[a37_zrd]
+揺れる想い
+君がいない
+もう探さない
+運命のルーレット廻して
+愛が見えない
+息もできない
+永遠
+Don't you see!
+突然
+[a37_wnt]
+WORST CRIME
+Brand New Love
+愛が生まれた日
+世界が終るまでは…
+約束の場所
+Time
+[a37_den]
+永遠をあずけてくれ
+未来のために
+恋心
+もう君を独りにさせない
+ずっと好きだった
+想い出をありがとう
+Don't Look Back
+Smile
+[a37_tbl]
+ZERO
+Beat!!
+[a37_okm]
+愛してます
+ありがとう
+ら・ら・ら
+白いGradation
+いちばん近くにいてね
+[a37_acs]
+ダンシング・ヒーロー
+Moonshine Dance
+Dream Runner
+Jealous Dogs
+Distance
+Machinegun Kiss
+Close to me
+SWEET TABOO
+[a37_glb]
+DEPARTURES
+FACE
+FREEDOM
+Feel Like dance
+[a37_chm]
+Windy
+My Gift to You
+Lovin' You
+Long Long Way
+It Takes Two
+[a37_ora]
+イケナイ太陽
+ミチシルベ
+キズナ
+シアワセのうた
+ラブ・パレード
+Ryukyu Wind
+[a37_shn]
+恋時雨
+Junkie
+夢の続きを
+風
+空の青
+風が吹いている
+[a37_rmo]
+朝顔
+運命
+粉雪
+もっと遠くへ
+明日に架ける橋
+太陽の下
+茜空
+蒼の世界
+Sakura
+[a37_gry]
+BE WITH YOU
+HOWEVER
+誘惑
+[a38_exl]
+Ti Amo
+道
+Someday
+Rising Sun
+銀河鉄道
+Flower Song
+もっと強く
+FIREWORKS
+EXIT
+想詩
+[a38_sjs]
+Spotlight
+ここにいるよ
+Unfair World
+J.S.B. LOVE
+Feel So Alive
+RAINBOW
+[a38_kdk]
+you
+Sexy Style
+Butterfly
+愛のうた
+WIND
+real Emotion
+Come With Me
+[a38_nzy]
+Midnight Rider
+Trouble
+Aquarium
+まだ君は知らない MY PRETTIEST GIRL
+ハナミズキ
+Bet
+ドーパミン
+[a38_dpm]
+Lilac
+Bomb
+Prism
+[a38_wnd]
+Resolution
+Wonderland
+Black
+Neverland
+[a38_aaa]
+Wake Up!
+Heart & Soul
+Love Machine
+Love
+虹
+MIRAGE
+BEYOND THE STARS
+バラードは君と
+Dear My Friend
+[a38_egl]
+Pink Champagne
+Starlight Parade
+Follow Me
+Highway Star
+Sunshine
+CANDY GIRL
+[a38_lgm]
+Fly Away Home
+Hello Again
+Lady Mind
+Gold Diggin
+Seasonal Love Story
+[a38_thk]
+Love in the Ice
+Survivor
+Wait For You
+Purple Line
+Mirotic
+[a38_mgl]
+いつもの帰り道
+平和の歌
+小さな恋のうた
+Dear
+風のように
+ヒロイン
+[a38_hz]
+Departure
+旅立ちの前日
+幸せ
+Girlfriend
+AM11:00
+[a39_elv]
+ブルー・ハワイ
+Heartbreak Hotel
+Hound Dog
+Jailhouse Rock
+Love Me Tender
+Can't Help Falling in Love
+Suspicious Minds
+Burning Love
+All Shook Up
+Don't Be Cruel
+It's Now or Never
+[a39_sin]
+My Way
+New York, New York
+Fly Me to the Moon
+Strangers in the Night
+That's Life
+The Way You Look Tonight
+Come Fly with Me
+I've Got You Under My Skin
+Something Stupid
+Witchcraft
+Summer Wind
+[a39_are]
+リスペクト
+シンク!
+ドクター・フィールグッド
+Respect
+Think
+Chain of Fools
+I Say a Little Prayer
+Freeway of Love
+Rock Steady
+Day Dreaming
+Until You Come Back to Me
+[a39_ray]
+Georgia on My Mind
+Hit the Road Jack
+What'd I Say
+I Can't Stop Loving You
+Unchain My Heart
+I Got a Woman
+Hallelujah I Love Her So
+Mess Around
+You Don't Know Me
+Busted
+[a39_ste]
+Superstition
+Isn't She Lovely
+I Just Called to Say I Love You
+Sir Duke
+You Are the Sunshine of My Life
+Signed, Sealed, Delivered
+Higher Ground
+Living for the City
+Part-Time Lover
+Overjoyed
+Master Blaster
+[a39_cel]
+My Heart Will Go On
+The Power of Love
+Because You Loved Me
+It's All Coming Back to Me Now
+I'm Your Angel
+That's the Way It Is
+To Love You More
+Think Twice
+Beauty and the Beast
+All by Myself
+I Surrender
+[a39_bru]
+Just the Way You Are
+Uptown Funk
+Grenade
+Locked Out of Heaven
+When I Was Your Man
+24K Magic
+That's What I Like
+Treasure
+The Lazy Song
+Marry You
+Finesse
+[a39_jus]
+ソーリー
+ホワット・ドゥ・ユー・ミーン?
+Baby
+Sorry
+Love Yourself
+What Do You Mean?
+Peaches
+Stay
+Ghost
+Boyfriend
+Yummy
+[a39_ari]
+thank u, next
+7 rings
+Positions
+Side to Side
+Into You
+No Tears Left to Cry
+God Is a Woman
+Problem
+Break Free
+Dangerous Woman
+Bang Bang
+[a39_kat]
+ファイアーワークス
+ロール
+Firework
+Roar
+I Kissed a Girl
+California Gurls
+Teenage Dream
+Dark Horse
+Hot n Cold
+Last Friday Night
+E.T.
+[a39_cla]
+バッジ
+チェンジ・ザ・ワールド
+Layla
+Tears in Heaven
+Wonderful Tonight
+Cocaine
+Change the World
+Crossroads
+[a39_phi]
+アナザー・デイ・イン・パラダイス
+In the Air Tonight
+Another Day in Paradise
+Against All Odds
+Sussudio
+Easy Lover
+One More Night
+You Can't Hurry Love
+Groovy Kind of Love
+Two Hearts
+I Wish It Would Rain Down
+[a40_egl]
+Take It to the Limit
+The Long Run
+Those Shoes
+Hotel California
+Desperado
+Witchy Woman
+Tequila Sunrise
+I Can't Tell You Why
+Best of My Love
+Victim of Love
+[a40_gns]
+I Know What I Like
+Mama
+Turn It On Again
+Invisible Touch
+I Can't Dance
+Throwing It All Away
+Tonight, Tonight, Tonight
+In Too Deep
+Jesus He Knows Me
+Supper's Ready
+The Lamb Lies Down on Broadway
+[a40_vhl]
+Panama
+Finish What You Started
+Jump
+Dreams
+When It's Love
+Unchained
+Dance the Night Away
+Right Now
+Jamie's Cryin'
+Hot for Teacher
+Runnin' with the Devil
+Ain't Talkin' 'bout Love
+Why Can't This Be Love
+You Really Got Me
+[a40_kzz]
+Heaven's on Fire
+Black Diamond
+Cold Gin
+Deuce
+God of Thunder
+Forever
+Crazy Crazy Nights
+Rock and Roll Hell
+Firehouse
+[a40_rmn]
+We're a Happy Family
+Blitzkrieg Bop
+Rockaway Beach
+Pet Sematary
+[a40_clh]
+Should I Stay or Should I Go
+Complete Control
+London Calling
+Rock the Casbah
+[a40_ren]
+Nightswimming
+Drive
+Daysleeper
+Losing My Religion
+Man on the Moon
+The One I Love
+Shiny Happy People
+Orange Crush
+What's the Frequency, Kenneth?
+[a40_cur]
+Boys Don't Cry
+Close to Me
+Lullaby
+A Forest
+Fascination Street
+High
+A Night Like This
+Friday I'm in Love
+Lovesong
+Pictures of You
+In Between Days
+Charlotte Sometimes
+Why Can't I Be You?
+[a40_dpm]
+Never Let Me Down Again
+Everything Counts
+Walking in My Shoes
+Just Can't Get Enough
+Master and Servant
+Strangelove
+Precious
+I Feel You
+Barrel of a Gun
+It's No Good
+Ghosts Again
+[a40_plc]
+Don't Stand So Close to Me
+Roxanne
+Message in a Bottle
+Walking on the Moon
+Wrapped Around Your Finger
+Spirits in the Material World
+Synchronicity II
+Invisible Sun
+Murder by Numbers
+Every Breath You Take
+Every Little Thing She Does Is Magic
+Can't Stand Losing You
+De Do Do Do, De Da Da Da
+Truth Hits Everybody
+[a40_thd]
+This Must Be the Place
+Take Me to the River
+Wild Wild Life
+Nothing but Flowers
+Slippery People
+[a40_dlp]
+Love Bites
+Woman
+Pyromania
+Pour Some Sugar on Me
+Hysteria
+Rock of Ages
+Bringin' On the Heartbreak
+[a41_bigbong]
+Lines
+Looser
+Fantastic Baby
+Haru Haru
+Lies
+Monster
+Bae Bae
+Loser
+If You
+Blue
+Sober
+[a41_shiney]
+Replay
+Lucifer
+Sherlock
+View
+Everybody
+1 of 1
+Good Evening
+Don't Call Me
+Atlantis
+Hard
+[a41_shoujojikoku]
+Oh!
+The Boys
+Mr.Taxi
+Holiday
+Party
+Hoot
+Paparazzi
+Kissing You
+Catch Me If You Can
+[a41_twise]
+Cheer Up
+Dance The Night Away
+Like OOH-AHH
+More & More
+I CAN'T STOP ME
+Alcohol-Free
+[a41_seventea]
+HOME
+Rock with you
+HOT
+God of Music
+Maestro
+Love, Money, Fame
+Adore U
+Oh My!
+Fear
+Ready to love
+[a41_straykits]
+S-Class
+Case 143
+LALALALA
+Hellevator
+District 9
+Christmas EveL
+My Pace
+Victory Song
+Levanter
+Side Effects
+Venom
+[a41_psi]
+Hangover
+Bird
+I LUV IT
+[a41_jaychow]
+Rainbow
+Common Jasmine
+青花瓷
+晴天
+稻香
+告白气球
+夜曲
+简单爱
+双截棍
+[a41_teresatei]
+空港
+つぐない
+愛人
+香港
+我只在乎你
+小城故事
+何日君再来
+Lover
+Kitchen
+[a41_roxetta]
+It Must Have Been Love
+Dangerous
+How Do You Do!
+Church of Your Heart
+Wish I Could Fly
+[a41_aceofbass]
+Don't Turn Around
+Always Have, Always Will
+Wheel of Fortune
+[a41_rammstain]
+Feuer Frei
+Links 2-3-4
+Engel
+Mein Herz brennt
+Deutschland
+Amerika
+Mutter
+[a42_ykr]
+ブランデーグラス
+二人の世界
+夜霧の慕情
+恋の町札幌
+夜霧よ今夜も有難う
+わが人生に悔いなし
+泣かせるぜ
+[a42_hrm]
+大阪しぐれ
+夫婦坂
+浪花恋しぐれ
+影を慕いて
+ふたりの大阪
+愛は花、君はその種子
+千年の古都
+さよなら列車
+京都から博多まで
+みちのくひとり旅
+[a42_msn]
+女のためいき
+命くれない
+港町ブルース
+冬の旅
+そして、神戸
+恋
+ひとり酒場で
+君こそわが命
+新宿の女
+中の島ブルース
+盛り場ブルース
+[a42_ish]
+夜空
+ふるさと
+よこはま・たそがれ
+長崎は今日も雨だった
+北の旅人
+くちなしの花
+かもめはかもめ
+おまえに
+[a42_syr]
+滝の白糸
+飢餓海峡
+天城越え
+ウイスキーが、お好きでしょ
+朝花
+夫婦善哉
+波止場しぐれ
+越前岬
+暗夜の心中立て
+火の国へ
+思い出の糸
+[a42_hdk]
+勇気があれば
+愛の十字架
+YOUNG MAN (Y.M.C.A.)
+ギャランドゥ
+ブーメランストリート
+ブルースカイブルー
+ジェット・コースター・ロマンス
+[a42_kym]
+海 その愛
+光進丸
+夜空の星
+夕陽は赤く
+ブラック・サンド・ビーチ
+蒼い星くず
+ぼくの妹に
+まだ見ぬ恋人
+霧雨の舗道
+[a42_tgs]
+落葉の物語
+淋しい雨
+花の首飾り
+君だけに愛を
+シーサイド・バウンド
+シー・シー・シー
+美しき愛の掟
+白夜の騎士
+[a42_spd]
+風が泣いている
+真珠貝の歌
+真珠の涙
+ガール・イン・ザ・フィッシュ
+太陽の翼
+バン・バン・バン
+ヘイ・ガール
+[a42_bcm]
+草原の輝き
+さよならのあとで
+ブルー・シャトウ
+甘いお話
+マリアの泉
+青い瞳
+ジャッキー
+[a42_czc]
+ホンダラ行進曲
+学生節
+ドント節
+これが男の生きる道
+だまって俺について来い
+ショボクレ人生
+[a42_drf]
+ドリフの早口ことば
+いい湯だな
+ドリフのほんとにほんとにご苦労さん
+誰かさんと誰かさん
+ドリフのバイのバイのバイ
+ドリフのラバウル小唄
+ミヨちゃん
+ドリフの真赤な封筒
+[a43_tlp]
+Urban Disko
+Do the House
+A.B.C.D.
+I Hate DISCOOOOOOO!!!
+Do the DISCO
+sick rock
+Baby, Baby
+Keep Your DISCO
+[a43_psp]
+ハイパーリアリズム
+メーデー
+最終電車
+トキノワ
+MATATABISTEP
+S.S
+電脳
+永すぎた春
+かくれんぼ
+ヨアケマエ
+[a43_hmb]
+星丘公園
+短編小説
+クジラの唄
+Flashback
+カーブミラー
+Lilly
+青すぎる空
+ラブソング
+[a43_ksc]
+さよならリグレット
+東京ブルーズ
+さよならミッドナイト
+ベイビーユー
+ハイインザムーン
+風になれ
+[a43_orc]
+5150
+ミラクルマジック
+狂乱 Hey Kids!!
+ONE SHOT
+Dream In Drive
+[a43_ynh]
+Crazy Dancer
+Honey I Love You
+[a43_ktk]
+MATSURI BAYASHI
+ワンダーワンダー
+Re:
+BOUNCE
+[a43_sbv]
+人間
+青い春
+最低なロック
+突破口
+ハローグッバイ
+[a43_frd]
+オンリーワンダー
+蜃気楼
+Unbreakable
+[a43_bec]
+バッドパラドックス
+NEVER ENDING STORY
+UNIVERSE
+Q.E.D.
+BLUE ENCOUNT
+[a43_hkm]
+世界を終わらせて
+カントリーロード
+ハートビート
+タイムマシン
+ニューワールド
+春を告げる
+[a43_ska]
+めくれたオレンジ
+DOWN BEAT STOMP
+星降る夜に
+カナリヤ鳴く空
+銀河と迷路
+Skaravan
+[a44_hsn]
+CHOO CHOO ガタゴト
+トロピカル・ダンディー
+Sports Men
+北京ダック
+はらいそ
+[a44_mrt]
+17才
+この街
+気分爽快
+雨
+ロックン・オムレツ
+ジン ジン ジングルベル
+風に吹かれて
+私の夏
+ハエ男
+[a44_okm]
+ぶーしゃかLOOP
+Out of Blue
+ステップアップ↑
+ビーチタオル
+あの娘と自転車に乗って
+Peach Time
+[a44_ymz]
+ドミノ
+アドレナリン
+Pole Pole
+STAR
+月明かり
+Mother
+僕と僕の
+ROLL
+[a44_hcm]
+センチメンタル通り
+ぼくの女に手を出すな
+赤い花白い花
+くすぐり
+ラッキー
+幸福
+恋は流星
+[a44_mnl]
+くれない埠頭
+Y.Y.の夜
+9月の海はクラゲの海
+鬼火
+ニットキャップマン
+プレゼント
+Don't Trust Over Thirty
+[a44_snd]
+青春狂想曲
+NOW
+星を見たかい
+白い恋人
+セツナ
+魔法のトンネル
+苺畑でつかまえて
+[a44_yrr]
+つぎの船
+sweet spot
+つぎの夜へ
+ゆらゆら帝国で考え中
+ズックにロック
+ロボットでした
+[a44_sdr]
+ハイスクールラブ
+気になるあの子
+たまたまニュータウン
+スマイルあげない
+天声ジングル
+ミス・パラレルワールド
+弾けるトランペット
+Spring
+Wonder Wander
+[a44_ego]
+くちばしにチェリー
+満ち汐のロマンス
+a love song
+Wonderland
+かみさまのたわむれ
+サイコアナリシス
+[a44_kjn]
+牡牛座ラプソディー
+千年紀末に降る雪
+グッド・ナイト
+悲しみにさよなら
+ニュータウン
+愛のことば
+Do it again
+[a44_hhb]
+おいらは老人
+虎
+おいらの船
+おなじ話
+大宴会
+バス停
+雨の日の日曜日
+[b01_bbb]
+Gold
+What's Up Chicken
+Ride on
+I'm Here
+Rock 'n' Roll Train
+[b01_okm]
+BROTHER
+ALL I NEED
+Cheers
+Wildman
+ニューエラ
+Too Too Too
+[b01_tba]
+Snow Lady
+[b02_wik]
+情熱
+Happy People
+Shake
+Melody
+Dreamer
+[b02_ykd]
+嫌んなった
+Big Mother Blues
+大阪ストラット
+天王寺ブルース
+おそうじおばちゃん
+[b02_kdm]
+初恋
+Distance
+Rain
+[b02_ykz]
+雪國
+酒よ
+ドンパン節
+想い出のエリー
+[b02_gh]
+よろしく哀愁
+小麦色のマーメイド
+[b02_ksd]
+抱いてセニョリータ
+Blue Rose
+Fly Away
+Gimme Gimme
+Fight Song
+恋一夜
+あばずれ
+Loving
+Rose
+夏の約束
+[b02_mnm]
+ガールフレンド
+思いのままに
+接近
+吐息でネット
+秋からも、そばにいて
+楽園のDoor
+[b02_sty]
+夢の中へ
+悲しみがとまらない
+卒業
+少女
+月の夜に
+ハート
+青春
+Joy
+[b02_yjm]
+探偵物語
+Woman“Wの悲劇”より
+メイン・テーマ
+[b02_ogn]
+ダンシング・ヒーロー
+ヤマトナデシコ
+ノーブル・レッドの瞬間
+[b02_hrk]
+楽園
+LOVE OR LUST
+瞳をとじて
+POP STAR
+ノンフィクション
+グロテスク
+大切なもの
+ララバイ
+思いがかさなるその前に
+Strawberry Sex
+Life is...
+[b03_tmr]
+Burn
+Fly
+Gamble
+Burning Up
+Juice
+LIGHTNING
+HEART OF SWORD
+魂を抱いてくれ
+Remember the Soul
+[b03_aim]
+蝶々結び
+I beg you
+春はゆく
+RE:I AM
+Ref:rain
+Sailing
+AM02:00
+ninelie
+花の唄
+Fate
+Viola
+[b03_aoi]
+AURORA
+約束
+翼
+月を追う真夜中
+虹の彼方に
+心臓
+GENESIS
+悲しみはオーロラに
+月に恋
+[b03_wnd]
+WORST CRIME
+世界中の誰よりきっと
+愛が生まれた日
+世界が終るまでは…
+[b06_kkk]
+全部だきしめて!
+愛のかたまり!
+フラワー
+もう君以外愛せない
+Anniversary
+情熱
+青の時代
+薄荷キャンディー
+[b06_trp]
+BIRTH OF A NEW DAY
+Sky is the Limit
+寒い夜だから...
+Overnight Sensation
+BRAND NEW TOMORROW
+masquerade
+Feel the Passion
+A Love Song
+UPSIDE DOWN
+Lights
+[b06_sbg]
+スシ食いねェ!
+喝!
+サムライ・ニッポン
+お月さま
+[b06_wck]
+ふたりのBirthday
+Blue Rain
+Sweet Paradise
+Missing Love
+愛が止まらない
+言葉にできない
+ジプシー
+アップル・パップル
+[b06_alf]
+メリーアン
+恋人たちのペイヴメント
+夏の終わりのコーラス
+シンデレラ・エクスプレス
+ジェネレーション・ダイナマイト
+星空のディスタンス
+SWEAT & TEARS
+[b06_skm]
+ガラナ
+冬の口笛
+ふれて未来を
+雨待ち風
+view
+星のうつわ
+藍
+アイスクリーム シンドローム
+マリンスノウ
+晴ときどき曇
+[b07_mtb]
+愛はエネルギー
+Changes
+Over the Rainbow
+[b07_krs]
+Kemuri
+Meiso
+Shin-Sekai
+Matsuri
+Lost Voices
+Tsuyoi
+[b07_fjw]
+Cry Like a Baby
+[b07_nsp]
+Silent Jealousy
+[b07_nao]
+さくら
+花粉
+君は五番目の季節
+愛し君へ
+今が人生
+金色の空
+風花
+星屑のセレナーデ
+花鳥風月
+友達でいいから
+[b07_hnr]
+Hello
+Nostalgia
+Rainy Day
+[b07_yys]
+夏
+港
+Night Dancing
+[b07_hno]
+Alone Together
+Sweet Nothing
+Leave me Alone
+[b07_wtk]
+Crescendo
+Sweet Memories
+[b07_tnk]
+BLUE LAGOON
+TROPICAL
+Sea Breeze
+Joy
+Island
+[b07_sky]
+STAY FREE
+Tokyo
+I'll Get On
+[b07_ito]
+Cheeky
+Jamming
+Rap
+[b08_sph]
+Sophia
+君と揺れていたい
+黒いブーツ
+Believe
+[b08_hid]
+限界破裂
+D.O.D.
+[b08_dht]
+怒髪天
+ド真ん中節
+ニッポン・ワッショイ
+団地のテーマ
+サムライブルー
+全てを
+[b08_kba]
+千本桜
+夢
+紅白歌合戦
+Tokyo
+[b08_ysr]
+おんな港町
+恋の東京
+ふたりの夜明け
+ほたる
+[b08_hsk]
+望郷じょんから
+新宿満月
+応援歌、いきます
+捨てられて
+[b08_hsy]
+浪漫鉄道
+冬のリヴィエラ
+思い出
+あなただけを
+一億の微笑
+[b08_chk]
+喝采
+X+Y=LOVE
+星影の小径
+矢車の花
+紅とんぼ
+朝がくるまで
+恋の奴隷
+かもめの街
+冬隣
+掛け橋
+[b08_mkw]
+柳ヶ瀬ブルース
+新潟ブルース
+愛の讃歌
+[b08_ing]
+夜空ノムコウ
+世界に一つだけの花
+[b08_tmk]
+田園
+行かないで
+MR.LONELY
+ただいま
+Sweet Ruby
+じれったい
+プレゼント
+[b08_mkh]
+遠く遠く
+ANSWER
+Hey...?
+LOVE LETTER
+彼女の恋人
+ずる休み
+まだ生きてるよ
+ぼくの彼女
+No.1
+2つめの月曜日
+[b08_hik]
+楽園
+LOVE OR LUST
+瞳をとじて
+POP STAR
+ノンフィクション
+大切なもの
+思いがかさなるその前に
+Gaining Through Losing
+KISS OF LIFE
+ソレデモシタイ
+Sing Forever
+[b08_mnt]
+高校三年生
+涙そうそう
+さくら(独唱)
+夏の終わり
+[d01_kbb]
+贈る言葉
+人として
+まっすぐ
+星屑の街
+[d01_flv]
+U.F.O.
+サウスポー
+帰って来たヨッパライ
+イムジン河
+悲しくてやりきれない
+戦争を知らない子供たち
+あの素晴しい愛をもう一度
+[d01_alz]
+陽はまた昇る
+昴
+チャンピオン
+冬の稲妻
+遠くで汽笛を聞きながら
+今はもうだれもいない
+秋止符
+帰らざる日々
+[d02_ers]
+RADIOLOGIC
+Sweet Little Fifteen
+MAGIC CAN DO
+ふたりの夏物語
+[d02_wtn]
+M
+10 years
+Dear Friend
+ガールフレンド
+ムーンライト・ダンス
+いつか きっと
+卒業
+[d02_bbq]
+なんだったんだ?7DAYS
+目を閉じておいでよ
+負けるなBaby!
+ノーマルなんて
+[d03_atg]
+恋の骨折り損
+ボンゴレ
+学校
+WANTED!!
+Fast Food Romance
+[d03_ims]
+うっせぇわ
+私は最強
+新時代
+ルル
+[d03_eaf]
+宇宙のファンタジー
+Mela!
+Flavor
+[d03_awc]
+赤いスイートピー
+I'll Be There
+[d03_omk]
+心という種
+Sunny Day
+ハッピーエンド
+Truly
+渇いた叫び
+トキメキ
+365
+Blessing
+Moratorium
+[d03_tkr]
+シャッター
+ドライフラワー
+ベテルギウス
+[d03_ntr]
+ナトリウム
+[d04_tub]
+夏を抱きしめて
+LA・LA・LA LOVE SONG
+[d04_shq]
+いいわけ
+My Love
+マイ・ラブ
+せつないね
+ら・ら・ら
+恋の言葉
+My Dear
+月まで届け
+[d04_dee]
+ディーゼル
+ハロー
+ミニスカート
+Long Road
+[d04_hyy]
+エール
+あなた
+あなたに
+[d04_flw]
+STOP!!!
+Fly
+[d04_sid]
+嘘
+モノクロのキス
+rain
+夏恋
+V.I.P
+one way
+アリバイ
+ミルク
+日傘
+恋におちて
+妄想日記
+[d04_ktm]
+さくら
+夏の思い出
+涙
+ケツメイシ
+手紙〜過去と未来の自分へ〜
+こっちおいで
+また君に会える
+はじまりの合図
+RAINBOW
+聖なる夜に
+バラード
+[d05_afc]
+プシケ
+Honey
+月夜の道を俺が行く
+ブルー
+ノック
+最後の朝
+Golden Time
+[d05_sbv]
+ハイライト
+東京
+人間
+最低なロック
+ハローグッバイ
+[d05_hmp]
+Night Theater
+DO YOU KNOW?
+Bones
+こころ
+[d05_cns]
+GIRL
+Dinosaur
+恋は罠
+STAR
+ぼくの女に手を出すな
+[d05_plw]
+ムーンライト
+シーグラス
+Ink
+空中ブランコ
+[d05_elg]
+Missing
+Make A Wish
+ジターバグ
+Supernova
+風の日
+金星
+虹
+指輪
+No.13
+Kiss Me
+[d05_yab]
+ゆとりですがなにか
+ハイパーインフレ
+[d05_hrk]
+ピカピカ
+Light
+こっちを見て
+いのち
+[e01_hit]
+ステレオジュブナイル
+イマジナリー・モノフィクション
+Nose
+LOVE ACTION
+ハッピーエンド
+Dear Friends
+STAR
+最後のライブ
+[e01_and]
+Prism
+SignalS
+Shout
+Lamp
+Kiss
+GO
+SOS
+Ark
+[e01_hsw]
+朝に二人は
+Jamming
+円盤飛来
+恋煩い
+神話崩壊
+NAGISA
+Beautiful
+[e01_pit]
+塔
+逆光
+Flash
+Ghost

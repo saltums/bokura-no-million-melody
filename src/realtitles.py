@@ -105,25 +105,44 @@ def _lev(a, b, cap):
     return p[-1]
 
 
-def _too_close(x, y):
-    """x(もじり)と y(実曲名)が近すぎるか。どちらも tnorm 済み・x != y"""
+def _too_close(x, y, own=False):
+    """x(もじり)と y(実曲名)が近すぎるか。どちらも tnorm 済み・x != y。
+    新基準(2026-11): 元曲が一瞬で分かる1〜2字・1語の差し替えは「可」(天体観光 / 春よ、濃い / Let It Bee / 涙のリクルート)。
+    不可は (1) 同じ音で字・かなだけ替えた(鯉/恋・さくら/桜・ステイション/ステーション)、(2) 実曲名そのまま+語の付け足し(天体観光ツアー型の「元曲+一語」)。
+    同じ音は漢字の駄洒落でも不可(真夜中すぎの鯉)。例外はユーザーが可と明示した ALLOW(春よ、濃い)だけ。"""
     ly = len(y)
-    if ly < 2: return False
-    # QA9: 実曲名(5字以上)をそのまま頭か尻に含む(サイレントマジョリティー・ミール / Shout Baby Corn / IGNITE ME / MEMORIA 2)
-    if ly >= 5 and len(x) > ly and (x.startswith(y) or x.endswith(y)): return True
-    cap = 2
-    sx = set(x)
-    if sum(c not in sx for c in y) <= cap: d = _lev(x, y, cap)
-    else: d = cap + 1
-    if d <= 1 and ly >= 3: return True  # 1字(1文字・1語の綴り1字)だけの違い: 春よ、濃い / Let It Bee / 天体観測所
-    if d == 2 and len(x) == ly and ly >= 6: return True  # 同じ長さで2字だけ差し替え: 涙のリクルート
-    if d == 2 and ly >= 10: return True  # 長い曲名の綴り2字だけ: Tomorrow never shows
-    if _LAT.fullmatch(x) and _LAT.fullmatch(y): return False  # 英字どうしは綴りで比べる(英字の読みは粗い)
-    rx, ry = trd(x), trd(y)
-    if rx and ry and len(ry) >= 2 and abs(len(rx) - len(ry)) <= 1 and sum(c not in set(rx) for c in ry) <= 1:
-        if rx == ry: return True  # 同じ読み(字だけ替えた・濁点/長音だけ替えた): 鯉/恋
-        if len(ry) >= 4 and len(rx) == len(ry) and _lev(rx, ry, 1) <= 1 and not (_LAT.search(x) or _LAT.search(y)): return True  # 読みが1音だけ違う
-    return False
+    # (2) 実曲名をそのまま頭か尻に含み、2字以上付け足しただけ(Let It Bee-keeper / 神田川の増水)。元ネタ本人の曲(own)は英字4字・和文2字から、
+    #     ほかの実曲名は英字8字・和文5字から(「さよなら」「Emotion」のような短いありふれた曲名は語として使ってよい)
+    if len(x) - ly >= 2 and (x.startswith(y) or x.endswith(y)) and ly >= ((4, 2) if own else (8, 5))[0 if _LAT.fullmatch(y) else 1]: return True
+    # (1) 同じ音
+    if _LAT.fullmatch(x) and _LAT.fullmatch(y):
+        return _cons(x) == _cons(y)  # 英字どうし: 子音の重ねだけ違う(Lemmon/Lemon)は同じ音。Let It Bee は可
+    rx, ry = trd2(x), trd2(y)
+    return bool(rx and ry and len(ry) >= 2 and rx == ry and x not in ALLOW)
+
+
+# 同じ音でもユーザーが「可」と明示した例(2026-11 指示)
+ALLOW = {tnorm(_t) for _t in ('春よ、濃い',)}
+
+
+_RD2 = {}
+
+
+def trd2(x):
+    """読み(ひらがな)。濁点は区別し、長音・「う」・小書きだけならす(音が変わったかを見る)"""
+    if x in _RD2: return _RD2[x]
+    kk, jc = _kk(); s = x
+    if jc and re.fullmatch(r'[a-z]+', s or '-'): s = jc.alphabet2kana(s)
+    h = ''.join(w['hira'] for w in kk.convert(s)) if kk else s
+    h = ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in h)
+    h = unicodedata.normalize('NFC', h).translate(_SM)
+    h = re.sub(r'[ーう]', '', h) if re.search(r'[ぁ-ゖ]', h) else h
+    _RD2[x] = h
+    return h
+
+
+def _cons(s):
+    return re.sub(r'([b-df-hj-np-tv-z])\1+', r'\1', s)
 
 
 _LAT = re.compile(r'[a-z0-9]+')
@@ -140,19 +159,34 @@ def _bylen():
 
 
 def close(t, key=None, pool='wide'):
-    """t が実在曲名に近すぎる(そのままではないが、1字・1音・同じ読みの違いしかない)なら、その実曲名を返す。
-    key があれば元ネタ本人の曲([key])と [*] と照合。key なし(もじり曲名プール)は全曲名(ありふれた言葉を除く)と照合。"""
+    """t が実在曲名に近すぎるなら、その実曲名を返す(新基準: 同じ読み / 実曲名そのまま+付け足し)。
+    1〜2字・1語の差し替えで音が変わるもじりは通す。key があれば元ネタ本人の曲([key])と [*]、key なしは全曲名(ありふれた言葉を除く)と照合。"""
     x = tnorm(t)
     if not x or hit(t, key, pool): return None
     if key:
-        cands = set(RT_SEC.get(key, ())) | set(RT_SEC.get('*', ()))
-    else:
-        bl = _bylen(); cands = []
-        for n in range(max(1, len(x) - 3), len(x) + 4): cands += bl.get(n, [])
-    for y in cands:
-        if y != x and abs(len(y) - len(x)) <= 3 and _too_close(x, y): return y
-    # QA9: 実曲名(5字以上・ありふれた言葉を除く)をそのまま頭か尻に含む(長さの差は問わない)
-    pool_ = (set(RT_SEC.get(key, ())) | set(RT_SEC.get('*', ()))) if key else RT_ALL
-    for y in pool_:
-        if 5 <= len(y) < len(x) and y not in RT_GEN and (x.startswith(y) or x.endswith(y)): return y
+        own = set(RT_SEC.get(key, ())); cands = (own | set(RT_SEC.get('*', ()))) - RT_GEN
+        for y in cands:
+            if y != x and _too_close(x, y, y in own): return y
+        return None
+    # key なし: 頭・尻の部分一致と読みの一致を索引で引く
+    for n in range(5, len(x) - 1):
+        for y in (x[:n], x[-n:]):
+            if y in _NG_ALL and _too_close(x, y): return y
+    rx = ('#' + _cons(x)) if _LAT.fullmatch(x) else trd2(x)
+    for y in _rdi().get(rx, ()):
+        if y != x and _too_close(x, y): return y
     return None
+
+
+_NG_ALL = RT_ALL - RT_GEN
+_RDI = None
+
+
+def _rdi():
+    global _RDI
+    if _RDI is None:
+        _RDI = {}
+        for y in _NG_ALL:
+            if not _LAT.fullmatch(y): _RDI.setdefault(trd2(y), []).append(y)
+            else: _RDI.setdefault('#' + _cons(y), []).append(y)
+    return _RDI
