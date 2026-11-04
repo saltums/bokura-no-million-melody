@@ -93,6 +93,15 @@ def load_specs(dirpath='/home/claude/arcs_new'):
     return arcs, pt
 
 
+_BPT = []
+def _bank_pt():
+    if not _BPT:
+        try:
+            import json as _j; _BPT.extend(_j.load(open('/home/claude/namebank.json', encoding='utf-8')).get('pt') or [])
+        except Exception: _BPT.append("")
+    return [t for t in _BPT if t]
+
+
 def _nth(n): return "%d%s" % (n, "th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th"))
 
 
@@ -110,7 +119,11 @@ def rel(a, pool, seen, pos, y, tier, th, lb, dev, era):
     n = 0
     while (ti in seen or not eraword.ok(ti, y)) and n < len(pool): ti = pool[(pool.index(ti) + 1) % len(pool)]; n += 1
     if n >= len(pool):  # 時代に合う曲名が尽きたら、時代違いでも未使用のものを使う
-        ti = next((t for t in pool if t not in seen), ti)
+        ti = next((t for t in pool if t not in seen), None)
+        if ti is None:  # QA10: そのアーティストのもじりが尽きたら、汎用のもじりプールから(同じ題名を二度出さない)
+            fb = [t for t in PT0.get("misc", []) + _bank_pt() if t not in seen]
+            fb2 = [t for t in fb if eraword.ok(t, y)] or fb
+            ti = fb2[H(a["k"], "fb", pos, dev, era) % len(fb2)] if fb2 else pool[(pos * 3 + dev * 2) % len(pool)]
     seen.append(ti)
     pr = pr_of(r, th); k = kind_of(pos)
     h = dict(kind=k, ord="", title=ti, year=y, tier=tier, theme=th, premise=pr, label=lb)
@@ -138,7 +151,11 @@ def real_of(a, j):
 # 本家の筋から外れた後、本家固有の転機の代わりに出す文
 OFF_TX = ["選んだ道の先は、どこの地図にも載っていなかった。", "答え合わせのできない日々が続いた。それでも音は鳴らしていた。",
           "あの日の選択が、少しずつ毎日の形を変えていった。", "手探りのまま、次の作品に取りかかった。",
-          "予定表は白紙のまま。それでも、音を鳴らさない日はなかった。", "誰かの真似ではない一日が、静かに積み重なっていった。"]
+          "予定表は白紙のまま。それでも、音を鳴らさない日はなかった。", "誰かの真似ではない一日が、静かに積み重なっていった。",
+          "正解かどうかは、まだ誰にも分からなかった。練習だけは、いつもどおり続いた。", "選ばなかった道のことは、夜中にだけ少し考えた。朝には忘れていた。",
+          "小さな会場の空気が、少しずつ自分たちの音に慣れていった。", "新しい曲が一つ、机の上のノートに書き足された。", "機材車の走行距離だけが、確実に伸びていった。",
+          "お客の顔ぶれが、気づけば少し入れ替わっていた。", "打ち上げの話題は、次に何を作るかに変わっていった。", "どこにも載らない日々の中で、音だけが前に進んだ。",
+          "褒められもけなされもしない季節が、しばらく続いた。", "前と同じ場所に立っているのに、見える景色が違っていた。", "一曲ごとに、少しだけ遠くへ投げられるようになった。", "誰に頼まれたわけでもない作業が、朝まで続いた。"]
 EV_FILL = "活動は、少しずつ、確かな形になっていった。"
 OFF_EX = re.compile(r"解散|休止|脱退|再結成|再始動|メジャー|海外|上京|移籍|独立|復帰|引退")
 
@@ -173,6 +190,101 @@ NEWPART = re.compile(r"(?:新しい|若い|新たな|別の|次の)(" + "|".join
 LEAVE = re.compile(r"抜け|降り|離れ|辞め|やめる|やめたい|帰ってこい|帰れ|裏方|移りたい|終わりだ|専念したい|やれない|継ぐ|就職|出ていく|去る|もうできない|もう無理|限界だ|他の道|別の道|別の仕事|家業")
 KEEPGO = re.compile(r"[二三四五六七八九]人(?:で|のまま|になって|に戻)|なしで続け|抜きで続け|いない(?:まま|形)で|欠けたまま|埋めずに|送り出す|見送る|引き留めない|引き止めない|残った(?:メンバー|仲間|者)で|穴を埋めず|そのまま続け")
 KEEPGO_N = re.compile(r"新しい|迎え|探し|代わり|補充|入れ|引き留め(?!ない)|引き止め(?!ない)|止める|やめる|解散|幕|区切り|終わ")
+
+
+# QA10: 分かれ道の問い・選択肢から、誰が抜けるか(担当名・人数)と、代わりを迎えるかを読み取って顔ぶれの出入り(mb)を決める
+_LV_Q = re.compile(r"(?<!駆け)(?<!力の)(?<!力が)(?<!手を)抜け(?!ば|駆け|道|目|穴|殻|ない)|降り(?:る|たい|させ)|(?:やめ|辞め)(?:たい|る|させて)(?!てきた)|家業を継ぐ|実家(?:の仕事|の店)?を継ぐ|店を継ぐ|就職(?:する|が決まった|して|します)|会社員になる|脱退|裏方に回|(?<!しばらく)(?<!しばらく、)(?<!少し)(?<!少し、)(?<!一度)離れたい|もうできない|もう無理|限界だ|別の仕事|他の道を|別の道を|専念したい|帰ってこい|帰れ|出ていく|去る|移りたい|終わりだ|バンドを離れ|グループを離れ")
+_LV_PAST = re.compile(r"(?<!駆け)(?<!力の)(?<!力が)抜け(?:た|ていった|てしまった)|脱退した|辞めた|やめた|去った|降りた|いなくなった|(?:バンド|グループ)を離れた")
+_KEEP_L = re.compile(r"引き止め|引き留め|説得|残ってもら|思いとどま|止まらず|考え直|もう一度話|話し合|立て直す|全員で|誰も欠け|このメンバー|待つ|戻るのを待|休む|休み|休止|走り続け|いったん|一旦")
+_DISB_L = re.compile(r"終わりにする|終える|解散|幕を引|幕を下ろ|区切りをつけ|名前を置く|やめる|辞める|それぞれの道")
+_REPL_L = re.compile(r"迎え|新しい(?:仲間|メンバー|声|顔|人)|代わり|代役|補充|探す|探して|募集|誘う|正式メンバー|入れる")
+_REPL_N = re.compile(r"せず|しない|探さない|補充せず|迎えず|入れず|なしで|抜きで")
+_QUOTE = re.compile(r"([^。『』「」]{0,24}?)(?:が|は)(、?[^『』「」]{0,16}?)[『「]([^』」]*)[』」]")
+_CNTW = {"ひとり": 1, "一人": 1, "誰か": 1, "二人": 2, "ふたり": 2, "三人": 3, "次々": 2}
+
+
+def _mb_outs(mb): return ([mb["out"]] if mb and mb.get("out") else []) + list((mb or {}).get("xo") or [])
+def _mb_ins(mb): return ([mb["in"]] if mb and mb.get("in") else []) + list((mb or {}).get("xi") or [])
+
+
+def _roles_in(s):
+    hits = sorted(((s.find(w), w) for w in PART_OF if w in s), key=lambda z: (z[0], -len(z[1])))
+    out = []; used = []
+    for p, w in hits:
+        if any(p >= q and p < q + len(v) for q, v in used): continue
+        used.append((p, w)); out.append(PART_OF[w])
+    return out
+
+
+def lineup_leavers(prompt):
+    """問いの文から (抜ける担当のリスト, 担当が分からない人数, 既に抜けたか) を返す。誰も抜けないなら (None, 0, False)"""
+    parts = []; cnt = 0; found = False
+    for m_ in _QUOTE.finditer(prompt):
+        who, mid, q = m_.group(1), m_.group(2), m_.group(3)
+        if not _LV_Q.search(q): continue
+        rs = _roles_in(who)
+        if rs: parts += rs; found = True
+        else:
+            k = next((v for w, v in _CNTW.items() if w in who + mid), 0)
+            if k or re.search(r"メンバー|仲間|一人|ひとり", who): cnt += k or 1; found = True
+    outside = re.sub(r"『[^』]*』|「[^」]*」", "", prompt)
+    past = bool(_LV_PAST.search(outside))
+    if past:
+        for s_ in re.split(r"[。、]", outside):
+            if not _LV_PAST.search(s_): continue
+            rs = _roles_in(s_)
+            if rs: parts += rs
+            else: cnt += next((v for w, v in _CNTW.items() if w in s_), 1)
+            found = True
+    if not found: return None, 0, False
+    return parts, cnt, past
+
+
+def lineup_mb(prompt, label, restx, cur, seed_, taken):
+    """選んだ選択肢 label のときの顔ぶれの出入り。{out, in, xo, xi} か None"""
+    parts, cnt, past = lineup_leavers(prompt)
+    if parts is None:  # 問いに脱退の話がなくても「新しい声を迎える」「ドラマーを替える」なら、その担当を入れ替える
+        if NEWVO.search(label) and not NEWVO_N.search(label): parts, cnt, past, label = ["Vo"], 0, False, label + " 迎え"
+        else:
+            mi = NEWPART.search(label)
+            if mi and not NEWVO_N.search(label) and PART_OF.get(mi.group(1) or mi.group(2)): parts, cnt, past, label = [PART_OF[mi.group(1) or mi.group(2)]], 0, False, label + " 迎え"
+            else: return None
+    if not past and _KEEP_L.search(label): return None
+    if _DISB_L.search(label) and not re.search(r"続け|迎え|探", label): return None
+    repl = bool(_REPL_L.search(label)) and not _REPL_N.search(label)
+    isvo = lambda m_: "Vo" in str(m_.get("r", "")) or str(m_.get("r", "")).startswith("ボーカル")
+    pool = list(cur); outs = []
+    def take(part):
+        rx = PART_RX.get(part) or (re.compile(r"Vo|ボーカル") if part == "Vo" else None)
+        if not rx: return None
+        m_ = next((x for x in pool if rx.search(str(x.get("r", ""))) and not isvo(x)), None) or (next((x for x in pool if rx.search(str(x.get("r", "")))), None) if part == "Vo" or repl else None)
+        if m_: pool.remove(m_); outs.append(m_)
+        return m_
+    for p in parts: take(p)
+    if cnt:
+        # 担当が分からない「ひとり」は、結果文・選択肢に出る担当(「新しい低音が加わった」)を優先し、なければボーカル以外から
+        pref = _roles_in(restx + label)
+        for p in pref:
+            if cnt <= 0: break
+            if take(p): cnt -= 1
+        while cnt > 0 and pool:
+            m_ = next((x for x in pool if not isvo(x)), None) or next((x for x in reversed(pool) if not str(x.get("r", "")).startswith("Vo")), None) or (pool[-1] if len(pool) >= 2 else None)  # 声だけのグループは最後の人
+            if not m_: break
+            pool.remove(m_); outs.append(m_); cnt -= 1
+    if not outs: return None
+    if not repl and len(cur) - len(outs) < 2: outs = outs[:max(0, len(cur) - 2)]
+    if not outs: return None
+    if not repl and all(isvo(x) for x in outs) and not any(isvo(x) for x in pool): return None  # 唯一の歌い手が抜けて代わりもいない形は出さない
+    ins = []
+    if repl:
+        tk = set(taken) | {x["n"] for x in cur}
+        for j, x in enumerate(outs):
+            nw = tracks.newcomer(seed_ + j, x["r"], tk); nw["r"] = x["r"]; tk.add(nw["n"]); ins.append(nw)
+    mb = {"out": outs[0]}
+    if len(outs) > 1: mb["xo"] = outs[1:]
+    if ins: mb["in"] = ins[0]
+    if len(ins) > 1: mb["xi"] = ins[1:]
+    return mb
 
 
 def build(a, i, pool, era=None, nm=None):
@@ -228,26 +340,36 @@ def build(a, i, pool, era=None, nm=None):
         ev = [_cd(x) for x in ev]; ex = [_cd(x) for x in ex]; D = [tuple(_cd(z) for z in d_) for d_ in D]
     if top == "グループ":  # 人数語を実際のメンバー数に
         _n = len(mm); _rl = [x.get("r") for x in mm]; ev = [fix_count(x, _n, _rl) for x in ev]; ex = [fix_count(x, _n, _rl) for x in ex]; meta["histTx"] = fix_count(meta["histTx"], _n, _rl)
-        D = [tuple(fix_count(z, _n, _rl) for z in d_) for d_ in D]
+        D = [tuple(fix_count(z, _n, _rl) if j_ < 3 else z for j_, z in enumerate(d_)) for d_ in D]  # 結果文(3,4)は X() で出入り後の人数に合わせる
     _b = meta["bio"]  # 出来事・紹介文の地名語(古都・津軽・港町など)が出身・結成地に合わなければ地名を外す
     ev = [bio.fit_text(x, _b) for x in ev]; ex = [bio.fit_text(x, _b) for x in ex]; D = [tuple(bio.fit_text(z, _b) for z in d_) for d_ in D]
     meta["histTx"] = bio.fit_text(meta["histTx"], _b); meta["sa"] = bio.fit_text(meta["sa"], _b); meta["tx"] = bio.fit_text(meta["tx"], _b)
     rr = random.Random(H(a["k"], "ex", era)); rr.shuffle(ex)
     counter = [0]
 
-    def stage(si, eff, dv, seen):
+    # QA10: 「メジャーへ進む」の分かれ道より前の作品に「メジャー」の看板を付けない(メジャー1stが分かれ道より先に出ないように)。断った側の後の作品も同じ
+    MJ_L = re.compile(r"メジャー(?:へ|に)(?:進|行|出|移|挑|乗)|メジャーで|メジャーと契約|メジャー契約|メジャーデビュー|大きなレーベル|大手(?:と|に|の)|メジャーの話を受け")
+    MJ_N = re.compile(r"断|残る|せず|しない|のまま|自主|インディーズ|様子を見")
+    _mj = [(j_, (0 if (MJ_L.search(d_[1]) and not MJ_N.search(d_[1])) else 1)) for j_, d_ in enumerate(D) if any(MJ_L.search(d_[s_]) and not MJ_N.search(d_[s_]) for s_ in (1, 2))]
+    jM = _mj[0][0] if _mj else None; sideM = _mj[0][1] if _mj else None
+
+    def stage(si, eff, dv, seen, path=()):
         out = []
+        lb_ = a["lb"][min(si, len(a["lb"]) - 1)]
+        if jM is not None and "メジャー" in lb_:
+            if si <= jM: lb_ = "インディーズ"
+            elif len(path) > jM and path[jM] != sideM and not any(j2 > jM and j2 < len(path) and path[j2] == s2 for j2, s2 in _mj[1:]): lb_ = "インディーズ"
         for k, bt in enumerate(cv[min(si, len(cv) - 1)]):
             pos = counter[0] + k
             y = y0 + a["yr"][min(pos, len(a["yr"]) - 1)]
-            out.append(rel(a, pool, seen, pos, y, cl(bt + eff), th[(pos + dv) % len(th)], a["lb"][min(si, len(a["lb"]) - 1)], dv, era))
+            out.append(rel(a, pool, seen, pos, y, cl(bt + eff), th[(pos + dv) % len(th)], lb_, dv, era))
         return out
 
     def evs(si, off=False, path=()):
         """off: 本家の筋から外れた後。本家固有の転機(ev)は出さず中立の文にし、出さなかった ev を返す"""
         e0 = ev[min(si, len(ev) - 1)]
         if off:
-            o = [{"t": "e", "tx": OFF_TX[(H(a["k"], "off", path[:1], era) + si) % len(OFF_TX)]}]
+            o = [{"t": "e", "tx": OFF_TX[(H(a["k"], "off", path[:1], era) + si * 5) % len(OFF_TX)], "fl": 1}]  # QA10: つなぎ文は人生ごとに違う組み合わせ(1人生に同じ文は1回まで)
             xs = [x_ for x_ in ex if not OFF_EX.search(x_)]
         else:
             o = [{"t": "e", "tx": e0}]; xs = ex
@@ -256,39 +378,16 @@ def build(a, i, pool, era=None, nm=None):
 
     def X(d, alt, gone=()):
         o = {"t": "x", "c": d[2] if alt else d[1], "ok": (d[6] if alt else d[5]) >= 0, "tx": d[4] if alt else d[3]}
-        # QA7: 「新しい声を迎える」を選んだら、顔ぶれのボーカルを入れ替える(画面のメンバー表示に反映)
-        if top == "グループ" and NEWVO.search(o["c"]) and not NEWVO_N.search(o["c"]):
-            vo = next((m_ for m_ in mm if str(m_.get("r", "")).startswith("Vo") and m_["n"] not in gone), None)
-            if vo:
-                nw = tracks.newcomer(seed + 77, vo["r"], {m_["n"] for m_ in mm}); nw["r"] = vo["r"]
-                o["mb"] = {"out": vo, "in": nw}
-            return o
-        # QA9: 「新しいドラマーを迎える」→ その担当を入れ替える。「三人で続ける」「ギタリストなしで続ける」「送り出す」→ 抜けた人を顔ぶれから外す
-        if top == "グループ" and "mb" not in o:
-            lab = o["c"]; pr = d[0]
-            cur = [m_ for m_ in mm if m_["n"] not in gone]
-            def _find(part):
-                rx = PART_RX.get(part)
-                if not rx: return None
-                return next((m_ for m_ in cur if rx.search(str(m_.get("r", ""))) and not str(m_.get("r", "")).startswith("Vo")), None) or next((m_ for m_ in cur if rx.search(str(m_.get("r", "")))), None)
-            def _any():
-                return next((m_ for m_ in cur if not str(m_.get("r", "")).startswith("Vo")), None) or (cur[-1] if cur else None)
-            mi = NEWPART.search(lab)
-            if mi and not NEWVO_N.search(lab):
-                part = PART_OF.get(mi.group(1)); old = _find(part) if part else None
-                if old is None and LEAVE.search(pr): old = _any()
-                if old is not None:
-                    nw = tracks.newcomer(seed + 91 + len(gone), old["r"], {m_["n"] for m_ in mm}); nw["r"] = old["r"]
-                    o["mb"] = {"out": old, "in": nw}
-            elif len(cur) >= 3 and LEAVE.search(pr) and KEEPGO.search(lab) and not KEEPGO_N.search(lab):
-                hits_ = sorted(((pr.find(w), w) for w in PART_OF if w in pr), key=lambda z: (z[0], -len(z[1])))
-                part = PART_OF[hits_[0][1]] if hits_ else None
-                old = _find(part) if part else None
-                if old is None: old = _any()
-                if old is not None:
-                    o["mb"] = {"out": old}
-                    n2 = len(cur) - 1
-                    o["c"] = re.sub(r"(?<![一-龥])[二三四五六七八九]人(?=で|のまま|になって|に戻)", _KN[n2 - 1] + "人", lab)
+        if top != "グループ": return o
+        cur = [m_ for m_ in mm if m_["n"] not in gone]
+        mb = lineup_mb(d[0], o["c"], o["tx"], cur, seed + 91 + len(gone), {m_["n"] for m_ in mm})
+        if mb: o["mb"] = mb
+        # QA10: 結果文の人数語は、出入りのあとの人数に合わせる(「三人で続けた」が四人にならないように)
+        n2 = len(cur) - len(_mb_outs(mb)) + len(_mb_ins(mb))
+        rl2 = [m_.get("r") for m_ in cur if m_["n"] not in {x["n"] for x in _mb_outs(mb)}] + [x.get("r") for x in _mb_ins(mb)]
+        o["tx"] = fix_count(o["tx"], n2, rl2)
+        if mb and mb.get("out") and not mb.get("in"):
+            o["c"] = re.sub(r"(?<![一-龥])[二三四五六七八九]人(?=で|のまま|になって|に戻)", _KN[n2 - 1] + "人", o["c"])
         return o
 
     ag0 = start_age(meta, a["k"])
@@ -309,8 +408,8 @@ def build(a, i, pool, era=None, nm=None):
             dev = x != real_of(a, si); off2 = off or dev
             hc2 = hc + ((D[si][2 if real_of(a, si) else 1],) if dev else ())
             ev_, miss = evs(si + 1, off2, path + (x,))
-            x0 = X(D[si], x, gone); gone2 = gone + ((x0["mb"]["out"]["n"],) if x0.get("mb") and x0["mb"].get("out") else ())
-            seg = [x0] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + ev_ + stage(si + 1, e2, dv2, sn)
+            x0 = X(D[si], x, gone); gone2 = gone + tuple(x["n"] for x in _mb_outs(x0.get("mb")))
+            seg = [x0] + ([{"t": "e", "tx": BRIDGE_TX[(si + x) % len(BRIDGE_TX)]}] if BRIDGE.search(lab_) else []) + ev_ + stage(si + 1, e2, dv2, sn, path + (x,))
             hon2 = hon + tuple(miss)
             pos1 = pos0 + len(cv[min(si + 1, len(cv) - 1)])
             works = prior_works + [w for w in seg if w["t"] == "r"]
