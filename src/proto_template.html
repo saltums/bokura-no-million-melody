@@ -110,6 +110,20 @@ h2 { font: 400 26px/1.35 var(--f-d); text-wrap: balance; }
 .cand.mine { animation: shuf .55s .36s cubic-bezier(.2,.8,.2,1) both; }
 .cand.rare { border: 2px solid #f2c230; box-shadow: 0 0 0 2px rgba(242,194,48,.25), 0 0 18px rgba(242,194,48,.35); }
 .rare-mark { align-self: flex-start; font: 700 13px/1 var(--f-b); background: #f2c230; color: #1a1400; padding: 5px 9px; letter-spacing: .04em; }
+.cand.stray { border: 3px solid #f2c230; background: linear-gradient(135deg, rgba(242,194,48,.16), transparent 60%), var(--surface); box-shadow: 0 0 0 3px rgba(242,194,48,.3), 0 0 22px rgba(242,194,48,.45); }
+.stray-mark { background: linear-gradient(90deg, #f2c230, #ffe27a); }
+/* 結果の「今回ふえたもの」と迷い込みの知らせ(.sumc は反転色なので文字色は継承) */
+.sumc .gain { margin-top: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; }
+.sumc .gain .gl { font: 700 11px/1 var(--f-m); opacity: .85; letter-spacing: .04em; margin-right: 2px; white-space: nowrap; }
+.sumc .gain .gi { display: inline-flex; align-items: center; gap: 4px; border: 1px solid currentColor; padding: 2px 6px 2px 2px; font-size: 11px; line-height: 1.2; min-width: 0; max-width: 100%; }
+.sumc .gain .gi .ic { flex: none; width: 16px; height: 16px; display: grid; place-items: center; background: #f2c230; color: #1a1400; font: 900 10px/1 var(--f-b); }
+.sumc .gain .gi .k { color: inherit; font: inherit; opacity: .85; white-space: nowrap; } .sumc .gain .gi b { font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.sumc .stray { margin-top: 4px; border: 2px solid #f2c230; padding: 6px 8px; display: flex; gap: 8px; align-items: center; box-shadow: 0 0 14px rgba(242,194,48,.45); }
+.sumc .stray .st { flex: none; width: 28px; height: 28px; display: grid; place-items: center; background: #f2c230; color: #1a1400; font: 900 17px/1 var(--f-b); animation: stw 1.8s ease-in-out infinite; }
+.sumc .stray p { margin: 0; font-size: 12px; line-height: 1.45; flex: 1; min-width: 0; } .sumc .stray p b { font-weight: 900; }
+.sumc .stray button { flex: none; appearance: none; background: #f2c230; color: #1a1400; border: 0; font: 900 12px/1.2 var(--f-b); padding: 8px 7px; min-height: 36px; cursor: pointer; }
+@keyframes stw { 50% { transform: rotate(14deg) scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .sumc .stray .st { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .cand.shuf, .cand.mine { animation: none; } }
 
 .cand.rare { position: relative; overflow: hidden; animation: shuf .55s cubic-bezier(.2,.8,.2,1) both, glow 2.2s 0.6s ease-in-out infinite; }
@@ -1192,6 +1206,19 @@ function rareEras() { if (_RE) return _RE; if (!READY) return []; const m = new 
 const isRareEra = (e) => e != null && rareEras().some((x) => x.e === e);
 const eraOk = (e) => { const r = rareEras().find((x) => x.e === e); return !!r && (PL.n() >= r.tier || DBG_ERA != null); };
 const eraSeen = (d) => !d.m.rare || !!RARE_BASE[String(d.m.era)] || eraOk(d.m.era);
+// 迷い込み: 人生を終えるたびに12%(2回目以降。4回目までに一度は必ず)、まだ解放されていない時代の人生がひとつ、次の人選びの候補にまぎれる。遊んでも時代の正式な解放にはならない
+const STRAY = (() => { const K = 'hit30000_stray', KN = 'hit30000_stray_n';
+  const get = () => { try { const v = JSON.parse(localStorage.getItem(K) || 'null'); return v && v.id != null ? v : null; } catch (_) { return null; } };
+  const put = (v) => { try { if (v) localStorage.setItem(K, JSON.stringify(v)); else localStorage.removeItem(K); } catch (_) {} };
+  const cnt = () => { try { return parseInt(localStorage.getItem(KN), 10) || 0; } catch (_) { return 0; } };
+  // pn = この人生を数えたあとのプレイ回数
+  const roll = (pn) => { try { if (pn <= 1 || get() || DBG_ERA != null) return null; const lock = rareEras().filter((r) => pn < r.tier); if (!lock.length) return null;
+    if (!(cnt() === 0 && pn >= 4) && Math.random() >= 0.12) return null;
+    const r = lock[Math.floor(Math.random() * lock.length)]; const L = DATA.filter((d) => d.m.rare && d.m.era === r.e); if (!L.length) return null; const d = L[Math.floor(Math.random() * L.length)];
+    const v = { id: d.m.id, e: r.e, es: r.es, sn: d.m.sn, at: pn }; put(v); try { localStorage.setItem(KN, String(cnt() + 1)); } catch (_) {} return v; } catch (_) { return null; } };
+  // 候補に入れる人生。そのあいだに時代が正式に解放されていたら、迷い込みは消える
+  const life = () => { const v = get(); if (!v || !READY) return null; if (eraOk(v.e)) { put(null); return null; } const d = DATA.find((x) => String(x.m.id) === String(v.id)) || DATA.find((x) => x.m.rare && x.m.era === v.e); if (!d) { put(null); return null; } return d; };
+  return { get, roll, life, done: () => put(null) }; })();
 function unlockTiers() { const t = new Map(); rareEras().forEach((r) => { if (!t.has(r.tier)) t.set(r.tier, []); t.get(r.tier).push(r.es); }); return [...t.entries()].sort((a, b) => a[0] - b[0]).map(([k, v]) => [k, v.join('・')]); }
 const UNL_TIERS_F = () => unlockTiers();
 function unlockPanel() {
@@ -1443,11 +1470,13 @@ function mojiFlash(name, cb) {
   let fired = false; const once = () => { if (fired) return; fired = true; done(); };
   o.addEventListener('click', once); setTimeout(once, 1500);
 }
+// 迷い込みの人生を候補の先頭に入れる(あれば)
+function strayIn(pk) { let d = null; try { d = STRAY.life(); } catch (_) {} S._strayD = d; if (d && !pk.includes(d)) { pk.unshift(d); if (pk.length > 3) pk.pop(); } else if (d) { pk.splice(pk.indexOf(d), 1); pk.unshift(d); } return pk; }
 function renderCands() {
   { const eb = $('#era-pick'); eb.textContent = ''; eb.hidden = false; eb.style.cssText = 'flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:2px';
     { let lk = $('#era-lock'); if (!lk) { lk = el('div', 'elock'); lk.id = 'era-lock'; lk.style.cssText = 'font-size:12px;line-height:1.5;color:var(--muted);margin:2px 0 0'; eb.parentNode.insertBefore(lk, eb); } const nt = unlockTiers().find(([k]) => PL.n() < k); lk.textContent = nt ? '🔒 あと' + (nt[0] - PL.n()) + '回あそぶと「' + nt[1] + '」の時代が解放' : ''; lk.hidden = !nt; } eraPK().forEach(([v, l]) => { if (v !== null && !DATA.some((d) => d.m.era === v && (d.m.rare || d.m.st === S.style))) return; const c = el('button', 'chip' + ((S.eraPick == null ? null : S.eraPick) === v ? ' on' : ''), l); c.type = 'button'; c.style.cssText = 'flex:none;padding:5px 10px;font-size:12px'; c.onclick = () => { S.eraPick = v; renderCands(); }; eb.append(c); }); const upd = () => eb.classList.toggle('more', eb.scrollLeft + eb.clientWidth < eb.scrollWidth - 2); eb.onscroll = upd; requestAnimationFrame(upd); }  // QA10: 右端のフェードで「まだ続きがある」ことを示す
   { const E = DBG_ERA != null ? DBG_ERA : S.eraPick;
-    if (isRareEra(E) && eraOk(E)) { let L = DATA.filter((d) => d.m.rare && d.m.era === E && d.m.st === S.style && tOk(d)); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === E); const pk = shuffle(L).slice(0, 3); $('#k-cand').textContent = S.top + ' / ' + styleLabel(S.style); $('#cand-list').textContent = ''; const tok = S._ct = (S._ct || 0) + 1; loadWait(() => Promise.all(pk.map(hydrate)), () => { if (tok === S._ct) renderCands2(pk); }, () => show('s-title')); return; } }
+    if (isRareEra(E) && eraOk(E)) { let L = DATA.filter((d) => d.m.rare && d.m.era === E && d.m.st === S.style && tOk(d)); if (!L.length) L = DATA.filter((d) => d.m.rare && d.m.era === E); const pk = strayIn(shuffle(L).slice(0, 3)); $('#k-cand').textContent = S.top + ' / ' + styleLabel(S.style); $('#cand-list').textContent = ''; const tok = S._ct = (S._ct || 0) + 1; loadWait(() => Promise.all(pk.map(hydrate)), () => { if (tok === S._ct) renderCands2(pk); }, () => show('s-title')); return; } }
   $('#k-cand').textContent = S.top + ' / ' + styleLabel(S.style);
   const box = $('#cand-list'); box.textContent = '';
   const E_ = DBG_ERA != null ? DBG_ERA : S.eraPick; const ef = (d) => E_ == null || d.m.era === E_; let base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real && ef(d) && tOk(d)); if (!base.length) { base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real && tOk(d)); } if (!base.length) { base = DATA.filter((d) => d.m.st === S.style && !d.m.rare && !d.m.real); } const pick = shuffle(base).slice(0, 3);
@@ -1455,6 +1484,7 @@ function renderCands() {
   { const rares = DATA.filter((d) => d.m.st === S.style && d.m.rare && eraSeen(d) && tOk(d)); if (rares.length && Math.random() < 0.08) pick[Math.floor(Math.random() * pick.length)] = rares[Math.floor(Math.random() * rares.length)]; }
   { const fx = (d) => d.m.pun || d.m.real || d.m.rare; const spare = shuffle(base.filter((d) => !pick.includes(d))); const seenN = new Set();
     for (let i = 0; i < pick.length; i++) { let g = 0; while (fx(pick[i]) && seenN.has(pick[i].m.a) && spare.length && g++ < 40) pick[i] = spare.shift(); if (fx(pick[i])) seenN.add(pick[i].m.a); } }
+  strayIn(pick);
   const tok = S._ct = (S._ct || 0) + 1; loadWait(() => Promise.all(pick.map(hydrate)), () => { if (tok !== S._ct) return; const names = new Set(); pick.forEach((d) => { if (d.m.pun || d.m.real || d.m.rare) names.add(d.m.a); }); const out = pick.map((d) => { if (d.m.pun || d.m.real || d.m.rare) return d; let r = reskin(d); for (let i = 0; i < 25 && names.has(r.m.a); i++) r = reskin(d); names.add(r.m.a); return r; }); renderCands2(out); }, () => show('s-title'));
 }
 function confirmStart(d) {
@@ -1463,14 +1493,16 @@ function confirmStart(d) {
   bx.lastChild.style.cssText = 'font:400 24px/1.3 var(--f-d);overflow-wrap:anywhere';
   const tg = el('div', 'tags'); tg.append(el('span', 'tag p', m.pe), el('span', 'tag', m.es), el('span', 'tag', m.ge), el('span', 'tag', m.sa)); bx.append(tg);
   const row = el('div', 'row'); const no = el('button', 'btn line', 'キャンセル'); no.type = 'button'; const ok = el('button', 'btn primary', 'OK'); ok.type = 'button';
-  no.onclick = () => o.remove(); ok.onclick = () => { o.remove(); startTree(d); }; row.append(no, ok); bx.append(row); o.append(bx); o.onclick = (e) => { if (e.target === o) o.remove(); }; document.body.append(o);
+  no.onclick = () => o.remove(); ok.onclick = () => { o.remove(); if (S._strayD && d === S._strayD) { S.top = d.m.top; S.style = d.m.st; STRAY.done(); S._strayD = null; } startTree(d); }; row.append(no, ok); bx.append(row); o.append(bx); o.onclick = (e) => { if (e.target === o) o.remove(); }; document.body.append(o);
 }
 function renderCands2(pick) {
   const box = $('#cand-list'); box.textContent = '';
   let mojiSeen = false;
   pick.forEach((d, i) => {
-    const m = d.m; const c = el('div', 'cand tap shuf' + (m.rare ? ' rare' : '') + (m.real ? ' moji' : '')); c.style.animationDelay = (i * 110) + 'ms'; if (i % 2) c.style.setProperty('--sx', '-1');
-    if (m.rare) c.append(el('span', 'rare-mark', '★ レア時代'));
+    const sty = !!(S._strayD && d === S._strayD);
+    const m = d.m; const c = el('div', 'cand tap shuf' + (m.rare ? ' rare' : '') + (sty ? ' stray' : '') + (m.real ? ' moji' : '')); c.style.animationDelay = (i * 110) + 'ms'; if (i % 2) c.style.setProperty('--sx', '-1');
+    if (sty) c.append(el('span', 'rare-mark stray-mark', '★ 迷い込み ・ 時のすきまから'));
+    else if (m.rare) c.append(el('span', 'rare-mark', '★ レア時代'));
     if (m.real) { c.append(el('span', 'moji-mark', m.alt ? '✦ どこかで聞いたような名前… もうひとつの物語' : '✦ どこかで聞いたような名前…')); mojiSeen = true; } c.setAttribute('role', 'button'); c.tabIndex = 0;
     c.append(el('div', 'nm', m.a));
     const tg = el('div', 'tags');
@@ -3154,8 +3186,8 @@ function makeCards(dr, m, e, topW, ex) {
     g.fillStyle = '#9aa4b2'; g.font = F(700, 22); g.fillText('称号', X, 642);
     const cr = ex.cr || ['', '']; g.fillStyle = '#FFD21F'; g.fillText(fitF(g, String(cr[0] || dr.tl), CW, 900, 62, 34), X, 712);
     g.fillStyle = '#c8cfda'; g.fillText(fitF(g, String(cr[1] || ''), CW, 500, 24, 18), X, 750);
-    // 下の段: 最高順位・総合・本家と同じ道
-    const parts = []; if (ex.bt && ex.bt !== '—') parts.push([ex.bt === '圏外' ? 'チャート' : '最高', ex.bt]); parts.push(['総合', dr.total + '/400']); if (ex.cn) parts.push(['本家と同じ道', ex.cn.ok + '/' + ex.cn.n]);
+    // 下の段: 最高順位・総合
+    const parts = []; if (ex.bt && ex.bt !== '—') parts.push([ex.bt === '圏外' ? 'チャート' : '最高', ex.bt]); parts.push(['総合', dr.total + '/400']);
     { let x = X; const yy = 800; parts.forEach(([k, v], i) => { if (i) { g.fillStyle = '#5a6475'; g.font = F(500, 24); g.fillText('・', x, yy); x += g.measureText('・').width + 2; } g.fillStyle = '#9aa4b2'; g.font = F(500, 22); g.fillText(k, x, yy); x += g.measureText(k).width + 6; g.fillStyle = '#fff'; g.font = F(900, 28); g.fillText(v, x, yy); x += g.measureText(v).width + 6; }); }
     out.push(cv); }
   // 2 メンバー
@@ -3588,10 +3620,8 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   const altTx = (al) => (al.max > topTr ? '最高「' + TIER[al.max] + '」の道だった' : al.max === topTr ? 'こちらも最高「' + TIER[al.max] + '」の、別の結末だった' : '最高「' + TIER[al.max] + '」の、ちがう人生だった') + '(結末' + al.n + '通り)';
   const bestAlt = alts.slice().sort((x, y) => y.max - x.max || x.j - y.j)[0];
   const cn = canonOf(e), hero = heroFork(e, cn); const heroAlt = hero ? (alts.find((al) => al.j === hero.j && al.k === hero.k) || null) : null;
-  const cnTx = (c) => c.ok === c.n ? 'ぜんぶ本家どおり' : c.ok === 0 ? 'ぜんぶ本家と逆' : (c.n - c.ok) + 'か所で本家と分かれた';
   if (S.path.length) {
     const iff = el('div', 'iff'); iff.append(el('span', 'lab', '選ばなかった道'), el('p', 'small', '「この道でやり直す」で、同じ人生をその分かれ道まで早送りして、別の道を選び直せます。'));
-    if (cn) { const cb = el('p', 'cnk'); cb.append(el('b', null, '本家と同じ道: ' + cn.ok + '/' + cn.n), '(' + cnTx(cn) + ')'); iff.append(cb); }
     alts.forEach((al) => { const it = el('div', 'it'); it.append(el('b', null, 'もし「' + qIn(al.lab) + '」を選んでいたら──'), el('span', 'sc', al.sc));
       const rb = el('button', 'btn line ifgo', 'この道でやり直す ▶'); rb.type = 'button'; rb.onclick = () => replay(al); it.append(rb); iff.append(it); });
     try { const hn = S.entry.m.real ? honOf(e) : null; if (hn && hn.length) { const hb = el('div', 'hon'); const hx = hn.length > 4 ? hn.slice(0, 3).concat(hn.slice(-1)) : hn; hb.append(el('b', null, '本家の道はこうだった'), el('br')); if (Array.isArray(e.hc) && e.hc.length) hb.append('本家は' + e.hc.slice(0, 3).map((x) => '「' + cut(String(Array.isArray(x) ? x[x.length - 1] : x), 16) + '」').join('') + 'を選んだ。', el('br')); hb.append(hx.map((x) => cut(x, 34)).join(' → ')); iff.append(hb); } } catch (_) {}
@@ -3644,10 +3674,24 @@ function showEnding(e) { try { THEME.stop(true); } catch (_) {}
   { const sm = el('div', 'sumc'); const m = S.entry.m; sm.append(el('div', 'sk', eraLab(S.entry).es + ' ・ ' + m.sn), el('div', 'sa', m.a));
     const ss = el('div', 'ss'); ss.append(el('b', null, String(dr.total)), el('span', null, '/ 400'), el('em', null, '「' + dr.tl + '」')); sm.append(ss);
     const r1 = el('div', 'sr'); r1.append(el('span', 'k', '称号'), el('span', 'v', cr[0])); const r2 = el('div', 'sr'); r2.append(el('span', 'k', '代表曲'), el('span', 'v', '「' + topW.ti + '」 ' + TIER[topW.tr])); sm.append(r1, r2);
-    if (cn) { const r3 = el('div', 'sr cn'); r3.setAttribute('aria-label', '本家と同じ道: ' + cn.n + 'か所中' + cn.ok + 'か所'); r3.append(el('span', 'k', '本家と'), el('span', 'v', '同じ道 ' + cn.ok + '/' + cn.n), el('span', 'cx', cn.ok === cn.n ? '全部どおり' : cn.ok === 0 ? '全部ちがう' : (cn.n - cn.ok) + 'か所で分岐')); sm.append(r3); }
     if (hero && heroAlt) { const f = el('button', 'sif'); f.type = 'button'; f.append(el('span', null, 'もしあのとき『' + cut(qIn(hero.lab).replace(/[『』]/g, ''), 26) + '』を選んでいなかったら──'), el('b', null, heroAlt.sc), el('small', null, 'タップで「' + cut(qIn(heroAlt.lab), 14) + '」を選び直す ▶')); f.onclick = () => replay(heroAlt); sm.append(f); }
     else if (bestAlt) { const f = el('button', 'sif'); f.type = 'button'; f.append(el('span', null, 'もし「' + cut(qIn(bestAlt.lab), 26) + '」を選んでいたら──'), el('b', null, bestAlt.sc), el('small', null, 'タップで、この道を選び直す ▶')); f.onclick = () => replay(bestAlt); sm.append(f); }
     if (m.rare && m.era === 22) { const eb = el('button', 'sif'); eb.type = 'button'; eb.append(el('b', null, '大エンディングを見る ▶')); eb.onclick = () => ENDING.start({ back: true }); sm.append(eb); }
+    // 今回ふえたもの: 毎回ひとつは出す(新しい称号・図鑑・自己ベスト・時代の解放・迷い込み)。記録(ZK.record / PL.inc)の前の状態とくらべる
+    try { const G = []; const zk = ZK.load(); const pn0 = PL.n() + 1; const allN = DATA.length, haveN = Object.keys(zk.ids || {}).length, newLife = !(zk.ids || {})[m.id];
+      const sv = STRAY.roll(pn0);
+      if (sv) { const sb = el('div', 'stray'); sb.setAttribute('role', 'status'); const p = el('p'); p.append('時のすきまから、', el('b', null, sv.es + 'の' + sv.sn), 'が迷い込んできた。次の候補にまぎれています'); const go = el('button', null, '人選びへ▶'); go.type = 'button'; go.onclick = () => { clearTimers(); S.auto = false; S.force = null; S.quick = false; show('s-top'); }; sb.append(el('span', 'st', '★'), p, go); sm.append(sb); try { setTimeout(() => SFX.play('unlock'), 900); } catch (_) {} }
+      if (!(zk.crowns || {})[cr[0]]) G.push(['称', '新しい称号', cr[0]]);
+      G.push(['図', '図鑑', (haveN + (newLife ? 1 : 0)) + '/' + allN + (newLife ? ' +1' : ''), !newLife]);
+      if (zk.lives.length) { const pb = zk.lives.reduce((a, l) => Math.max(a, l.tot || 0), 0); if (dr.total > pb) G.push(['冠', '自己ベスト', '総合' + dr.total]);
+        const rk = (t) => { const x = /^(\d+)位$/.exec(String(t || '')); return x ? +x[1] : 999; }; const bt = bestTxt(best); if (!m.rare && rk(bt) < 999 && rk(bt) < zk.lives.reduce((a, l) => Math.min(a, rk(l.bt)), 999)) G.push(['冠', '最高順位', bt]); }
+      const hit = unlockTiers().find(([k]) => k === pn0), nt = unlockTiers().find(([k]) => pn0 < k);
+      if (hit) G.push(['開', '時代解放', hit[1]]); else if (nt) G.push(['鍵', '解放まで', 'あと' + (nt[0] - pn0) + '回']);
+      // 図鑑(+0)は、ほかに何もないときだけ出す
+      // 迷い込みの知らせを出したときは、その知らせ自体が「ふえたもの」なので行はほかの項目だけ
+      const G2 = G.filter((x) => !x[3]); const show_ = (G2.length ? G2 : sv ? [['★', '迷い込み', sv.es]] : G).slice(0, 4);
+      { const gb = el('div', 'gain'); gb.append(el('span', 'gl', '今回ふえたもの'));
+        show_.forEach(([ic, k, v]) => { const it = el('span', 'gi'); it.append(el('span', 'ic', ic), el('span', 'k', k), el('b', null, v)); gb.append(it); }); sm.append(gb); } } catch (_) {}
     const tb = el('div', 'sumb'); const bq = qGo('もう1回(おまかせ)', 'go'); tb.append(bimg, bq);
     const tb2 = el('div', 'sumb2'); const hm = el('button', 'btn line', 'ホーム'); hm.type = 'button'; hm.onclick = b4.onclick; const zk = el('button', 'btn line', '図鑑'); zk.type = 'button'; zk.onclick = b5.onclick; tb2.append(mGo('自分で選んで始める'), hm, zk);
     tail.prepend(sm, tb, imgBox, tb2); }
